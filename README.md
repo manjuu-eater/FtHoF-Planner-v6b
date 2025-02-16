@@ -1,4 +1,4 @@
-# FtHoF-Planner-v5
+# FtHoF-Planner-v6
 
 FtHoF Planner for Cookie Clicker by Orteil
 </br></br>
@@ -138,7 +138,7 @@ FtHoF Planner for Cookie Clicker by Orteil
             <a href="https://discord.gg/cookie">@mylaaan</a> (discord)
             <ul>
                 <li>The fourth version only added ease of use interface options. Like the "Cast Spell" button to
-                    make it easier to keep track of where you are without importing the save again. Also updated 
+                    make it easier to keep track of where you are without importing the save again. Also updated
                     some visual features and removed Google Analytics.
                 </li>
             </ul>
@@ -150,5 +150,12 @@ FtHoF Planner for Cookie Clicker by Orteil
                         </li>
                     </ul>
                 </li>
+        <li><a href="https://manjuu-eater.github.io/FtHoF-Planner-v6/">FtHoF planner v6</a> by
+            @manjuu-eater
+            <ul>
+                <li>WIP
+                </li>
+            </ul>
+        </li>
     </ul>
 </div>
