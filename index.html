@@ -37,12 +37,15 @@
             <md-button class="md-raised md-primary" ng-click="load_game()">Import Save</md-button>
         </div>
 
-        <p></p><b>Based on FtHoF planner v1, v2, v3, v4, v5 by RebelKeithy, Skeezy, Eminenti, Mylaaan and joseph3079. Huge thanks to them for
-        creating such
-        a helpful tool.</br>
-        The current version is compatible with cookie clicker 2.052, "often imitated, never duplicated".
-        <md-button class="md-raised md-primary" ng-click="collapse_interface(1)">see here</md-button>
-        for the full version history, credits & contacts.</b></p>
+        <p><b>
+            Based on FtHoF planner v1, v2, v3, v4, v5 by RebelKeithy, Skeezy, Eminenti, Mylaaan and joseph3079.
+            Huge thanks to them for creating such a helpful tool.
+        </b></p>
+        <p><b>
+            The current version is compatible with cookie clicker 2.052, "often imitated, never duplicated".
+            <md-button class="md-raised md-primary" ng-click="collapse_interface(1)">see here</md-button>
+            for the full version history, credits & contacts.
+        </b></p>
         <div class="collapse-content" id="content-1">
             <ul>
                 <li><a href="http://fthof-planner.s3-website.us-east-2.amazonaws.com/">FtHoF planner V1</a> by
@@ -98,7 +101,6 @@
                 </li>
                 <li>If you do make a bug report please add the save export. This makes it easier to visualise
                     the problem you're facing and I can make sure it is fixed instead of almost being sure.
-                </li>
                 </li>
             </ul>
         </div>
@@ -242,7 +244,7 @@
                     <li ng-if="combo.first.idx != -1"><a href="#{{combo.first.idx}}">Earliest:</a> Length
                         {{combo.first.length}}; spread {{combo.first.length - ($index + min_combo_length)}}; starting at
                         <a href="#{{combo.first.idx}}">spell #{{combo.first.idx+1}}</a></li>
-                    <li ng-if="combo.first.idx == -1">No combo of this length with spread <= {{max_spread}}</li>
+                    <li ng-if="combo.first.idx == -1">No combo of this length with spread &lt;= {{max_spread}}</li>
                     <li><a href="#{{combo.shortest.idx}}">Shortest:</a> Length {{combo.shortest.length}}; spread
                         {{combo.shortest.length - ($index + min_combo_length)}}; starting at <a
                                 href="#{{combo.shortest.idx}}">spell #{{combo.shortest.idx+1}}</a></li>
@@ -307,8 +309,8 @@
         <md-divider></md-divider>
 
 
-        <div layout-gt-sm="row" layout="column">
-            <div flex-gt-sm="15" flex>
+        <div layout-gt-xs="row" layout="column">
+            <div flex-gt-xs="15" flex>
                 <md-toolbar layout="row" class="md-hue-3">
                     <div class="md-toolbar-tools">
                         <h1>Spell #</h1>
@@ -328,7 +330,7 @@
                 </md-content>
             </div>
             <md-divider></md-divider>
-            <div flex-gt-sm="15" flex>
+            <div flex-gt-xs="15" flex>
                 <md-toolbar layout="row" class="md-hue-3">
                     <div class="md-toolbar-tools">
                         <h1>Random Seed</h1>
@@ -347,7 +349,7 @@
                 </md-content>
             </div>
             <md-divider></md-divider>
-            <div flex-gt-sm="30" flex>
+            <div flex-gt-xs="30" flex>
                 <md-toolbar layout="row" class="md-hue-3">
                     <div class="md-toolbar-tools">
                         <h1>No Change</h1>
@@ -357,7 +359,7 @@
                     <md-list flex>
                         <md-subheader class="md-no-sticky">Season is not Easter or Valentines.</md-subheader>
                         <md-list-item class="md-2-line" ng-repeat="cookie_list in displayCookies" ng-click="null">
-                            <img ng-src={{cookie_list[0].wrath?"img/WrathCookie.png":"img/GoldCookie.png"}}
+                            <img ng-src='{{cookie_list[0].wrath?"img/WrathCookie.png":"img/GoldCookie.png"}}'
                                  class="md-avatar" alt="Golden Cookie"/>
                             <div class="md-list-item-text{{cookie_list[0].noteworthy ? ' highlightCombo' : ''}}"
                                  layout="column">
@@ -368,7 +370,7 @@
                 </md-content>
             </div>
             <md-divider></md-divider>
-            <div style="display: block;" id="content-3" flex-gt-sm="30" flex>
+            <div style="display: block;" id="content-3" flex-gt-xs="30" flex>
                 <md-toolbar layout="row" class="md-hue-3">
                     <div class="md-toolbar-tools">
                         <h1>One Change</h1>
@@ -384,7 +386,7 @@
                     <md-list flex>
                         <md-subheader class="md-no-sticky">Season is Easter or Valentines.</md-subheader>
                         <md-list-item class="md-2-line" ng-repeat="cookie_list in displayCookies" ng-click="null">
-                            <img ng-src={{cookie_list[1].wrath?"img/WrathCookie.png":"img/GoldCookie.png"}}
+                            <img ng-src='{{cookie_list[1].wrath?"img/WrathCookie.png":"img/GoldCookie.png"}}'
                                  class="md-avatar" alt="Golden Cookie"/>
                             <div class="md-list-item-text{{cookie_list[1].noteworthy ? ' highlightCombo' : ''}}"
                                  layout="column">
@@ -395,7 +397,7 @@
                 </md-content>
             </div>
             <md-divider></md-divider>
-            <div flex-gt-sm="30" flex>
+            <div flex-gt-xs="30" flex>
                 <md-toolbar layout="row" class="md-hue-3">
                     <div class="md-toolbar-tools">
                         <span>Gambler's Dream</span>

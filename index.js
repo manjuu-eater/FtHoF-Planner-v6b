@@ -1,3 +1,14 @@
+/// <reference path="base64.js" />
+// @ts-check
+/**
+ * FtHoF Planner v6
+ * index.js
+ */
+
+/**
+ * seedrandom
+ * https://cdnjs.cloudflare.com/ajax/libs/seedrandom/2.2/seedrandom.min.js
+ */
 (function (a, b, c, d, e, f) {
 	function k(a) {
 		var b, c = a.length, e = this, f = 0, g = e.i = e.j = 0, h = e.S = [];
@@ -46,6 +57,15 @@
 	}, m(c.random(), b)
 })(this, [], Math, 256, 6, 52);
 
+
+/**
+ * function choose from Cookie Clicker main.js
+ * random choose one from arr
+ *
+ * @template T
+ * @param {T[]} arr
+ * @returns {T} chosen item
+ */
 function choose(arr) {
 	return arr[Math.floor(Math.random() * arr.length)];
 }
@@ -89,6 +109,7 @@ app.controller('myCtrl', function ($scope) {
 	}
 
 	$scope.load_game = function (str) {
+		let spl;
 		if (!str) {
 			str = $scope.save_string;
 		}
@@ -120,23 +141,23 @@ app.controller('myCtrl', function ($scope) {
 		$scope.baseBackfireChance = 0.15*($scope.supremeintellect?1.1:1)*($scope.diminishineptitude?0.1:1);
 		$scope.backfireChance = $scope.baseBackfireChance+0.15*$scope.on_screen_cookies;
 		$scope.displayCookies = [];
-		bsIndices = [];
-		skipIndices = [];
-		currentTime = Date.now();
-		for (i = 0; i < $scope.lookahead; i++) {
-			currentSpell = i+$scope.spellsCastTotal;
+		let bsIndices = [];
+		let skipIndices = [];
+		let currentTime = Date.now();
+		for (let i = 0; i < $scope.lookahead; i++) {
+			let currentSpell = i+$scope.spellsCastTotal;
 			Math.seedrandom($scope.seed + '/' + currentSpell);
-			roll = Math.random();
+			let roll = Math.random();
 			$scope.randomSeeds.push(roll);
 
 			$scope.cookies.push([])
 			$scope.displayCookies.push([])
-			cookie1Success = check_cookies($scope.spellsCastTotal + i, '', false, true)
-			cookie2Success = check_cookies($scope.spellsCastTotal + i, '', true, true)
+			let cookie1Success = check_cookies($scope.spellsCastTotal + i, '', false, true)
+			let cookie2Success = check_cookies($scope.spellsCastTotal + i, '', true, true)
 			//cookie3 = check_cookies($scope.spellsCastTotal + i, '', true)
-			cookie1Backfire = check_cookies($scope.spellsCastTotal + i, '', false, false)
-			cookie2Backfire = check_cookies($scope.spellsCastTotal + i, '', true, false)
-			gambler = check_gambler($scope.spellsCastTotal + i)
+			let cookie1Backfire = check_cookies($scope.spellsCastTotal + i, '', false, false)
+			let cookie2Backfire = check_cookies($scope.spellsCastTotal + i, '', true, false)
+			let gambler = check_gambler($scope.spellsCastTotal + i)
 			$scope.cookies[i].push(cookie1Success)
 			$scope.cookies[i].push(cookie2Success)
 			$scope.cookies[i].push(cookie1Backfire)
@@ -176,7 +197,7 @@ app.controller('myCtrl', function ($scope) {
 
 		$scope.combos = {}
 
-		for (combo_length = $scope.min_combo_length; combo_length <= $scope.max_combo_length; combo_length++) {
+		for (let combo_length = $scope.min_combo_length; combo_length <= $scope.max_combo_length; combo_length++) {
 			$scope.combos[combo_length] = findCombos(combo_length, $scope.max_spread, bsIndices, skipIndices);
 		}
 
@@ -237,14 +258,10 @@ app.controller('myCtrl', function ($scope) {
 		});
 	}
 
-	function choose(arr) {
-		return arr[Math.floor(Math.random() * arr.length)];
-	}
-
 	function check_gambler(spellsCast) {
 		Math.seedrandom($scope.seed + '/' + spellsCast);
 
-		spells = [];
+		let spells = [];
 		for (var i in $scope.spells) {
 			if (i != "gambler's fever dream")
 				spells.push($scope.spells[i]);
@@ -254,10 +271,10 @@ app.controller('myCtrl', function ($scope) {
 		//simplifying the below cause this isn't patched yet afaict and i'll never be playing with diminished ineptitutde backfire
 		var gfdBackfire = 0.5; /*M.getFailChance(gfdSpell);
 
-	if(FortuneCookie.detectKUGamblerPatch()) gfdBackfire *= 2;
-	else gfdBackfire = Math.max(gfdBackfire, 0.5);*/
+		if(FortuneCookie.detectKUGamblerPatch()) gfdBackfire *= 2;
+		else gfdBackfire = Math.max(gfdBackfire, 0.5);*/
 
-		gamblerSpell = {};
+		let gamblerSpell = {};
 		gamblerSpell.type = gfdSpell.name;
 		gamblerSpell.hasBs = false;
 		gamblerSpell.hasEf = false;
@@ -294,7 +311,7 @@ app.controller('myCtrl', function ($scope) {
 
 	function check_cookies(spells, season, chime, forcedGold) {
 		Math.seedrandom($scope.seed + '/' + spells);
-		roll = Math.random()
+		let roll = Math.random()
 		if (forcedGold !== false && (forcedGold || roll < (1 - (0.15*$scope.on_screen_cookies + 0.15*(1 + 0.1*$scope.supremeintellect)*(1 - 0.9*$scope.diminishineptitude))))) {
 			/* Random is called a few times in setting up the golden cookie */
 			if (chime == 1 && $scope.ascensionMode != 1) Math.random();
@@ -312,7 +329,7 @@ app.controller('myCtrl', function ($scope) {
 			if (Math.random() < 0.25) choices.push('Building Special');
 			if (Math.random() < 0.15) choices = ['Cookie Storm Drop'];
 			if (Math.random() < 0.0001) choices.push('Free Sugar Lump');
-			cookie = {}
+			let cookie = {}
 			cookie.wrath = false
 			cookie.type = choose(choices);
 			if (cookie.type == 'Frenzy') cookie.description = "Gives x7 cookie production for 77 seconds.";
@@ -342,7 +359,7 @@ app.controller('myCtrl', function ($scope) {
 			if (Math.random() < 0.1) choices.push('Cursed Finger', 'Elder Frenzy');
 			if (Math.random() < 0.003) choices.push('Free Sugar Lump');
 			if (Math.random() < 0.1) choices = ['Blab'];
-			cookie = {}
+			let cookie = {}
 			cookie.wrath = true
 			cookie.type = choose(choices);
 			if (cookie.type == 'Clot') cookie.description = "Reduce production by 50% for 66 seconds.";
@@ -367,18 +384,10 @@ app.controller('myCtrl', function ($scope) {
 			costMin: 2,
 			costPercent: 0.4,
 			win: function () {
-				var val = Math.max(7, Math.min(Game.cookies * 0.15, Game.cookiesPs * 60 * 30));
-				Game.Earn(val);
-				Game.Notify('Conjure baked goods!', 'You magic <b>' + Beautify(val) + ' cookie' + (val == 1 ? '' : 's') + '</b> out of thin air.', [21, 11], 6);
-				Game.Popup('<div style="font-size:80%;">+' + Beautify(val) + ' cookie' + (val == 1 ? '' : 's') + '!</div>', Game.mouseX, Game.mouseY);
+				// removed (not used in this file)
 			},
 			fail: function () {
-				var buff = Game.gainBuff('clot', 60 * 15, 0.5);
-				var val = Math.min(Game.cookies * 0.15, Game.cookiesPs * 60 * 15) + 13;
-				val = Math.min(Game.cookies, val);
-				Game.Spend(val);
-				Game.Notify(buff.name, buff.desc, buff.icon, 6);
-				Game.Popup('<div style="font-size:80%;">Backfire!<br>Summoning failed! Lost ' + Beautify(val) + ' cookie' + (val == 1 ? '' : 's') + '!</div>', Game.mouseX, Game.mouseY);
+				// removed (not used in this file)
 			},
 		},
 		'hand of fate': {
@@ -389,33 +398,13 @@ app.controller('myCtrl', function ($scope) {
 			costMin: 10,
 			costPercent: 0.6,
 			failFunc: function (fail) {
-				return fail + 0.15 * Game.shimmerTypes['golden'].n;
+				// removed (not used in this file)
 			},
 			win: function () {
-				var newShimmer = new Game.shimmer('golden', {noWrath: true});
-				var choices = [];
-				choices.push('frenzy', 'multiply cookies');
-				if (!Game.hasBuff('Dragonflight')) choices.push('click frenzy');
-				if (Math.random() < 0.1) choices.push('cookie storm', 'cookie storm', 'blab');
-				if (Game.BuildingsOwned >= 10 && Math.random() < 0.25) choices.push('building special');
-				//if (Math.random()<0.2) choices.push('clot','cursed finger','ruin cookies');
-				if (Math.random() < 0.15) choices = ['cookie storm drop'];
-				if (Math.random() < 0.0001) choices.push('free sugar lump');
-				newShimmer.force = choose(choices);
-				if (newShimmer.force == 'cookie storm drop') {
-					newShimmer.sizeMult = Math.random() * 0.75 + 0.25;
-				}
-				Game.Popup('<div style="font-size:80%;">Promising fate!</div>', Game.mouseX, Game.mouseY);
+				// removed (not used in this file)
 			},
 			fail: function () {
-				var newShimmer = new Game.shimmer('golden', {wrath: true});
-				var choices = [];
-				choices.push('clot', 'ruin cookies');
-				if (Math.random() < 0.1) choices.push('cursed finger', 'blood frenzy');
-				if (Math.random() < 0.003) choices.push('free sugar lump');
-				if (Math.random() < 0.1) choices = ['blab'];
-				newShimmer.force = choose(choices);
-				Game.Popup('<div style="font-size:80%;">Backfire!<br>Sinister fate!</div>', Game.mouseX, Game.mouseY);
+				// removed (not used in this file)
 			},
 		},
 		'stretch time': {
@@ -426,34 +415,10 @@ app.controller('myCtrl', function ($scope) {
 			costMin: 8,
 			costPercent: 0.2,
 			win: function () {
-				var changed = 0;
-				for (var i in Game.buffs) {
-					var me = Game.buffs[i];
-					var gain = Math.min(Game.fps * 60 * 5, me.maxTime * 0.1);
-					me.maxTime += gain;
-					me.time += gain;
-					changed++;
-				}
-				if (changed == 0) {
-					Game.Popup('<div style="font-size:80%;">No buffs to alter!</div>', Game.mouseX, Game.mouseY);
-					return -1;
-				}
-				Game.Popup('<div style="font-size:80%;">Zap! Buffs lengthened.</div>', Game.mouseX, Game.mouseY);
+				// removed (not used in this file)
 			},
 			fail: function () {
-				var changed = 0;
-				for (var i in Game.buffs) {
-					var me = Game.buffs[i];
-					var loss = Math.min(Game.fps * 60 * 10, me.time * 0.2);
-					me.time -= loss;
-					me.time = Math.max(me.time, 0);
-					changed++;
-				}
-				if (changed == 0) {
-					Game.Popup('<div style="font-size:80%;">No buffs to alter!</div>', Game.mouseX, Game.mouseY);
-					return -1;
-				}
-				Game.Popup('<div style="font-size:80%;">Backfire!<br>Fizz! Buffs shortened.</div>', Game.mouseX, Game.mouseY);
+				// removed (not used in this file)
 			},
 		},
 		'spontaneous edifice': {
@@ -464,36 +429,10 @@ app.controller('myCtrl', function ($scope) {
 			costMin: 20,
 			costPercent: 0.75,
 			win: function () {
-				var buildings = [];
-				var max = 0;
-				var n = 0;
-				for (var i in Game.Objects) {
-					if (Game.Objects[i].amount > max) max = Game.Objects[i].amount;
-					if (Game.Objects[i].amount > 0) n++;
-				}
-				for (var i in Game.Objects) {
-					if ((Game.Objects[i].amount < max || n == 1) && Game.Objects[i].getPrice() <= Game.cookies * 2 && Game.Objects[i].amount < 400) buildings.push(Game.Objects[i]);
-				}
-				if (buildings.length == 0) {
-					Game.Popup('<div style="font-size:80%;">No buildings to improve!</div>', Game.mouseX, Game.mouseY);
-					return -1;
-				}
-				var building = choose(buildings);
-				building.buyFree(1);
-				Game.Popup('<div style="font-size:80%;">A new ' + building.single + '<br>bursts out of the ground.</div>', Game.mouseX, Game.mouseY);
+				// removed (not used in this file)
 			},
 			fail: function () {
-				if (Game.BuildingsOwned == 0) {
-					Game.Popup('<div style="font-size:80%;">Backfired, but no buildings to destroy!</div>', Game.mouseX, Game.mouseY);
-					return -1;
-				}
-				var buildings = [];
-				for (var i in Game.Objects) {
-					if (Game.Objects[i].amount > 0) buildings.push(Game.Objects[i]);
-				}
-				var building = choose(buildings);
-				building.sacrifice(1);
-				Game.Popup('<div style="font-size:80%;">Backfire!<br>One of your ' + building.plural + '<br>disappears in a puff of smoke.</div>', Game.mouseX, Game.mouseY);
+				// removed (not used in this file)
 			},
 		},
 		'haggler\'s charm': {
@@ -504,14 +443,10 @@ app.controller('myCtrl', function ($scope) {
 			costMin: 10,
 			costPercent: 0.1,
 			win: function () {
-				Game.killBuff('Haggler\'s misery');
-				var buff = Game.gainBuff('haggler luck', 60, 2);
-				Game.Popup('<div style="font-size:80%;">Upgrades are cheaper!</div>', Game.mouseX, Game.mouseY);
+				// removed (not used in this file)
 			},
 			fail: function () {
-				Game.killBuff('Haggler\'s luck');
-				var buff = Game.gainBuff('haggler misery', 60 * 60, 2);
-				Game.Popup('<div style="font-size:80%;">Backfire!<br>Upgrades are pricier!</div>', Game.mouseX, Game.mouseY);
+				// removed (not used in this file)
 			},
 		},
 		'summon crafty pixies': {
@@ -522,14 +457,10 @@ app.controller('myCtrl', function ($scope) {
 			costMin: 10,
 			costPercent: 0.2,
 			win: function () {
-				Game.killBuff('Nasty goblins');
-				var buff = Game.gainBuff('pixie luck', 60, 2);
-				Game.Popup('<div style="font-size:80%;">Crafty pixies!<br>Buildings are cheaper!</div>', Game.mouseX, Game.mouseY);
+				// removed (not used in this file)
 			},
 			fail: function () {
-				Game.killBuff('Crafty pixies');
-				var buff = Game.gainBuff('pixie misery', 60 * 60, 2);
-				Game.Popup('<div style="font-size:80%;">Backfire!<br>Nasty goblins!<br>Buildings are pricier!</div>', Game.mouseX, Game.mouseY);
+				// removed (not used in this file)
 			},
 		},
 		'gambler\'s fever dream': {
@@ -539,30 +470,7 @@ app.controller('myCtrl', function ($scope) {
 			costMin: 3,
 			costPercent: 0.05,
 			win: function () {
-				var spells = [];
-				var selfCost = M.getSpellCost(M.spells['gambler\'s fever dream']);
-				for (var i in M.spells) {
-					if (i != 'gambler\'s fever dream' && (M.magic - selfCost) >= M.getSpellCost(M.spells[i]) * 0.5) spells.push(M.spells[i]);
-				}
-				if (spells.length == 0) {
-					Game.Popup('<div style="font-size:80%;">No eligible spells!</div>', Game.mouseX, Game.mouseY);
-					return -1;
-				}
-				var spell = choose(spells);
-				var cost = M.getSpellCost(spell) * 0.5;
-				setTimeout(function (spell, cost, seed) {
-					return function () {
-						if (Game.seed != seed) return false;
-						var out = M.castSpell(spell, {cost: cost, failChanceMax: 0.5, passthrough: true});
-						if (!out) {
-							M.magic += selfCost;
-							setTimeout(function () {
-								Game.Popup('<div style="font-size:80%;">That\'s too bad!<br>Magic refunded.</div>', Game.mouseX, Game.mouseY);
-							}, 1500);
-						}
-					}
-				}(spell, cost, Game.seed), 1000);
-				Game.Popup('<div style="font-size:80%;">Casting ' + spell.name + '<br>for ' + Beautify(cost) + ' magic...</div>', Game.mouseX, Game.mouseY);
+				// removed (not used in this file)
 			},
 		},
 		'resurrect abomination': {
@@ -573,20 +481,10 @@ app.controller('myCtrl', function ($scope) {
 			costMin: 20,
 			costPercent: 0.1,
 			win: function () {
-				var out = Game.SpawnWrinkler();
-				if (!out) {
-					Game.Popup('<div style="font-size:80%;">Unable to spawn a wrinkler!</div>', Game.mouseX, Game.mouseY);
-					return -1;
-				}
-				Game.Popup('<div style="font-size:80%;">Rise, my precious!</div>', Game.mouseX, Game.mouseY);
+				// removed (not used in this file)
 			},
 			fail: function () {
-				var out = Game.PopRandomWrinkler();
-				if (!out) {
-					Game.Popup('<div style="font-size:80%;">Backfire!<br>But no wrinkler was harmed.</div>', Game.mouseX, Game.mouseY);
-					return -1;
-				}
-				Game.Popup('<div style="font-size:80%;">Backfire!<br>So long, ugly...</div>', Game.mouseX, Game.mouseY);
+				// removed (not used in this file)
 			},
 		},
 		'diminish ineptitude': {
@@ -597,14 +495,10 @@ app.controller('myCtrl', function ($scope) {
 			costMin: 5,
 			costPercent: 0.2,
 			win: function () {
-				Game.killBuff('Magic inept');
-				var buff = Game.gainBuff('magic adept', 5 * 60, 10);
-				Game.Popup('<div style="font-size:80%;">Ineptitude diminished!</div>', Game.mouseX, Game.mouseY);
+				// removed (not used in this file)
 			},
 			fail: function () {
-				Game.killBuff('Magic adept');
-				var buff = Game.gainBuff('magic inept', 10 * 60, 5);
-				Game.Popup('<div style="font-size:80%;">Backfire!<br>Ineptitude magnified!</div>', Game.mouseX, Game.mouseY);
+				// removed (not used in this file)
 			},
 		},
 	};
