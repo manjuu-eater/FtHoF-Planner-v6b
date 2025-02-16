@@ -258,10 +258,6 @@ app.controller('myCtrl', function ($scope) {
 		});
 	}
 
-	function choose(arr) {
-		return arr[Math.floor(Math.random() * arr.length)];
-	}
-
 	function check_gambler(spellsCast) {
 		Math.seedrandom($scope.seed + '/' + spellsCast);
 
