@@ -57,4 +57,5 @@ FtHoF Planner for Cookie Clicker by Orteil
 	- The fifth version added a "Random Seed" column, which can be used to see how many onscreen cookies will cause a spell to backfire without needing to change settings repeatedly, and can be used to tell what Gambler's Fever Dream will give when it can't choose all 8 spells. Additionally, it now shows building specials, elder frenzies, and sugar lumps that aren't visible due to a wrong backfire chance.
 
 - [FtHoF planner v6](https://manjuu-eater.github.io/FtHoF-Planner-v6/) by @manjuu-eater
+	- Added "Cast x10" button (for Gambler's Fever Dream bashing)
 	- WIP
