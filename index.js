@@ -61,8 +61,9 @@
  * function choose from Cookie Clicker main.js
  * random choose one from arr
  *
- * @param {string[]} arr
- * @returns {string} chosen item
+ * @template T
+ * @param {T[]} arr
+ * @returns {T} chosen item
  */
 function choose(arr) {
 	return arr[Math.floor(Math.random() * arr.length)];
