@@ -274,8 +274,8 @@ app.controller('myCtrl', function ($scope) {
 		//simplifying the below cause this isn't patched yet afaict and i'll never be playing with diminished ineptitutde backfire
 		var gfdBackfire = 0.5; /*M.getFailChance(gfdSpell);
 
-	if(FortuneCookie.detectKUGamblerPatch()) gfdBackfire *= 2;
-	else gfdBackfire = Math.max(gfdBackfire, 0.5);*/
+		if(FortuneCookie.detectKUGamblerPatch()) gfdBackfire *= 2;
+		else gfdBackfire = Math.max(gfdBackfire, 0.5);*/
 
 		let gamblerSpell = {};
 		gamblerSpell.type = gfdSpell.name;
