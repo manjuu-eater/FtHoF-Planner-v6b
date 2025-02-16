@@ -108,6 +108,7 @@ app.controller('myCtrl', function ($scope) {
 	}
 
 	$scope.load_game = function (str) {
+		let spl;
 		if (!str) {
 			str = $scope.save_string;
 		}
@@ -139,23 +140,23 @@ app.controller('myCtrl', function ($scope) {
 		$scope.baseBackfireChance = 0.15*($scope.supremeintellect?1.1:1)*($scope.diminishineptitude?0.1:1);
 		$scope.backfireChance = $scope.baseBackfireChance+0.15*$scope.on_screen_cookies;
 		$scope.displayCookies = [];
-		bsIndices = [];
-		skipIndices = [];
-		currentTime = Date.now();
-		for (i = 0; i < $scope.lookahead; i++) {
-			currentSpell = i+$scope.spellsCastTotal;
+		let bsIndices = [];
+		let skipIndices = [];
+		let currentTime = Date.now();
+		for (let i = 0; i < $scope.lookahead; i++) {
+			let currentSpell = i+$scope.spellsCastTotal;
 			Math.seedrandom($scope.seed + '/' + currentSpell);
-			roll = Math.random();
+			let roll = Math.random();
 			$scope.randomSeeds.push(roll);
 
 			$scope.cookies.push([])
 			$scope.displayCookies.push([])
-			cookie1Success = check_cookies($scope.spellsCastTotal + i, '', false, true)
-			cookie2Success = check_cookies($scope.spellsCastTotal + i, '', true, true)
+			let cookie1Success = check_cookies($scope.spellsCastTotal + i, '', false, true)
+			let cookie2Success = check_cookies($scope.spellsCastTotal + i, '', true, true)
 			//cookie3 = check_cookies($scope.spellsCastTotal + i, '', true)
-			cookie1Backfire = check_cookies($scope.spellsCastTotal + i, '', false, false)
-			cookie2Backfire = check_cookies($scope.spellsCastTotal + i, '', true, false)
-			gambler = check_gambler($scope.spellsCastTotal + i)
+			let cookie1Backfire = check_cookies($scope.spellsCastTotal + i, '', false, false)
+			let cookie2Backfire = check_cookies($scope.spellsCastTotal + i, '', true, false)
+			let gambler = check_gambler($scope.spellsCastTotal + i)
 			$scope.cookies[i].push(cookie1Success)
 			$scope.cookies[i].push(cookie2Success)
 			$scope.cookies[i].push(cookie1Backfire)
@@ -195,7 +196,7 @@ app.controller('myCtrl', function ($scope) {
 
 		$scope.combos = {}
 
-		for (combo_length = $scope.min_combo_length; combo_length <= $scope.max_combo_length; combo_length++) {
+		for (let combo_length = $scope.min_combo_length; combo_length <= $scope.max_combo_length; combo_length++) {
 			$scope.combos[combo_length] = findCombos(combo_length, $scope.max_spread, bsIndices, skipIndices);
 		}
 
@@ -263,7 +264,7 @@ app.controller('myCtrl', function ($scope) {
 	function check_gambler(spellsCast) {
 		Math.seedrandom($scope.seed + '/' + spellsCast);
 
-		spells = [];
+		let spells = [];
 		for (var i in $scope.spells) {
 			if (i != "gambler's fever dream")
 				spells.push($scope.spells[i]);
@@ -276,7 +277,7 @@ app.controller('myCtrl', function ($scope) {
 	if(FortuneCookie.detectKUGamblerPatch()) gfdBackfire *= 2;
 	else gfdBackfire = Math.max(gfdBackfire, 0.5);*/
 
-		gamblerSpell = {};
+		let gamblerSpell = {};
 		gamblerSpell.type = gfdSpell.name;
 		gamblerSpell.hasBs = false;
 		gamblerSpell.hasEf = false;
@@ -313,7 +314,7 @@ app.controller('myCtrl', function ($scope) {
 
 	function check_cookies(spells, season, chime, forcedGold) {
 		Math.seedrandom($scope.seed + '/' + spells);
-		roll = Math.random()
+		let roll = Math.random()
 		if (forcedGold !== false && (forcedGold || roll < (1 - (0.15*$scope.on_screen_cookies + 0.15*(1 + 0.1*$scope.supremeintellect)*(1 - 0.9*$scope.diminishineptitude))))) {
 			/* Random is called a few times in setting up the golden cookie */
 			if (chime == 1 && $scope.ascensionMode != 1) Math.random();
@@ -331,7 +332,7 @@ app.controller('myCtrl', function ($scope) {
 			if (Math.random() < 0.25) choices.push('Building Special');
 			if (Math.random() < 0.15) choices = ['Cookie Storm Drop'];
 			if (Math.random() < 0.0001) choices.push('Free Sugar Lump');
-			cookie = {}
+			let cookie = {}
 			cookie.wrath = false
 			cookie.type = choose(choices);
 			if (cookie.type == 'Frenzy') cookie.description = "Gives x7 cookie production for 77 seconds.";
@@ -361,7 +362,7 @@ app.controller('myCtrl', function ($scope) {
 			if (Math.random() < 0.1) choices.push('Cursed Finger', 'Elder Frenzy');
 			if (Math.random() < 0.003) choices.push('Free Sugar Lump');
 			if (Math.random() < 0.1) choices = ['Blab'];
-			cookie = {}
+			let cookie = {}
 			cookie.wrath = true
 			cookie.type = choose(choices);
 			if (cookie.type == 'Clot') cookie.description = "Reduce production by 50% for 66 seconds.";
