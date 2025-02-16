@@ -78,6 +78,12 @@ app.controller('myCtrl', function ($scope) {
 		$scope.update_cookies();
 	}
 
+	$scope.cast_spell_10 = function () {
+		$scope.spellsCastThisAscension += 10;
+		$scope.spellsCastTotal += 10;
+		$scope.update_cookies();
+	}
+
 	$scope.print_scope = function () {
 		console.log($scope);
 	}
