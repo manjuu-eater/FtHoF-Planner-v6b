@@ -1,3 +1,12 @@
+/**
+ * FtHoF Planner v6
+ * index.js
+ */
+
+/**
+ * seedrandom
+ * https://cdnjs.cloudflare.com/ajax/libs/seedrandom/2.2/seedrandom.min.js
+ */
 (function (a, b, c, d, e, f) {
 	function k(a) {
 		var b, c = a.length, e = this, f = 0, g = e.i = e.j = 0, h = e.S = [];
@@ -46,6 +55,14 @@
 	}, m(c.random(), b)
 })(this, [], Math, 256, 6, 52);
 
+
+/**
+ * function choose from Cookie Clicker main.js
+ * random choose one from arr
+ *
+ * @param {string[]} arr
+ * @returns {string} chosen item
+ */
 function choose(arr) {
 	return arr[Math.floor(Math.random() * arr.length)];
 }
