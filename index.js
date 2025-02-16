@@ -1,3 +1,4 @@
+// @ts-check
 /**
  * FtHoF Planner v6
  * index.js
