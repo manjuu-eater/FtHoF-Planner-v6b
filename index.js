@@ -122,7 +122,7 @@ app.controller('myCtrl', function ($scope) {
 			Math.seedrandom($scope.seed + '/' + currentSpell);
 			roll = Math.random();
 			$scope.randomSeeds.push(roll);
-			
+
 			$scope.cookies.push([])
 			$scope.displayCookies.push([])
 			cookie1Success = check_cookies($scope.spellsCastTotal + i, '', false, true)
@@ -144,7 +144,7 @@ app.controller('myCtrl', function ($scope) {
 			if (($scope.skip_abominations && gambler.type == 'Resurrect Abomination') || ($scope.skip_edifices && gambler.type == 'Spontaneous Edifice' && !gambler.backfire)) {
 				skipIndices.push(i);
 			}
-			
+
 			if ($scope.randomSeeds[i] + $scope.backfireChance < 1) {
 				$scope.displayCookies[i].push($scope.cookies[i][0]);
 				$scope.displayCookies[i].push($scope.cookies[i][1]);
@@ -173,7 +173,7 @@ app.controller('myCtrl', function ($scope) {
 		for (combo_length = $scope.min_combo_length; combo_length <= $scope.max_combo_length; combo_length++) {
 			$scope.combos[combo_length] = findCombos(combo_length, $scope.max_spread, bsIndices, skipIndices);
 		}
-		
+
 		console.log('Combos: ');
 		console.log($scope.combos);
 		console.log(Date.now()-currentTime);
@@ -247,9 +247,9 @@ app.controller('myCtrl', function ($scope) {
 		var gfdSpell = choose(spells);
 		//simplifying the below cause this isn't patched yet afaict and i'll never be playing with diminished ineptitutde backfire
 		var gfdBackfire = 0.5; /*M.getFailChance(gfdSpell);
-    
-    if(FortuneCookie.detectKUGamblerPatch()) gfdBackfire *= 2;
-    else gfdBackfire = Math.max(gfdBackfire, 0.5);*/
+
+	if(FortuneCookie.detectKUGamblerPatch()) gfdBackfire *= 2;
+	else gfdBackfire = Math.max(gfdBackfire, 0.5);*/
 
 		gamblerSpell = {};
 		gamblerSpell.type = gfdSpell.name;
