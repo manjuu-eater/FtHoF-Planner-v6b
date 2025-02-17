@@ -134,32 +134,46 @@ app.controller('myCtrl', function ($scope) {
 	/**
 	 * load save code
 	 *
-	 * @param {string?} str save code (if omitted, read from html)
+	 * @param {string?} saveCode save code (if omitted, read from html)
 	 */
-	$scope.load_game = function (str) {
-		let spl;
-		if (!str) {
-			str = $scope.save_string;
-		}
-		str = str.split('!END!')[0];
-		str = Base64.decode(str);
-		str = str.split('|');
-		spl = str[2].split(';');
-		$scope.seed = spl[4];
-		console.log($scope.seed);
+	$scope.load_game = function (saveCode) {
+		// read from html
+		const saveStr = saveCode ? saveCode : String($scope.save_string);
 
-		spl = str[4].split(';');
-		$scope.ascensionMode = parseInt(spl[29]);
-		console.log(spl);
-		spl = str[5].split(';');
-		console.log(spl[7]);
+		// load save data
+		// detail: console.log(Game.WriteSave(3))
+		const decoded = Base64.decode(saveStr.split('!END!')[0]);
+		const pipeSplited = decoded.split('|');
 
-		$scope.spellsCastTotal = parseInt(spl[7].split(' ')[2]) || 0;
-		console.log('Total spells cast: ' + $scope.spellsCastTotal);
+		const runDetails = pipeSplited[2].split(';');
+		const miscGameData = pipeSplited[4].split(';');
+		const buildings = pipeSplited[5].split(';');
 
-		$scope.spellsCastThisAscension = parseInt(spl[7].split(' ')[1]) || 0;
-		console.log('Spells cast this ascension: ' + $scope.spellsCastThisAscension);
+		const seed = runDetails[4];
+		$scope.seed = seed;
+		console.log(seed);
 
+		const ascensionMode = parseInt(miscGameData[29]);
+		$scope.ascensionMode = ascensionMode;
+		console.log(ascensionMode);
+
+		const wizardTower = buildings[7];
+		console.log(wizardTower);
+
+		// load Wizard tower minigame data
+		// detail: v2.052 minigameGrimoire.js L463
+		const wizMinigameData = wizardTower.split(",")[4].split(" ");
+		const [strMagic, strSpellsCast, strSpellsCastTotal, strOn] = wizMinigameData;
+
+		const spellsCastTotal = parseInt(strSpellsCastTotal) || 0;
+		$scope.spellsCastTotal = spellsCastTotal;
+		console.log('Total spells cast: ' + spellsCastTotal);
+
+		const spellsCast = parseInt(strSpellsCast) || 0;
+		$scope.spellsCastThisAscension = spellsCast;
+		console.log('Spells cast this ascension: ' + spellsCast);
+
+		// calculate and display FtHoF list
 		$scope.update_cookies();
 	}
 
