@@ -107,11 +107,14 @@ app.controller('myCtrl', function ($scope) {
 	}
 
 	/**
-	 * pop 1 and push 1 item to FtHoF list
+	 * pop and push items to FtHoF list
+	 *
+	 * @param {number=} count cast count (default: 1)
 	 */
-	$scope.cast_spell = function () {
-		$scope.spellsCastThisAscension++;
-		$scope.spellsCastTotal++;
+	$scope.cast_spell = function (count) {
+		const callCount = count || 1;
+		$scope.spellsCastThisAscension += callCount;
+		$scope.spellsCastTotal += callCount;
 		$scope.update_cookies();
 	}
 
