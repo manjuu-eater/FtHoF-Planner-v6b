@@ -258,8 +258,9 @@ app.controller('myCtrl', function ($scope) {
 	 */
 	$scope.collapse_interface = function (contentId) {
 		console.log("content-" + contentId);
-		if( contentId) {
+		if (contentId) {
 			var content = document.getElementById("content-" + contentId);
+			if (content === null) throw Error("not found: #content-" + contentId);
 			if (content.style.display === "block") {
 				content.style.display = "none";
 			} else {
@@ -286,7 +287,7 @@ app.controller('myCtrl', function ($scope) {
 		let firstDistance = 10000000;
 		let firstStart = -1
 
-		for (i = 0; i + combo_length <= bsIndices.length; i++) {
+		for (let i = 0; i + combo_length <= bsIndices.length; i++) {
 			let seqStart = bsIndices[i];
 			let seqEnd = bsIndices[i + combo_length - 1];
 			let baseDistance = seqEnd - seqStart + 1;
