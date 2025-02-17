@@ -11,7 +11,7 @@
  * wrapper of Math.seedrandom(seed)
  *
  * @param {string} seed seed string
- * @returns {void} Math.seedrandom(seed)
+ * @returns {string} Math.seedrandom(seed)
  */
 const Math_seedrandom = (seed) => Math.seedrandom(seed);
 
