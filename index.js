@@ -328,16 +328,16 @@ app.controller('myCtrl', function ($scope) {
 	 *
 	 * @param {number} spells index of cast to see (with total cast)
 	 * @param {string} season current season
-	 * @param {boolean} chime true if one change
+	 * @param {boolean} isOneChange true if one change
 	 * @param {boolean} forcedGold whether golden cookie is forced
 	 * @returns FtFoH cast result
 	 */
-	function check_cookies(spells, season, chime, forcedGold) {
+	function check_cookies(spells, season, isOneChange, forcedGold) {
 		Math_seedrandom($scope.seed + '/' + spells);
 		let roll = Math.random()
 		if (forcedGold !== false && (forcedGold || roll < (1 - (0.15*$scope.on_screen_cookies + 0.15*(1 + 0.1*$scope.supremeintellect)*(1 - 0.9*$scope.diminishineptitude))))) {
 			/* Random is called a few times in setting up the golden cookie */
-			if (chime == 1 && $scope.ascensionMode != 1) Math.random();
+			if (isOneChange && $scope.ascensionMode != 1) Math.random();
 			if (season == 'valentines' || season == 'easter') {
 				Math.random();
 			}
@@ -369,7 +369,7 @@ app.controller('myCtrl', function ($scope) {
 			return cookie;
 		} else {
 			/* Random is called a few times in setting up the golden cookie */
-			if (chime == 1 && $scope.ascensionMode != 1) Math.random();
+			if (isOneChange && $scope.ascensionMode != 1) Math.random();
 			if (season == 'valentines' || season == 'easter') {
 				Math.random();
 			}
