@@ -119,15 +119,6 @@ app.controller('myCtrl', function ($scope) {
 	}
 
 	/**
-	 * call cast_spell() 10 times
-	 */
-	$scope.cast_spell_10 = function () {
-		$scope.spellsCastThisAscension += 10;
-		$scope.spellsCastTotal += 10;
-		$scope.update_cookies();
-	}
-
-	/**
 	 * log $scope (debug function)
 	 */
 	$scope.print_scope = function () {
