@@ -61,6 +61,15 @@
 
 
 /**
+ * wrapper of Math.seedrandom(seed)
+ *
+ * @param {string} seed seed string
+ * @returns {void} Math.seedrandom(seed)
+ */
+const Math_seedrandom = (seed) => Math.seedrandom(seed);
+
+
+/**
  * function choose from Cookie Clicker main.js
  * random choose one from arr
  *
@@ -168,7 +177,7 @@ app.controller('myCtrl', function ($scope) {
 		let currentTime = Date.now();
 		for (let i = 0; i < $scope.lookahead; i++) {
 			let currentSpell = i+$scope.spellsCastTotal;
-			Math.seedrandom($scope.seed + '/' + currentSpell);
+			Math_seedrandom($scope.seed + '/' + currentSpell);
 			let roll = Math.random();
 			$scope.randomSeeds.push(roll);
 
@@ -308,7 +317,7 @@ app.controller('myCtrl', function ($scope) {
 	 * @returns GFD cast result
 	 */
 	function check_gambler(spellsCast) {
-		Math.seedrandom($scope.seed + '/' + spellsCast);
+		Math_seedrandom($scope.seed + '/' + spellsCast);
 
 		let spells = [];
 		for (var i in $scope.spells) {
@@ -328,7 +337,7 @@ app.controller('myCtrl', function ($scope) {
 		gamblerSpell.hasBs = false;
 		gamblerSpell.hasEf = false;
 
-		Math.seedrandom($scope.seed + '/' + (spellsCast + 1));
+		Math_seedrandom($scope.seed + '/' + (spellsCast + 1));
 		if (Math.random() < (1 - gfdBackfire)) {
 			gamblerSpell.backfire = false;
 
@@ -368,7 +377,7 @@ app.controller('myCtrl', function ($scope) {
 	 * @returns FtFoH cast result
 	 */
 	function check_cookies(spells, season, chime, forcedGold) {
-		Math.seedrandom($scope.seed + '/' + spells);
+		Math_seedrandom($scope.seed + '/' + spells);
 		let roll = Math.random()
 		if (forcedGold !== false && (forcedGold || roll < (1 - (0.15*$scope.on_screen_cookies + 0.15*(1 + 0.1*$scope.supremeintellect)*(1 - 0.9*$scope.diminishineptitude))))) {
 			/* Random is called a few times in setting up the golden cookie */
