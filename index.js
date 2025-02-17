@@ -134,7 +134,7 @@ app.controller('myCtrl', function ($scope) {
 	/**
 	 * load save code
 	 *
-	 * @param {string?} saveCode save code (if omitted, read from html)
+	 * @param {string=} saveCode save code (if omitted, read from html)
 	 */
 	$scope.load_game = function (saveCode) {
 		// read from html
