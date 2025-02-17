@@ -74,3 +74,7 @@ a:hover, a.hover {
   width: 13px;
   accent-color: rgb(255,89,145);
 }
+
+.md-2-line:nth-of-type(odd) {
+    background-color: lavender;
+}
