@@ -13,7 +13,7 @@
  * @param {string} seed seed string
  * @returns {string} Math.seedrandom(seed)
  */
-const Math_seedrandom = (seed) => Math.seedrandom(seed);
+const Math_seedrandom = (seed) => Math["seedrandom"](seed);
 
 
 /**
