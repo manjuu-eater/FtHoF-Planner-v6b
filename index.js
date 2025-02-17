@@ -8,6 +8,8 @@
 /**
  * seedrandom
  * https://cdnjs.cloudflare.com/ajax/libs/seedrandom/2.2/seedrandom.min.js
+ *
+ * same as used in main.js
  */
 (function (a, b, c, d, e, f) {
 	function k(a) {
@@ -59,6 +61,15 @@
 
 
 /**
+ * wrapper of Math.seedrandom(seed)
+ *
+ * @param {string} seed seed string
+ * @returns {void} Math.seedrandom(seed)
+ */
+const Math_seedrandom = (seed) => Math.seedrandom(seed);
+
+
+/**
  * function choose from Cookie Clicker main.js
  * random choose one from arr
  *
@@ -87,54 +98,82 @@ app.controller('myCtrl', function ($scope) {
 	$scope.save_string = ""
 	$scope.lookahead = 200
 
+	/**
+	 * push 50 more items to FtHoF list
+	 */
 	$scope.load_more = function () {
 		$scope.lookahead += 50
 		$scope.update_cookies()
 	}
 
-	$scope.cast_spell = function () {
-		$scope.spellsCastThisAscension++;
-		$scope.spellsCastTotal++;
+	/**
+	 * pop and push items to FtHoF list
+	 *
+	 * @param {number=} count cast count (default: 1)
+	 */
+	$scope.cast_spell = function (count) {
+		const callCount = count || 1;
+		$scope.spellsCastThisAscension += callCount;
+		$scope.spellsCastTotal += callCount;
 		$scope.update_cookies();
 	}
 
-	$scope.cast_spell_10 = function () {
-		$scope.spellsCastThisAscension += 10;
-		$scope.spellsCastTotal += 10;
-		$scope.update_cookies();
-	}
-
+	/**
+	 * log $scope (debug function)
+	 */
 	$scope.print_scope = function () {
 		console.log($scope);
 	}
 
-	$scope.load_game = function (str) {
-		let spl;
-		if (!str) {
-			str = $scope.save_string;
-		}
-		str = str.split('!END!')[0];
-		str = Base64.decode(str);
-		str = str.split('|');
-		spl = str[2].split(';');
-		$scope.seed = spl[4];
-		console.log($scope.seed);
+	/**
+	 * load save code
+	 *
+	 * @param {string=} saveCode save code (if omitted, read from html)
+	 */
+	$scope.load_game = function (saveCode) {
+		// read from html
+		const saveStr = saveCode ? saveCode : String($scope.save_string);
 
-		spl = str[4].split(';');
-		$scope.ascensionMode = parseInt(spl[29]);
-		console.log(spl);
-		spl = str[5].split(';');
-		console.log(spl[7]);
+		// load save data
+		// detail: console.log(Game.WriteSave(3))
+		const decoded = Base64.decode(saveStr.split('!END!')[0]);
+		const pipeSplited = decoded.split('|');
 
-		$scope.spellsCastTotal = parseInt(spl[7].split(' ')[2]) || 0;
-		console.log('Total spells cast: ' + $scope.spellsCastTotal);
+		const runDetails = pipeSplited[2].split(';');
+		const miscGameData = pipeSplited[4].split(';');
+		const buildings = pipeSplited[5].split(';');
 
-		$scope.spellsCastThisAscension = parseInt(spl[7].split(' ')[1]) || 0;
-		console.log('Spells cast this ascension: ' + $scope.spellsCastThisAscension);
+		const seed = runDetails[4];
+		$scope.seed = seed;
+		console.log(seed);
 
+		const ascensionMode = parseInt(miscGameData[29]);
+		$scope.ascensionMode = ascensionMode;
+		console.log(ascensionMode);
+
+		const wizardTower = buildings[7];
+		console.log(wizardTower);
+
+		// load Wizard tower minigame data
+		// detail: v2.052 minigameGrimoire.js L463
+		const wizMinigameData = wizardTower.split(",")[4].split(" ");
+		const [strMagic, strSpellsCast, strSpellsCastTotal, strOn] = wizMinigameData;
+
+		const spellsCastTotal = parseInt(strSpellsCastTotal) || 0;
+		$scope.spellsCastTotal = spellsCastTotal;
+		console.log('Total spells cast: ' + spellsCastTotal);
+
+		const spellsCast = parseInt(strSpellsCast) || 0;
+		$scope.spellsCastThisAscension = spellsCast;
+		console.log('Spells cast this ascension: ' + spellsCast);
+
+		// calculate and display FtHoF list
 		$scope.update_cookies();
 	}
 
+	/**
+	 * calculate future FtHoF que and display result
+	 */
 	$scope.update_cookies = function () {
 		$scope.cookies = []
 		$scope.randomSeeds = [];
@@ -146,7 +185,7 @@ app.controller('myCtrl', function ($scope) {
 		let currentTime = Date.now();
 		for (let i = 0; i < $scope.lookahead; i++) {
 			let currentSpell = i+$scope.spellsCastTotal;
-			Math.seedrandom($scope.seed + '/' + currentSpell);
+			Math_seedrandom($scope.seed + '/' + currentSpell);
 			let roll = Math.random();
 			$scope.randomSeeds.push(roll);
 
@@ -206,10 +245,16 @@ app.controller('myCtrl', function ($scope) {
 		console.log(Date.now()-currentTime);
 	}
 
+	/**
+	 * toggle interface button
+	 *
+	 * @param {number} contentId number of "content-*"
+	 */
 	$scope.collapse_interface = function (contentId) {
 		console.log("content-" + contentId);
-		if( contentId) {
+		if (contentId) {
 			var content = document.getElementById("content-" + contentId);
+			if (content === null) throw Error("not found: #content-" + contentId);
 			if (content.style.display === "block") {
 				content.style.display = "none";
 			} else {
@@ -220,6 +265,15 @@ app.controller('myCtrl', function ($scope) {
 
 	//want to return shortest, and first sequence for a given combo_length
 	//if nothing that satisfies max_spread, shortest will still be filled but first will be empty
+	/**
+	 * find comboes from indexes
+	 *
+	 * @param {number} combo_length want length of combo
+	 * @param {number} max_spread number of max spread (padding; neither BS nor skip)
+	 * @param {number[]} bsIndices indexes of buff (Building Special etc.)
+	 * @param {number[]} skipIndices indexes of skippable GFD (Resurrect Abomination etc.)
+	 * @returns {object} found result
+	 */
 	function findCombos(combo_length, max_spread, bsIndices, skipIndices) {
 		let shortestDistance = 10000000;
 		let shortestStart = -1;
@@ -227,7 +281,7 @@ app.controller('myCtrl', function ($scope) {
 		let firstDistance = 10000000;
 		let firstStart = -1
 
-		for (i = 0; i + combo_length <= bsIndices.length; i++) {
+		for (let i = 0; i + combo_length <= bsIndices.length; i++) {
 			let seqStart = bsIndices[i];
 			let seqEnd = bsIndices[i + combo_length - 1];
 			let baseDistance = seqEnd - seqStart + 1;
@@ -252,14 +306,27 @@ app.controller('myCtrl', function ($scope) {
 		};
 	}
 
+	/**
+	 * determine whether passed cookies may trigger any buffs
+	 *
+	 * @param {boolean} include_ef whether include Elder Fever
+	 * @param  {...object} cookies cookie objects that may trigger buff
+	 * @returns {boolean} true if triggers buff
+	 */
 	function cookiesContainBuffs(include_ef, ...cookies) {
 		return cookies.some((cookie) => {
 			return cookie.type == 'Building Special' || (include_ef && cookie.type == 'Elder Frenzy');
 		});
 	}
 
+	/**
+	 * get cast result object of Gambler's Fever Dream
+	 *
+	 * @param {number} spellsCast index of cast to see (with total cast)
+	 * @returns GFD cast result
+	 */
 	function check_gambler(spellsCast) {
-		Math.seedrandom($scope.seed + '/' + spellsCast);
+		Math_seedrandom($scope.seed + '/' + spellsCast);
 
 		let spells = [];
 		for (var i in $scope.spells) {
@@ -279,7 +346,7 @@ app.controller('myCtrl', function ($scope) {
 		gamblerSpell.hasBs = false;
 		gamblerSpell.hasEf = false;
 
-		Math.seedrandom($scope.seed + '/' + (spellsCast + 1));
+		Math_seedrandom($scope.seed + '/' + (spellsCast + 1));
 		if (Math.random() < (1 - gfdBackfire)) {
 			gamblerSpell.backfire = false;
 
@@ -309,8 +376,17 @@ app.controller('myCtrl', function ($scope) {
 		return gamblerSpell;
 	}
 
+	/**
+	 * get cast result object of FtFoH
+	 *
+	 * @param {number} spells index of cast to see (with total cast)
+	 * @param {string} season current season
+	 * @param {boolean} chime true if one change
+	 * @param {boolean} forcedGold whether golden cookie is forced
+	 * @returns FtFoH cast result
+	 */
 	function check_cookies(spells, season, chime, forcedGold) {
-		Math.seedrandom($scope.seed + '/' + spells);
+		Math_seedrandom($scope.seed + '/' + spells);
 		let roll = Math.random()
 		if (forcedGold !== false && (forcedGold || roll < (1 - (0.15*$scope.on_screen_cookies + 0.15*(1 + 0.1*$scope.supremeintellect)*(1 - 0.9*$scope.diminishineptitude))))) {
 			/* Random is called a few times in setting up the golden cookie */
@@ -375,6 +451,9 @@ app.controller('myCtrl', function ($scope) {
 		}
 	}
 
+	/**
+	 * M.spells from minigameGrimoire.js
+	 */
 	$scope.spells = {
 		'conjure baked goods': {
 			name: 'Conjure Baked Goods',
