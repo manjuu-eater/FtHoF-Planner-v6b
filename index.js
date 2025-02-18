@@ -325,6 +325,7 @@ app.controller('myCtrl', function ($scope) {
 
 	/**
 	 * get cast result object of FtFoH
+	 * simulating target: minigameGrimoire.js > M.castSpell (L299 on v2.052)
 	 *
 	 * @param {number} spellsCastTotal total spell cast count before this cast
 	 * @param {boolean} isOneChange true if one change
@@ -332,69 +333,104 @@ app.controller('myCtrl', function ($scope) {
 	 * @returns FtFoH cast result
 	 */
 	function check_cookies(spellsCastTotal, isOneChange, forcedGold) {
+		// set seed (L312)
 		Math_seedrandom($scope.seed + '/' + spellsCastTotal);
-		let roll = Math.random()
-		if (forcedGold !== false && (forcedGold || roll < (1 - (0.15*$scope.on_screen_cookies + 0.15*(1 + 0.1*$scope.supremeintellect)*(1 - 0.9*$scope.diminishineptitude))))) {
-			/* Random is called a few times in setting up the golden cookie */
-			if (isOneChange && $scope.ascensionMode != 1) Math.random();
-			/*if (season == 'valentines' || season == 'easter') {
-				Math.random();
-			}*/
-			Math.random();
-			Math.random();
-			/**/
 
-			var choices = [];
+		// get fail chance (L307 > L289)
+		const failChance = (() => {
+			let failChance = 0.15;
+			if ($scope.diminishineptitude) failChance *= 0.1;
+			//if (Game.hasBuff('Magic inept')) failChance*=5;  // TODO: not implemented
+			failChance *= 1 + 0.1 * $scope.supremeintellect;  // TODO: Reality Bending x1.1
+			failChance += 0.15 * $scope.on_screen_cookies;  // L46
+			return failChance;
+		})();
+
+		// roll casting result (L313)
+		const isWin = (!true || Math.random() < (1 - failChance));
+
+		// spell.win() or spell.fail() is called at this point
+		//   M.spells > 'hand of fate' > win (L48), fail (L66)
+		//   > new Game.shimmer('golden',{*:true}) (L50, L68)
+		// and Math.random() is called in main.js
+		//   Game.shimmer > this.init(); (main.js L5215)
+		//   > Game.shimmerTypes[this.type].initFunc(this); (main.js L5223)
+		//   > Game.shimmerTypes > 'golden' > initFunc (main.js L5320)
+
+		// call Math.random() for chime (main.js L5322 > main.js L917)
+		// this call is no longer active: L885
+		//if (chime && $scope.ascensionMode != 1) Math.random();
+
+		// season is valentines or easter (main.js L5343, main.js L5353)
+		if (isOneChange) Math.random();
+
+		// determine X and Y position to spawn (main.js L5358, main.js L5359)
+		Math.random();
+		Math.random();
+
+		// initializing GC/RC finished, back to spell.win() or spell.fail()
+
+		/**
+		 * choices of GC/RC effect name
+		 * @type {string[]}
+		 */
+		let choices = [];
+
+		/** FtFoH cast result */
+		const cookie = {};
+
+		// choose cookie effect
+		if (forcedGold || isWin) {
+			// choices of golden cookie (L52)
 			choices.push('Frenzy', 'Lucky');
 			if (!$scope.dragonflight) choices.push('Click Frenzy');
 			if (Math.random() < 0.1) choices.push('Cookie Storm', 'Cookie Storm', 'Blab');
-			if (Math.random() < 0.25) choices.push('Building Special');
+			if (Math.random() < 0.25) choices.push('Building Special');  // Game.BuildingsOwned>=10 is ignored
 			if (Math.random() < 0.15) choices = ['Cookie Storm Drop'];
 			if (Math.random() < 0.0001) choices.push('Free Sugar Lump');
-			let cookie = {}
-			cookie.wrath = false
 			cookie.type = choose(choices);
-			if (cookie.type == 'Frenzy') cookie.description = "Gives x7 cookie production for 77 seconds.";
-			if (cookie.type == 'Lucky') cookie.description = "Gain 13 cookies plus the lesser of 15% of bank or 15 minutes of production.";
-			if (cookie.type == 'Click Frenzy') cookie.description = "Gives x777 cookies per click for 13 seconds.";
-			if (cookie.type == 'Blab') cookie.description = "Does nothing but has a funny message.";
-			if (cookie.type == 'Cookie Storm') cookie.description = "A massive amount of Golden Cookies appears for 7 seconds, each granting you 1–7 minutes worth of cookies.";
-			if (cookie.type == 'Cookie Storm Drop') cookie.description = "Gain cookies equal to 1-7 minutes production";
-			if (cookie.type == 'Building Special') {
-				cookie.description = "Get a variable bonus to cookie production for 30 seconds.";
-				cookie.noteworthy = true;
-			}
-			if (cookie.type == 'Free Sugar Lump') cookie.description = "Add a free sugar lump to the pool";
-			return cookie;
-		} else {
-			/* Random is called a few times in setting up the golden cookie */
-			if (isOneChange && $scope.ascensionMode != 1) Math.random();
-			/*if (season == 'valentines' || season == 'easter') {
-				Math.random();
-			}*/
-			Math.random();
-			Math.random();
-			/**/
 
-			var choices = [];
+			// There is an additional Math.random() in L62,
+			// but this doesn't affect the result because choice is done.
+			//if (cookie.type == 'Cookie Storm Drop') Math.random();
+
+			// cookie is GC
+			cookie.wrath = false;
+		} else {
+			// choices of red cookie (L70)
 			choices.push('Clot', 'Ruin');
 			if (Math.random() < 0.1) choices.push('Cursed Finger', 'Elder Frenzy');
 			if (Math.random() < 0.003) choices.push('Free Sugar Lump');
 			if (Math.random() < 0.1) choices = ['Blab'];
-			let cookie = {}
-			cookie.wrath = true
 			cookie.type = choose(choices);
-			if (cookie.type == 'Clot') cookie.description = "Reduce production by 50% for 66 seconds.";
-			if (cookie.type == 'Ruin') cookie.description = "Lose 13 cookies plus the lesser of 5% of bank or 15 minutes of production";
-			if (cookie.type == 'Cursed Finger') cookie.description = "Cookie production halted for 10 seconds, but each click is worth 10 seconds of production.";
-			if (cookie.type == 'Blab') cookie.description = "Does nothing but has a funny message.";
-			if (cookie.type == 'Elder Frenzy') {
-				cookie.description = "Gives x666 cookie production for 6 seconds";
-				cookie.noteworthy = true;
-			}
-			if (cookie.type == 'Free Sugar Lump') cookie.description = "Add a free sugar lump to the pool";
-			return cookie;
+
+			// cookie is RC
+			cookie.wrath = true
 		}
+
+		// set description
+		if (cookie.type == 'Frenzy') cookie.description = "Gives x7 cookie production for 77 seconds.";
+		if (cookie.type == 'Lucky') cookie.description = "Gain 13 cookies plus the lesser of 15% of bank or 15 minutes of production.";
+		if (cookie.type == 'Click Frenzy') cookie.description = "Gives x777 cookies per click for 13 seconds.";
+		if (cookie.type == 'Blab') cookie.description = "Does nothing but has a funny message.";
+		if (cookie.type == 'Cookie Storm') cookie.description = "A massive amount of Golden Cookies appears for 7 seconds, each granting you 1–7 minutes worth of cookies.";
+		if (cookie.type == 'Cookie Storm Drop') cookie.description = "Gain cookies equal to 1-7 minutes production";
+		if (cookie.type == 'Building Special') {
+			cookie.description = "Get a variable bonus to cookie production for 30 seconds.";
+			cookie.noteworthy = true;
+		}
+		if (cookie.type == 'Clot') cookie.description = "Reduce production by 50% for 66 seconds.";
+		if (cookie.type == 'Ruin') cookie.description = "Lose 13 cookies plus the lesser of 5% of bank or 15 minutes of production";
+		if (cookie.type == 'Cursed Finger') cookie.description = "Cookie production halted for 10 seconds, but each click is worth 10 seconds of production.";
+		if (cookie.type == 'Blab') cookie.description = "Does nothing but has a funny message.";
+		if (cookie.type == 'Elder Frenzy') {
+			cookie.description = "Gives x666 cookie production for 6 seconds";
+			cookie.noteworthy = true;
+		}
+		if (cookie.type == 'Free Sugar Lump') cookie.description = "Add a free sugar lump to the pool";
+
+		// return FtFoH cast result
+		return cookie;
 	}
 
 	/**
