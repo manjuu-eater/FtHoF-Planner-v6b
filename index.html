@@ -242,13 +242,23 @@
                     <li>No combo of this length</li>
                 </ul>
                 <ul ng-if="combo.shortest.idx != -1">
-                    <li ng-if="combo.first.idx != -1"><a href="#{{combo.first.idx + 1}}">Earliest:</a> Length
-                        {{combo.first.length}}; spread {{combo.first.length - ($index + min_combo_length)}}; starting at
-                        <a href="#{{combo.first.idx + 1}}">spell #{{combo.first.idx+1}}</a></li>
-                    <li ng-if="combo.first.idx == -1">No combo of this length with spread &lt;= {{max_spread}}</li>
-                    <li><a href="#{{combo.shortest.idx + 1}}">Shortest:</a> Length {{combo.shortest.length}}; spread
-                        {{combo.shortest.length - ($index + min_combo_length)}}; starting at <a
-                                href="#{{combo.shortest.idx + 1}}">spell #{{combo.shortest.idx+1}}</a></li>
+                    <li ng-if="combo.first.idx != -1">
+                        <a href="#{{combo.first.idx + 1}}">Earliest:</a>
+                        Length {{combo.first.length}};
+                        spread {{combo.first.length - ($index + min_combo_length)}};
+                        starting at
+                        <a href="#{{combo.first.idx + 1}}">spell #{{combo.first.idx+1}}</a>
+                    </li>
+                    <li ng-if="combo.first.idx == -1">
+                        No combo of this length with spread &lt;= {{max_spread}}
+                    </li>
+                    <li>
+                        <a href="#{{combo.shortest.idx + 1}}">Shortest:</a>
+                        Length {{combo.shortest.length}};
+                        spread {{combo.shortest.length - ($index + min_combo_length)}};
+                        starting at
+                        <a href="#{{combo.shortest.idx + 1}}">spell #{{combo.shortest.idx+1}}</a>
+                    </li>
                 </ul>
             </li>
         </ul>
