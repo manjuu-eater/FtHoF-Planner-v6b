@@ -138,11 +138,11 @@ app.controller('myCtrl', function ($scope) {
 
 			$scope.cookies.push([])
 			$scope.displayCookies.push([])
-			let cookie1Success = check_cookies($scope.spellsCastTotal + i, '', false, true)
-			let cookie2Success = check_cookies($scope.spellsCastTotal + i, '', true, true)
-			//cookie3 = check_cookies($scope.spellsCastTotal + i, '', true)
-			let cookie1Backfire = check_cookies($scope.spellsCastTotal + i, '', false, false)
-			let cookie2Backfire = check_cookies($scope.spellsCastTotal + i, '', true, false)
+			let cookie1Success = check_cookies($scope.spellsCastTotal + i, false, true)
+			let cookie2Success = check_cookies($scope.spellsCastTotal + i, true, true)
+			//cookie3 = check_cookies($scope.spellsCastTotal + i, true)
+			let cookie1Backfire = check_cookies($scope.spellsCastTotal + i, false, false)
+			let cookie2Backfire = check_cookies($scope.spellsCastTotal + i, true, false)
 			let gambler = check_gambler($scope.spellsCastTotal + i)
 			$scope.cookies[i].push(cookie1Success)
 			$scope.cookies[i].push(cookie2Success)
@@ -298,8 +298,8 @@ app.controller('myCtrl', function ($scope) {
 			gamblerSpell.backfire = false;
 
 			if (gfdSpell.name == "Force the Hand of Fate") {
-				gamblerSpell.innerCookie1 = check_cookies(spellsCast + 1, '', false, true);
-				gamblerSpell.innerCookie2 = check_cookies(spellsCast + 1, '', true, true);
+				gamblerSpell.innerCookie1 = check_cookies(spellsCast + 1, false, true);
+				gamblerSpell.innerCookie2 = check_cookies(spellsCast + 1, true, true);
 
 				gamblerSpell.hasBs = gamblerSpell.innerCookie1.type == 'Building Special' || gamblerSpell.innerCookie2.type == 'Building Special';
 			}
@@ -310,8 +310,8 @@ app.controller('myCtrl', function ($scope) {
 			gamblerSpell.backfire = true;
 
 			if (gfdSpell.name == "Force the Hand of Fate") {
-				gamblerSpell.innerCookie1 = check_cookies(spellsCast + 1, '', false, false);
-				gamblerSpell.innerCookie2 = check_cookies(spellsCast + 1, '', true, false);
+				gamblerSpell.innerCookie1 = check_cookies(spellsCast + 1, false, false);
+				gamblerSpell.innerCookie2 = check_cookies(spellsCast + 1, true, false);
 
 				gamblerSpell.hasEf = gamblerSpell.innerCookie1.type == 'Elder Frenzy' || gamblerSpell.innerCookie2.type == 'Elder Frenzy';
 			}
@@ -327,20 +327,19 @@ app.controller('myCtrl', function ($scope) {
 	 * get cast result object of FtFoH
 	 *
 	 * @param {number} spellsCastTotal total spell cast count before this cast
-	 * @param {string} season current season
 	 * @param {boolean} isOneChange true if one change
 	 * @param {boolean} forcedGold whether golden cookie is forced
 	 * @returns FtFoH cast result
 	 */
-	function check_cookies(spellsCastTotal, season, isOneChange, forcedGold) {
+	function check_cookies(spellsCastTotal, isOneChange, forcedGold) {
 		Math_seedrandom($scope.seed + '/' + spellsCastTotal);
 		let roll = Math.random()
 		if (forcedGold !== false && (forcedGold || roll < (1 - (0.15*$scope.on_screen_cookies + 0.15*(1 + 0.1*$scope.supremeintellect)*(1 - 0.9*$scope.diminishineptitude))))) {
 			/* Random is called a few times in setting up the golden cookie */
 			if (isOneChange && $scope.ascensionMode != 1) Math.random();
-			if (season == 'valentines' || season == 'easter') {
+			/*if (season == 'valentines' || season == 'easter') {
 				Math.random();
-			}
+			}*/
 			Math.random();
 			Math.random();
 			/**/
@@ -370,9 +369,9 @@ app.controller('myCtrl', function ($scope) {
 		} else {
 			/* Random is called a few times in setting up the golden cookie */
 			if (isOneChange && $scope.ascensionMode != 1) Math.random();
-			if (season == 'valentines' || season == 'easter') {
+			/*if (season == 'valentines' || season == 'easter') {
 				Math.random();
-			}
+			}*/
 			Math.random();
 			Math.random();
 			/**/
