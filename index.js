@@ -324,13 +324,13 @@ app.controller('myCtrl', function ($scope) {
 	}
 
 	/**
-	 * get cast result object of FtFoH
+	 * get cast result object of FtHoF
 	 * simulating target: minigameGrimoire.js > M.castSpell (L299 on v2.052)
 	 *
 	 * @param {number} spellsCastTotal total spell cast count before this cast
 	 * @param {boolean} isOneChange true if one change
 	 * @param {boolean} forcedGold whether golden cookie is forced
-	 * @returns FtFoH cast result
+	 * @returns FtHoF cast result
 	 */
 	function castFtHoF(spellsCastTotal, isOneChange, forcedGold) {
 		// set seed (L312)
@@ -376,7 +376,7 @@ app.controller('myCtrl', function ($scope) {
 		 */
 		let choices = [];
 
-		/** FtFoH cast result */
+		/** FtHoF cast result */
 		const cookie = {};
 
 		// choose cookie effect
@@ -430,7 +430,7 @@ app.controller('myCtrl', function ($scope) {
 		}
 		if (cookie.type == 'Free Sugar Lump') cookie.description = "Add a free sugar lump to the pool";
 
-		// return FtFoH cast result
+		// return FtHoF cast result
 		return cookie;
 	}
 
