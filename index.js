@@ -17,8 +17,8 @@ const Math_seedrandom = (seed) => Math["seedrandom"](seed);
 
 
 /**
- * function choose from Cookie Clicker main.js
- * random choose one from arr
+ * function choose() from Cookie Clicker main.js (L17)
+ * choose one randomly from arr
  *
  * @template T
  * @param {T[]} arr
