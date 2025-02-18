@@ -396,6 +396,7 @@ app.controller('myCtrl', function ($scope) {
 
 			// cookie is GC
 			cookie.wrath = false;
+
 		} else {
 			// choices of red cookie (L70)
 			choices.push('Clot', 'Ruin');
@@ -405,7 +406,7 @@ app.controller('myCtrl', function ($scope) {
 			cookie.type = choose(choices);
 
 			// cookie is RC
-			cookie.wrath = true
+			cookie.wrath = true;
 		}
 
 		// set description
