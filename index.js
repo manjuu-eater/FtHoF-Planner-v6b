@@ -1,3 +1,4 @@
+/// <reference path="seedrandom.js" />
 /// <reference path="base64.js" />
 // @ts-check
 /**
@@ -5,73 +6,50 @@
  * index.js
  */
 
-/**
- * seedrandom
- * https://cdnjs.cloudflare.com/ajax/libs/seedrandom/2.2/seedrandom.min.js
- *
- * same as used in main.js
- */
-(function (a, b, c, d, e, f) {
-	function k(a) {
-		var b, c = a.length, e = this, f = 0, g = e.i = e.j = 0, h = e.S = [];
-		for (c || (a = [c++]); d > f;) h[f] = f++;
-		for (f = 0; d > f; f++) h[f] = h[g = j & g + a[f % c] + (b = h[f])], h[g] = b;
-		(e.g = function (a) {
-			for (var b, c = 0, f = e.i, g = e.j, h = e.S; a--;) b = h[f = j & f + 1], c = c * d + h[j & (h[f] = h[g = j & g + b]) + (h[g] = b)];
-			return e.i = f, e.j = g, c
-		})(d)
-	}
 
-	function l(a, b) {
-		var e, c = [], d = (typeof a)[0];
-		if (b && "o" == d) for (e in a) try {
-			c.push(l(a[e], b - 1))
-		} catch (f) {
-		}
-		return c.length ? c : "s" == d ? a : a + "\0"
-	}
+/** cookie effect description dictionary */
+const cookieEffectNameToDescription = {
+	"Frenzy":
+		"Gives x7 cookie production for 77 seconds.",
+	"Lucky":
+		"Gain 13 cookies plus the lesser of 15% of bank or 15 minutes of production.",
+	"Click Frenzy":
+		"Gives x777 cookies per click for 13 seconds.",
+	"Cookie Storm":
+		"A massive amount of Golden Cookies appears for 7 seconds, each granting you 1–7 minutes worth of cookies.",
+	"Cookie Storm Drop":
+		"Gain cookies equal to 1-7 minutes production",
+	"Building Special":
+		"Get a variable bonus to cookie production for 30 seconds.",
 
-	function m(a, b) {
-		for (var d, c = a + "", e = 0; c.length > e;) b[j & e] = j & (d ^= 19 * b[j & e]) + c.charCodeAt(e++);
-		return o(b)
-	}
+	"Clot":
+		"Reduce production by 50% for 66 seconds.",
+	"Ruin":
+		"Lose 13 cookies plus the lesser of 5% of bank or 15 minutes of production",
+	"Cursed Finger":
+		"Cookie production halted for 10 seconds, but each click is worth 10 seconds of production.",
+	"Elder Frenzy":
+		"Gives x666 cookie production for 6 seconds",
 
-	function n(c) {
-		try {
-			return a.crypto.getRandomValues(c = new Uint8Array(d)), o(c)
-		} catch (e) {
-			return [+new Date, a, a.navigator.plugins, a.screen, o(b)]
-		}
-	}
-
-	function o(a) {
-		return String.fromCharCode.apply(0, a)
-	}
-
-	var g = c.pow(d, e), h = c.pow(2, f), i = 2 * h, j = d - 1;
-	c.seedrandom = function (a, f) {
-		var j = [], p = m(l(f ? [a, o(b)] : 0 in arguments ? a : n(), 3), j), q = new k(j);
-		return m(o(q.S), b), c.random = function () {
-			for (var a = q.g(e), b = g, c = 0; h > a;) a = (a + c) * d, b *= d, c = q.g(1);
-			for (; a >= i;) a /= 2, b /= 2, c >>>= 1;
-			return (a + c) / b
-		}, p
-	}, m(c.random(), b)
-})(this, [], Math, 256, 6, 52);
+	"Blab":
+		"Does nothing but has a funny message.",
+	"Free Sugar Lump":
+		"Add a free sugar lump to the pool",
+};
 
 
 /**
  * wrapper of Math.seedrandom(seed)
  *
  * @param {string} seed seed string
- * @returns {void} Math.seedrandom(seed)
+ * @returns {string} Math.seedrandom(seed)
  */
-const Math_seedrandom = (seed) => Math.seedrandom(seed);
+const Math_seedrandom = (seed) => Math["seedrandom"](seed);
 
 
 /**
- * function choose from Cookie Clicker main.js
- * random choose one from arr
+ * function choose() from Cookie Clicker main.js (L17)
+ * choose one randomly from arr
  *
  * @template T
  * @param {T[]} arr
@@ -191,11 +169,11 @@ app.controller('myCtrl', function ($scope) {
 
 			$scope.cookies.push([])
 			$scope.displayCookies.push([])
-			let cookie1Success = check_cookies($scope.spellsCastTotal + i, '', false, true)
-			let cookie2Success = check_cookies($scope.spellsCastTotal + i, '', true, true)
-			//cookie3 = check_cookies($scope.spellsCastTotal + i, '', true)
-			let cookie1Backfire = check_cookies($scope.spellsCastTotal + i, '', false, false)
-			let cookie2Backfire = check_cookies($scope.spellsCastTotal + i, '', true, false)
+			let cookie1Success = castFtHoF($scope.spellsCastTotal + i, false, true)
+			let cookie2Success = castFtHoF($scope.spellsCastTotal + i, true, true)
+			//cookie3 = check_cookies($scope.spellsCastTotal + i, true)
+			let cookie1Backfire = castFtHoF($scope.spellsCastTotal + i, false, false)
+			let cookie2Backfire = castFtHoF($scope.spellsCastTotal + i, true, false)
 			let gambler = check_gambler($scope.spellsCastTotal + i)
 			$scope.cookies[i].push(cookie1Success)
 			$scope.cookies[i].push(cookie2Success)
@@ -351,8 +329,8 @@ app.controller('myCtrl', function ($scope) {
 			gamblerSpell.backfire = false;
 
 			if (gfdSpell.name == "Force the Hand of Fate") {
-				gamblerSpell.innerCookie1 = check_cookies(spellsCast + 1, '', false, true);
-				gamblerSpell.innerCookie2 = check_cookies(spellsCast + 1, '', true, true);
+				gamblerSpell.innerCookie1 = castFtHoF(spellsCast + 1, false, true);
+				gamblerSpell.innerCookie2 = castFtHoF(spellsCast + 1, true, true);
 
 				gamblerSpell.hasBs = gamblerSpell.innerCookie1.type == 'Building Special' || gamblerSpell.innerCookie2.type == 'Building Special';
 			}
@@ -363,8 +341,8 @@ app.controller('myCtrl', function ($scope) {
 			gamblerSpell.backfire = true;
 
 			if (gfdSpell.name == "Force the Hand of Fate") {
-				gamblerSpell.innerCookie1 = check_cookies(spellsCast + 1, '', false, false);
-				gamblerSpell.innerCookie2 = check_cookies(spellsCast + 1, '', true, false);
+				gamblerSpell.innerCookie1 = castFtHoF(spellsCast + 1, false, false);
+				gamblerSpell.innerCookie2 = castFtHoF(spellsCast + 1, true, false);
 
 				gamblerSpell.hasEf = gamblerSpell.innerCookie1.type == 'Elder Frenzy' || gamblerSpell.innerCookie2.type == 'Elder Frenzy';
 			}
@@ -377,78 +355,103 @@ app.controller('myCtrl', function ($scope) {
 	}
 
 	/**
-	 * get cast result object of FtFoH
+	 * get cast result object of FtHoF
+	 * simulating target: minigameGrimoire.js > M.castSpell (L299 on v2.052)
 	 *
-	 * @param {number} spells index of cast to see (with total cast)
-	 * @param {string} season current season
-	 * @param {boolean} chime true if one change
+	 * @param {number} spellsCastTotal total spell cast count before this cast
+	 * @param {boolean} isOneChange true if one change
 	 * @param {boolean} forcedGold whether golden cookie is forced
-	 * @returns FtFoH cast result
+	 * @returns FtHoF cast result
 	 */
-	function check_cookies(spells, season, chime, forcedGold) {
-		Math_seedrandom($scope.seed + '/' + spells);
-		let roll = Math.random()
-		if (forcedGold !== false && (forcedGold || roll < (1 - (0.15*$scope.on_screen_cookies + 0.15*(1 + 0.1*$scope.supremeintellect)*(1 - 0.9*$scope.diminishineptitude))))) {
-			/* Random is called a few times in setting up the golden cookie */
-			if (chime == 1 && $scope.ascensionMode != 1) Math.random();
-			if (season == 'valentines' || season == 'easter') {
-				Math.random();
-			}
-			Math.random();
-			Math.random();
-			/**/
+	function castFtHoF(spellsCastTotal, isOneChange, forcedGold) {
+		// set seed (L312)
+		Math_seedrandom($scope.seed + '/' + spellsCastTotal);
 
-			var choices = [];
+		// get fail chance (L307 > L289)
+		const failChance = (() => {
+			let failChance = 0.15;
+			if ($scope.diminishineptitude) failChance *= 0.1;
+			//if (Game.hasBuff('Magic inept')) failChance*=5;  // TODO: not implemented
+			failChance *= 1 + 0.1 * $scope.supremeintellect;  // TODO: Reality Bending x1.1
+			failChance += 0.15 * $scope.on_screen_cookies;  // L46
+			return failChance;
+		})();
+
+		// roll casting result (L313)
+		const isWin = (!true || Math.random() < (1 - failChance));
+
+		// spell.win() or spell.fail() is called at this point
+		//   M.spells > 'hand of fate' > win (L48), fail (L66)
+		//   > new Game.shimmer('golden',{*:true}) (L50, L68)
+		// and Math.random() is called in main.js
+		//   Game.shimmer > this.init(); (main.js L5215)
+		//   > Game.shimmerTypes[this.type].initFunc(this); (main.js L5223)
+		//   > Game.shimmerTypes > 'golden' > initFunc (main.js L5320)
+
+		// call Math.random() for chime (main.js L5322 > main.js L917)
+		// this call is no longer active: L885
+		//if (chime && $scope.ascensionMode != 1) Math.random();
+
+		// season is valentines or easter (main.js L5343, main.js L5353)
+		if (isOneChange) Math.random();
+
+		// determine X and Y position to spawn (main.js L5358, main.js L5359)
+		Math.random();
+		Math.random();
+
+		// initializing GC/RC finished, back to spell.win() or spell.fail()
+
+		/**
+		 * choices of GC/RC effect name
+		 * @type {string[]}
+		 */
+		let choices = [];
+
+		/** FtHoF cast result */
+		const cookie = {};
+
+		// choose cookie effect
+		if (forcedGold || isWin) {
+			// choices of golden cookie (L52)
 			choices.push('Frenzy', 'Lucky');
 			if (!$scope.dragonflight) choices.push('Click Frenzy');
 			if (Math.random() < 0.1) choices.push('Cookie Storm', 'Cookie Storm', 'Blab');
-			if (Math.random() < 0.25) choices.push('Building Special');
+			if (Math.random() < 0.25) choices.push('Building Special');  // Game.BuildingsOwned>=10 is ignored
 			if (Math.random() < 0.15) choices = ['Cookie Storm Drop'];
 			if (Math.random() < 0.0001) choices.push('Free Sugar Lump');
-			let cookie = {}
-			cookie.wrath = false
 			cookie.type = choose(choices);
-			if (cookie.type == 'Frenzy') cookie.description = "Gives x7 cookie production for 77 seconds.";
-			if (cookie.type == 'Lucky') cookie.description = "Gain 13 cookies plus the lesser of 15% of bank or 15 minutes of production.";
-			if (cookie.type == 'Click Frenzy') cookie.description = "Gives x777 cookies per click for 13 seconds.";
-			if (cookie.type == 'Blab') cookie.description = "Does nothing but has a funny message.";
-			if (cookie.type == 'Cookie Storm') cookie.description = "A massive amount of Golden Cookies appears for 7 seconds, each granting you 1–7 minutes worth of cookies.";
-			if (cookie.type == 'Cookie Storm Drop') cookie.description = "Gain cookies equal to 1-7 minutes production";
-			if (cookie.type == 'Building Special') {
-				cookie.description = "Get a variable bonus to cookie production for 30 seconds.";
-				cookie.noteworthy = true;
-			}
-			if (cookie.type == 'Free Sugar Lump') cookie.description = "Add a free sugar lump to the pool";
-			return cookie;
-		} else {
-			/* Random is called a few times in setting up the golden cookie */
-			if (chime == 1 && $scope.ascensionMode != 1) Math.random();
-			if (season == 'valentines' || season == 'easter') {
-				Math.random();
-			}
-			Math.random();
-			Math.random();
-			/**/
 
-			var choices = [];
+			// There is an additional Math.random() in L62,
+			// but this doesn't affect the result because choice is done.
+			//if (cookie.type == 'Cookie Storm Drop') Math.random();
+
+			// cookie is GC
+			cookie.wrath = false;
+
+		} else {
+			// choices of red cookie (L70)
 			choices.push('Clot', 'Ruin');
 			if (Math.random() < 0.1) choices.push('Cursed Finger', 'Elder Frenzy');
 			if (Math.random() < 0.003) choices.push('Free Sugar Lump');
 			if (Math.random() < 0.1) choices = ['Blab'];
-			let cookie = {}
-			cookie.wrath = true
 			cookie.type = choose(choices);
-			if (cookie.type == 'Clot') cookie.description = "Reduce production by 50% for 66 seconds.";
-			if (cookie.type == 'Ruin') cookie.description = "Lose 13 cookies plus the lesser of 5% of bank or 15 minutes of production";
-			if (cookie.type == 'Cursed Finger') cookie.description = "Cookie production halted for 10 seconds, but each click is worth 10 seconds of production.";
-			if (cookie.type == 'Blab') cookie.description = "Does nothing but has a funny message.";
-			if (cookie.type == 'Elder Frenzy') {
-				cookie.description = "Gives x666 cookie production for 6 seconds";
-				cookie.noteworthy = true;
-			}
-			if (cookie.type == 'Free Sugar Lump') cookie.description = "Add a free sugar lump to the pool";
-			return cookie;
+
+			// cookie is RC
+			cookie.wrath = true;
 		}
+
+		// set description
+		const description = cookieEffectNameToDescription[cookie.type];
+		if (!description) console.error("No description in dictionary: " + cookie.type);
+		cookie.description = description;
+
+		// add noteworthy info
+		cookie.noteworthy = false;
+		if (cookie.type == 'Building Special') cookie.noteworthy = true;
+		if (cookie.type == 'Elder Frenzy') cookie.noteworthy = true;
+
+		// return FtHoF cast result
+		return cookie;
 	}
 
 	/**
