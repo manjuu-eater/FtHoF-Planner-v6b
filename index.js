@@ -7,6 +7,37 @@
  */
 
 
+/** cookie effect description dictionary */
+const cookieEffectNameToDescription = {
+	"Frenzy":
+		"Gives x7 cookie production for 77 seconds.",
+	"Lucky":
+		"Gain 13 cookies plus the lesser of 15% of bank or 15 minutes of production.",
+	"Click Frenzy":
+		"Gives x777 cookies per click for 13 seconds.",
+	"Cookie Storm":
+		"A massive amount of Golden Cookies appears for 7 seconds, each granting you 1–7 minutes worth of cookies.",
+	"Cookie Storm Drop":
+		"Gain cookies equal to 1-7 minutes production",
+	"Building Special":
+		"Get a variable bonus to cookie production for 30 seconds.",
+
+	"Clot":
+		"Reduce production by 50% for 66 seconds.",
+	"Ruin":
+		"Lose 13 cookies plus the lesser of 5% of bank or 15 minutes of production",
+	"Cursed Finger":
+		"Cookie production halted for 10 seconds, but each click is worth 10 seconds of production.",
+	"Elder Frenzy":
+		"Gives x666 cookie production for 6 seconds",
+
+	"Blab":
+		"Does nothing but has a funny message.",
+	"Free Sugar Lump":
+		"Add a free sugar lump to the pool",
+};
+
+
 /**
  * wrapper of Math.seedrandom(seed)
  *
@@ -410,25 +441,13 @@ app.controller('myCtrl', function ($scope) {
 		}
 
 		// set description
-		if (cookie.type == 'Frenzy') cookie.description = "Gives x7 cookie production for 77 seconds.";
-		if (cookie.type == 'Lucky') cookie.description = "Gain 13 cookies plus the lesser of 15% of bank or 15 minutes of production.";
-		if (cookie.type == 'Click Frenzy') cookie.description = "Gives x777 cookies per click for 13 seconds.";
-		if (cookie.type == 'Blab') cookie.description = "Does nothing but has a funny message.";
-		if (cookie.type == 'Cookie Storm') cookie.description = "A massive amount of Golden Cookies appears for 7 seconds, each granting you 1–7 minutes worth of cookies.";
-		if (cookie.type == 'Cookie Storm Drop') cookie.description = "Gain cookies equal to 1-7 minutes production";
-		if (cookie.type == 'Building Special') {
-			cookie.description = "Get a variable bonus to cookie production for 30 seconds.";
-			cookie.noteworthy = true;
-		}
-		if (cookie.type == 'Clot') cookie.description = "Reduce production by 50% for 66 seconds.";
-		if (cookie.type == 'Ruin') cookie.description = "Lose 13 cookies plus the lesser of 5% of bank or 15 minutes of production";
-		if (cookie.type == 'Cursed Finger') cookie.description = "Cookie production halted for 10 seconds, but each click is worth 10 seconds of production.";
-		if (cookie.type == 'Blab') cookie.description = "Does nothing but has a funny message.";
-		if (cookie.type == 'Elder Frenzy') {
-			cookie.description = "Gives x666 cookie production for 6 seconds";
-			cookie.noteworthy = true;
-		}
-		if (cookie.type == 'Free Sugar Lump') cookie.description = "Add a free sugar lump to the pool";
+		const description = cookieEffectNameToDescription[cookie.type];
+		if (!description) console.error("No description in dictionary: " + cookie.type);
+		cookie.description = description;
+
+		// add noteworthy info
+		if (cookie.type == 'Building Special') cookie.noteworthy = true;
+		if (cookie.type == 'Elder Frenzy') cookie.noteworthy = true;
 
 		// return FtHoF cast result
 		return cookie;
