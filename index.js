@@ -446,6 +446,7 @@ app.controller('myCtrl', function ($scope) {
 		cookie.description = description;
 
 		// add noteworthy info
+		cookie.noteworthy = false;
 		if (cookie.type == 'Building Special') cookie.noteworthy = true;
 		if (cookie.type == 'Elder Frenzy') cookie.noteworthy = true;
 
