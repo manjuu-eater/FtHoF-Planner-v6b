@@ -1,5 +1,5 @@
-/// <reference path="seedrandom.js" />
-/// <reference path="base64.js" />
+/// <reference path="./lib/seedrandom.js" />
+/// <reference path="./lib/base64.js" />
 // @ts-check
 /**
  * FtHoF Planner v6
