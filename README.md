@@ -41,20 +41,21 @@ FtHoF Planner for Cookie Clicker by Orteil
 
 ### Credits
 
-- [FtHoF planner V1](http://fthof-planner.s3-website.us-east-2.amazonaws.com/) by [RebelKeithy](https://www.reddit.com/user/RebelKeithy) (reddit)
+- [FtHoF Planner v1](http://fthof-planner.s3-website.us-east-2.amazonaws.com/) by [RebelKeithy](https://www.reddit.com/user/RebelKeithy) (reddit)
 	- The first version made good use of the code that you can just copy from the cookie clicker website and interpreted the code in a way that made the first FtHoF planner. Basic but a powerful start.
 
-- [FtHoF planner v2](https://messieurs.github.io/fthofplannerv2/) by [@skeezy](https://discord.gg/cookie) (discord)
+- [FtHoF Planner v2](https://messieurs.github.io/fthofplannerv2/) by [@skeezy](https://discord.gg/cookie) (discord)
 	- The second version of the FtHoF planner with undeniable the biggest update to it to date. The new version also made it possible to have a look into the Gambler's Fever Dream and a combo-finder was added which made it more easy to actually find them.
 
-- [FtHoF planner v3](https://eminenti.github.io/FtHoF-Planner-v3/) by [@eminenti](https://discord.com/invite/r6hssr5) (discord)
+- [FtHoF Planner v3](https://eminenti.github.io/FtHoF-Planner-v3/) by [@eminenti](https://discord.com/invite/r6hssr5) (discord)
 	- The third version was mainly a bugfix because of a bugfix. The original and second FtHoF planners made use (just like the original cookie clicker) of a second possible change to alter the outcome of FtHoF. This was a bug and fixed by Orteil. This broke the first 2 planners and was fixed in V3. Later also the combo-finder was fixed not to calculate those outcomes for Gambler's Fever Dream.
 
-- [FtHoF planner v4](https://mylaaan.github.io/FtHoF-Planner-v4/) by [@mylaaan](https://discord.gg/cookie) (discord)
+- [FtHoF Planner v4](https://mylaaan.github.io/FtHoF-Planner-v4/) by [@mylaaan](https://discord.gg/cookie) (discord)
 	- The fourth version only added ease of use interface options. Like the "Cast Spell" button to make it easier to keep track of where you are without importing the save again. Also updated some visual features and removed Google Analytics.
 
-- [FtHoF planner v5](https://joseph3079.github.io/FtHoF-Planner-v5/) by [@joseph3079](https://discord.gg/cookie) (discord)
+- [FtHoF Planner v5](https://joseph3079.github.io/FtHoF-Planner-v5/) by [@joseph3079](https://discord.gg/cookie) (discord)
 	- The fifth version added a "Random Seed" column, which can be used to see how many onscreen cookies will cause a spell to backfire without needing to change settings repeatedly, and can be used to tell what Gambler's Fever Dream will give when it can't choose all 8 spells. Additionally, it now shows building specials, elder frenzies, and sugar lumps that aren't visible due to a wrong backfire chance.
 
-- [FtHoF planner v6](https://manjuu-eater.github.io/FtHoF-Planner-v6/) by @manjuu-eater
+- [FtHoF Planner v6](https://manjuu-eater.github.io/FtHoF-Planner-v6/) by @manjuu-eater
+	- Added "Cast x10" button (for Gambler's Fever Dream bashing)
 	- WIP
