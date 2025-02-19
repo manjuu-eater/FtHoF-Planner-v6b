@@ -139,116 +139,83 @@
 
         <md-divider></md-divider>
 
+        <table>
+            <thead>
+                <tr>
+                    <th>Spell #</th>
+                    <th>Random Seed</th>
+                    <th>No Change</th>
+                    <th>One Change</th>
+                    <th>Gambler's Dream</th>
+                </tr>
+                <tr>
+                    <td>Relative to now (This ascension | All time)</td>
+                    <td>Used to determine spell backfires and GFD spells.</td>
+                    <td>Season is not Easter or Valentines.</td>
+                    <td>Season is Easter or Valentines.</td>
+                    <td>Gambler's Fever Dream</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="cookie_list in cookies">
+                    <!-- Spell # -->
+                    <td><div>
+                        <a name="{{$index + 1}}"></a>
+                        {{
+                            ($index + 1)
+                            + " (" + (spellsCastThisAscension+$index+1)
+                            + " | " + (spellsCastTotal+$index+1)
+                            + ")"
+                        }}
+                    </div></td>
 
-        <div layout-gt-xs="row" layout="column">
-            <div flex-gt-xs="15" flex>
-                <md-toolbar layout="row" class="md-hue-3">
-                    <div class="md-toolbar-tools">
-                        <h1>Spell #</h1>
-                    </div>
-                </md-toolbar>
-                <md-content>
-                    <md-list flex>
-                        <md-subheader class="md-no-sticky">Relative to now (This ascension | All time)</md-subheader>
-                        <md-list-item class="md-2-line" ng-repeat="cookie_list in cookies" ng-click="null">
-                            <div class="md-list-item-text" layout="column">
-                                <a name="{{$index + 1}}"></a>
-                                <h3>{{($index+1) + " (" + (spellsCastThisAscension+$index+1) + " | " +
-                                    (spellsCastTotal+$index+1) + ")"}}</h3>
-                            </div>
-                        </md-list-item>
-                    </md-list>
-                </md-content>
-            </div>
-            <md-divider></md-divider>
-            <div flex-gt-xs="15" flex>
-                <md-toolbar layout="row" class="md-hue-3">
-                    <div class="md-toolbar-tools">
-                        <h1>Random Seed</h1>
-                    </div>
-                </md-toolbar>
-                <md-content>
-                    <md-list flex>
-                        <md-subheader class="md-no-sticky">Used to determine spell backfires and GFD spells.</md-subheader>
-                        <md-list-item class="md-2-line" ng-repeat="cookie_list in cookies" ng-click="null">
-                            <div class="md-list-item-text" layout="column">
-                                <h3>{{randomSeeds[$index].toFixed(4) + " (" + (randomSeeds[$index]+baseBackfireChance>1 ? 0 : ((1.075-randomSeeds[$index]-baseBackfireChance)/0.15).toFixed(0)) + " GC)"}}</h3>
-                            </div>
-                        </md-list-item>
-                    </md-list>
-                </md-content>
-            </div>
-            <md-divider></md-divider>
-            <div flex-gt-xs="30" flex>
-                <md-toolbar layout="row" class="md-hue-3">
-                    <div class="md-toolbar-tools">
-                        <h1>No Change</h1>
-                    </div>
-                </md-toolbar>
-                <md-content>
-                    <md-list flex>
-                        <md-subheader class="md-no-sticky">Season is not Easter or Valentines.</md-subheader>
-                        <md-list-item class="md-2-line" ng-repeat="cookie_list in cookies" ng-click="null">
-                            <img ng-src='{{displayCookies[$index][0].wrath?"img/WrathCookie.png":"img/GoldCookie.png"}}'
-                                 class="md-avatar" alt="Golden Cookie"/>
-                            <div class="md-list-item-text{{displayCookies[$index][0].noteworthy ? ' highlightCombo' : ''}}"
-                                 layout="column">
-                                <h3>{{displayCookies[$index][0].type}}</h3>
-                            </div>
-                        </md-list-item>
-                    </md-list>
-                </md-content>
-            </div>
-            <md-divider></md-divider>
-            <div style="display: block;" id="content-3" flex-gt-xs="30" flex>
-                <md-toolbar layout="row" class="md-hue-3">
-                    <div class="md-toolbar-tools">
-                        <h1>One Change</h1>
-                        <div style="flex-grow: 1;"></div>
-                        <div class="hide-column">
-                            <!--Sadly not possible to look clean with md-checkbox as it doesn't resize.-->
-                            <input type="checkbox" id="show" ng-click="collapse_interface(3)" checked=true>
-                            <label for="show">Show</label>
+                    <!-- Random Seed -->
+                    <td><div>
+                        {{
+                            randomSeeds[$index].toFixed(4)
+                            + " ("
+                            + (
+                                randomSeeds[$index] + baseBackfireChance > 1
+                                ? 0
+                                : ((1.075-randomSeeds[$index] - baseBackfireChance) / 0.15).toFixed(0)
+                            )
+                            + " GC)"
+                        }}
+                    </div></td>
+
+                    <!-- No Change -->
+                    <td><div>
+                        <img ng-src="{{displayCookies[$index][0].wrath ? 'img/WrathCookie.png' : 'img/GoldCookie.png'}}">
+                        <div class="{{displayCookies[$index][0].noteworthy ? 'highlightCombo' : ''}}">
+                            {{displayCookies[$index][0].type}}
                         </div>
-                    </div>
-                </md-toolbar>
-                <md-content>
-                    <md-list flex>
-                        <md-subheader class="md-no-sticky">Season is Easter or Valentines.</md-subheader>
-                        <md-list-item class="md-2-line" ng-repeat="cookie_list in cookies" ng-click="null">
-                            <img ng-src='{{displayCookies[$index][1].wrath?"img/WrathCookie.png":"img/GoldCookie.png"}}'
-                                 class="md-avatar" alt="Golden Cookie"/>
-                            <div class="md-list-item-text{{displayCookies[$index][1].noteworthy ? ' highlightCombo' : ''}}"
-                                 layout="column">
-                                <h3>{{displayCookies[$index][1].type}}</h3>
-                            </div>
-                        </md-list-item>
-                    </md-list>
-                </md-content>
-            </div>
-            <md-divider></md-divider>
-            <div flex-gt-xs="30" flex>
-                <md-toolbar layout="row" class="md-hue-3">
-                    <div class="md-toolbar-tools">
-                        <span>Gambler's Dream</span>
-                    </div>
-                </md-toolbar>
-                <md-content>
-                    <md-list flex>
-                        <md-subheader class="md-no-sticky">Gambler's Fever Dream</md-subheader>
-                        <md-list-item class="md-2-line" ng-repeat="cookie_list in cookies">
-                            <img ng-src="{{displayCookies[$index][2].backfire?'img/WrathCookie.png':'img/GoldCookie.png'}}"
-                                 class="md-avatar" alt="Golden Cookie"/>
-                            <div class="md-list-item-text{{(displayCookies[$index][2].hasBs || displayCookies[$index][2].hasEf) ? ' highlightCombo' : displayCookies[$index][2].type == 'Resurrect Abomination' || (displayCookies[$index][2].type == 'Spontaneous Edifice' && !displayCookies[$index][2].backfire) ? ' highlightSkip' : ''}}"
-                                 layout="column">
-                                <h3 title="{{displayCookies[$index][2].innerCookie1.type + '; ' + displayCookies[$index][2].innerCookie2.type}}">
-                                    {{displayCookies[$index][2] ? displayCookies[$index][2].type : "Blank"}}</h3>
-                            </div>
-                        </md-list-item>
-                    </md-list>
-                </md-content>
-            </div>
-        </div>
+                    </div></td>
+
+                    <!-- One Change -->
+                    <td><div>
+                        <img ng-src="{{displayCookies[$index][1].wrath ? 'img/WrathCookie.png' : 'img/GoldCookie.png'}}">
+                        <div class="{{displayCookies[$index][1].noteworthy ? 'highlightCombo' : ''}}">
+                            {{displayCookies[$index][1].type}}
+                        </div>
+                    </div></td>
+
+                    <!-- Gambler's Dream -->
+                    <td><div>
+                        <img ng-src="{{displayCookies[$index][2].backfire? ' img/WrathCookie.png' : 'img/GoldCookie.png'}}">
+                        <div class="{{
+                            (displayCookies[$index][2].hasBs || displayCookies[$index][2].hasEf)
+                                ? 'highlightCombo'
+                                : (displayCookies[$index][2].type == 'Resurrect Abomination' || (displayCookies[$index][2].type == 'Spontaneous Edifice' && !displayCookies[$index][2].backfire))
+                                    ? 'highlightSkip'
+                                    : '';
+                        }}" title="{{displayCookies[$index][2].innerCookie1.type + '; ' + displayCookies[$index][2].innerCookie2.type}}">
+                            {{displayCookies[$index][2] ? displayCookies[$index][2].type : "Blank"}}
+                        </div>
+                    </div></td>
+                </tr>
+            </tbody>
+        </table>
+
         <md-button class="md-raised md-primary" ng-click="load_more()">Load More</md-button>
     </div>
 </div>
