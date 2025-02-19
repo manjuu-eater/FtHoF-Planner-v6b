@@ -237,7 +237,7 @@
                     <md-list flex>
                         <md-subheader class="md-no-sticky">Gambler's Fever Dream</md-subheader>
                         <md-list-item class="md-2-line" ng-repeat="cookie_list in cookies">
-                            <img ng-src={{displayCookies[$index][2].backfire?"img/WrathCookie.png":"img/GoldCookie.png"}}
+                            <img ng-src="{{displayCookies[$index][2].backfire?'img/WrathCookie.png':'img/GoldCookie.png'}}"
                                  class="md-avatar" alt="Golden Cookie"/>
                             <div class="md-list-item-text{{(displayCookies[$index][2].hasBs || displayCookies[$index][2].hasEf) ? ' highlightCombo' : displayCookies[$index][2].type == 'Resurrect Abomination' || (displayCookies[$index][2].type == 'Spontaneous Edifice' && !displayCookies[$index][2].backfire) ? ' highlightSkip' : ''}}"
                                  layout="column">
