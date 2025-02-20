@@ -69,6 +69,7 @@ th {
 th, td {
     padding: .3em .5em;
     border-style: none solid;
+    border-width: 1px;
     border-color: lightgray;
 }
 col.spell {
