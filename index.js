@@ -585,3 +585,18 @@ app.controller('myCtrl', function ($scope) {
 		},
 	};
 });
+
+
+/**
+ * Select the save code input for easy pasting.
+ *
+ * @param {MouseEvent} event event fired with input left or right click
+ */
+const selectSaveCodeInput = (event) => {
+	if (!(event.target instanceof HTMLInputElement)) return;
+    event.target.select();
+};
+
+// add event listneer about left and right click
+document.addEventListener("click", selectSaveCodeInput);
+document.addEventListener("contextmenu", selectSaveCodeInput);
