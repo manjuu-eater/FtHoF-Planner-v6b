@@ -24,42 +24,38 @@ td.index {
     min-width: 50px;
 }
 
+
+/* error line below md-input */
 md-input-container .md-errors-spacer {
     min-height: 0px !important;
 }
 
+/* unused */
 .listdemoBasicUsage md-divider {
     margin-top: 10px;
     margin-bottom: 0;
 }
 
+/* link */
 a {
     cursor: pointer;
     color: blue;
 }
-
 a:hover, a.hover {
     text-decoration: underline;
 }
 
+/* unused (used in old type table) */
 .md-subheader .md-subheader-content {
     min-height: 2.5em;
 }
 
-div.highlight {
-    width: 100%;
-}
-.highlight.combo {
-    background-color: yellow;
-}
-.highlight.skip {
-    background-color: lightblue;
-}
-
-.combo-listitem{
+/* .content > ul.combos > li.combo-listitem */
+.combo-listitem {
     height: 3.5em;
 }
 
+/* unused */
 .collapse-content {
     padding: 0 18px;
     display: none;
@@ -68,13 +64,25 @@ div.highlight {
     border: 5px solid lightblue;
 }
 
+/* checkbox that hide One Change column */
 .hide-column {
     align-self: flex-end;
     font-size: 0.7em;
 }
 .hide-column > input {
-  width: 13px;
-  accent-color: rgb(255,89,145);
+    width: 13px;
+    accent-color: rgb(255,89,145);
+}
+
+/* highlighting noteworty or skippable cookie */
+div.highlight {
+    width: 100%;
+}
+.highlight.combo {
+    background-color: yellow;
+}
+.highlight.skip {
+    background-color: lightblue;
 }
 
 
