@@ -208,7 +208,7 @@
                     <!-- No Change -->
                     <td><div>
                         <img ng-src="{{displayCookies[$index][0].wrath ? 'img/WrathCookie.png' : 'img/GoldCookie.png'}}">
-                        <div class="{{displayCookies[$index][0].noteworthy ? 'highlightCombo' : ''}}">
+                        <div class="{{displayCookies[$index][0].noteworthy ? 'highlight combo' : ''}}">
                             {{displayCookies[$index][0].type}}
                         </div>
                     </div></td>
@@ -216,7 +216,7 @@
                     <!-- One Change -->
                     <td><div>
                         <img ng-src="{{displayCookies[$index][1].wrath ? 'img/WrathCookie.png' : 'img/GoldCookie.png'}}">
-                        <div class="{{displayCookies[$index][1].noteworthy ? 'highlightCombo' : ''}}">
+                        <div class="{{displayCookies[$index][1].noteworthy ? 'highlight combo' : ''}}">
                             {{displayCookies[$index][1].type}}
                         </div>
                     </div></td>
@@ -226,9 +226,9 @@
                         <img ng-src="{{displayCookies[$index][2].backfire? ' img/WrathCookie.png' : 'img/GoldCookie.png'}}">
                         <div class="{{
                             (displayCookies[$index][2].hasBs || displayCookies[$index][2].hasEf)
-                                ? 'highlightCombo'
+                                ? 'highlight combo'
                                 : (displayCookies[$index][2].type == 'Resurrect Abomination' || (displayCookies[$index][2].type == 'Spontaneous Edifice' && !displayCookies[$index][2].backfire))
-                                    ? 'highlightSkip'
+                                    ? 'highlight skip'
                                     : '';
                         }}" title="{{displayCookies[$index][2].innerCookie1.type + '; ' + displayCookies[$index][2].innerCookie2.type}}">
                             {{displayCookies[$index][2] ? displayCookies[$index][2].type : "Blank"}}

@@ -46,11 +46,11 @@ a:hover, a.hover {
     min-height: 2.5em;
 }
 
-.highlightCombo {
+.highlight.combo {
     background-color: yellow;
 }
 
-.highlightSkip {
+.highlight.skip {
     background-color: lightblue;
 }
 
