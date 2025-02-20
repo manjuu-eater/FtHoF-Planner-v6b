@@ -118,7 +118,7 @@ tbody td > div {
     gap: .5em;
 }
 
-img {
+tbody td img {
     width: 2em;
     height: 2em;
 }
