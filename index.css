@@ -30,12 +30,6 @@ md-input-container .md-errors-spacer {
     min-height: 0px !important;
 }
 
-/* unused */
-.listdemoBasicUsage md-divider {
-    margin-top: 10px;
-    margin-bottom: 0;
-}
-
 /* link */
 a {
     cursor: pointer;
@@ -45,23 +39,9 @@ a:hover, a.hover {
     text-decoration: underline;
 }
 
-/* unused (used in old type table) */
-.md-subheader .md-subheader-content {
-    min-height: 2.5em;
-}
-
 /* .content > ul.combos > li.combo-listitem */
 .combo-listitem {
     height: 3.5em;
-}
-
-/* unused */
-.collapse-content {
-    padding: 0 18px;
-    display: none;
-    overflow: hidden;
-    /*background-color: #f1f1f1;*/
-    border: 5px solid lightblue;
 }
 
 /* checkbox that hide One Change column */
