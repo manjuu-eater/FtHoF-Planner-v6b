@@ -597,6 +597,6 @@ const selectSaveCodeInput = (event) => {
     event.target.select();
 };
 
-// add event listneer about left and right click
+// add event listener for left and right clicks
 document.addEventListener("click", selectSaveCodeInput);
 document.addEventListener("contextmenu", selectSaveCodeInput);
