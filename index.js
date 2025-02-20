@@ -59,6 +59,55 @@ function choose(arr) {
 	return arr[Math.floor(Math.random() * arr.length)];
 }
 
+
+/**
+ * Extract save data about Magic tower minigame from exported save code.
+ *
+ * @param {string} saveCode exported save code
+ * @returns extracted save data
+ */
+const extractSaveData = (saveCode) => {
+	// object for return
+	const saveData = {};
+
+	// load save data
+	// detail: console.log(Game.WriteSave(3))
+	const decoded = Base64.decode(saveCode.split('!END!')[0]);
+	const pipeSplited = decoded.split('|');
+
+	const runDetails = pipeSplited[2].split(';');
+	const miscGameData = pipeSplited[4].split(';');
+	const buildings = pipeSplited[5].split(';');
+
+	const seed = runDetails[4];
+	saveData.seed = seed;
+	console.log(seed);
+
+	const ascensionMode = parseInt(miscGameData[29]);
+	saveData.ascensionMode = ascensionMode;
+	console.log(ascensionMode);
+
+	const wizardTower = buildings[7];
+	console.log(wizardTower);
+
+	// load Wizard tower minigame data
+	// detail: v2.052 minigameGrimoire.js L463
+	const wizMinigameData = wizardTower.split(",")[4].split(" ");
+	const [strMagic, strSpellsCast, strSpellsCastTotal, strOn] = wizMinigameData;
+
+	const spellsCastTotal = parseInt(strSpellsCastTotal) || 0;
+	saveData.spellsCastTotal = spellsCastTotal;
+	console.log('Total spells cast: ' + spellsCastTotal);
+
+	const spellsCast = parseInt(strSpellsCast) || 0;
+	saveData.spellsCastThisAscension = spellsCast;
+	console.log('Spells cast this ascension: ' + spellsCast);
+
+	// return
+	return saveData;
+};
+
+
 var app = angular.module('myApp', ['ngMaterial']);
 app.controller('myCtrl', function ($scope) {
 	$scope.seed = ""
@@ -112,38 +161,19 @@ app.controller('myCtrl', function ($scope) {
 		// read from html
 		const saveStr = saveCode ? saveCode : String($scope.save_string);
 
-		// load save data
-		// detail: console.log(Game.WriteSave(3))
-		const decoded = Base64.decode(saveStr.split('!END!')[0]);
-		const pipeSplited = decoded.split('|');
+		// extract save data
+		const {
+			seed,
+			ascensionMode,
+			spellsCastTotal,
+			spellsCastThisAscension,
+		} = extractSaveData(saveStr);
 
-		const runDetails = pipeSplited[2].split(';');
-		const miscGameData = pipeSplited[4].split(';');
-		const buildings = pipeSplited[5].split(';');
-
-		const seed = runDetails[4];
+		// set to $scope
 		$scope.seed = seed;
-		console.log(seed);
-
-		const ascensionMode = parseInt(miscGameData[29]);
 		$scope.ascensionMode = ascensionMode;
-		console.log(ascensionMode);
-
-		const wizardTower = buildings[7];
-		console.log(wizardTower);
-
-		// load Wizard tower minigame data
-		// detail: v2.052 minigameGrimoire.js L463
-		const wizMinigameData = wizardTower.split(",")[4].split(" ");
-		const [strMagic, strSpellsCast, strSpellsCastTotal, strOn] = wizMinigameData;
-
-		const spellsCastTotal = parseInt(strSpellsCastTotal) || 0;
 		$scope.spellsCastTotal = spellsCastTotal;
-		console.log('Total spells cast: ' + spellsCastTotal);
-
-		const spellsCast = parseInt(strSpellsCast) || 0;
-		$scope.spellsCastThisAscension = spellsCast;
-		console.log('Spells cast this ascension: ' + spellsCast);
+		$scope.spellsCastThisAscension = spellsCastThisAscension;
 
 		// calculate and display FtHoF list
 		$scope.update_cookies();
