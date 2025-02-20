@@ -84,6 +84,7 @@ table {
     width: 100%;
     border: solid 1px lightgray;
 }
+
 th {
     height: 3em;
 }
@@ -92,6 +93,13 @@ th, td {
     border-style: none solid;
     border-color: lightgray;
 }
+col.spell {
+    width: 10em;
+}
+col.random {
+    width: 9em;
+}
+
 thead th {
     background-color: rgb(140, 158, 255);
     color: rgba(0, 0, 0, 0.87);
@@ -107,6 +115,7 @@ thead td {
     letter-spacing: .01em;
     line-height: 1.2em;
 }
+
 tbody tr {
     height: 2em;
 }
