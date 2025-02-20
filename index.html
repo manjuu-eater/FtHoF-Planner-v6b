@@ -157,10 +157,9 @@
                 </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="cookie_list in cookies">
+                <tr ng-repeat="cookie_list in cookies" id="{{$index + 1}}">
                     <!-- Spell # -->
                     <td><div>
-                        <a name="{{$index + 1}}"></a>
                         {{
                             ($index + 1)
                             + " (" + (spellsCastThisAscension+$index+1)
