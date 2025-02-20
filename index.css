@@ -12,71 +12,51 @@ input {
     margin: auto;
 }
 
-table, th, td {
-    border: 1px solid black;
-}
 
-td {
-    min-width: 150px;
-}
-
-td.index {
-    min-width: 50px;
-}
-
+/* error line below md-input */
 md-input-container .md-errors-spacer {
     min-height: 0px !important;
 }
 
-.listdemoBasicUsage md-divider {
-    margin-top: 10px;
-    margin-bottom: 0;
-}
-
+/* link */
 a {
     cursor: pointer;
     color: blue;
 }
-
 a:hover, a.hover {
     text-decoration: underline;
 }
 
-.md-subheader .md-subheader-content {
-    min-height: 2.5em;
+
+/* save code */
+input#save_code {
+    color: gray;
 }
 
-.highlightCombo {
-    background-color: yellow;
-}
-
-.highlightSkip {
-    background-color: lightblue;
-}
-
-.combo-listitem{
+/* .content > ul.combos > li.combo-listitem */
+.combo-listitem {
     height: 3.5em;
 }
 
-.collapse-content {
-    padding: 0 18px;
-    display: none;
-    overflow: hidden;
-    #background-color: #f1f1f1;
-    border: 5px solid lightblue;
-}
-
+/* checkbox that hide One Change column */
 .hide-column {
     align-self: flex-end;
     font-size: 0.7em;
 }
 .hide-column > input {
-  width: 13px;
-  accent-color: rgb(255,89,145);
+    width: 13px;
+    accent-color: rgb(255,89,145);
 }
 
-.md-2-line:nth-of-type(odd) {
-    background-color: lavender;
+/* highlighting noteworty or skippable cookie */
+div.highlight {
+    width: 100%;
+}
+.highlight.combo {
+    background-color: yellow;
+}
+.highlight.skip {
+    background-color: lightblue;
 }
 
 
@@ -88,32 +68,41 @@ table {
     width: 100%;
     border: solid 1px lightgray;
 }
+
 th {
     height: 3em;
 }
 th, td {
-    padding: .5em 1em;
+    padding: .3em .5em;
     border-style: none solid;
+    border-width: 1px;
     border-color: lightgray;
 }
+col.spell {
+    width: 10em;
+}
+col.random {
+    width: 9em;
+}
+
 thead th {
     background-color: rgb(140, 158, 255);
     color: rgba(0, 0, 0, 0.87);
     font-size: 20px;
     font-weight: 500;
-    text-align: left;
 }
 thead td {
     background-color: rgb(250, 250, 250);
     color: rgba(0, 0, 0, 0.54);
 
-    font-size: 14px;
+    font-size: 12px;
     font-weight: 500;
     letter-spacing: .01em;
     line-height: 1.2em;
 }
+
 tbody tr {
-    height: 4em;
+    height: 2em;
 }
 tbody tr:nth-of-type(odd) {
     background-color: lavender;
@@ -121,13 +110,10 @@ tbody tr:nth-of-type(odd) {
 tbody td > div {
     display: flex;
     align-items: center;
-    gap: 1em;
+    gap: .5em;
 }
 
-img {
-    width: 2.5em;
-    height: 2.5em;
-}
-td div {
-    display: inline-block;
+tbody td img {
+    width: 2em;
+    height: 2em;
 }

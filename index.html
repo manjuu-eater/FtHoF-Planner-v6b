@@ -33,7 +33,7 @@
         <div layout="row">
             <md-input-container flex>
                 <label>Save Code</label>
-                <input onClick="this.select();" ng-model="save_string" style="color: grey;">
+                <input id="save_code" ng-model="save_string">
             </md-input-container>
             <md-button class="md-raised md-primary" ng-click="load_game()">Import Save</md-button>
         </div>
@@ -140,36 +140,58 @@
         <md-divider></md-divider>
 
         <table>
+            <colgroup>
+                <col class="spell">
+                <col class="random">
+                <col class="fthof">
+                <col class="fthof">
+                <col class="gfd">
+            </colgroup>
             <thead>
                 <tr>
                     <th>Spell #</th>
-                    <th>Random Seed</th>
+                    <th>Random <br>Number</th>
                     <th>No Change</th>
                     <th>One Change</th>
                     <th>Gambler's Dream</th>
                 </tr>
                 <tr>
-                    <td>Relative to now (This ascension | All time)</td>
-                    <td>Used to determine spell backfires and GFD spells.</td>
-                    <td>Season is not Easter or Valentines.</td>
-                    <td>Season is Easter or Valentines.</td>
-                    <td>Gambler's Fever Dream</td>
+                    <td>
+                        Cast count: #from now<br>
+                        (In this ascension | Total)
+                    </td>
+                    <td>
+                        Used to determine<br>
+                        backfire and GFD spell.
+                    </td>
+                    <td>
+                        Season is <b>NOT</b><br>
+                        Valentines or Easter.
+                    </td>
+                    <td>
+                        Season is<br>
+                        Valentines or Easter.
+                    </td>
+                    <td>
+                        Result of<br>
+                        Gambler's Fever Dream.
+                    </td>
                 </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="cookie_list in cookies">
+                <tr ng-repeat="cookie_list in cookies" id="{{$index + 1}}">
                     <!-- Spell # -->
                     <td><div>
-                        <a name="{{$index + 1}}"></a>
                         {{
-                            ($index + 1)
+                            "#"
+                            + ($index + 1)
                             + " (" + (spellsCastThisAscension+$index+1)
                             + " | " + (spellsCastTotal+$index+1)
                             + ")"
                         }}
                     </div></td>
 
-                    <!-- Random Seed -->
+                    <!-- Random Number -->
                     <td><div>
                         {{
                             randomSeeds[$index].toFixed(4)
@@ -186,7 +208,7 @@
                     <!-- No Change -->
                     <td><div>
                         <img ng-src="{{displayCookies[$index][0].wrath ? 'img/WrathCookie.png' : 'img/GoldCookie.png'}}">
-                        <div class="{{displayCookies[$index][0].noteworthy ? 'highlightCombo' : ''}}">
+                        <div class="{{displayCookies[$index][0].noteworthy ? 'highlight combo' : ''}}">
                             {{displayCookies[$index][0].type}}
                         </div>
                     </div></td>
@@ -194,7 +216,7 @@
                     <!-- One Change -->
                     <td><div>
                         <img ng-src="{{displayCookies[$index][1].wrath ? 'img/WrathCookie.png' : 'img/GoldCookie.png'}}">
-                        <div class="{{displayCookies[$index][1].noteworthy ? 'highlightCombo' : ''}}">
+                        <div class="{{displayCookies[$index][1].noteworthy ? 'highlight combo' : ''}}">
                             {{displayCookies[$index][1].type}}
                         </div>
                     </div></td>
@@ -204,9 +226,9 @@
                         <img ng-src="{{displayCookies[$index][2].backfire? ' img/WrathCookie.png' : 'img/GoldCookie.png'}}">
                         <div class="{{
                             (displayCookies[$index][2].hasBs || displayCookies[$index][2].hasEf)
-                                ? 'highlightCombo'
+                                ? 'highlight combo'
                                 : (displayCookies[$index][2].type == 'Resurrect Abomination' || (displayCookies[$index][2].type == 'Spontaneous Edifice' && !displayCookies[$index][2].backfire))
-                                    ? 'highlightSkip'
+                                    ? 'highlight skip'
                                     : '';
                         }}" title="{{displayCookies[$index][2].innerCookie1.type + '; ' + displayCookies[$index][2].innerCookie2.type}}">
                             {{displayCookies[$index][2] ? displayCookies[$index][2].type : "Blank"}}
