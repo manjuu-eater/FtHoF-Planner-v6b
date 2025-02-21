@@ -162,12 +162,23 @@ app.controller('myCtrl', function ($scope) {
 		const saveStr = saveCode ? saveCode : String($scope.save_string);
 
 		// extract save data
+		const extracted = (() => {
+			try {
+				return extractSaveData(saveStr);
+			} catch {
+				return undefined;
+			}
+		})();
+		if (!extracted) {
+			console.error("invalid save code");
+			return;
+		}
 		const {
 			seed,
 			ascensionMode,
 			spellsCastTotal,
 			spellsCastThisAscension,
-		} = extractSaveData(saveStr);
+		} = extracted;
 
 		// set to $scope
 		$scope.seed = seed;
