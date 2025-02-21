@@ -169,10 +169,14 @@ app.controller('myCtrl', function ($scope) {
 				return undefined;
 			}
 		})();
+
+		// save code was invalid
 		if (!extracted) {
 			console.error("invalid save code");
+			$scope.save_string = "invalid save code";
 			return;
 		}
+
 		const {
 			seed,
 			ascensionMode,
