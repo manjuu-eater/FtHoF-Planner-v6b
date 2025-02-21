@@ -111,8 +111,8 @@ app.controller('myCtrl', function ($scope) {
 	 *
 	 * @param {number=} count load row count (default: 50)
 	 */
-	const load_more = (count) => {
-		$scope.lookahead += count ? count : 50;
+	const load_more = (count = 50) => {
+		$scope.lookahead += count;
 		update_cookies();
 	};
 
@@ -121,8 +121,8 @@ app.controller('myCtrl', function ($scope) {
 	 *
 	 * @param {number=} count cast count (default: 1)
 	 */
-	const cast_spell = (count) => {
-		const callCount = count || 1;
+	const cast_spell = (count = 1) => {
+		const callCount = count;
 		$scope.spellsCast += callCount;
 		$scope.spellsCastTotal += callCount;
 		update_cookies();
