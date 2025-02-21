@@ -1,10 +1,13 @@
-/// <reference path="./lib/seedrandom.js" />
 /// <reference path="./lib/base64.js" />
 // @ts-check
 /**
  * FtHoF Planner v6
  * index.js
  */
+
+
+// import game related objects and functions
+import { Math_seedrandom, choose, M_spells } from "./game_related_data.js";
 
 
 /** cookie effect description dictionary */
@@ -39,32 +42,59 @@ const cookieEffectNameToDescription = {
 
 
 /**
- * wrapper of Math.seedrandom(seed)
+ * Extract save data about Magic tower minigame from exported save code.
  *
- * @param {string} seed seed string
- * @returns {string} Math.seedrandom(seed)
+ * @param {string} saveCode exported save code
+ * @returns extracted save data
  */
-const Math_seedrandom = (seed) => Math["seedrandom"](seed);
+const extractSaveData = (saveCode) => {
+	// return object
+	const saveData = {};
+
+	// load save data
+	// detail: console.log(Game.WriteSave(3))
+	const decoded = Base64.decode(saveCode.split('!END!')[0]);
+	const pipeSplited = decoded.split('|');
+
+	const runDetails = pipeSplited[2].split(';');
+	const miscGameData = pipeSplited[4].split(';');
+	const buildings = pipeSplited[5].split(';');
+
+	const seed = runDetails[4];
+	saveData.seed = seed;
+	console.log(seed);
+
+	const ascensionMode = parseInt(miscGameData[29]);
+	saveData.ascensionMode = ascensionMode;
+	console.log(ascensionMode);
+
+	const wizardTower = buildings[7];
+	console.log(wizardTower);
+
+	// load Wizard tower minigame data
+	// detail: v2.052 minigameGrimoire.js L463
+	const wizMinigameData = wizardTower.split(",")[4].split(" ");
+	const [strMagic, strSpellsCast, strSpellsCastTotal, strOn] = wizMinigameData;
+
+	const spellsCast = parseInt(strSpellsCast) || 0;
+	saveData.spellsCast = spellsCast;
+	console.log('Spells cast this ascension: ' + spellsCast);
+
+	const spellsCastTotal = parseInt(strSpellsCastTotal) || 0;
+	saveData.spellsCastTotal = spellsCastTotal;
+	console.log('Total spells cast: ' + spellsCastTotal);
+
+	// return
+	return saveData;
+};
 
 
-/**
- * function choose() from Cookie Clicker main.js (L17)
- * choose one randomly from arr
- *
- * @template T
- * @param {T[]} arr
- * @returns {T} chosen item
- */
-function choose(arr) {
-	return arr[Math.floor(Math.random() * arr.length)];
-}
-
-var app = angular.module('myApp', ['ngMaterial']);
+const app = window.angular.module('myApp', ['ngMaterial']);
 app.controller('myCtrl', function ($scope) {
 	$scope.seed = ""
 	$scope.ascensionMode = 0
 	$scope.spellsCastTotal = 0
-	$scope.spellsCastThisAscension = 0
+	$scope.spellsCast = 0
 	$scope.dragonflight = false
 	$scope.supremeintellect = false
 	$scope.diminishineptitude = false
@@ -76,83 +106,81 @@ app.controller('myCtrl', function ($scope) {
 	$scope.save_string = ""
 	$scope.lookahead = 200
 
+	// fill the save code input if previous save code exists in LocalStorage
+	const previousSaveCode = window.localStorage.getItem("fthof_save_code");
+	if (previousSaveCode) $scope.save_string = previousSaveCode;
+
 	/**
-	 * push 50 more items to FtHoF list
+	 * push more items to FtHoF list
+	 *
+	 * @param {number=} count load row count (default: 50)
 	 */
-	$scope.load_more = function () {
-		$scope.lookahead += 50
-		$scope.update_cookies()
-	}
+	const load_more = (count = 50) => {
+		$scope.lookahead += count;
+		update_cookies();
+	};
 
 	/**
 	 * pop and push items to FtHoF list
 	 *
 	 * @param {number=} count cast count (default: 1)
 	 */
-	$scope.cast_spell = function (count) {
-		const callCount = count || 1;
-		$scope.spellsCastThisAscension += callCount;
+	const cast_spell = (count = 1) => {
+		const callCount = count;
+		$scope.spellsCast += callCount;
 		$scope.spellsCastTotal += callCount;
-		$scope.update_cookies();
-	}
+		update_cookies();
+	};
 
 	/**
 	 * log $scope (debug function)
 	 */
-	$scope.print_scope = function () {
+	const print_scope = () => {
 		console.log($scope);
-	}
+	};
 
 	/**
 	 * load save code
 	 *
 	 * @param {string=} saveCode save code (if omitted, read from html)
 	 */
-	$scope.load_game = function (saveCode) {
+	const load_game = (saveCode) => {
 		// read from html
 		const saveStr = saveCode ? saveCode : String($scope.save_string);
 
-		// load save data
-		// detail: console.log(Game.WriteSave(3))
-		const decoded = Base64.decode(saveStr.split('!END!')[0]);
-		const pipeSplited = decoded.split('|');
+		// extract save data
+		const saveData = (() => {
+			try {
+				return extractSaveData(saveStr);
+			} catch {
+				return undefined;
+			}
+		})();
 
-		const runDetails = pipeSplited[2].split(';');
-		const miscGameData = pipeSplited[4].split(';');
-		const buildings = pipeSplited[5].split(';');
+		// save code was invalid
+		if (!saveData) {
+			console.error("invalid save code");
+			$scope.save_string = "invalid save code";
+			return;
+		}
 
-		const seed = runDetails[4];
-		$scope.seed = seed;
-		console.log(seed);
+		// save valid save code to LocalStorage
+		window.localStorage.setItem("fthof_save_code", saveStr);
 
-		const ascensionMode = parseInt(miscGameData[29]);
-		$scope.ascensionMode = ascensionMode;
-		console.log(ascensionMode);
-
-		const wizardTower = buildings[7];
-		console.log(wizardTower);
-
-		// load Wizard tower minigame data
-		// detail: v2.052 minigameGrimoire.js L463
-		const wizMinigameData = wizardTower.split(",")[4].split(" ");
-		const [strMagic, strSpellsCast, strSpellsCastTotal, strOn] = wizMinigameData;
-
-		const spellsCastTotal = parseInt(strSpellsCastTotal) || 0;
-		$scope.spellsCastTotal = spellsCastTotal;
-		console.log('Total spells cast: ' + spellsCastTotal);
-
-		const spellsCast = parseInt(strSpellsCast) || 0;
-		$scope.spellsCastThisAscension = spellsCast;
-		console.log('Spells cast this ascension: ' + spellsCast);
+		// set to $scope
+		$scope.seed = saveData.seed;
+		$scope.ascensionMode = saveData.ascensionMode;
+		$scope.spellsCast = saveData.spellsCast;
+		$scope.spellsCastTotal = saveData.spellsCastTotal;
 
 		// calculate and display FtHoF list
-		$scope.update_cookies();
-	}
+		update_cookies();
+	};
 
 	/**
 	 * calculate future FtHoF que and display result
 	 */
-	$scope.update_cookies = function () {
+	const update_cookies = () => {
 		$scope.cookies = []
 		$scope.randomSeeds = [];
 		$scope.baseBackfireChance = 0.15*($scope.supremeintellect?1.1:1)*($scope.diminishineptitude?0.1:1);
@@ -169,11 +197,11 @@ app.controller('myCtrl', function ($scope) {
 
 			$scope.cookies.push([])
 			$scope.displayCookies.push([])
-			let cookie1Success = castFtHoF($scope.spellsCastTotal + i, false, true)
-			let cookie2Success = castFtHoF($scope.spellsCastTotal + i, true, true)
+			let cookie1Success = castFtHoF($scope.spellsCastTotal + i, false, "GC")
+			let cookie2Success = castFtHoF($scope.spellsCastTotal + i, true, "GC")
 			//cookie3 = check_cookies($scope.spellsCastTotal + i, true)
-			let cookie1Backfire = castFtHoF($scope.spellsCastTotal + i, false, false)
-			let cookie2Backfire = castFtHoF($scope.spellsCastTotal + i, true, false)
+			let cookie1Backfire = castFtHoF($scope.spellsCastTotal + i, false, "RC")
+			let cookie2Backfire = castFtHoF($scope.spellsCastTotal + i, true, "RC")
 			let gambler = check_gambler($scope.spellsCastTotal + i)
 			$scope.cookies[i].push(cookie1Success)
 			$scope.cookies[i].push(cookie2Success)
@@ -228,10 +256,10 @@ app.controller('myCtrl', function ($scope) {
 	 *
 	 * @param {number} contentId number of "content-*"
 	 */
-	$scope.collapse_interface = function (contentId) {
+	const collapse_interface = (contentId) => {
 		console.log("content-" + contentId);
 		if (contentId) {
-			var content = document.getElementById("content-" + contentId);
+			const content = document.getElementById("content-" + contentId);
 			if (content === null) throw Error("not found: #content-" + contentId);
 			if (content.style.display === "block") {
 				content.style.display = "none";
@@ -239,7 +267,7 @@ app.controller('myCtrl', function ($scope) {
 				content.style.display = "block";
 			}
 		}
-	}
+	};
 
 	//want to return shortest, and first sequence for a given combo_length
 	//if nothing that satisfies max_spread, shortest will still be filled but first will be empty
@@ -252,7 +280,7 @@ app.controller('myCtrl', function ($scope) {
 	 * @param {number[]} skipIndices indexes of skippable GFD (Resurrect Abomination etc.)
 	 * @returns {object} found result
 	 */
-	function findCombos(combo_length, max_spread, bsIndices, skipIndices) {
+	const findCombos = (combo_length, max_spread, bsIndices, skipIndices) => {
 		let shortestDistance = 10000000;
 		let shortestStart = -1;
 
@@ -282,7 +310,7 @@ app.controller('myCtrl', function ($scope) {
 			shortest: {idx: shortestStart, length: shortestDistance},
 			first: {idx: firstStart, length: firstDistance}
 		};
-	}
+	};
 
 	/**
 	 * determine whether passed cookies may trigger any buffs
@@ -291,11 +319,11 @@ app.controller('myCtrl', function ($scope) {
 	 * @param  {...object} cookies cookie objects that may trigger buff
 	 * @returns {boolean} true if triggers buff
 	 */
-	function cookiesContainBuffs(include_ef, ...cookies) {
+	const cookiesContainBuffs = (include_ef, ...cookies) => {
 		return cookies.some((cookie) => {
 			return cookie.type == 'Building Special' || (include_ef && cookie.type == 'Elder Frenzy');
 		});
-	}
+	};
 
 	/**
 	 * get cast result object of Gambler's Fever Dream
@@ -303,18 +331,18 @@ app.controller('myCtrl', function ($scope) {
 	 * @param {number} spellsCast index of cast to see (with total cast)
 	 * @returns GFD cast result
 	 */
-	function check_gambler(spellsCast) {
+	const check_gambler = (spellsCast) => {
 		Math_seedrandom($scope.seed + '/' + spellsCast);
 
 		let spells = [];
-		for (var i in $scope.spells) {
+		for (const i in M_spells) {
 			if (i != "gambler's fever dream")
-				spells.push($scope.spells[i]);
+				spells.push(M_spells[i]);
 		}
 
-		var gfdSpell = choose(spells);
+		const gfdSpell = choose(spells);
 		//simplifying the below cause this isn't patched yet afaict and i'll never be playing with diminished ineptitutde backfire
-		var gfdBackfire = 0.5; /*M.getFailChance(gfdSpell);
+		const gfdBackfire = 0.5; /*M.getFailChance(gfdSpell);
 
 		if(FortuneCookie.detectKUGamblerPatch()) gfdBackfire *= 2;
 		else gfdBackfire = Math.max(gfdBackfire, 0.5);*/
@@ -329,8 +357,8 @@ app.controller('myCtrl', function ($scope) {
 			gamblerSpell.backfire = false;
 
 			if (gfdSpell.name == "Force the Hand of Fate") {
-				gamblerSpell.innerCookie1 = castFtHoF(spellsCast + 1, false, true);
-				gamblerSpell.innerCookie2 = castFtHoF(spellsCast + 1, true, true);
+				gamblerSpell.innerCookie1 = castFtHoF(spellsCast + 1, false, "GC");
+				gamblerSpell.innerCookie2 = castFtHoF(spellsCast + 1, true, "GC");
 
 				gamblerSpell.hasBs = gamblerSpell.innerCookie1.type == 'Building Special' || gamblerSpell.innerCookie2.type == 'Building Special';
 			}
@@ -341,8 +369,8 @@ app.controller('myCtrl', function ($scope) {
 			gamblerSpell.backfire = true;
 
 			if (gfdSpell.name == "Force the Hand of Fate") {
-				gamblerSpell.innerCookie1 = castFtHoF(spellsCast + 1, false, false);
-				gamblerSpell.innerCookie2 = castFtHoF(spellsCast + 1, true, false);
+				gamblerSpell.innerCookie1 = castFtHoF(spellsCast + 1, false, "RC");
+				gamblerSpell.innerCookie2 = castFtHoF(spellsCast + 1, true, "RC");
 
 				gamblerSpell.hasEf = gamblerSpell.innerCookie1.type == 'Elder Frenzy' || gamblerSpell.innerCookie2.type == 'Elder Frenzy';
 			}
@@ -352,7 +380,7 @@ app.controller('myCtrl', function ($scope) {
 		}
 
 		return gamblerSpell;
-	}
+	};
 
 	/**
 	 * get cast result object of FtHoF
@@ -360,15 +388,20 @@ app.controller('myCtrl', function ($scope) {
 	 *
 	 * @param {number} spellsCastTotal total spell cast count before this cast
 	 * @param {boolean} isOneChange true if one change
-	 * @param {boolean} forcedGold whether golden cookie is forced
+	 * @param {("GC" | "RC")=} forceCookie "GC": force GC, "RC": force RC, default: roll with Math.random()
 	 * @returns FtHoF cast result
 	 */
-	function castFtHoF(spellsCastTotal, isOneChange, forcedGold) {
+	const castFtHoF = (spellsCastTotal, isOneChange, forceCookie) => {
 		// set seed (L312)
 		Math_seedrandom($scope.seed + '/' + spellsCastTotal);
 
 		// get fail chance (L307 > L289)
 		const failChance = (() => {
+			// return 0.0 or 1.0 if forced
+			if (forceCookie == "GC") return 0.0;
+			if (forceCookie == "RC") return 1.0;
+
+			// calculate failChance (same as L289)
 			let failChance = 0.15;
 			if ($scope.diminishineptitude) failChance *= 0.1;
 			//if (Game.hasBuff('Magic inept')) failChance*=5;  // TODO: not implemented
@@ -411,7 +444,7 @@ app.controller('myCtrl', function ($scope) {
 		const cookie = {};
 
 		// choose cookie effect
-		if (forcedGold || isWin) {
+		if (isWin) {
 			// choices of golden cookie (L52)
 			choices.push('Frenzy', 'Lucky');
 			if (!$scope.dragonflight) choices.push('Click Frenzy');
@@ -452,138 +485,16 @@ app.controller('myCtrl', function ($scope) {
 
 		// return FtHoF cast result
 		return cookie;
-	}
-
-	/**
-	 * M.spells from minigameGrimoire.js
-	 */
-	$scope.spells = {
-		'conjure baked goods': {
-			name: 'Conjure Baked Goods',
-			desc: 'Summon half an hour worth of your CpS, capped at 15% of your cookies owned.',
-			failDesc: 'Trigger a 15-minute clot and lose 15 minutes of CpS.',
-			icon: [21, 11],
-			costMin: 2,
-			costPercent: 0.4,
-			win: function () {
-				// removed (not used in this file)
-			},
-			fail: function () {
-				// removed (not used in this file)
-			},
-		},
-		'hand of fate': {
-			name: 'Force the Hand of Fate',
-			desc: 'Summon a random golden cookie. Each existing golden cookie makes this spell +15% more likely to backfire.',
-			failDesc: 'Summon an unlucky wrath cookie.',
-			icon: [22, 11],
-			costMin: 10,
-			costPercent: 0.6,
-			failFunc: function (fail) {
-				// removed (not used in this file)
-			},
-			win: function () {
-				// removed (not used in this file)
-			},
-			fail: function () {
-				// removed (not used in this file)
-			},
-		},
-		'stretch time': {
-			name: 'Stretch Time',
-			desc: 'All active buffs gain 10% more time (up to 5 more minutes).',
-			failDesc: 'All active buffs are shortened by 20% (up to 10 minutes shorter).',
-			icon: [23, 11],
-			costMin: 8,
-			costPercent: 0.2,
-			win: function () {
-				// removed (not used in this file)
-			},
-			fail: function () {
-				// removed (not used in this file)
-			},
-		},
-		'spontaneous edifice': {
-			name: 'Spontaneous Edifice',
-			desc: 'The spell picks a random building you could afford if you had twice your current cookies, and gives it to you for free. The building selected must be under 400, and cannot be your most-built one (unless it is your only one).',
-			failDesc: 'Lose a random building.',
-			icon: [24, 11],
-			costMin: 20,
-			costPercent: 0.75,
-			win: function () {
-				// removed (not used in this file)
-			},
-			fail: function () {
-				// removed (not used in this file)
-			},
-		},
-		'haggler\'s charm': {
-			name: 'Haggler\'s Charm',
-			desc: 'Upgrades are 2% cheaper for 1 minute.',
-			failDesc: 'Upgrades are 2% more expensive for an hour.<q>What\'s that spell? Loadsamoney!</q>',
-			icon: [25, 11],
-			costMin: 10,
-			costPercent: 0.1,
-			win: function () {
-				// removed (not used in this file)
-			},
-			fail: function () {
-				// removed (not used in this file)
-			},
-		},
-		'summon crafty pixies': {
-			name: 'Summon Crafty Pixies',
-			desc: 'Buildings are 2% cheaper for 1 minute.',
-			failDesc: 'Buildings are 2% more expensive for an hour.',
-			icon: [26, 11],
-			costMin: 10,
-			costPercent: 0.2,
-			win: function () {
-				// removed (not used in this file)
-			},
-			fail: function () {
-				// removed (not used in this file)
-			},
-		},
-		'gambler\'s fever dream': {
-			name: 'Gambler\'s Fever Dream',
-			desc: 'Cast a random spell at half the magic cost, with twice the chance of backfiring.',
-			icon: [27, 11],
-			costMin: 3,
-			costPercent: 0.05,
-			win: function () {
-				// removed (not used in this file)
-			},
-		},
-		'resurrect abomination': {
-			name: 'Resurrect Abomination',
-			desc: 'Instantly summon a wrinkler if conditions are fulfilled.',
-			failDesc: 'Pop one of your wrinklers.',
-			icon: [28, 11],
-			costMin: 20,
-			costPercent: 0.1,
-			win: function () {
-				// removed (not used in this file)
-			},
-			fail: function () {
-				// removed (not used in this file)
-			},
-		},
-		'diminish ineptitude': {
-			name: 'Diminish Ineptitude',
-			desc: 'Spells backfire 10 times less for the next 5 minutes.',
-			failDesc: 'Spells backfire 5 times more for the next 10 minutes.',
-			icon: [29, 11],
-			costMin: 5,
-			costPercent: 0.2,
-			win: function () {
-				// removed (not used in this file)
-			},
-			fail: function () {
-				// removed (not used in this file)
-			},
-		},
 	};
+
+
+	// set functions to $scope that called from index.html
+	$scope.load_more          = load_more;
+	$scope.cast_spell         = cast_spell;
+	$scope.print_scope        = print_scope;
+	$scope.load_game          = load_game;
+	$scope.update_cookies     = update_cookies;
+	$scope.collapse_interface = collapse_interface;
 });
 
 
@@ -597,6 +508,6 @@ const selectSaveCodeInput = (event) => {
     event.target.select();
 };
 
-// add event listneer about left and right click
+// add event listener for left and right clicks
 document.addEventListener("click", selectSaveCodeInput);
 document.addEventListener("contextmenu", selectSaveCodeInput);
