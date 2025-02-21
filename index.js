@@ -96,7 +96,7 @@ const extractSaveData = (saveCode) => {
 	const [strMagic, strSpellsCast, strSpellsCastTotal, strOn] = wizMinigameData;
 
 	const spellsCast = parseInt(strSpellsCast) || 0;
-	saveData.spellsCastThisAscension = spellsCast;
+	saveData.spellsCast = spellsCast;
 	console.log('Spells cast this ascension: ' + spellsCast);
 
 	const spellsCastTotal = parseInt(strSpellsCastTotal) || 0;
@@ -113,7 +113,7 @@ app.controller('myCtrl', function ($scope) {
 	$scope.seed = ""
 	$scope.ascensionMode = 0
 	$scope.spellsCastTotal = 0
-	$scope.spellsCastThisAscension = 0
+	$scope.spellsCast = 0
 	$scope.dragonflight = false
 	$scope.supremeintellect = false
 	$scope.diminishineptitude = false
@@ -140,7 +140,7 @@ app.controller('myCtrl', function ($scope) {
 	 */
 	$scope.cast_spell = function (count) {
 		const callCount = count || 1;
-		$scope.spellsCastThisAscension += callCount;
+		$scope.spellsCast += callCount;
 		$scope.spellsCastTotal += callCount;
 		$scope.update_cookies();
 	}
@@ -176,14 +176,14 @@ app.controller('myCtrl', function ($scope) {
 		const {
 			seed,
 			ascensionMode,
-			spellsCastThisAscension,
+			spellsCast,
 			spellsCastTotal,
 		} = extracted;
 
 		// set to $scope
 		$scope.seed = seed;
 		$scope.ascensionMode = ascensionMode;
-		$scope.spellsCastThisAscension = spellsCastThisAscension;
+		$scope.spellsCast = spellsCast;
 		$scope.spellsCastTotal = spellsCastTotal;
 
 		// calculate and display FtHoF list
