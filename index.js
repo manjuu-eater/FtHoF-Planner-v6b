@@ -39,6 +39,138 @@ const cookieEffectNameToDescription = {
 
 
 /**
+ * M.spells from minigameGrimoire.js
+ */
+const M_spells = {
+	'conjure baked goods': {
+		name: 'Conjure Baked Goods',
+		desc: 'Summon half an hour worth of your CpS, capped at 15% of your cookies owned.',
+		failDesc: 'Trigger a 15-minute clot and lose 15 minutes of CpS.',
+		icon: [21, 11],
+		costMin: 2,
+		costPercent: 0.4,
+		win: function () {
+			// removed (not used in this file)
+		},
+		fail: function () {
+			// removed (not used in this file)
+		},
+	},
+	'hand of fate': {
+		name: 'Force the Hand of Fate',
+		desc: 'Summon a random golden cookie. Each existing golden cookie makes this spell +15% more likely to backfire.',
+		failDesc: 'Summon an unlucky wrath cookie.',
+		icon: [22, 11],
+		costMin: 10,
+		costPercent: 0.6,
+		failFunc: function (fail) {
+			// removed (not used in this file)
+		},
+		win: function () {
+			// removed (not used in this file)
+		},
+		fail: function () {
+			// removed (not used in this file)
+		},
+	},
+	'stretch time': {
+		name: 'Stretch Time',
+		desc: 'All active buffs gain 10% more time (up to 5 more minutes).',
+		failDesc: 'All active buffs are shortened by 20% (up to 10 minutes shorter).',
+		icon: [23, 11],
+		costMin: 8,
+		costPercent: 0.2,
+		win: function () {
+			// removed (not used in this file)
+		},
+		fail: function () {
+			// removed (not used in this file)
+		},
+	},
+	'spontaneous edifice': {
+		name: 'Spontaneous Edifice',
+		desc: 'The spell picks a random building you could afford if you had twice your current cookies, and gives it to you for free. The building selected must be under 400, and cannot be your most-built one (unless it is your only one).',
+		failDesc: 'Lose a random building.',
+		icon: [24, 11],
+		costMin: 20,
+		costPercent: 0.75,
+		win: function () {
+			// removed (not used in this file)
+		},
+		fail: function () {
+			// removed (not used in this file)
+		},
+	},
+	'haggler\'s charm': {
+		name: 'Haggler\'s Charm',
+		desc: 'Upgrades are 2% cheaper for 1 minute.',
+		failDesc: 'Upgrades are 2% more expensive for an hour.<q>What\'s that spell? Loadsamoney!</q>',
+		icon: [25, 11],
+		costMin: 10,
+		costPercent: 0.1,
+		win: function () {
+			// removed (not used in this file)
+		},
+		fail: function () {
+			// removed (not used in this file)
+		},
+	},
+	'summon crafty pixies': {
+		name: 'Summon Crafty Pixies',
+		desc: 'Buildings are 2% cheaper for 1 minute.',
+		failDesc: 'Buildings are 2% more expensive for an hour.',
+		icon: [26, 11],
+		costMin: 10,
+		costPercent: 0.2,
+		win: function () {
+			// removed (not used in this file)
+		},
+		fail: function () {
+			// removed (not used in this file)
+		},
+	},
+	'gambler\'s fever dream': {
+		name: 'Gambler\'s Fever Dream',
+		desc: 'Cast a random spell at half the magic cost, with twice the chance of backfiring.',
+		icon: [27, 11],
+		costMin: 3,
+		costPercent: 0.05,
+		win: function () {
+			// removed (not used in this file)
+		},
+	},
+	'resurrect abomination': {
+		name: 'Resurrect Abomination',
+		desc: 'Instantly summon a wrinkler if conditions are fulfilled.',
+		failDesc: 'Pop one of your wrinklers.',
+		icon: [28, 11],
+		costMin: 20,
+		costPercent: 0.1,
+		win: function () {
+			// removed (not used in this file)
+		},
+		fail: function () {
+			// removed (not used in this file)
+		},
+	},
+	'diminish ineptitude': {
+		name: 'Diminish Ineptitude',
+		desc: 'Spells backfire 10 times less for the next 5 minutes.',
+		failDesc: 'Spells backfire 5 times more for the next 10 minutes.',
+		icon: [29, 11],
+		costMin: 5,
+		costPercent: 0.2,
+		win: function () {
+			// removed (not used in this file)
+		},
+		fail: function () {
+			// removed (not used in this file)
+		},
+	},
+};
+
+
+/**
  * wrapper of Math.seedrandom(seed)
  *
  * @param {string} seed seed string
@@ -122,6 +254,8 @@ app.controller('myCtrl', function ($scope) {
 	//$scope.save_string = "Mi4wMTl8fDE1NTcwMjQwMjkzMjQ7MTUyNTU2Mzg4NjQ5ODsxNTU3MDI2MDY3NTI2O1ByZXR0eSBCaXNjdWl0O2ljb2NkfDExMTExMTExMTAwMTAwMTAwMDAxMHwzMTcyOTc5ODU2ODk2MS4wNzsyNDk5OTU5MzQxMDEyOTYuNjszNTE0OzgzMzc7Nzc3NzExMzQ3NDEzMDIuMjc7NzI2ODU7MDszOzEuNjMwODE0MDg0NjAwMTQxOGUrMTAxOzA7MDswOzA7MDsxMDg7MTE7MDswOzExOzE7MjU4MzAzNjsxO2NocmlzdG1hczswOzA7NS40NjM0NjQ4MjMyNzM2MjRlKzI5OzUuNDYzNDY0ODIzMjczNjI0ZSsyOTsxMDM0OTI0NTIwNTExOzA7MDsyMjY7MjI4OzIyMzsyMjI7MjI1OzU7MTswOzE7MTAwOzA7MDsxODk7NDY3OzE1NTcwMjM1NTE1NDY7MTU1Njk5MjAzMDQ0ODswOzEyOSwyMjc7NDA7fDE2MCwxNjAsMTg0MDI4NTc4NDIyMCwxLCwwOzE1MCwxNTAsNzE2NTA1ODQ0NTcwLDEsLDA7MTAwLDIxMCwyODczMDgyMzkzMyw5LDE1NTcwMjYyODY2MDQ6MDoxNTU3MDI0MDI5MzMxOjA6MDozNzM5OjE6MToxNTU3MDI0MDI5MzMxOiAxMTExMTAxMDExMTExMTAwMDAwMDEwMTEwMDAwMDAwMTAwIDA6MDowOjA6MDowOjA6MDowOjA6MDowOjA6MDowOjA6MDowOjA6MDowOjA6MDowOjA6MDowOjA6MDowOjA6MDowOjA6MDowOjA6MDowOjA6MDowOjA6MDowOjA6MDowOjA6MDowOjA6MDowOjA6MDowOjA6MDowOjA6MDowOjA6MDowOjA6MDowOjA6MDowOiwwOzEwMCwyMDAsODg2MTIxODQ2MDMsMSwsMDsxMDAsMTgwLDE5NjIxNTUxOTQzMSwxLCwwOzgwLDE1MCw3MzUxMjI3MzcxNzcsMSwsMDs1MCw1MCwxNzUzMjgyNjI2MDA4LDEsMi8tMS8tMSAyIDE1NTcwMjU5NTgwMzQgMSwwOzUwLDUxLDY5OTUwMzAwMjc2NTksMSwzNiAwIDM1NTUgMSwwOzMwLDMwLDE5Njg2NTA3NjkzNjA0LDEsLDA7MTUsMTUsMjE5ODQxODMyNjA2NDIsMSwsMDsxMCwxMCwyMzI3OTQ1NzQyMDkyOCwxLCwwOzUsNSw1OTkyOTYzODI0OTY5OSwyLCwwOzAsMCwwLDQsLDA7MCwwLDAsMTAsLDA7MCwwLDAsNCwsMDswLDAsMCwxMCwsMDt8MTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMDAxMDEwMDAxMDEwMDAxMTExMTExMTExMTExMTExMTExMTExMTEwMDExMTExMTExMDAwMDAwMDAxMTExMTAxMTExMTExMTExMTExMTAwMDAxMDAwMDAwMDAwMDAwMDAwMDAwMDAwMTExMTExMTEwMDExMTEwMDAwMDAwMDExMDAxMTExMTAwMDEwMTAwMDAwMDAwMDAwMDAwMDAwMDAwMDEwMTAxMDEwMTAwMDExMTExMTExMDAwMDAwMDAwMDExMDAwMDAwMDAwMDAwMDAwMDAwMTAwMDAwMDAwMDAwMDAwMDExMDAxMTAwMTEwMDExMTExMTExMTEwMDAwMDAwMDExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAxMTExMTAxMDEwMDAxMDAwMDAxMDAwMTEwMDAwMDAwMDAwMDAwMDAwMDAxMTExMTExMTAwMDAwMDEwMTEwMDAwMDAxMTAwMDAwMDAwMDAwMDAwMTExMTAwMTExMTAwMTEwMDAwMDAxMTExMTExMTAwMDAxMTExMTExMTAwMDAxMTExMTExMDAwMDAxMTExMTExMTExMTEwMDAwMDAwMDAwMDAwMDAwMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDEwMTAxMDExMTExMTExMTExMTExMDAxMDAwMTAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDExMTExMTExMTExMTExMTExMDExMTExMTExMDAwMDExMDAwMDEwMDAwMDAwMDAxMDAwMDAxMDAwMTAwMDEwMDAwMDAwMDAwMDAwMDAwMDAwMTExMTExMTExMTAwMDAwMDAwMDAwMDAwMDAwMDAwMTExMTExMTExMTExMTAwMDAwMDAwMDAwMDAwMDAwMDAwMDEwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAxMDAwMDAwMDAwMDAwMDExMTExMTEwMDAwMDAwMDAwMDAwMDAwMDAwMTAwMDAwMDAwMDAwMDAwMDEwMTAxMDEwMTAxMDEwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDEwMTExMTAwMDAwMDAwMDAxMTExMTExMTAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAxMTAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMTEwMDExMTExMTExMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMTExMTEwMTEwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAxMTExMTExMXwxMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMDExMTExMTExMTExMTExMTExMTExMTExMTEwMDAwMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTEwMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTEwMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMDExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMDAwMDAwMDAwMDAwMDExMTEwMTExMTExMTExMTEwMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMDExMTExMTExMTExMTExMTExMTExMTExMTExMTExMDExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExfA%3D%3D%21END%21%3D%3D%21END%21"
 	$scope.save_string = ""
 	$scope.lookahead = 200
+
+	$scope.spells = M_spells;
 
 	/**
 	 * push more items to FtHoF list
@@ -500,138 +634,6 @@ app.controller('myCtrl', function ($scope) {
 	$scope.load_game          = load_game;
 	$scope.update_cookies     = update_cookies;
 	$scope.collapse_interface = collapse_interface;
-
-
-	/**
-	 * M.spells from minigameGrimoire.js
-	 */
-	$scope.spells = {
-		'conjure baked goods': {
-			name: 'Conjure Baked Goods',
-			desc: 'Summon half an hour worth of your CpS, capped at 15% of your cookies owned.',
-			failDesc: 'Trigger a 15-minute clot and lose 15 minutes of CpS.',
-			icon: [21, 11],
-			costMin: 2,
-			costPercent: 0.4,
-			win: function () {
-				// removed (not used in this file)
-			},
-			fail: function () {
-				// removed (not used in this file)
-			},
-		},
-		'hand of fate': {
-			name: 'Force the Hand of Fate',
-			desc: 'Summon a random golden cookie. Each existing golden cookie makes this spell +15% more likely to backfire.',
-			failDesc: 'Summon an unlucky wrath cookie.',
-			icon: [22, 11],
-			costMin: 10,
-			costPercent: 0.6,
-			failFunc: function (fail) {
-				// removed (not used in this file)
-			},
-			win: function () {
-				// removed (not used in this file)
-			},
-			fail: function () {
-				// removed (not used in this file)
-			},
-		},
-		'stretch time': {
-			name: 'Stretch Time',
-			desc: 'All active buffs gain 10% more time (up to 5 more minutes).',
-			failDesc: 'All active buffs are shortened by 20% (up to 10 minutes shorter).',
-			icon: [23, 11],
-			costMin: 8,
-			costPercent: 0.2,
-			win: function () {
-				// removed (not used in this file)
-			},
-			fail: function () {
-				// removed (not used in this file)
-			},
-		},
-		'spontaneous edifice': {
-			name: 'Spontaneous Edifice',
-			desc: 'The spell picks a random building you could afford if you had twice your current cookies, and gives it to you for free. The building selected must be under 400, and cannot be your most-built one (unless it is your only one).',
-			failDesc: 'Lose a random building.',
-			icon: [24, 11],
-			costMin: 20,
-			costPercent: 0.75,
-			win: function () {
-				// removed (not used in this file)
-			},
-			fail: function () {
-				// removed (not used in this file)
-			},
-		},
-		'haggler\'s charm': {
-			name: 'Haggler\'s Charm',
-			desc: 'Upgrades are 2% cheaper for 1 minute.',
-			failDesc: 'Upgrades are 2% more expensive for an hour.<q>What\'s that spell? Loadsamoney!</q>',
-			icon: [25, 11],
-			costMin: 10,
-			costPercent: 0.1,
-			win: function () {
-				// removed (not used in this file)
-			},
-			fail: function () {
-				// removed (not used in this file)
-			},
-		},
-		'summon crafty pixies': {
-			name: 'Summon Crafty Pixies',
-			desc: 'Buildings are 2% cheaper for 1 minute.',
-			failDesc: 'Buildings are 2% more expensive for an hour.',
-			icon: [26, 11],
-			costMin: 10,
-			costPercent: 0.2,
-			win: function () {
-				// removed (not used in this file)
-			},
-			fail: function () {
-				// removed (not used in this file)
-			},
-		},
-		'gambler\'s fever dream': {
-			name: 'Gambler\'s Fever Dream',
-			desc: 'Cast a random spell at half the magic cost, with twice the chance of backfiring.',
-			icon: [27, 11],
-			costMin: 3,
-			costPercent: 0.05,
-			win: function () {
-				// removed (not used in this file)
-			},
-		},
-		'resurrect abomination': {
-			name: 'Resurrect Abomination',
-			desc: 'Instantly summon a wrinkler if conditions are fulfilled.',
-			failDesc: 'Pop one of your wrinklers.',
-			icon: [28, 11],
-			costMin: 20,
-			costPercent: 0.1,
-			win: function () {
-				// removed (not used in this file)
-			},
-			fail: function () {
-				// removed (not used in this file)
-			},
-		},
-		'diminish ineptitude': {
-			name: 'Diminish Ineptitude',
-			desc: 'Spells backfire 10 times less for the next 5 minutes.',
-			failDesc: 'Spells backfire 5 times more for the next 10 minutes.',
-			icon: [29, 11],
-			costMin: 5,
-			costPercent: 0.2,
-			win: function () {
-				// removed (not used in this file)
-			},
-			fail: function () {
-				// removed (not used in this file)
-			},
-		},
-	};
 });
 
 
