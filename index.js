@@ -255,8 +255,6 @@ app.controller('myCtrl', function ($scope) {
 	$scope.save_string = ""
 	$scope.lookahead = 200
 
-	$scope.spells = M_spells;
-
 	/**
 	 * push more items to FtHoF list
 	 *
@@ -479,9 +477,9 @@ app.controller('myCtrl', function ($scope) {
 		Math_seedrandom($scope.seed + '/' + spellsCast);
 
 		let spells = [];
-		for (var i in $scope.spells) {
+		for (var i in M_spells) {
 			if (i != "gambler's fever dream")
-				spells.push($scope.spells[i]);
+				spells.push(M_spells[i]);
 		}
 
 		var gfdSpell = choose(spells);
