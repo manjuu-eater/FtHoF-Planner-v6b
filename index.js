@@ -95,13 +95,13 @@ const extractSaveData = (saveCode) => {
 	const wizMinigameData = wizardTower.split(",")[4].split(" ");
 	const [strMagic, strSpellsCast, strSpellsCastTotal, strOn] = wizMinigameData;
 
-	const spellsCastTotal = parseInt(strSpellsCastTotal) || 0;
-	saveData.spellsCastTotal = spellsCastTotal;
-	console.log('Total spells cast: ' + spellsCastTotal);
-
 	const spellsCast = parseInt(strSpellsCast) || 0;
 	saveData.spellsCastThisAscension = spellsCast;
 	console.log('Spells cast this ascension: ' + spellsCast);
+
+	const spellsCastTotal = parseInt(strSpellsCastTotal) || 0;
+	saveData.spellsCastTotal = spellsCastTotal;
+	console.log('Total spells cast: ' + spellsCastTotal);
 
 	// return
 	return saveData;
@@ -176,15 +176,15 @@ app.controller('myCtrl', function ($scope) {
 		const {
 			seed,
 			ascensionMode,
-			spellsCastTotal,
 			spellsCastThisAscension,
+			spellsCastTotal,
 		} = extracted;
 
 		// set to $scope
 		$scope.seed = seed;
 		$scope.ascensionMode = ascensionMode;
-		$scope.spellsCastTotal = spellsCastTotal;
 		$scope.spellsCastThisAscension = spellsCastThisAscension;
+		$scope.spellsCastTotal = spellsCastTotal;
 
 		// calculate and display FtHoF list
 		$scope.update_cookies();
