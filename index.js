@@ -126,11 +126,13 @@ app.controller('myCtrl', function ($scope) {
 	$scope.lookahead = 200
 
 	/**
-	 * push 50 more items to FtHoF list
+	 * push more items to FtHoF list
+	 *
+	 * @param {number=} count load row count (default: 50)
 	 */
-	$scope.load_more = function () {
-		$scope.lookahead += 50
-		$scope.update_cookies()
+	$scope.load_more = function (count) {
+		$scope.lookahead += count ? count : 50;
+		$scope.update_cookies();
 	}
 
 	/**
