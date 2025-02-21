@@ -432,7 +432,9 @@ app.controller('myCtrl', function ($scope) {
 		const cookie = {};
 
 		// choose cookie effect
-		if (forcedGold || isWin) {
+		// old condition (what a strange conditional expression...):
+		//     if (forcedGold !== false && (forcedGold || isWin)) {
+		if (forcedGold) {
 			// choices of golden cookie (L52)
 			choices.push('Frenzy', 'Lucky');
 			if (!$scope.dragonflight) choices.push('Click Frenzy');
