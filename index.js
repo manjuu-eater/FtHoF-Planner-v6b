@@ -130,36 +130,36 @@ app.controller('myCtrl', function ($scope) {
 	 *
 	 * @param {number=} count load row count (default: 50)
 	 */
-	function load_more(count) {
+	const load_more = (count) => {
 		$scope.lookahead += count ? count : 50;
 		update_cookies();
-	}
+	};
 
 	/**
 	 * pop and push items to FtHoF list
 	 *
 	 * @param {number=} count cast count (default: 1)
 	 */
-	function cast_spell(count) {
+	const cast_spell = (count) => {
 		const callCount = count || 1;
 		$scope.spellsCast += callCount;
 		$scope.spellsCastTotal += callCount;
 		update_cookies();
-	}
+	};
 
 	/**
 	 * log $scope (debug function)
 	 */
-	function print_scope() {
+	const print_scope = () => {
 		console.log($scope);
-	}
+	};
 
 	/**
 	 * load save code
 	 *
 	 * @param {string=} saveCode save code (if omitted, read from html)
 	 */
-	function load_game(saveCode) {
+	const load_game = (saveCode) => {
 		// read from html
 		const saveStr = saveCode ? saveCode : String($scope.save_string);
 
@@ -187,12 +187,12 @@ app.controller('myCtrl', function ($scope) {
 
 		// calculate and display FtHoF list
 		update_cookies();
-	}
+	};
 
 	/**
 	 * calculate future FtHoF que and display result
 	 */
-	function update_cookies() {
+	const update_cookies = () => {
 		$scope.cookies = []
 		$scope.randomSeeds = [];
 		$scope.baseBackfireChance = 0.15*($scope.supremeintellect?1.1:1)*($scope.diminishineptitude?0.1:1);
@@ -268,7 +268,7 @@ app.controller('myCtrl', function ($scope) {
 	 *
 	 * @param {number} contentId number of "content-*"
 	 */
-	function collapse_interface(contentId) {
+	const collapse_interface = (contentId) => {
 		console.log("content-" + contentId);
 		if (contentId) {
 			var content = document.getElementById("content-" + contentId);
@@ -279,7 +279,7 @@ app.controller('myCtrl', function ($scope) {
 				content.style.display = "block";
 			}
 		}
-	}
+	};
 
 	//want to return shortest, and first sequence for a given combo_length
 	//if nothing that satisfies max_spread, shortest will still be filled but first will be empty
@@ -292,7 +292,7 @@ app.controller('myCtrl', function ($scope) {
 	 * @param {number[]} skipIndices indexes of skippable GFD (Resurrect Abomination etc.)
 	 * @returns {object} found result
 	 */
-	function findCombos(combo_length, max_spread, bsIndices, skipIndices) {
+	const findCombos = (combo_length, max_spread, bsIndices, skipIndices) => {
 		let shortestDistance = 10000000;
 		let shortestStart = -1;
 
@@ -322,7 +322,7 @@ app.controller('myCtrl', function ($scope) {
 			shortest: {idx: shortestStart, length: shortestDistance},
 			first: {idx: firstStart, length: firstDistance}
 		};
-	}
+	};
 
 	/**
 	 * determine whether passed cookies may trigger any buffs
@@ -331,11 +331,11 @@ app.controller('myCtrl', function ($scope) {
 	 * @param  {...object} cookies cookie objects that may trigger buff
 	 * @returns {boolean} true if triggers buff
 	 */
-	function cookiesContainBuffs(include_ef, ...cookies) {
+	const cookiesContainBuffs = (include_ef, ...cookies) => {
 		return cookies.some((cookie) => {
 			return cookie.type == 'Building Special' || (include_ef && cookie.type == 'Elder Frenzy');
 		});
-	}
+	};
 
 	/**
 	 * get cast result object of Gambler's Fever Dream
@@ -343,7 +343,7 @@ app.controller('myCtrl', function ($scope) {
 	 * @param {number} spellsCast index of cast to see (with total cast)
 	 * @returns GFD cast result
 	 */
-	function check_gambler(spellsCast) {
+	const check_gambler = (spellsCast) => {
 		Math_seedrandom($scope.seed + '/' + spellsCast);
 
 		let spells = [];
@@ -392,7 +392,7 @@ app.controller('myCtrl', function ($scope) {
 		}
 
 		return gamblerSpell;
-	}
+	};
 
 	/**
 	 * get cast result object of FtHoF
@@ -403,7 +403,7 @@ app.controller('myCtrl', function ($scope) {
 	 * @param {boolean} forcedGold whether golden cookie is forced
 	 * @returns FtHoF cast result
 	 */
-	function castFtHoF(spellsCastTotal, isOneChange, forcedGold) {
+	const castFtHoF = (spellsCastTotal, isOneChange, forcedGold) => {
 		// set seed (L312)
 		Math_seedrandom($scope.seed + '/' + spellsCastTotal);
 
@@ -492,7 +492,7 @@ app.controller('myCtrl', function ($scope) {
 
 		// return FtHoF cast result
 		return cookie;
-	}
+	};
 
 
 	// set functions to $scope that called from index.html
