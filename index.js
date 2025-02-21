@@ -106,6 +106,10 @@ app.controller('myCtrl', function ($scope) {
 	$scope.save_string = ""
 	$scope.lookahead = 200
 
+	// fill the save code input if previous save code exists in LocalStorage
+	const previousSaveCode = window.localStorage.getItem("fthof_save_code");
+	if (previousSaveCode) $scope.save_string = previousSaveCode;
+
 	/**
 	 * push more items to FtHoF list
 	 *
@@ -159,6 +163,9 @@ app.controller('myCtrl', function ($scope) {
 			$scope.save_string = "invalid save code";
 			return;
 		}
+
+		// save valid save code to LocalStorage
+		window.localStorage.setItem("fthof_save_code", saveStr);
 
 		// set to $scope
 		$scope.seed = saveData.seed;
