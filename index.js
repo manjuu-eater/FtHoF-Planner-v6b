@@ -55,9 +55,7 @@ const Math_seedrandom = (seed) => Math["seedrandom"](seed);
  * @param {T[]} arr
  * @returns {T} chosen item
  */
-function choose(arr) {
-	return arr[Math.floor(Math.random() * arr.length)];
-}
+const choose = (arr) => arr[Math.floor(Math.random() * arr.length)];
 
 
 /**
