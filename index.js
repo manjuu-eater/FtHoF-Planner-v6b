@@ -130,9 +130,9 @@ app.controller('myCtrl', function ($scope) {
 	 *
 	 * @param {number=} count load row count (default: 50)
 	 */
-	$scope.load_more = function (count) {
+	function load_more(count) {
 		$scope.lookahead += count ? count : 50;
-		$scope.update_cookies();
+		update_cookies();
 	}
 
 	/**
@@ -140,17 +140,17 @@ app.controller('myCtrl', function ($scope) {
 	 *
 	 * @param {number=} count cast count (default: 1)
 	 */
-	$scope.cast_spell = function (count) {
+	function cast_spell(count) {
 		const callCount = count || 1;
 		$scope.spellsCast += callCount;
 		$scope.spellsCastTotal += callCount;
-		$scope.update_cookies();
+		update_cookies();
 	}
 
 	/**
 	 * log $scope (debug function)
 	 */
-	$scope.print_scope = function () {
+	function print_scope() {
 		console.log($scope);
 	}
 
@@ -159,7 +159,7 @@ app.controller('myCtrl', function ($scope) {
 	 *
 	 * @param {string=} saveCode save code (if omitted, read from html)
 	 */
-	$scope.load_game = function (saveCode) {
+	function load_game(saveCode) {
 		// read from html
 		const saveStr = saveCode ? saveCode : String($scope.save_string);
 
@@ -186,13 +186,13 @@ app.controller('myCtrl', function ($scope) {
 		$scope.spellsCastTotal = saveData.spellsCastTotal;
 
 		// calculate and display FtHoF list
-		$scope.update_cookies();
+		update_cookies();
 	}
 
 	/**
 	 * calculate future FtHoF que and display result
 	 */
-	$scope.update_cookies = function () {
+	function update_cookies() {
 		$scope.cookies = []
 		$scope.randomSeeds = [];
 		$scope.baseBackfireChance = 0.15*($scope.supremeintellect?1.1:1)*($scope.diminishineptitude?0.1:1);
@@ -268,7 +268,7 @@ app.controller('myCtrl', function ($scope) {
 	 *
 	 * @param {number} contentId number of "content-*"
 	 */
-	$scope.collapse_interface = function (contentId) {
+	function collapse_interface(contentId) {
 		console.log("content-" + contentId);
 		if (contentId) {
 			var content = document.getElementById("content-" + contentId);
@@ -493,6 +493,16 @@ app.controller('myCtrl', function ($scope) {
 		// return FtHoF cast result
 		return cookie;
 	}
+
+
+	// set functions to $scope that called from index.html
+	$scope.load_more          = load_more;
+	$scope.cast_spell         = cast_spell;
+	$scope.print_scope        = print_scope;
+	$scope.load_game          = load_game;
+	$scope.update_cookies     = update_cookies;
+	$scope.collapse_interface = collapse_interface;
+
 
 	/**
 	 * M.spells from minigameGrimoire.js
