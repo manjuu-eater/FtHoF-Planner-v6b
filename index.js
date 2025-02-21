@@ -148,6 +148,12 @@ app.controller('myCtrl', function ($scope) {
 		// read from html
 		const saveStr = saveCode ? saveCode : String($scope.save_string);
 
+		// if blank, reset LocalStorage and quit
+		if (saveStr === "") {
+			window.localStorage.setItem("fthof_save_code", saveStr);
+			return;
+		}
+
 		// extract save data
 		const saveData = (() => {
 			try {
