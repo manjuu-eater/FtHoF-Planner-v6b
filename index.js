@@ -67,7 +67,7 @@ function choose(arr) {
  * @returns extracted save data
  */
 const extractSaveData = (saveCode) => {
-	// object for return
+	// return object
 	const saveData = {};
 
 	// load save data
