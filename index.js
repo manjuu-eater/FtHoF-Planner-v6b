@@ -162,7 +162,7 @@ app.controller('myCtrl', function ($scope) {
 		const saveStr = saveCode ? saveCode : String($scope.save_string);
 
 		// extract save data
-		const extracted = (() => {
+		const saveData = (() => {
 			try {
 				return extractSaveData(saveStr);
 			} catch {
@@ -171,24 +171,17 @@ app.controller('myCtrl', function ($scope) {
 		})();
 
 		// save code was invalid
-		if (!extracted) {
+		if (!saveData) {
 			console.error("invalid save code");
 			$scope.save_string = "invalid save code";
 			return;
 		}
 
-		const {
-			seed,
-			ascensionMode,
-			spellsCast,
-			spellsCastTotal,
-		} = extracted;
-
 		// set to $scope
-		$scope.seed = seed;
-		$scope.ascensionMode = ascensionMode;
-		$scope.spellsCast = spellsCast;
-		$scope.spellsCastTotal = spellsCastTotal;
+		$scope.seed = saveData.seed;
+		$scope.ascensionMode = saveData.ascensionMode;
+		$scope.spellsCast = saveData.spellsCast;
+		$scope.spellsCastTotal = saveData.spellsCastTotal;
 
 		// calculate and display FtHoF list
 		$scope.update_cookies();
