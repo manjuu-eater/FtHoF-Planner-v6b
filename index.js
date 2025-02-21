@@ -89,7 +89,7 @@ const extractSaveData = (saveCode) => {
 };
 
 
-var app = angular.module('myApp', ['ngMaterial']);
+const app = window.angular.module('myApp', ['ngMaterial']);
 app.controller('myCtrl', function ($scope) {
 	$scope.seed = ""
 	$scope.ascensionMode = 0
