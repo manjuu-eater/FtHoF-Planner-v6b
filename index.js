@@ -252,7 +252,7 @@ app.controller('myCtrl', function ($scope) {
 	const collapse_interface = (contentId) => {
 		console.log("content-" + contentId);
 		if (contentId) {
-			var content = document.getElementById("content-" + contentId);
+			const content = document.getElementById("content-" + contentId);
 			if (content === null) throw Error("not found: #content-" + contentId);
 			if (content.style.display === "block") {
 				content.style.display = "none";
@@ -328,14 +328,14 @@ app.controller('myCtrl', function ($scope) {
 		Math_seedrandom($scope.seed + '/' + spellsCast);
 
 		let spells = [];
-		for (var i in M_spells) {
+		for (const i in M_spells) {
 			if (i != "gambler's fever dream")
 				spells.push(M_spells[i]);
 		}
 
-		var gfdSpell = choose(spells);
+		const gfdSpell = choose(spells);
 		//simplifying the below cause this isn't patched yet afaict and i'll never be playing with diminished ineptitutde backfire
-		var gfdBackfire = 0.5; /*M.getFailChance(gfdSpell);
+		const gfdBackfire = 0.5; /*M.getFailChance(gfdSpell);
 
 		if(FortuneCookie.detectKUGamblerPatch()) gfdBackfire *= 2;
 		else gfdBackfire = Math.max(gfdBackfire, 0.5);*/
