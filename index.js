@@ -216,20 +216,20 @@ app.controller('myCtrl', function ($scope) {
 			}
 
 			if (randomSeeds[i] + backfireChance < 1) {
-				displayCookie.push(cookie[0]);
-				displayCookie.push(cookie[1]);
-				if (cookie[2].type == "Elder Frenzy") {displayCookie[0].type += " (EF)"; displayCookie[0].noteworthy = true;}
-				if (cookie[3].type == "Elder Frenzy") {displayCookie[1].type += " (EF)"; displayCookie[1].noteworthy = true;}
-				if (cookie[2].type == "Free Sugar Lump") {displayCookie[0].type += " (Lump)";}
-				if (cookie[3].type == "Free Sugar Lump") {displayCookie[1].type += " (Lump)";}
+				displayCookie.push(cookie1Success);
+				displayCookie.push(cookie2Success);
+				if (cookie1Backfire.type == "Elder Frenzy") {displayCookie[0].type += " (EF)"; displayCookie[0].noteworthy = true;}
+				if (cookie2Backfire.type == "Elder Frenzy") {displayCookie[1].type += " (EF)"; displayCookie[1].noteworthy = true;}
+				if (cookie1Backfire.type == "Free Sugar Lump") {displayCookie[0].type += " (Lump)";}
+				if (cookie2Backfire.type == "Free Sugar Lump") {displayCookie[1].type += " (Lump)";}
 			}
 			else {
-				displayCookie.push(cookie[2]);
-				displayCookie.push(cookie[3]);
-				if (cookie[0].type == "Building Special") {displayCookie[0].type += " (BS)"; displayCookie[0].noteworthy = true;}
-				if (cookie[1].type == "Building Special") {displayCookie[1].type += " (BS)"; displayCookie[1].noteworthy = true;}
-				if (cookie[0].type == "Free Sugar Lump") {displayCookie[0].type += " (Lump)";}
-				if (cookie[1].type == "Free Sugar Lump") {displayCookie[1].type += " (Lump)";}
+				displayCookie.push(cookie1Backfire);
+				displayCookie.push(cookie2Backfire);
+				if (cookie1Success.type == "Building Special") {displayCookie[0].type += " (BS)"; displayCookie[0].noteworthy = true;}
+				if (cookie2Success.type == "Building Special") {displayCookie[1].type += " (BS)"; displayCookie[1].noteworthy = true;}
+				if (cookie1Success.type == "Free Sugar Lump") {displayCookie[0].type += " (Lump)";}
+				if (cookie2Success.type == "Free Sugar Lump") {displayCookie[1].type += " (Lump)";}
 			}
 			displayCookie.push(gambler);
 
