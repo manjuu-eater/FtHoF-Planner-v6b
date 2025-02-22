@@ -176,6 +176,14 @@ export const M_spells = {
 
 
 /**
+ * Spell names that can be cast in the minigame.
+ *
+ * @type {string[]}
+ */
+export const spellNames = Object.values(M_spells).map(spell => spell.name);
+
+
+/**
  * cookie effect description dictionary
  *
  * @type { { [key: string]: string } }
