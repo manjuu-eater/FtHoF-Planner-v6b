@@ -5,6 +5,21 @@
  */
 
 
+// type definition
+/**
+ * @typedef {object} M_Spell
+ * @property {string} name
+ * @property {string} desc
+ * @property {string=} failDesc
+ * @property {[number, number]} icon
+ * @property {number} costMin
+ * @property {number} costPercent
+ * @property {Function=} failFunc
+ * @property {Function} win
+ * @property {Function=} fail
+ */
+
+
 /**
  * wrapper of Math.seedrandom(seed)
  *
@@ -27,6 +42,8 @@ export const choose = (arr) => arr[Math.floor(Math.random() * arr.length)];
 
 /**
  * M.spells from minigameGrimoire.js
+ *
+ * @type { {[key: string]: M_Spell} }
  */
 export const M_spells = {
 	'conjure baked goods': {
