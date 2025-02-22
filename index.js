@@ -109,18 +109,18 @@ app.controller('myCtrl', function ($scope) {
 	$scope.spellsCastTotal = 0
 	$scope.spellsCast = 0
 	$scope.dragonflight = false
-	$scope.supremeintellect = false
-	$scope.diminishineptitude = false
-	$scope.on_screen_cookies = 0
-	$scope.min_combo_length = 2
-	$scope.max_combo_length = 4
-	$scope.max_spread = 2
-	$scope.save_string = ""
+	$scope.buffSI = false
+	$scope.buffDI = false
+	$scope.screenCookieCount = 0
+	$scope.minComboLength = 2
+	$scope.maxComboLength = 4
+	$scope.maxSpread = 2
+	$scope.saveString = ""
 	$scope.lookahead = 200
 
 	// fill the save code input if previous save code exists in LocalStorage
 	const previousSaveCode = window.localStorage.getItem("fthof_save_code");
-	if (previousSaveCode) $scope.save_string = previousSaveCode;
+	if (previousSaveCode) $scope.saveString = previousSaveCode;
 
 	/**
 	 * push more items to FtHoF list
@@ -158,7 +158,7 @@ app.controller('myCtrl', function ($scope) {
 	 */
 	const load_game = (saveCode) => {
 		// read from html
-		const saveStr = saveCode ? saveCode : String($scope.save_string);
+		const saveStr = saveCode ? saveCode : String($scope.saveString);
 
 		// if blank, reset LocalStorage and quit
 		if (saveStr === "") {
@@ -178,7 +178,7 @@ app.controller('myCtrl', function ($scope) {
 		// save code was invalid
 		if (!saveData) {
 			console.error("invalid save code");
-			$scope.save_string = "invalid save code";
+			$scope.saveString = "invalid save code";
 			return;
 		}
 
@@ -199,9 +199,9 @@ app.controller('myCtrl', function ($scope) {
 		// read $scope variables
 		const {
 			lookahead,
-			min_combo_length, max_combo_length, max_spread,
-			include_ef_in_sequence, skip_abominations, skip_edifices,
-			on_screen_cookies, supremeintellect, diminishineptitude,
+			minComboLength, maxComboLength, maxSpread,
+			includeEF, skipRA, skipSE,
+			screenCookieCount, buffSI, buffDI,
 			seed,
 			spellsCastTotal,
 		} = $scope;
@@ -209,8 +209,8 @@ app.controller('myCtrl', function ($scope) {
 		// variables to set $scope.*
 		const cookies = []
 		const randomSeeds = [];
-		const baseBackfireChance = 0.15*(supremeintellect?1.1:1)*(diminishineptitude?0.1:1);
-		const backfireChance = baseBackfireChance+0.15*on_screen_cookies;
+		const baseBackfireChance = 0.15*(buffSI?1.1:1)*(buffDI?0.1:1);
+		const backfireChance = baseBackfireChance+0.15*screenCookieCount;
 		const displayCookies = [];
 		const combos = {};
 
@@ -237,11 +237,11 @@ app.controller('myCtrl', function ($scope) {
 			cookie.push(cookie2Backfire)
 			cookie.push(gambler)
 
-			if (cookiesContainBuffs(include_ef_in_sequence, cookie1Success, cookie2Success, cookie1Backfire, cookie2Backfire) || gambler.hasBs || (include_ef_in_sequence && gambler.hasEf)) {
+			if (cookiesContainBuffs(includeEF, cookie1Success, cookie2Success, cookie1Backfire, cookie2Backfire) || gambler.hasBs || (includeEF && gambler.hasEf)) {
 				bsIndices.push(i);
 			}
 
-			if ((skip_abominations && gambler.type == 'Resurrect Abomination') || (skip_edifices && gambler.type == 'Spontaneous Edifice' && !gambler.backfire)) {
+			if ((skipRA && gambler.type == 'Resurrect Abomination') || (skipSE && gambler.type == 'Spontaneous Edifice' && !gambler.backfire)) {
 				skipIndices.push(i);
 			}
 
@@ -272,8 +272,8 @@ app.controller('myCtrl', function ($scope) {
 		console.log(skipIndices);
 		console.log(Date.now()-currentTime);
 
-		for (let combo_length = min_combo_length; combo_length <= max_combo_length; combo_length++) {
-			combos[combo_length] = findCombos(combo_length, max_spread, bsIndices, skipIndices);
+		for (let combo_length = minComboLength; combo_length <= maxComboLength; combo_length++) {
+			combos[combo_length] = findCombos(combo_length, maxSpread, bsIndices, skipIndices);
 		}
 
 		console.log('Combos: ');
@@ -308,17 +308,17 @@ app.controller('myCtrl', function ($scope) {
 	};
 
 	//want to return shortest, and first sequence for a given combo_length
-	//if nothing that satisfies max_spread, shortest will still be filled but first will be empty
+	//if nothing that satisfies maxSpread, shortest will still be filled but first will be empty
 	/**
 	 * find comboes from indexes
 	 *
 	 * @param {number} combo_length want length of combo
-	 * @param {number} max_spread number of max spread (padding; neither BS nor skip)
+	 * @param {number} maxSpread number of max spread (padding; neither BS nor skip)
 	 * @param {number[]} bsIndices indexes of buff (Building Special etc.)
 	 * @param {number[]} skipIndices indexes of skippable GFD (Resurrect Abomination etc.)
 	 * @returns {object} found result
 	 */
-	const findCombos = (combo_length, max_spread, bsIndices, skipIndices) => {
+	const findCombos = (combo_length, maxSpread, bsIndices, skipIndices) => {
 		let shortestDistance = 10000000;
 		let shortestStart = -1;
 
@@ -333,7 +333,7 @@ app.controller('myCtrl', function ($scope) {
 			let skips = skipIndices.filter((idx) => idx > seqStart && idx < seqEnd && !bsIndices.includes(idx));
 
 			let distance = baseDistance - skips.length;
-			if (firstStart == -1 && distance <= combo_length + max_spread) {
+			if (firstStart == -1 && distance <= combo_length + maxSpread) {
 				firstStart = seqStart;
 				firstDistance = distance;
 			}
@@ -441,10 +441,10 @@ app.controller('myCtrl', function ($scope) {
 
 			// calculate failChance (same as L289)
 			let failChance = 0.15;
-			if ($scope.diminishineptitude) failChance *= 0.1;
+			if ($scope.buffDI) failChance *= 0.1;
 			//if (Game.hasBuff('Magic inept')) failChance*=5;  // TODO: not implemented
-			failChance *= 1 + 0.1 * $scope.supremeintellect;  // TODO: Reality Bending x1.1
-			failChance += 0.15 * $scope.on_screen_cookies;  // L46
+			failChance *= 1 + 0.1 * $scope.buffSI;  // TODO: Reality Bending x1.1
+			failChance += 0.15 * $scope.screenCookieCount;  // L46
 			return failChance;
 		})();
 
