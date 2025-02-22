@@ -7,7 +7,7 @@
 
 
 // import game related objects and functions
-import { Math_seedrandom, choose, M_spells } from "./game_related_data.js";
+import { Math_seedrandom, choose, M_spells, cookieEffectNameToDescription } from "./game_related_data.js";
 
 
 // type definition
@@ -18,40 +18,6 @@ import { Math_seedrandom, choose, M_spells } from "./game_related_data.js";
  * @property {string} description
  * @property {boolean} noteworthy
  */
-
-
-/**
- * cookie effect description dictionary
- * @type { { [key: string]: string } }
- */
-const cookieEffectNameToDescription = {
-	"Frenzy":
-		"Gives x7 cookie production for 77 seconds.",
-	"Lucky":
-		"Gain 13 cookies plus the lesser of 15% of bank or 15 minutes of production.",
-	"Click Frenzy":
-		"Gives x777 cookies per click for 13 seconds.",
-	"Cookie Storm":
-		"A massive amount of Golden Cookies appears for 7 seconds, each granting you 1–7 minutes worth of cookies.",
-	"Cookie Storm Drop":
-		"Gain cookies equal to 1-7 minutes production",
-	"Building Special":
-		"Get a variable bonus to cookie production for 30 seconds.",
-
-	"Clot":
-		"Reduce production by 50% for 66 seconds.",
-	"Ruin":
-		"Lose 13 cookies plus the lesser of 5% of bank or 15 minutes of production",
-	"Cursed Finger":
-		"Cookie production halted for 10 seconds, but each click is worth 10 seconds of production.",
-	"Elder Frenzy":
-		"Gives x666 cookie production for 6 seconds",
-
-	"Blab":
-		"Does nothing but has a funny message.",
-	"Free Sugar Lump":
-		"Add a free sugar lump to the pool",
-};
 
 
 /**
