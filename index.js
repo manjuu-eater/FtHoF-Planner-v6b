@@ -196,11 +196,13 @@ app.controller('myCtrl', function ($scope) {
 	 * calculate future FtHoF que and display result
 	 */
 	const update_cookies = () => {
-		$scope.cookies = []
-		$scope.randomSeeds = [];
-		$scope.baseBackfireChance = 0.15*($scope.supremeintellect?1.1:1)*($scope.diminishineptitude?0.1:1);
-		$scope.backfireChance = $scope.baseBackfireChance+0.15*$scope.on_screen_cookies;
-		$scope.displayCookies = [];
+		const cookies = []
+		const randomSeeds = [];
+		const baseBackfireChance = 0.15*($scope.supremeintellect?1.1:1)*($scope.diminishineptitude?0.1:1);
+		const backfireChance = baseBackfireChance+0.15*$scope.on_screen_cookies;
+		const displayCookies = [];
+		const combos = {};
+
 		const bsIndices = [];
 		const skipIndices = [];
 		const currentTime = Date.now();
@@ -208,7 +210,7 @@ app.controller('myCtrl', function ($scope) {
 			const currentSpell = i+$scope.spellsCastTotal;
 			Math_seedrandom($scope.seed + '/' + currentSpell);
 			const roll = Math.random();
-			$scope.randomSeeds.push(roll);
+			randomSeeds.push(roll);
 
 			const cookie = [];
 			const displayCookie = [];
@@ -232,7 +234,7 @@ app.controller('myCtrl', function ($scope) {
 				skipIndices.push(i);
 			}
 
-			if ($scope.randomSeeds[i] + $scope.backfireChance < 1) {
+			if (randomSeeds[i] + backfireChance < 1) {
 				displayCookie.push(cookie[0]);
 				displayCookie.push(cookie[1]);
 				if (cookie[2].type == "Elder Frenzy") {displayCookie[0].type += " (EF)"; displayCookie[0].noteworthy = true;}
@@ -251,23 +253,29 @@ app.controller('myCtrl', function ($scope) {
 			displayCookie.push(gambler);
 
 			// push to array
-			$scope.cookies.push(cookie);
-			$scope.displayCookies.push(displayCookie);
+			cookies.push(cookie);
+			displayCookies.push(displayCookie);
 		}
-		console.log($scope.cookies);
+		console.log(cookies);
 		console.log(bsIndices);
 		console.log(skipIndices);
 		console.log(Date.now()-currentTime);
 
-		$scope.combos = {}
-
 		for (let combo_length = $scope.min_combo_length; combo_length <= $scope.max_combo_length; combo_length++) {
-			$scope.combos[combo_length] = findCombos(combo_length, $scope.max_spread, bsIndices, skipIndices);
+			combos[combo_length] = findCombos(combo_length, $scope.max_spread, bsIndices, skipIndices);
 		}
 
 		console.log('Combos: ');
-		console.log($scope.combos);
+		console.log(combos);
 		console.log(Date.now()-currentTime);
+
+		// set to $scope
+		$scope.cookies             = cookies;
+		$scope.randomSeeds         = randomSeeds;
+		$scope.baseBackfireChance  = baseBackfireChance;
+		$scope.backfireChance      = backfireChance;
+		$scope.displayCookies      = displayCookies;
+		$scope.combos              = combos;
 	}
 
 	/**
