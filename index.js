@@ -127,9 +127,9 @@ app.controller('myCtrl', function ($scope) {
 	 *
 	 * @param {number=} count load row count (default: 50)
 	 */
-	const load_more = (count = 50) => {
+	const loadMore = (count = 50) => {
 		$scope.lookahead += count;
-		update_cookies();
+		updateCookies();
 	};
 
 	/**
@@ -137,17 +137,17 @@ app.controller('myCtrl', function ($scope) {
 	 *
 	 * @param {number=} count cast count (default: 1)
 	 */
-	const cast_spell = (count = 1) => {
+	const castSpell = (count = 1) => {
 		const callCount = count;
 		$scope.spellsCast += callCount;
 		$scope.spellsCastTotal += callCount;
-		update_cookies();
+		updateCookies();
 	};
 
 	/**
 	 * log $scope (debug function)
 	 */
-	const print_scope = () => {
+	const printScope = () => {
 		console.log($scope);
 	};
 
@@ -156,7 +156,7 @@ app.controller('myCtrl', function ($scope) {
 	 *
 	 * @param {string=} saveCode save code (if omitted, read from html)
 	 */
-	const load_game = (saveCode) => {
+	const loadGame = (saveCode) => {
 		// read from html
 		const saveStr = saveCode ? saveCode : String($scope.saveString);
 
@@ -195,7 +195,7 @@ app.controller('myCtrl', function ($scope) {
 	/**
 	 * calculate future FtHoF que and display result
 	 */
-	const update_cookies = () => {
+	const updateCookies = () => {
 		// read $scope variables
 		const {
 			lookahead,
@@ -294,7 +294,7 @@ app.controller('myCtrl', function ($scope) {
 	 *
 	 * @param {number} contentId number of "content-*"
 	 */
-	const collapse_interface = (contentId) => {
+	const collapseInterface = (contentId) => {
 		console.log("content-" + contentId);
 		if (contentId) {
 			const content = document.getElementById("content-" + contentId);
@@ -527,12 +527,12 @@ app.controller('myCtrl', function ($scope) {
 
 
 	// set functions to $scope that called from index.html
-	$scope.load_more          = load_more;
-	$scope.cast_spell         = cast_spell;
-	$scope.print_scope        = print_scope;
-	$scope.load_game          = load_game;
-	$scope.update_cookies     = update_cookies;
-	$scope.collapse_interface = collapse_interface;
+	$scope.loadMore          = loadMore;
+	$scope.castSpell         = castSpell;
+	$scope.printScope        = printScope;
+	$scope.loadGame          = loadGame;
+	$scope.updateCookies     = updateCookies;
+	$scope.collapseInterface = collapseInterface;
 });
 
 

@@ -35,7 +35,7 @@
                 <label>Save Code</label>
                 <input id="save_code" ng-model="saveString">
             </md-input-container>
-            <md-button class="md-raised md-primary" ng-click="load_game(); update_cookies()">
+            <md-button class="md-raised md-primary" ng-click="loadGame(); updateCookies()">
                 Import Save
             </md-button>
         </div>
@@ -133,11 +133,11 @@
 
         <md-divider></md-divider>
 
-        <md-button class="md-raised md-primary" ng-click="update_cookies()">Apply Settings</md-button>
-        <md-button class="md-raised md-primary" ng-click="cast_spell()">Cast Spell</md-button>
-        <md-button class="md-raised md-primary" ng-click="cast_spell(5)">x5</md-button>
-        <md-button class="md-raised md-primary" ng-click="cast_spell(10)">x10</md-button>
-        <!-- <md-button class="md-raised md-primary" ng-click="print_scope()">Print Scope</md-button> -->
+        <md-button class="md-raised md-primary" ng-click="updateCookies()">Apply Settings</md-button>
+        <md-button class="md-raised md-primary" ng-click="castSpell()">Cast Spell</md-button>
+        <md-button class="md-raised md-primary" ng-click="castSpell(5)">x5</md-button>
+        <md-button class="md-raised md-primary" ng-click="castSpell(10)">x10</md-button>
+        <!-- <md-button class="md-raised md-primary" ng-click="printScope()">Print Scope</md-button> -->
 
         <md-divider></md-divider>
 
@@ -240,7 +240,7 @@
             </tbody>
         </table>
 
-        <md-button class="md-raised md-primary" ng-click="load_more()">Load More</md-button>
+        <md-button class="md-raised md-primary" ng-click="loadMore()">Load More</md-button>
     </div>
 </div>
 </body>
