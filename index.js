@@ -196,41 +196,52 @@ app.controller('myCtrl', function ($scope) {
 	 * calculate future FtHoF que and display result
 	 */
 	const update_cookies = () => {
+		// read $scope variables
+		const {
+			lookahead,
+			min_combo_length, max_combo_length, max_spread,
+			include_ef_in_sequence, skip_abominations, skip_edifices,
+			on_screen_cookies, supremeintellect, diminishineptitude,
+			seed,
+			spellsCastTotal,
+		} = $scope;
+
+		// variables to set $scope.*
 		const cookies = []
 		const randomSeeds = [];
-		const baseBackfireChance = 0.15*($scope.supremeintellect?1.1:1)*($scope.diminishineptitude?0.1:1);
-		const backfireChance = baseBackfireChance+0.15*$scope.on_screen_cookies;
+		const baseBackfireChance = 0.15*(supremeintellect?1.1:1)*(diminishineptitude?0.1:1);
+		const backfireChance = baseBackfireChance+0.15*on_screen_cookies;
 		const displayCookies = [];
 		const combos = {};
 
 		const bsIndices = [];
 		const skipIndices = [];
 		const currentTime = Date.now();
-		for (let i = 0; i < $scope.lookahead; i++) {
-			const currentSpell = i+$scope.spellsCastTotal;
-			Math_seedrandom($scope.seed + '/' + currentSpell);
+		for (let i = 0; i < lookahead; i++) {
+			const currentSpell = i+spellsCastTotal;
+			Math_seedrandom(seed + '/' + currentSpell);
 			const roll = Math.random();
 			randomSeeds.push(roll);
 
 			const cookie = [];
 			const displayCookie = [];
-			const cookie1Success = castFtHoF($scope.spellsCastTotal + i, false, "GC")
-			const cookie2Success = castFtHoF($scope.spellsCastTotal + i, true, "GC")
-			//cookie3 = check_cookies($scope.spellsCastTotal + i, true)
-			const cookie1Backfire = castFtHoF($scope.spellsCastTotal + i, false, "RC")
-			const cookie2Backfire = castFtHoF($scope.spellsCastTotal + i, true, "RC")
-			const gambler = check_gambler($scope.spellsCastTotal + i)
+			const cookie1Success = castFtHoF(spellsCastTotal + i, false, "GC")
+			const cookie2Success = castFtHoF(spellsCastTotal + i, true, "GC")
+			//cookie3 = check_cookies(spellsCastTotal + i, true)
+			const cookie1Backfire = castFtHoF(spellsCastTotal + i, false, "RC")
+			const cookie2Backfire = castFtHoF(spellsCastTotal + i, true, "RC")
+			const gambler = check_gambler(spellsCastTotal + i)
 			cookie.push(cookie1Success)
 			cookie.push(cookie2Success)
 			cookie.push(cookie1Backfire)
 			cookie.push(cookie2Backfire)
 			cookie.push(gambler)
 
-			if (cookiesContainBuffs($scope.include_ef_in_sequence, cookie1Success, cookie2Success, cookie1Backfire, cookie2Backfire) || gambler.hasBs || ($scope.include_ef_in_sequence && gambler.hasEf)) {
+			if (cookiesContainBuffs(include_ef_in_sequence, cookie1Success, cookie2Success, cookie1Backfire, cookie2Backfire) || gambler.hasBs || (include_ef_in_sequence && gambler.hasEf)) {
 				bsIndices.push(i);
 			}
 
-			if (($scope.skip_abominations && gambler.type == 'Resurrect Abomination') || ($scope.skip_edifices && gambler.type == 'Spontaneous Edifice' && !gambler.backfire)) {
+			if ((skip_abominations && gambler.type == 'Resurrect Abomination') || (skip_edifices && gambler.type == 'Spontaneous Edifice' && !gambler.backfire)) {
 				skipIndices.push(i);
 			}
 
@@ -261,8 +272,8 @@ app.controller('myCtrl', function ($scope) {
 		console.log(skipIndices);
 		console.log(Date.now()-currentTime);
 
-		for (let combo_length = $scope.min_combo_length; combo_length <= $scope.max_combo_length; combo_length++) {
-			combos[combo_length] = findCombos(combo_length, $scope.max_spread, bsIndices, skipIndices);
+		for (let combo_length = min_combo_length; combo_length <= max_combo_length; combo_length++) {
+			combos[combo_length] = findCombos(combo_length, max_spread, bsIndices, skipIndices);
 		}
 
 		console.log('Combos: ');
