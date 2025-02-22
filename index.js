@@ -10,6 +10,16 @@
 import { Math_seedrandom, choose, M_spells } from "./game_related_data.js";
 
 
+// type definition
+/**
+ * @typedef {object} Cookie
+ * @property {string} type
+ * @property {boolean} wrath
+ * @property {string} description
+ * @property {boolean} noteworthy
+ */
+
+
 /**
  * cookie effect description dictionary
  * @type { { [key: string]: string } }
@@ -394,7 +404,7 @@ app.controller('myCtrl', function ($scope) {
 	 * @param {number} spellsCastTotal total spell cast count before this cast
 	 * @param {boolean} isOneChange true if one change
 	 * @param {("GC" | "RC")=} forceCookie "GC": force GC, "RC": force RC, default: roll with Math.random()
-	 * @returns FtHoF cast result
+	 * @returns {Cookie} FtHoF cast result
 	 */
 	const castFtHoF = (spellsCastTotal, isOneChange, forceCookie) => {
 		// set seed (L312)
