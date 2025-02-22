@@ -10,7 +10,10 @@
 import { Math_seedrandom, choose, M_spells } from "./game_related_data.js";
 
 
-/** cookie effect description dictionary */
+/**
+ * cookie effect description dictionary
+ * @type { { [key: string]: string } }
+ */
 const cookieEffectNameToDescription = {
 	"Frenzy":
 		"Gives x7 cookie production for 77 seconds.",
