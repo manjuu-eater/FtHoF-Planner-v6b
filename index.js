@@ -188,23 +188,23 @@ app.controller('myCtrl', function ($scope) {
 		$scope.baseBackfireChance = 0.15*($scope.supremeintellect?1.1:1)*($scope.diminishineptitude?0.1:1);
 		$scope.backfireChance = $scope.baseBackfireChance+0.15*$scope.on_screen_cookies;
 		$scope.displayCookies = [];
-		let bsIndices = [];
-		let skipIndices = [];
-		let currentTime = Date.now();
+		const bsIndices = [];
+		const skipIndices = [];
+		const currentTime = Date.now();
 		for (let i = 0; i < $scope.lookahead; i++) {
-			let currentSpell = i+$scope.spellsCastTotal;
+			const currentSpell = i+$scope.spellsCastTotal;
 			Math_seedrandom($scope.seed + '/' + currentSpell);
-			let roll = Math.random();
+			const roll = Math.random();
 			$scope.randomSeeds.push(roll);
 
 			$scope.cookies.push([])
 			$scope.displayCookies.push([])
-			let cookie1Success = castFtHoF($scope.spellsCastTotal + i, false, "GC")
-			let cookie2Success = castFtHoF($scope.spellsCastTotal + i, true, "GC")
+			const cookie1Success = castFtHoF($scope.spellsCastTotal + i, false, "GC")
+			const cookie2Success = castFtHoF($scope.spellsCastTotal + i, true, "GC")
 			//cookie3 = check_cookies($scope.spellsCastTotal + i, true)
-			let cookie1Backfire = castFtHoF($scope.spellsCastTotal + i, false, "RC")
-			let cookie2Backfire = castFtHoF($scope.spellsCastTotal + i, true, "RC")
-			let gambler = check_gambler($scope.spellsCastTotal + i)
+			const cookie1Backfire = castFtHoF($scope.spellsCastTotal + i, false, "RC")
+			const cookie2Backfire = castFtHoF($scope.spellsCastTotal + i, true, "RC")
+			const gambler = check_gambler($scope.spellsCastTotal + i)
 			$scope.cookies[i].push(cookie1Success)
 			$scope.cookies[i].push(cookie2Success)
 			$scope.cookies[i].push(cookie1Backfire)
