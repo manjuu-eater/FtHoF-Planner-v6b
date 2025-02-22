@@ -210,19 +210,19 @@ app.controller('myCtrl', function ($scope) {
 			const roll = Math.random();
 			$scope.randomSeeds.push(roll);
 
-			$scope.cookies.push([])
-			$scope.displayCookies.push([])
+			const cookie = [];
+			const displayCookie = [];
 			const cookie1Success = castFtHoF($scope.spellsCastTotal + i, false, "GC")
 			const cookie2Success = castFtHoF($scope.spellsCastTotal + i, true, "GC")
 			//cookie3 = check_cookies($scope.spellsCastTotal + i, true)
 			const cookie1Backfire = castFtHoF($scope.spellsCastTotal + i, false, "RC")
 			const cookie2Backfire = castFtHoF($scope.spellsCastTotal + i, true, "RC")
 			const gambler = check_gambler($scope.spellsCastTotal + i)
-			$scope.cookies[i].push(cookie1Success)
-			$scope.cookies[i].push(cookie2Success)
-			$scope.cookies[i].push(cookie1Backfire)
-			$scope.cookies[i].push(cookie2Backfire)
-			$scope.cookies[i].push(gambler)
+			cookie.push(cookie1Success)
+			cookie.push(cookie2Success)
+			cookie.push(cookie1Backfire)
+			cookie.push(cookie2Backfire)
+			cookie.push(gambler)
 
 			if (cookiesContainBuffs($scope.include_ef_in_sequence, cookie1Success, cookie2Success, cookie1Backfire, cookie2Backfire) || gambler.hasBs || ($scope.include_ef_in_sequence && gambler.hasEf)) {
 				bsIndices.push(i);
@@ -233,22 +233,26 @@ app.controller('myCtrl', function ($scope) {
 			}
 
 			if ($scope.randomSeeds[i] + $scope.backfireChance < 1) {
-				$scope.displayCookies[i].push($scope.cookies[i][0]);
-				$scope.displayCookies[i].push($scope.cookies[i][1]);
-				if ($scope.cookies[i][2].type == "Elder Frenzy") {$scope.displayCookies[i][0].type += " (EF)"; $scope.displayCookies[i][0].noteworthy = true;}
-				if ($scope.cookies[i][3].type == "Elder Frenzy") {$scope.displayCookies[i][1].type += " (EF)"; $scope.displayCookies[i][1].noteworthy = true;}
-				if ($scope.cookies[i][2].type == "Free Sugar Lump") {$scope.displayCookies[i][0].type += " (Lump)";}
-				if ($scope.cookies[i][3].type == "Free Sugar Lump") {$scope.displayCookies[i][1].type += " (Lump)";}
+				displayCookie.push(cookie[0]);
+				displayCookie.push(cookie[1]);
+				if (cookie[2].type == "Elder Frenzy") {displayCookie[0].type += " (EF)"; displayCookie[0].noteworthy = true;}
+				if (cookie[3].type == "Elder Frenzy") {displayCookie[1].type += " (EF)"; displayCookie[1].noteworthy = true;}
+				if (cookie[2].type == "Free Sugar Lump") {displayCookie[0].type += " (Lump)";}
+				if (cookie[3].type == "Free Sugar Lump") {displayCookie[1].type += " (Lump)";}
 			}
 			else {
-				$scope.displayCookies[i].push($scope.cookies[i][2]);
-				$scope.displayCookies[i].push($scope.cookies[i][3]);
-				if ($scope.cookies[i][0].type == "Building Special") {$scope.displayCookies[i][0].type += " (BS)"; $scope.displayCookies[i][0].noteworthy = true;}
-				if ($scope.cookies[i][1].type == "Building Special") {$scope.displayCookies[i][1].type += " (BS)"; $scope.displayCookies[i][1].noteworthy = true;}
-				if ($scope.cookies[i][0].type == "Free Sugar Lump") {$scope.displayCookies[i][0].type += " (Lump)";}
-				if ($scope.cookies[i][1].type == "Free Sugar Lump") {$scope.displayCookies[i][1].type += " (Lump)";}
+				displayCookie.push(cookie[2]);
+				displayCookie.push(cookie[3]);
+				if (cookie[0].type == "Building Special") {displayCookie[0].type += " (BS)"; displayCookie[0].noteworthy = true;}
+				if (cookie[1].type == "Building Special") {displayCookie[1].type += " (BS)"; displayCookie[1].noteworthy = true;}
+				if (cookie[0].type == "Free Sugar Lump") {displayCookie[0].type += " (Lump)";}
+				if (cookie[1].type == "Free Sugar Lump") {displayCookie[1].type += " (Lump)";}
 			}
-			$scope.displayCookies[i].push(gambler);
+			displayCookie.push(gambler);
+
+			// push to array
+			$scope.cookies.push(cookie);
+			$scope.displayCookies.push(displayCookie);
 		}
 		console.log($scope.cookies);
 		console.log(bsIndices);
