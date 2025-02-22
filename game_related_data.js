@@ -42,6 +42,7 @@ export const choose = (arr) => arr[Math.floor(Math.random() * arr.length)];
 
 /**
  * M.spells from minigameGrimoire.js
+ * (not same as v2.052)
  *
  * @type { {[key: string]: M_Spell} }
  */
@@ -176,6 +177,7 @@ export const M_spells = {
 
 /**
  * cookie effect description dictionary
+ *
  * @type { { [key: string]: string } }
  */
 export const cookieEffectNameToDescription = {
