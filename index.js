@@ -178,9 +178,6 @@ app.controller('myCtrl', function ($scope) {
 		$scope.ascensionMode = saveData.ascensionMode;
 		$scope.spellsCast = saveData.spellsCast;
 		$scope.spellsCastTotal = saveData.spellsCastTotal;
-
-		// calculate and display FtHoF list
-		update_cookies();
 	};
 
 	/**

@@ -35,7 +35,9 @@
                 <label>Save Code</label>
                 <input id="save_code" ng-model="save_string">
             </md-input-container>
-            <md-button class="md-raised md-primary" ng-click="load_game()">Import Save</md-button>
+            <md-button class="md-raised md-primary" ng-click="load_game(); update_cookies()">
+                Import Save
+            </md-button>
         </div>
 
         <p><b>
