@@ -184,12 +184,12 @@ app.controller('myCtrl', function ($scope) {
 		const displayCookies = [];
 		const combos = {};
 
-		const bsIndices = [];
-		const skipIndices = [];
-		const currentTime = Date.now();
+		const comboIndexes = [];
+		const skipIndexes = [];
+		const processStartTime = Date.now();
 		for (let i = 0; i < lookahead; i++) {
-			const currentSpell = i+spellsCastTotal;
-			Math_seedrandom(seed + '/' + currentSpell);
+			const currentTotalSpell = i+spellsCastTotal;
+			Math_seedrandom(seed + '/' + currentTotalSpell);
 			const roll = Math.random();
 			randomSeeds.push(roll);
 
@@ -211,14 +211,14 @@ app.controller('myCtrl', function ($scope) {
 				|| gambler.hasBs
 				|| (includeEF && gambler.hasEf)
 			) {
-				bsIndices.push(i);
+				comboIndexes.push(i);
 			}
 
 			if (
 				(skipRA && gambler.type == 'Resurrect Abomination')
 				|| (skipSE && gambler.type == 'Spontaneous Edifice' && !gambler.backfire)
 			) {
-				skipIndices.push(i);
+				skipIndexes.push(i);
 			}
 
 			if (randomSeeds[i] + backfireChance < 1) {
@@ -255,17 +255,17 @@ app.controller('myCtrl', function ($scope) {
 			displayCookies.push(displayCookie);
 		}
 		console.log(cookies);
-		console.log(bsIndices);
-		console.log(skipIndices);
-		console.log(Date.now()-currentTime);
+		console.log(comboIndexes);
+		console.log(skipIndexes);
+		console.log(Date.now()-processStartTime);
 
 		for (let combo_length = minComboLength; combo_length <= maxComboLength; combo_length++) {
-			combos[combo_length] = findCombos(combo_length, maxSpread, bsIndices, skipIndices);
+			combos[combo_length] = findCombos(combo_length, maxSpread, comboIndexes, skipIndexes);
 		}
 
 		console.log('Combos: ');
 		console.log(combos);
-		console.log(Date.now()-currentTime);
+		console.log(Date.now()-processStartTime);
 
 		// set to $scope
 		$scope.cookies             = cookies;
