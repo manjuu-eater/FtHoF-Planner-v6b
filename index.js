@@ -321,14 +321,16 @@ app.controller('myCtrl', function ($scope) {
 			const skips = skipIndexes.filter((idx) => idx > seqStart && idx < seqEnd && !comboIndexes.includes(idx));
 
 			const distance = baseDistance - skips.length;
-			if (firstStart == -1 && distance <= comboLength + maxSpread) {
-				firstStart = seqStart;
-				firstDistance = distance;
-			}
+			if (distance <= comboLength + maxSpread) {
+				if (firstStart == -1) {
+					firstStart = seqStart;
+					firstDistance = distance;
+				}
 
-			if (distance < shortestDistance) {
-				shortestStart = seqStart;
-				shortestDistance = distance;
+				if (distance < shortestDistance) {
+					shortestStart = seqStart;
+					shortestDistance = distance;
+				}
 			}
 		}
 
