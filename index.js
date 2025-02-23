@@ -195,19 +195,19 @@ app.controller('myCtrl', function ($scope) {
 
 			const cookie = [];
 			const displayCookie = [];
-			const cookie1Success = castFtHoF(spellsCastTotal + i, false, "GC");
-			const cookie2Success = castFtHoF(spellsCastTotal + i, true, "GC");
-			const cookie1Backfire = castFtHoF(spellsCastTotal + i, false, "RC");
-			const cookie2Backfire = castFtHoF(spellsCastTotal + i, true, "RC");
+			const cookie0GC = castFtHoF(spellsCastTotal + i, false, "GC");
+			const cookie1GC = castFtHoF(spellsCastTotal + i, true, "GC");
+			const cookie0RC = castFtHoF(spellsCastTotal + i, false, "RC");
+			const cookie1RC = castFtHoF(spellsCastTotal + i, true, "RC");
 			const gambler = check_gambler(spellsCastTotal + i);
-			cookie.push(cookie1Success);
-			cookie.push(cookie2Success);
-			cookie.push(cookie1Backfire);
-			cookie.push(cookie2Backfire);
+			cookie.push(cookie0GC);
+			cookie.push(cookie1GC);
+			cookie.push(cookie0RC);
+			cookie.push(cookie1RC);
 			cookie.push(gambler);
 
 			if (
-				cookiesContainBuffs(includeEF, cookie1Success, cookie2Success, cookie1Backfire, cookie2Backfire)
+				cookiesContainBuffs(includeEF, cookie0GC, cookie1GC, cookie0RC, cookie1RC)
 				|| gambler.hasBs
 				|| (includeEF && gambler.hasEf)
 			) {
@@ -222,31 +222,31 @@ app.controller('myCtrl', function ($scope) {
 			}
 
 			if (randomSeeds[i] + backfireChance < 1) {
-				displayCookie.push(cookie1Success);
-				displayCookie.push(cookie2Success);
-				if (cookie1Backfire.type == "Elder Frenzy") {
-					cookie1Success.type += " (EF)";
-					cookie1Success.noteworthy = true;
+				displayCookie.push(cookie0GC);
+				displayCookie.push(cookie1GC);
+				if (cookie0RC.type == "Elder Frenzy") {
+					cookie0GC.type += " (EF)";
+					cookie0GC.noteworthy = true;
 				}
-				if (cookie2Backfire.type == "Elder Frenzy") {
-					cookie2Success.type += " (EF)";
-					cookie2Success.noteworthy = true;
+				if (cookie1RC.type == "Elder Frenzy") {
+					cookie1GC.type += " (EF)";
+					cookie1GC.noteworthy = true;
 				}
-				if (cookie1Backfire.type == "Free Sugar Lump") cookie1Success.type += " (Lump)";
-				if (cookie2Backfire.type == "Free Sugar Lump") cookie2Success.type += " (Lump)";
+				if (cookie0RC.type == "Free Sugar Lump") cookie0GC.type += " (Lump)";
+				if (cookie1RC.type == "Free Sugar Lump") cookie1GC.type += " (Lump)";
 			} else {
-				displayCookie.push(cookie1Backfire);
-				displayCookie.push(cookie2Backfire);
-				if (cookie1Success.type == "Building Special") {
-					cookie1Backfire.type += " (BS)";
-					cookie1Backfire.noteworthy = true;
+				displayCookie.push(cookie0RC);
+				displayCookie.push(cookie1RC);
+				if (cookie0GC.type == "Building Special") {
+					cookie0RC.type += " (BS)";
+					cookie0RC.noteworthy = true;
 				}
-				if (cookie2Success.type == "Building Special") {
-					cookie2Backfire.type += " (BS)";
-					cookie2Backfire.noteworthy = true;
+				if (cookie1GC.type == "Building Special") {
+					cookie1RC.type += " (BS)";
+					cookie1RC.noteworthy = true;
 				}
-				if (cookie1Success.type == "Free Sugar Lump") cookie1Backfire.type += " (Lump)";
-				if (cookie2Success.type == "Free Sugar Lump") cookie2Backfire.type += " (Lump)";
+				if (cookie0GC.type == "Free Sugar Lump") cookie0RC.type += " (Lump)";
+				if (cookie1GC.type == "Free Sugar Lump") cookie1RC.type += " (Lump)";
 			}
 			displayCookie.push(gambler);
 
