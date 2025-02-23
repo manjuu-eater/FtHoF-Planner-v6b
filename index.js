@@ -307,6 +307,9 @@ app.controller('myCtrl', function ($scope) {
 	 * @returns {object} found result
 	 */
 	const findCombos = (comboLength, maxSpread, comboIndexes, skipIndexes) => {
+		// whether to output combos exceeding maxSpread
+		const outputOverflowedCombo = false;
+
 		let shortestDistance = 10000000;
 		let shortestStart = -1;
 
@@ -321,16 +324,15 @@ app.controller('myCtrl', function ($scope) {
 			const skips = skipIndexes.filter((idx) => idx > seqStart && idx < seqEnd && !comboIndexes.includes(idx));
 
 			const distance = baseDistance - skips.length;
-			if (distance <= comboLength + maxSpread) {
-				if (firstStart == -1) {
-					firstStart = seqStart;
-					firstDistance = distance;
-				}
+			const isOverflowed = (distance > comboLength + maxSpread);
+			if (firstStart == -1 && !isOverflowed) {
+				firstStart = seqStart;
+				firstDistance = distance;
+			}
 
-				if (distance < shortestDistance) {
-					shortestStart = seqStart;
-					shortestDistance = distance;
-				}
+			if (distance < shortestDistance && (!isOverflowed || outputOverflowedCombo)) {
+				shortestStart = seqStart;
+				shortestDistance = distance;
 			}
 		}
 
