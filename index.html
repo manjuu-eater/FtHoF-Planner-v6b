@@ -196,12 +196,12 @@
                     <!-- Random Number -->
                     <td><div>
                         {{
-                            randomSeeds[$index].toFixed(4)
+                            firstRandomNumbers[$index].toFixed(4)
                             + " ("
                             + (
-                                randomSeeds[$index] + baseBackfireChance > 1
+                                firstRandomNumbers[$index] + baseBackfireChance > 1
                                 ? 0
-                                : ((1.075-randomSeeds[$index] - baseBackfireChance) / 0.15).toFixed(0)
+                                : ((1.075-firstRandomNumbers[$index] - baseBackfireChance) / 0.15).toFixed(0)
                             )
                             + " GC)"
                         }}

@@ -178,7 +178,7 @@ app.controller('myCtrl', function ($scope) {
 
 		// variables to set $scope.*
 		const cookies = []
-		const randomSeeds = [];
+		const firstRandomNumbers = [];
 		const baseBackfireChance = 0.15*(buffSI?1.1:1)*(buffDI?0.1:1);
 		const backfireChance = baseBackfireChance+0.15*screenCookieCount;
 		const displayCookies = [];
@@ -191,7 +191,7 @@ app.controller('myCtrl', function ($scope) {
 			const currentTotalSpell = i+spellsCastTotal;
 			Math_seedrandom(seed + '/' + currentTotalSpell);
 			const roll = Math.random();
-			randomSeeds.push(roll);
+			firstRandomNumbers.push(roll);
 
 			const cookie = [];
 			const displayCookie = [];
@@ -221,7 +221,7 @@ app.controller('myCtrl', function ($scope) {
 				skipIndexes.push(i);
 			}
 
-			if (randomSeeds[i] + backfireChance < 1) {
+			if (firstRandomNumbers[i] + backfireChance < 1) {
 				displayCookie.push(cookie0GC);
 				displayCookie.push(cookie1GC);
 				if (cookie0RC.type == "Elder Frenzy") {
@@ -269,7 +269,7 @@ app.controller('myCtrl', function ($scope) {
 
 		// set to $scope
 		$scope.cookies             = cookies;
-		$scope.randomSeeds         = randomSeeds;
+		$scope.firstRandomNumbers         = firstRandomNumbers;
 		$scope.baseBackfireChance  = baseBackfireChance;
 		$scope.backfireChance      = backfireChance;
 		$scope.displayCookies      = displayCookies;
