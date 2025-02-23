@@ -314,13 +314,13 @@ app.controller('myCtrl', function ($scope) {
 		let firstStart = -1
 
 		for (let i = 0; i + combo_length <= bsIndices.length; i++) {
-			let seqStart = bsIndices[i];
-			let seqEnd = bsIndices[i + combo_length - 1];
-			let baseDistance = seqEnd - seqStart + 1;
+			const seqStart = bsIndices[i];
+			const seqEnd = bsIndices[i + combo_length - 1];
+			const baseDistance = seqEnd - seqStart + 1;
 
-			let skips = skipIndices.filter((idx) => idx > seqStart && idx < seqEnd && !bsIndices.includes(idx));
+			const skips = skipIndices.filter((idx) => idx > seqStart && idx < seqEnd && !bsIndices.includes(idx));
 
-			let distance = baseDistance - skips.length;
+			const distance = baseDistance - skips.length;
 			if (firstStart == -1 && distance <= combo_length + maxSpread) {
 				firstStart = seqStart;
 				firstDistance = distance;
