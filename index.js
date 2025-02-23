@@ -195,41 +195,58 @@ app.controller('myCtrl', function ($scope) {
 
 			const cookie = [];
 			const displayCookie = [];
-			const cookie1Success = castFtHoF(spellsCastTotal + i, false, "GC")
-			const cookie2Success = castFtHoF(spellsCastTotal + i, true, "GC")
-			//cookie3 = check_cookies(spellsCastTotal + i, true)
-			const cookie1Backfire = castFtHoF(spellsCastTotal + i, false, "RC")
-			const cookie2Backfire = castFtHoF(spellsCastTotal + i, true, "RC")
-			const gambler = check_gambler(spellsCastTotal + i)
-			cookie.push(cookie1Success)
-			cookie.push(cookie2Success)
-			cookie.push(cookie1Backfire)
-			cookie.push(cookie2Backfire)
-			cookie.push(gambler)
+			const cookie1Success = castFtHoF(spellsCastTotal + i, false, "GC");
+			const cookie2Success = castFtHoF(spellsCastTotal + i, true, "GC");
+			const cookie1Backfire = castFtHoF(spellsCastTotal + i, false, "RC");
+			const cookie2Backfire = castFtHoF(spellsCastTotal + i, true, "RC");
+			const gambler = check_gambler(spellsCastTotal + i);
+			cookie.push(cookie1Success);
+			cookie.push(cookie2Success);
+			cookie.push(cookie1Backfire);
+			cookie.push(cookie2Backfire);
+			cookie.push(gambler);
 
-			if (cookiesContainBuffs(includeEF, cookie1Success, cookie2Success, cookie1Backfire, cookie2Backfire) || gambler.hasBs || (includeEF && gambler.hasEf)) {
+			if (
+				cookiesContainBuffs(includeEF, cookie1Success, cookie2Success, cookie1Backfire, cookie2Backfire)
+				|| gambler.hasBs
+				|| (includeEF && gambler.hasEf)
+			) {
 				bsIndices.push(i);
 			}
 
-			if ((skipRA && gambler.type == 'Resurrect Abomination') || (skipSE && gambler.type == 'Spontaneous Edifice' && !gambler.backfire)) {
+			if (
+				(skipRA && gambler.type == 'Resurrect Abomination')
+				|| (skipSE && gambler.type == 'Spontaneous Edifice' && !gambler.backfire)
+			) {
 				skipIndices.push(i);
 			}
 
 			if (randomSeeds[i] + backfireChance < 1) {
 				displayCookie.push(cookie1Success);
 				displayCookie.push(cookie2Success);
-				if (cookie1Backfire.type == "Elder Frenzy") {cookie1Success.type += " (EF)"; cookie1Success.noteworthy = true;}
-				if (cookie2Backfire.type == "Elder Frenzy") {cookie2Success.type += " (EF)"; cookie2Success.noteworthy = true;}
-				if (cookie1Backfire.type == "Free Sugar Lump") {cookie1Success.type += " (Lump)";}
-				if (cookie2Backfire.type == "Free Sugar Lump") {cookie2Success.type += " (Lump)";}
-			}
-			else {
+				if (cookie1Backfire.type == "Elder Frenzy") {
+					cookie1Success.type += " (EF)";
+					cookie1Success.noteworthy = true;
+				}
+				if (cookie2Backfire.type == "Elder Frenzy") {
+					cookie2Success.type += " (EF)";
+					cookie2Success.noteworthy = true;
+				}
+				if (cookie1Backfire.type == "Free Sugar Lump") cookie1Success.type += " (Lump)";
+				if (cookie2Backfire.type == "Free Sugar Lump") cookie2Success.type += " (Lump)";
+			} else {
 				displayCookie.push(cookie1Backfire);
 				displayCookie.push(cookie2Backfire);
-				if (cookie1Success.type == "Building Special") {cookie1Backfire.type += " (BS)"; cookie1Backfire.noteworthy = true;}
-				if (cookie2Success.type == "Building Special") {cookie2Backfire.type += " (BS)"; cookie2Backfire.noteworthy = true;}
-				if (cookie1Success.type == "Free Sugar Lump") {cookie1Backfire.type += " (Lump)";}
-				if (cookie2Success.type == "Free Sugar Lump") {cookie2Backfire.type += " (Lump)";}
+				if (cookie1Success.type == "Building Special") {
+					cookie1Backfire.type += " (BS)";
+					cookie1Backfire.noteworthy = true;
+				}
+				if (cookie2Success.type == "Building Special") {
+					cookie2Backfire.type += " (BS)";
+					cookie2Backfire.noteworthy = true;
+				}
+				if (cookie1Success.type == "Free Sugar Lump") cookie1Backfire.type += " (Lump)";
+				if (cookie2Success.type == "Free Sugar Lump") cookie2Backfire.type += " (Lump)";
 			}
 			displayCookie.push(gambler);
 
@@ -257,7 +274,7 @@ app.controller('myCtrl', function ($scope) {
 		$scope.backfireChance      = backfireChance;
 		$scope.displayCookies      = displayCookies;
 		$scope.combos              = combos;
-	}
+	};
 
 	/**
 	 * toggle interface button
