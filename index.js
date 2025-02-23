@@ -300,28 +300,28 @@ app.controller('myCtrl', function ($scope) {
 	/**
 	 * find comboes from indexes
 	 *
-	 * @param {number} combo_length want length of combo
+	 * @param {number} comboLength want length of combo
 	 * @param {number} maxSpread number of max spread (padding; neither BS nor skip)
-	 * @param {number[]} bsIndices indexes of buff (Building Special etc.)
-	 * @param {number[]} skipIndices indexes of skippable GFD (Resurrect Abomination etc.)
+	 * @param {number[]} comboIndexes indexes of buff (Building Special etc.)
+	 * @param {number[]} skipIndexes indexes of skippable GFD (Resurrect Abomination etc.)
 	 * @returns {object} found result
 	 */
-	const findCombos = (combo_length, maxSpread, bsIndices, skipIndices) => {
+	const findCombos = (comboLength, maxSpread, comboIndexes, skipIndexes) => {
 		let shortestDistance = 10000000;
 		let shortestStart = -1;
 
 		let firstDistance = 10000000;
 		let firstStart = -1
 
-		for (let i = 0; i + combo_length <= bsIndices.length; i++) {
-			const seqStart = bsIndices[i];
-			const seqEnd = bsIndices[i + combo_length - 1];
+		for (let i = 0; i + comboLength <= comboIndexes.length; i++) {
+			const seqStart = comboIndexes[i];
+			const seqEnd = comboIndexes[i + comboLength - 1];
 			const baseDistance = seqEnd - seqStart + 1;
 
-			const skips = skipIndices.filter((idx) => idx > seqStart && idx < seqEnd && !bsIndices.includes(idx));
+			const skips = skipIndexes.filter((idx) => idx > seqStart && idx < seqEnd && !comboIndexes.includes(idx));
 
 			const distance = baseDistance - skips.length;
-			if (firstStart == -1 && distance <= combo_length + maxSpread) {
+			if (firstStart == -1 && distance <= comboLength + maxSpread) {
 				firstStart = seqStart;
 				firstDistance = distance;
 			}
