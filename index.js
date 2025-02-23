@@ -184,9 +184,11 @@ app.controller('myCtrl', function ($scope) {
 		const displayCookies = [];
 		const combos = {};
 
+		// srart timer
+		console.time("updateCookies");
+
 		const comboIndexes = [];
 		const skipIndexes = [];
-		const processStartTime = Date.now();
 		for (let i = 0; i < lookahead; i++) {
 			const currentTotalSpell = i+spellsCastTotal;
 			Math_seedrandom(seed + '/' + currentTotalSpell);
@@ -254,18 +256,17 @@ app.controller('myCtrl', function ($scope) {
 			cookies.push(cookie);
 			displayCookies.push(displayCookie);
 		}
-		console.log(cookies);
-		console.log(comboIndexes);
-		console.log(skipIndexes);
-		console.log(Date.now()-processStartTime);
+		console.log("cookies:", cookies);
+		console.log("comboIndexes:", comboIndexes);
+		console.log("skipIndexes:", skipIndexes);
+		console.timeLog("updateCookies");
 
 		for (let combo_length = minComboLength; combo_length <= maxComboLength; combo_length++) {
 			combos[combo_length] = findCombos(combo_length, maxSpread, comboIndexes, skipIndexes);
 		}
 
-		console.log('Combos: ');
-		console.log(combos);
-		console.log(Date.now()-processStartTime);
+		console.log("Combos:", combos);
+		console.timeEnd("updateCookies");
 
 		// set to $scope
 		$scope.cookies             = cookies;
