@@ -418,17 +418,32 @@ app.controller('myCtrl', function ($scope) {
 	};
 
 	/**
-	 * calculate fail chance of FtHoF
+	 * calculate base fail chance of FtHoF
+	 * (without considering count of GCs on screen)
 	 * simulating: minigameGrimoire.js > M.getFailChance (L289 on v2.052)
 	 *
 	 * @returns {number} fail chance of FtHoF
 	 */
-	const getFailChance = () => {
+	const getBaseFailChance = () => {
 		let failChance = 0.15;
 		if ($scope.buffDI) failChance *= 0.1;
 		//if (Game.hasBuff('Magic inept')) failChance*=5;  // TODO: not implemented
 		failChance *= 1 + 0.1 * $scope.auraSI;  // TODO: Reality Bending x1.1
-		failChance += 0.15 * $scope.screenCookieCount;  // L46
+		return failChance;
+	};
+
+	/**
+	 * calculate fail chance of FtHoF
+	 * simulating: minigameGrimoire.js > M.getFailChance (L289 on v2.052)
+	 *
+	 * @param {number=} baseFailChance
+	 * @returns {number} fail chance of FtHoF
+	 */
+	const getFailChance = (baseFailChance) => {
+		const failChance = (
+			(baseFailChance || getBaseFailChance())
+			+ 0.15 * $scope.screenCookieCount  // L46
+		);
 		return failChance;
 	};
 
