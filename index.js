@@ -448,24 +448,26 @@ app.controller('myCtrl', function ($scope) {
 		const comboIndexes = [];
 		const skipIndexes = [];
 		for (let i = 0; i < lookahead; i++) {
-			const currentTotalSpell = i+spellsCastTotal;
+			const currentTotalSpell = i + spellsCastTotal;
+
+			// get first random number and push to array
 			Math_seedrandom(seed + '/' + currentTotalSpell);
 			const roll = Math.random();
 			firstRandomNumbers.push(roll);
 
-			const cookie = [];
-			const displayCookie = [];
+			// FtHoF success or backfire (L313)
+			const isFthofWin = roll < 1 - backfireChance;
+
+			// get FtHoF results (both success and backfire)
 			const cookie0GC = castFtHoF(spellsCastTotal + i, false, "GC");
 			const cookie1GC = castFtHoF(spellsCastTotal + i, true, "GC");
 			const cookie0RC = castFtHoF(spellsCastTotal + i, false, "RC");
 			const cookie1RC = castFtHoF(spellsCastTotal + i, true, "RC");
 			const gambler = check_gambler(spellsCastTotal + i);
-			cookie.push(cookie0GC);
-			cookie.push(cookie1GC);
-			cookie.push(cookie0RC);
-			cookie.push(cookie1RC);
-			cookie.push(gambler);
+			const cookie = [cookie0GC, cookie1GC, cookie0RC, cookie1RC, gambler];
+			const displayCookie = [];
 
+			// determine whether current cookies can be part of a combo
 			if (
 				cookiesContainBuffs(includeEF, cookie0GC, cookie1GC, cookie0RC, cookie1RC)
 				|| gambler.hasBs
@@ -474,6 +476,7 @@ app.controller('myCtrl', function ($scope) {
 				comboIndexes.push(i);
 			}
 
+			// determine whether GFD can be skipped
 			if (
 				(skipRA && gambler.type == 'Resurrect Abomination')
 				|| (skipSE && gambler.type == 'Spontaneous Edifice' && !gambler.backfire)
@@ -481,7 +484,8 @@ app.controller('myCtrl', function ($scope) {
 				skipIndexes.push(i);
 			}
 
-			if (firstRandomNumbers[i] + backfireChance < 1) {
+			// add good effect information about hidden GC/RC
+			if (isFthofWin) {
 				displayCookie.push(cookie0GC);
 				displayCookie.push(cookie1GC);
 				if (cookie0RC.type == "Elder Frenzy") {
@@ -508,17 +512,22 @@ app.controller('myCtrl', function ($scope) {
 				if (cookie0GC.type == "Free Sugar Lump") cookie0RC.type += " (Lump)";
 				if (cookie1GC.type == "Free Sugar Lump") cookie1RC.type += " (Lump)";
 			}
+
+			// push GFD result to displayCookie
 			displayCookie.push(gambler);
 
 			// push to array
 			cookies.push(cookie);
 			displayCookies.push(displayCookie);
 		}
+
+		// log
 		console.log("cookies:", cookies);
 		console.log("comboIndexes:", comboIndexes);
 		console.log("skipIndexes:", skipIndexes);
 		console.timeLog("updateCookies");
 
+		// find combos
 		for (let combo_length = minComboLength; combo_length <= maxComboLength; combo_length++) {
 			combos[combo_length] = findCombos(combo_length, maxSpread, comboIndexes, skipIndexes);
 		}
