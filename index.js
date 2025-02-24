@@ -418,6 +418,21 @@ app.controller('myCtrl', function ($scope) {
 	};
 
 	/**
+	 * calculate fail chance of FtHoF
+	 * simulating: minigameGrimoire.js > M.getFailChance (L289 on v2.052)
+	 *
+	 * @returns {number} fail chance of FtHoF
+	 */
+	const getFailChance = () => {
+		let failChance = 0.15;
+		if ($scope.buffDI) failChance *= 0.1;
+		//if (Game.hasBuff('Magic inept')) failChance*=5;  // TODO: not implemented
+		failChance *= 1 + 0.1 * $scope.buffSI;  // TODO: Reality Bending x1.1
+		failChance += 0.15 * $scope.screenCookieCount;  // L46
+		return failChance;
+	};
+
+	/**
 	 * get cast result object of FtHoF
 	 * simulating target: minigameGrimoire.js > M.castSpell (L299 on v2.052)
 	 *
@@ -437,12 +452,7 @@ app.controller('myCtrl', function ($scope) {
 			if (forceCookie == "RC") return 1.0;
 
 			// calculate failChance (same as L289)
-			let failChance = 0.15;
-			if ($scope.buffDI) failChance *= 0.1;
-			//if (Game.hasBuff('Magic inept')) failChance*=5;  // TODO: not implemented
-			failChance *= 1 + 0.1 * $scope.buffSI;  // TODO: Reality Bending x1.1
-			failChance += 0.15 * $scope.screenCookieCount;  // L46
-			return failChance;
+			return getFailChance();
 		})();
 
 		// roll casting result (L313)
