@@ -33,9 +33,11 @@
         <div layout="row">
             <md-input-container flex>
                 <label>Save Code</label>
-                <input id="save_code" ng-model="save_string">
+                <input id="save_code" ng-model="saveString">
             </md-input-container>
-            <md-button class="md-raised md-primary" ng-click="load_game()">Import Save</md-button>
+            <md-button class="md-raised md-primary" ng-click="loadGame(); updateCookies()">
+                Import Save
+            </md-button>
         </div>
 
         <p><b>
@@ -56,7 +58,7 @@
 
         <ul ng-if="combos">
             <li class="combo-listitem" ng-repeat="combo in combos">
-                <b>{{$index + min_combo_length}}x Combo</b>
+                <b>{{$index + minComboLength}}x Combo</b>
                 <ul ng-if="combo.shortest.idx == -1">
                     <li>No combo of this length</li>
                 </ul>
@@ -64,17 +66,17 @@
                     <li ng-if="combo.first.idx != -1">
                         <a href="#{{combo.first.idx + 1}}">Earliest:</a>
                         Length {{combo.first.length}};
-                        spread {{combo.first.length - ($index + min_combo_length)}};
+                        spread {{combo.first.length - ($index + minComboLength)}};
                         starting at
                         <a href="#{{combo.first.idx + 1}}">spell #{{combo.first.idx+1}}</a>
                     </li>
                     <li ng-if="combo.first.idx == -1">
-                        No combo of this length with spread &lt;= {{max_spread}}
+                        No combo of this length with spread &lt;= {{maxSpread}}
                     </li>
                     <li>
                         <a href="#{{combo.shortest.idx + 1}}">Shortest:</a>
                         Length {{combo.shortest.length}};
-                        spread {{combo.shortest.length - ($index + min_combo_length)}};
+                        spread {{combo.shortest.length - ($index + minComboLength)}};
                         starting at
                         <a href="#{{combo.shortest.idx + 1}}">spell #{{combo.shortest.idx+1}}</a>
                     </li>
@@ -90,23 +92,23 @@
         <md-divider></md-divider>
 
         <label>Min Combo</label>
-        <input type="number" ng-model="min_combo_length" min=1 max=20>
+        <input type="number" ng-model="minComboLength" min=1 max=20>
 
         <label>Max Combo</label>
-        <input type="number" ng-model="max_combo_length" min=1 max=20>
+        <input type="number" ng-model="maxComboLength" min=1 max=20>
 
         <label>Max Spread</label>
-        <input type="number" ng-model="max_spread" min=0 max=99>
+        <input type="number" ng-model="maxSpread" min=0 max=99>
 
-        <md-checkbox ng-checked=true ng-model="include_ef_in_sequence" aria-label="Include Elder Frenzy">
+        <md-checkbox ng-checked=true ng-model="includeEF" aria-label="Include Elder Frenzy">
             Include Elder Frenzies
         </md-checkbox>
 
-        <md-checkbox ng-checked=true ng-model="skip_abominations" aria-label="Allow Abomination Skips">
+        <md-checkbox ng-checked=true ng-model="skipRA" aria-label="Allow Abomination Skips">
             Skip Abominations
         </md-checkbox>
 
-        <md-checkbox ng-checked=true ng-model="skip_edifices" aria-label="Allow Spontaneous Edifice Skips">
+        <md-checkbox ng-checked=true ng-model="skipSE" aria-label="Allow Spontaneous Edifice Skips">
             Skip Spontaneous Edifices
         </md-checkbox>
 
@@ -114,28 +116,28 @@
         <md-divider></md-divider>
 
         <label>Golden Cookies on screen</label>
-        <input type="number" ng-model="on_screen_cookies" min=0 max=10>
+        <input type="number" ng-model="screenCookieCount" min=0 max=10>
 
         <md-checkbox ng-model="dragonflight" aria-label="Dragonflight Buff Active">
             Dragonflight Buff Active
         </md-checkbox>
 
-        <md-checkbox ng-model="supremeintellect" aria-label="Supreme Intellect Aura Active">
+        <md-checkbox ng-model="buffSI" aria-label="Supreme Intellect Aura Active">
             Supreme Intellect Aura Active
         </md-checkbox>
 
-        <md-checkbox ng-model="diminishineptitude" aria-label="Diminish Ineptitude Active">
+        <md-checkbox ng-model="buffDI" aria-label="Diminish Ineptitude Active">
             Diminish Ineptitude Active
         </md-checkbox>
 
 
         <md-divider></md-divider>
 
-        <md-button class="md-raised md-primary" ng-click="update_cookies()">Apply Settings</md-button>
-        <md-button class="md-raised md-primary" ng-click="cast_spell()">Cast Spell</md-button>
-        <md-button class="md-raised md-primary" ng-click="cast_spell(5)">x5</md-button>
-        <md-button class="md-raised md-primary" ng-click="cast_spell(10)">x10</md-button>
-        <!-- <md-button class="md-raised md-primary" ng-click="print_scope()">Print Scope</md-button> -->
+        <md-button class="md-raised md-primary" ng-click="updateCookies()">Apply Settings</md-button>
+        <md-button class="md-raised md-primary" ng-click="castSpell()">Cast Spell</md-button>
+        <md-button class="md-raised md-primary" ng-click="castSpell(5)">x5</md-button>
+        <md-button class="md-raised md-primary" ng-click="castSpell(10)">x10</md-button>
+        <!-- <md-button class="md-raised md-primary" ng-click="printScope()">Print Scope</md-button> -->
 
         <md-divider></md-divider>
 
@@ -194,12 +196,12 @@
                     <!-- Random Number -->
                     <td><div>
                         {{
-                            randomSeeds[$index].toFixed(4)
+                            firstRandomNumbers[$index].toFixed(4)
                             + " ("
                             + (
-                                randomSeeds[$index] + baseBackfireChance > 1
+                                firstRandomNumbers[$index] + baseBackfireChance > 1
                                 ? 0
-                                : ((1.075-randomSeeds[$index] - baseBackfireChance) / 0.15).toFixed(0)
+                                : ((1.075-firstRandomNumbers[$index] - baseBackfireChance) / 0.15).toFixed(0)
                             )
                             + " GC)"
                         }}
@@ -238,7 +240,7 @@
             </tbody>
         </table>
 
-        <md-button class="md-raised md-primary" ng-click="load_more()">Load More</md-button>
+        <md-button class="md-raised md-primary" ng-click="loadMore()">Load More</md-button>
     </div>
 </div>
 </body>

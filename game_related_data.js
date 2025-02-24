@@ -5,6 +5,21 @@
  */
 
 
+// type definition
+/**
+ * @typedef {object} M_Spell
+ * @property {string} name
+ * @property {string} desc
+ * @property {string=} failDesc
+ * @property {[number, number]} icon
+ * @property {number} costMin
+ * @property {number} costPercent
+ * @property {Function=} failFunc
+ * @property {Function} win
+ * @property {Function=} fail
+ */
+
+
 /**
  * wrapper of Math.seedrandom(seed)
  *
@@ -27,6 +42,9 @@ export const choose = (arr) => arr[Math.floor(Math.random() * arr.length)];
 
 /**
  * M.spells from minigameGrimoire.js
+ * (not same as v2.052)
+ *
+ * @type { {[key: string]: M_Spell} }
  */
 export const M_spells = {
 	'conjure baked goods': {
@@ -154,4 +172,47 @@ export const M_spells = {
 			// removed (not used in this file)
 		},
 	},
+};
+
+
+/**
+ * Spell names that can be cast in the minigame.
+ *
+ * @type {string[]}
+ */
+export const spellNames = Object.values(M_spells).map(spell => spell.name);
+
+
+/**
+ * cookie effect description dictionary
+ *
+ * @type { { [key: string]: string } }
+ */
+export const cookieEffectNameToDescription = {
+	"Frenzy":
+		"Gives x7 cookie production for 77 seconds.",
+	"Lucky":
+		"Gain 13 cookies plus the lesser of 15% of bank or 15 minutes of production.",
+	"Click Frenzy":
+		"Gives x777 cookies per click for 13 seconds.",
+	"Cookie Storm":
+		"A massive amount of Golden Cookies appears for 7 seconds, each granting you 1–7 minutes worth of cookies.",
+	"Cookie Storm Drop":
+		"Gain cookies equal to 1-7 minutes production",
+	"Building Special":
+		"Get a variable bonus to cookie production for 30 seconds.",
+
+	"Clot":
+		"Reduce production by 50% for 66 seconds.",
+	"Ruin":
+		"Lose 13 cookies plus the lesser of 5% of bank or 15 minutes of production",
+	"Cursed Finger":
+		"Cookie production halted for 10 seconds, but each click is worth 10 seconds of production.",
+	"Elder Frenzy":
+		"Gives x666 cookie production for 6 seconds",
+
+	"Blab":
+		"Does nothing but has a funny message.",
+	"Free Sugar Lump":
+		"Add a free sugar lump to the pool",
 };

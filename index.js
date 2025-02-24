@@ -7,38 +7,21 @@
 
 
 // import game related objects and functions
-import { Math_seedrandom, choose, M_spells } from "./game_related_data.js";
+import {
+	Math_seedrandom, choose, M_spells,
+	spellNames,
+	cookieEffectNameToDescription,
+} from "./game_related_data.js";
 
 
-/** cookie effect description dictionary */
-const cookieEffectNameToDescription = {
-	"Frenzy":
-		"Gives x7 cookie production for 77 seconds.",
-	"Lucky":
-		"Gain 13 cookies plus the lesser of 15% of bank or 15 minutes of production.",
-	"Click Frenzy":
-		"Gives x777 cookies per click for 13 seconds.",
-	"Cookie Storm":
-		"A massive amount of Golden Cookies appears for 7 seconds, each granting you 1–7 minutes worth of cookies.",
-	"Cookie Storm Drop":
-		"Gain cookies equal to 1-7 minutes production",
-	"Building Special":
-		"Get a variable bonus to cookie production for 30 seconds.",
-
-	"Clot":
-		"Reduce production by 50% for 66 seconds.",
-	"Ruin":
-		"Lose 13 cookies plus the lesser of 5% of bank or 15 minutes of production",
-	"Cursed Finger":
-		"Cookie production halted for 10 seconds, but each click is worth 10 seconds of production.",
-	"Elder Frenzy":
-		"Gives x666 cookie production for 6 seconds",
-
-	"Blab":
-		"Does nothing but has a funny message.",
-	"Free Sugar Lump":
-		"Add a free sugar lump to the pool",
-};
+// type definition
+/**
+ * @typedef {object} FthofResult
+ * @property {string} type
+ * @property {boolean} wrath
+ * @property {string} description
+ * @property {boolean} noteworthy
+ */
 
 
 /**
@@ -96,28 +79,27 @@ app.controller('myCtrl', function ($scope) {
 	$scope.spellsCastTotal = 0
 	$scope.spellsCast = 0
 	$scope.dragonflight = false
-	$scope.supremeintellect = false
-	$scope.diminishineptitude = false
-	$scope.on_screen_cookies = 0
-	$scope.min_combo_length = 2
-	$scope.max_combo_length = 4
-	$scope.max_spread = 2
-	//$scope.save_string = "Mi4wMTl8fDE1NTcwMjQwMjkzMjQ7MTUyNTU2Mzg4NjQ5ODsxNTU3MDI2MDY3NTI2O1ByZXR0eSBCaXNjdWl0O2ljb2NkfDExMTExMTExMTAwMTAwMTAwMDAxMHwzMTcyOTc5ODU2ODk2MS4wNzsyNDk5OTU5MzQxMDEyOTYuNjszNTE0OzgzMzc7Nzc3NzExMzQ3NDEzMDIuMjc7NzI2ODU7MDszOzEuNjMwODE0MDg0NjAwMTQxOGUrMTAxOzA7MDswOzA7MDsxMDg7MTE7MDswOzExOzE7MjU4MzAzNjsxO2NocmlzdG1hczswOzA7NS40NjM0NjQ4MjMyNzM2MjRlKzI5OzUuNDYzNDY0ODIzMjczNjI0ZSsyOTsxMDM0OTI0NTIwNTExOzA7MDsyMjY7MjI4OzIyMzsyMjI7MjI1OzU7MTswOzE7MTAwOzA7MDsxODk7NDY3OzE1NTcwMjM1NTE1NDY7MTU1Njk5MjAzMDQ0ODswOzEyOSwyMjc7NDA7fDE2MCwxNjAsMTg0MDI4NTc4NDIyMCwxLCwwOzE1MCwxNTAsNzE2NTA1ODQ0NTcwLDEsLDA7MTAwLDIxMCwyODczMDgyMzkzMyw5LDE1NTcwMjYyODY2MDQ6MDoxNTU3MDI0MDI5MzMxOjA6MDozNzM5OjE6MToxNTU3MDI0MDI5MzMxOiAxMTExMTAxMDExMTExMTAwMDAwMDEwMTEwMDAwMDAwMTAwIDA6MDowOjA6MDowOjA6MDowOjA6MDowOjA6MDowOjA6MDowOjA6MDowOjA6MDowOjA6MDowOjA6MDowOjA6MDowOjA6MDowOjA6MDowOjA6MDowOjA6MDowOjA6MDowOjA6MDowOjA6MDowOjA6MDowOjA6MDowOjA6MDowOjA6MDowOjA6MDowOjA6MDowOiwwOzEwMCwyMDAsODg2MTIxODQ2MDMsMSwsMDsxMDAsMTgwLDE5NjIxNTUxOTQzMSwxLCwwOzgwLDE1MCw3MzUxMjI3MzcxNzcsMSwsMDs1MCw1MCwxNzUzMjgyNjI2MDA4LDEsMi8tMS8tMSAyIDE1NTcwMjU5NTgwMzQgMSwwOzUwLDUxLDY5OTUwMzAwMjc2NTksMSwzNiAwIDM1NTUgMSwwOzMwLDMwLDE5Njg2NTA3NjkzNjA0LDEsLDA7MTUsMTUsMjE5ODQxODMyNjA2NDIsMSwsMDsxMCwxMCwyMzI3OTQ1NzQyMDkyOCwxLCwwOzUsNSw1OTkyOTYzODI0OTY5OSwyLCwwOzAsMCwwLDQsLDA7MCwwLDAsMTAsLDA7MCwwLDAsNCwsMDswLDAsMCwxMCwsMDt8MTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMDAxMDEwMDAxMDEwMDAxMTExMTExMTExMTExMTExMTExMTExMTEwMDExMTExMTExMDAwMDAwMDAxMTExMTAxMTExMTExMTExMTExMTAwMDAxMDAwMDAwMDAwMDAwMDAwMDAwMDAwMTExMTExMTEwMDExMTEwMDAwMDAwMDExMDAxMTExMTAwMDEwMTAwMDAwMDAwMDAwMDAwMDAwMDAwMDEwMTAxMDEwMTAwMDExMTExMTExMDAwMDAwMDAwMDExMDAwMDAwMDAwMDAwMDAwMDAwMTAwMDAwMDAwMDAwMDAwMDExMDAxMTAwMTEwMDExMTExMTExMTEwMDAwMDAwMDExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAxMTExMTAxMDEwMDAxMDAwMDAxMDAwMTEwMDAwMDAwMDAwMDAwMDAwMDAxMTExMTExMTAwMDAwMDEwMTEwMDAwMDAxMTAwMDAwMDAwMDAwMDAwMTExMTAwMTExMTAwMTEwMDAwMDAxMTExMTExMTAwMDAxMTExMTExMTAwMDAxMTExMTExMDAwMDAxMTExMTExMTExMTEwMDAwMDAwMDAwMDAwMDAwMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDEwMTAxMDExMTExMTExMTExMTExMDAxMDAwMTAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDExMTExMTExMTExMTExMTExMDExMTExMTExMDAwMDExMDAwMDEwMDAwMDAwMDAxMDAwMDAxMDAwMTAwMDEwMDAwMDAwMDAwMDAwMDAwMDAwMTExMTExMTExMTAwMDAwMDAwMDAwMDAwMDAwMDAwMTExMTExMTExMTExMTAwMDAwMDAwMDAwMDAwMDAwMDAwMDEwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAxMDAwMDAwMDAwMDAwMDExMTExMTEwMDAwMDAwMDAwMDAwMDAwMDAwMTAwMDAwMDAwMDAwMDAwMDEwMTAxMDEwMTAxMDEwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDEwMTExMTAwMDAwMDAwMDAxMTExMTExMTAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAxMTAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMTEwMDExMTExMTExMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMTExMTEwMTEwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAxMTExMTExMXwxMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMDExMTExMTExMTExMTExMTExMTExMTExMTEwMDAwMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTEwMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTEwMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMDExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMDAwMDAwMDAwMDAwMDExMTEwMTExMTExMTExMTEwMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMDExMTExMTExMTExMTExMTExMTExMTExMTExMTExMDExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExfA%3D%3D%21END%21%3D%3D%21END%21"
-	$scope.save_string = ""
+	$scope.buffSI = false
+	$scope.buffDI = false
+	$scope.screenCookieCount = 0
+	$scope.minComboLength = 2
+	$scope.maxComboLength = 4
+	$scope.maxSpread = 2
+	$scope.saveString = ""
 	$scope.lookahead = 200
 
 	// fill the save code input if previous save code exists in LocalStorage
 	const previousSaveCode = window.localStorage.getItem("fthof_save_code");
-	if (previousSaveCode) $scope.save_string = previousSaveCode;
+	if (previousSaveCode) $scope.saveString = previousSaveCode;
 
 	/**
 	 * push more items to FtHoF list
 	 *
 	 * @param {number=} count load row count (default: 50)
 	 */
-	const load_more = (count = 50) => {
+	const loadMore = (count = 50) => {
 		$scope.lookahead += count;
-		update_cookies();
+		updateCookies();
 	};
 
 	/**
@@ -125,17 +107,17 @@ app.controller('myCtrl', function ($scope) {
 	 *
 	 * @param {number=} count cast count (default: 1)
 	 */
-	const cast_spell = (count = 1) => {
+	const castSpell = (count = 1) => {
 		const callCount = count;
 		$scope.spellsCast += callCount;
 		$scope.spellsCastTotal += callCount;
-		update_cookies();
+		updateCookies();
 	};
 
 	/**
 	 * log $scope (debug function)
 	 */
-	const print_scope = () => {
+	const printScope = () => {
 		console.log($scope);
 	};
 
@@ -144,9 +126,15 @@ app.controller('myCtrl', function ($scope) {
 	 *
 	 * @param {string=} saveCode save code (if omitted, read from html)
 	 */
-	const load_game = (saveCode) => {
+	const loadGame = (saveCode) => {
 		// read from html
-		const saveStr = saveCode ? saveCode : String($scope.save_string);
+		const saveStr = saveCode ? saveCode : String($scope.saveString);
+
+		// if blank, reset LocalStorage and quit
+		if (saveStr === "") {
+			window.localStorage.setItem("fthof_save_code", saveStr);
+			return;
+		}
 
 		// extract save data
 		const saveData = (() => {
@@ -160,7 +148,7 @@ app.controller('myCtrl', function ($scope) {
 		// save code was invalid
 		if (!saveData) {
 			console.error("invalid save code");
-			$scope.save_string = "invalid save code";
+			$scope.saveString = "invalid save code";
 			return;
 		}
 
@@ -172,91 +160,129 @@ app.controller('myCtrl', function ($scope) {
 		$scope.ascensionMode = saveData.ascensionMode;
 		$scope.spellsCast = saveData.spellsCast;
 		$scope.spellsCastTotal = saveData.spellsCastTotal;
-
-		// calculate and display FtHoF list
-		update_cookies();
 	};
 
 	/**
 	 * calculate future FtHoF que and display result
 	 */
-	const update_cookies = () => {
-		$scope.cookies = []
-		$scope.randomSeeds = [];
-		$scope.baseBackfireChance = 0.15*($scope.supremeintellect?1.1:1)*($scope.diminishineptitude?0.1:1);
-		$scope.backfireChance = $scope.baseBackfireChance+0.15*$scope.on_screen_cookies;
-		$scope.displayCookies = [];
-		let bsIndices = [];
-		let skipIndices = [];
-		let currentTime = Date.now();
-		for (let i = 0; i < $scope.lookahead; i++) {
-			let currentSpell = i+$scope.spellsCastTotal;
-			Math_seedrandom($scope.seed + '/' + currentSpell);
-			let roll = Math.random();
-			$scope.randomSeeds.push(roll);
+	const updateCookies = () => {
+		// read $scope variables
+		const {
+			lookahead,
+			minComboLength, maxComboLength, maxSpread,
+			includeEF, skipRA, skipSE,
+			screenCookieCount, buffSI, buffDI,
+			seed,
+			spellsCastTotal,
+		} = $scope;
 
-			$scope.cookies.push([])
-			$scope.displayCookies.push([])
-			let cookie1Success = castFtHoF($scope.spellsCastTotal + i, false, "GC")
-			let cookie2Success = castFtHoF($scope.spellsCastTotal + i, true, "GC")
-			//cookie3 = check_cookies($scope.spellsCastTotal + i, true)
-			let cookie1Backfire = castFtHoF($scope.spellsCastTotal + i, false, "RC")
-			let cookie2Backfire = castFtHoF($scope.spellsCastTotal + i, true, "RC")
-			let gambler = check_gambler($scope.spellsCastTotal + i)
-			$scope.cookies[i].push(cookie1Success)
-			$scope.cookies[i].push(cookie2Success)
-			$scope.cookies[i].push(cookie1Backfire)
-			$scope.cookies[i].push(cookie2Backfire)
-			$scope.cookies[i].push(gambler)
+		// variables to set $scope.*
+		const cookies = []
+		const firstRandomNumbers = [];
+		const baseBackfireChance = 0.15*(buffSI?1.1:1)*(buffDI?0.1:1);
+		const backfireChance = baseBackfireChance+0.15*screenCookieCount;
+		const displayCookies = [];
+		const combos = {};
 
-			if (cookiesContainBuffs($scope.include_ef_in_sequence, cookie1Success, cookie2Success, cookie1Backfire, cookie2Backfire) || gambler.hasBs || ($scope.include_ef_in_sequence && gambler.hasEf)) {
-				bsIndices.push(i);
+		// srart timer
+		console.time("updateCookies");
+
+		const comboIndexes = [];
+		const skipIndexes = [];
+		for (let i = 0; i < lookahead; i++) {
+			const currentTotalSpell = i+spellsCastTotal;
+			Math_seedrandom(seed + '/' + currentTotalSpell);
+			const roll = Math.random();
+			firstRandomNumbers.push(roll);
+
+			const cookie = [];
+			const displayCookie = [];
+			const cookie0GC = castFtHoF(spellsCastTotal + i, false, "GC");
+			const cookie1GC = castFtHoF(spellsCastTotal + i, true, "GC");
+			const cookie0RC = castFtHoF(spellsCastTotal + i, false, "RC");
+			const cookie1RC = castFtHoF(spellsCastTotal + i, true, "RC");
+			const gambler = check_gambler(spellsCastTotal + i);
+			cookie.push(cookie0GC);
+			cookie.push(cookie1GC);
+			cookie.push(cookie0RC);
+			cookie.push(cookie1RC);
+			cookie.push(gambler);
+
+			if (
+				cookiesContainBuffs(includeEF, cookie0GC, cookie1GC, cookie0RC, cookie1RC)
+				|| gambler.hasBs
+				|| (includeEF && gambler.hasEf)
+			) {
+				comboIndexes.push(i);
 			}
 
-			if (($scope.skip_abominations && gambler.type == 'Resurrect Abomination') || ($scope.skip_edifices && gambler.type == 'Spontaneous Edifice' && !gambler.backfire)) {
-				skipIndices.push(i);
+			if (
+				(skipRA && gambler.type == 'Resurrect Abomination')
+				|| (skipSE && gambler.type == 'Spontaneous Edifice' && !gambler.backfire)
+			) {
+				skipIndexes.push(i);
 			}
 
-			if ($scope.randomSeeds[i] + $scope.backfireChance < 1) {
-				$scope.displayCookies[i].push($scope.cookies[i][0]);
-				$scope.displayCookies[i].push($scope.cookies[i][1]);
-				if ($scope.cookies[i][2].type == "Elder Frenzy") {$scope.displayCookies[i][0].type += " (EF)"; $scope.displayCookies[i][0].noteworthy = true;}
-				if ($scope.cookies[i][3].type == "Elder Frenzy") {$scope.displayCookies[i][1].type += " (EF)"; $scope.displayCookies[i][1].noteworthy = true;}
-				if ($scope.cookies[i][2].type == "Free Sugar Lump") {$scope.displayCookies[i][0].type += " (Lump)";}
-				if ($scope.cookies[i][3].type == "Free Sugar Lump") {$scope.displayCookies[i][1].type += " (Lump)";}
+			if (firstRandomNumbers[i] + backfireChance < 1) {
+				displayCookie.push(cookie0GC);
+				displayCookie.push(cookie1GC);
+				if (cookie0RC.type == "Elder Frenzy") {
+					cookie0GC.type += " (EF)";
+					cookie0GC.noteworthy = true;
+				}
+				if (cookie1RC.type == "Elder Frenzy") {
+					cookie1GC.type += " (EF)";
+					cookie1GC.noteworthy = true;
+				}
+				if (cookie0RC.type == "Free Sugar Lump") cookie0GC.type += " (Lump)";
+				if (cookie1RC.type == "Free Sugar Lump") cookie1GC.type += " (Lump)";
+			} else {
+				displayCookie.push(cookie0RC);
+				displayCookie.push(cookie1RC);
+				if (cookie0GC.type == "Building Special") {
+					cookie0RC.type += " (BS)";
+					cookie0RC.noteworthy = true;
+				}
+				if (cookie1GC.type == "Building Special") {
+					cookie1RC.type += " (BS)";
+					cookie1RC.noteworthy = true;
+				}
+				if (cookie0GC.type == "Free Sugar Lump") cookie0RC.type += " (Lump)";
+				if (cookie1GC.type == "Free Sugar Lump") cookie1RC.type += " (Lump)";
 			}
-			else {
-				$scope.displayCookies[i].push($scope.cookies[i][2]);
-				$scope.displayCookies[i].push($scope.cookies[i][3]);
-				if ($scope.cookies[i][0].type == "Building Special") {$scope.displayCookies[i][0].type += " (BS)"; $scope.displayCookies[i][0].noteworthy = true;}
-				if ($scope.cookies[i][1].type == "Building Special") {$scope.displayCookies[i][1].type += " (BS)"; $scope.displayCookies[i][1].noteworthy = true;}
-				if ($scope.cookies[i][0].type == "Free Sugar Lump") {$scope.displayCookies[i][0].type += " (Lump)";}
-				if ($scope.cookies[i][1].type == "Free Sugar Lump") {$scope.displayCookies[i][1].type += " (Lump)";}
-			}
-			$scope.displayCookies[i].push(gambler);
+			displayCookie.push(gambler);
+
+			// push to array
+			cookies.push(cookie);
+			displayCookies.push(displayCookie);
 		}
-		console.log($scope.cookies);
-		console.log(bsIndices);
-		console.log(skipIndices);
-		console.log(Date.now()-currentTime);
+		console.log("cookies:", cookies);
+		console.log("comboIndexes:", comboIndexes);
+		console.log("skipIndexes:", skipIndexes);
+		console.timeLog("updateCookies");
 
-		$scope.combos = {}
-
-		for (let combo_length = $scope.min_combo_length; combo_length <= $scope.max_combo_length; combo_length++) {
-			$scope.combos[combo_length] = findCombos(combo_length, $scope.max_spread, bsIndices, skipIndices);
+		for (let combo_length = minComboLength; combo_length <= maxComboLength; combo_length++) {
+			combos[combo_length] = findCombos(combo_length, maxSpread, comboIndexes, skipIndexes);
 		}
 
-		console.log('Combos: ');
-		console.log($scope.combos);
-		console.log(Date.now()-currentTime);
-	}
+		console.log("Combos:", combos);
+		console.timeEnd("updateCookies");
+
+		// set to $scope
+		$scope.cookies             = cookies;
+		$scope.firstRandomNumbers         = firstRandomNumbers;
+		$scope.baseBackfireChance  = baseBackfireChance;
+		$scope.backfireChance      = backfireChance;
+		$scope.displayCookies      = displayCookies;
+		$scope.combos              = combos;
+	};
 
 	/**
 	 * toggle interface button
 	 *
 	 * @param {number} contentId number of "content-*"
 	 */
-	const collapse_interface = (contentId) => {
+	const collapseInterface = (contentId) => {
 		console.log("content-" + contentId);
 		if (contentId) {
 			const content = document.getElementById("content-" + contentId);
@@ -270,45 +296,54 @@ app.controller('myCtrl', function ($scope) {
 	};
 
 	//want to return shortest, and first sequence for a given combo_length
-	//if nothing that satisfies max_spread, shortest will still be filled but first will be empty
+	//if nothing that satisfies maxSpread, shortest will still be filled but first will be empty
 	/**
 	 * find comboes from indexes
 	 *
-	 * @param {number} combo_length want length of combo
-	 * @param {number} max_spread number of max spread (padding; neither BS nor skip)
-	 * @param {number[]} bsIndices indexes of buff (Building Special etc.)
-	 * @param {number[]} skipIndices indexes of skippable GFD (Resurrect Abomination etc.)
+	 * @param {number} comboLength target length of combo
+	 * @param {number} maxSpread number of max spread (padding; neither BS nor skip)
+	 * @param {number[]} comboIndexes indexes of buff (Building Special etc.)
+	 * @param {number[]} skipIndexes indexes of skippable GFD (Resurrect Abomination etc.)
 	 * @returns {object} found result
 	 */
-	const findCombos = (combo_length, max_spread, bsIndices, skipIndices) => {
-		let shortestDistance = 10000000;
-		let shortestStart = -1;
+	const findCombos = (comboLength, maxSpread, comboIndexes, skipIndexes) => {
+		// whether to output combos exceeding maxSpread
+		const outputOverflowedCombo = false;
 
-		let firstDistance = 10000000;
-		let firstStart = -1
+		// combo with the shortest length
+		let shortestLength = 10000000;
+		let shortestStartIndex = -1;
 
-		for (let i = 0; i + combo_length <= bsIndices.length; i++) {
-			let seqStart = bsIndices[i];
-			let seqEnd = bsIndices[i + combo_length - 1];
-			let baseDistance = seqEnd - seqStart + 1;
+		// combo that appears first
+		let firstLength = 10000000;
+		let firstStartIndex = -1
 
-			let skips = skipIndices.filter((idx) => idx > seqStart && idx < seqEnd && !bsIndices.includes(idx));
+		// find combos that can cast in comboIndexes
+		for (let i = 0; i + comboLength - 1 < comboIndexes.length; i++) {
+			const seqStart = comboIndexes[i];
+			const seqEnd = comboIndexes[i + comboLength - 1];
+			const baseDistance = seqEnd - seqStart + 1;
 
-			let distance = baseDistance - skips.length;
-			if (firstStart == -1 && distance <= combo_length + max_spread) {
-				firstStart = seqStart;
-				firstDistance = distance;
+			const skips = skipIndexes.filter(
+				(index) => index > seqStart && index < seqEnd && !comboIndexes.includes(index)
+			);
+
+			const distance = baseDistance - skips.length;
+			const isOverflowed = (distance > comboLength + maxSpread);
+			if (firstStartIndex == -1 && !isOverflowed) {
+				firstStartIndex = seqStart;
+				firstLength = distance;
 			}
 
-			if (distance < shortestDistance) {
-				shortestStart = seqStart;
-				shortestDistance = distance;
+			if (distance < shortestLength && (!isOverflowed || outputOverflowedCombo)) {
+				shortestStartIndex = seqStart;
+				shortestLength = distance;
 			}
 		}
 
 		return {
-			shortest: {idx: shortestStart, length: shortestDistance},
-			first: {idx: firstStart, length: firstDistance}
+			shortest: {idx: shortestStartIndex, length: shortestLength},
+			first: {idx: firstStartIndex, length: firstLength}
 		};
 	};
 
@@ -389,7 +424,7 @@ app.controller('myCtrl', function ($scope) {
 	 * @param {number} spellsCastTotal total spell cast count before this cast
 	 * @param {boolean} isOneChange true if one change
 	 * @param {("GC" | "RC")=} forceCookie "GC": force GC, "RC": force RC, default: roll with Math.random()
-	 * @returns FtHoF cast result
+	 * @returns {FthofResult} FtHoF cast result
 	 */
 	const castFtHoF = (spellsCastTotal, isOneChange, forceCookie) => {
 		// set seed (L312)
@@ -403,10 +438,10 @@ app.controller('myCtrl', function ($scope) {
 
 			// calculate failChance (same as L289)
 			let failChance = 0.15;
-			if ($scope.diminishineptitude) failChance *= 0.1;
+			if ($scope.buffDI) failChance *= 0.1;
 			//if (Game.hasBuff('Magic inept')) failChance*=5;  // TODO: not implemented
-			failChance *= 1 + 0.1 * $scope.supremeintellect;  // TODO: Reality Bending x1.1
-			failChance += 0.15 * $scope.on_screen_cookies;  // L46
+			failChance *= 1 + 0.1 * $scope.buffSI;  // TODO: Reality Bending x1.1
+			failChance += 0.15 * $scope.screenCookieCount;  // L46
 			return failChance;
 		})();
 
@@ -489,12 +524,12 @@ app.controller('myCtrl', function ($scope) {
 
 
 	// set functions to $scope that called from index.html
-	$scope.load_more          = load_more;
-	$scope.cast_spell         = cast_spell;
-	$scope.print_scope        = print_scope;
-	$scope.load_game          = load_game;
-	$scope.update_cookies     = update_cookies;
-	$scope.collapse_interface = collapse_interface;
+	$scope.loadMore          = loadMore;
+	$scope.castSpell         = castSpell;
+	$scope.printScope        = printScope;
+	$scope.loadGame          = loadGame;
+	$scope.updateCookies     = updateCookies;
+	$scope.collapseInterface = collapseInterface;
 });
 
 
