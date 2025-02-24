@@ -126,7 +126,7 @@ app.controller('myCtrl', function ($scope) {
 	 *
 	 * @param {string=} saveCode save code (if omitted, read from html)
 	 */
-	const loadGame = (saveCode) => {
+	const loadSaveCode = (saveCode) => {
 		// read from html
 		const saveStr = saveCode ? saveCode : String($scope.saveString);
 
@@ -537,7 +537,7 @@ app.controller('myCtrl', function ($scope) {
 	$scope.loadMore          = loadMore;
 	$scope.castSpell         = castSpell;
 	$scope.printScope        = printScope;
-	$scope.loadGame          = loadGame;
+	$scope.loadSaveCode          = loadSaveCode;
 	$scope.updateCookies     = updateCookies;
 	$scope.collapseInterface = collapseInterface;
 });
