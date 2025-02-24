@@ -35,7 +35,7 @@
                 <label>Save Code</label>
                 <input id="save_code" ng-model="saveString">
             </md-input-container>
-            <md-button class="md-raised md-primary" ng-click="loadGame(); updateCookies()">
+            <md-button class="md-raised md-primary" ng-click="loadSaveCode(); updateCookies()">
                 Import Save
             </md-button>
         </div>
@@ -122,7 +122,7 @@
             Dragonflight Buff Active
         </md-checkbox>
 
-        <md-checkbox ng-model="buffSI" aria-label="Supreme Intellect Aura Active">
+        <md-checkbox ng-model="auraSI" aria-label="Supreme Intellect Aura Active">
             Supreme Intellect Aura Active
         </md-checkbox>
 
