@@ -300,7 +300,7 @@ app.controller('myCtrl', function ($scope) {
 	/**
 	 * find comboes from indexes
 	 *
-	 * @param {number} comboLength want length of combo
+	 * @param {number} comboLength target length of combo
 	 * @param {number} maxSpread number of max spread (padding; neither BS nor skip)
 	 * @param {number[]} comboIndexes indexes of buff (Building Special etc.)
 	 * @param {number[]} skipIndexes indexes of skippable GFD (Resurrect Abomination etc.)
@@ -310,35 +310,40 @@ app.controller('myCtrl', function ($scope) {
 		// whether to output combos exceeding maxSpread
 		const outputOverflowedCombo = false;
 
-		let shortestDistance = 10000000;
-		let shortestStart = -1;
+		// combo with the shortest length
+		let shortestLength = 10000000;
+		let shortestStartIndex = -1;
 
-		let firstDistance = 10000000;
-		let firstStart = -1
+		// combo that appears first
+		let firstLength = 10000000;
+		let firstStartIndex = -1
 
-		for (let i = 0; i + comboLength <= comboIndexes.length; i++) {
+		// find combos that can cast in comboIndexes
+		for (let i = 0; i + comboLength - 1 < comboIndexes.length; i++) {
 			const seqStart = comboIndexes[i];
 			const seqEnd = comboIndexes[i + comboLength - 1];
 			const baseDistance = seqEnd - seqStart + 1;
 
-			const skips = skipIndexes.filter((idx) => idx > seqStart && idx < seqEnd && !comboIndexes.includes(idx));
+			const skips = skipIndexes.filter(
+				(index) => index > seqStart && index < seqEnd && !comboIndexes.includes(index)
+			);
 
 			const distance = baseDistance - skips.length;
 			const isOverflowed = (distance > comboLength + maxSpread);
-			if (firstStart == -1 && !isOverflowed) {
-				firstStart = seqStart;
-				firstDistance = distance;
+			if (firstStartIndex == -1 && !isOverflowed) {
+				firstStartIndex = seqStart;
+				firstLength = distance;
 			}
 
-			if (distance < shortestDistance && (!isOverflowed || outputOverflowedCombo)) {
-				shortestStart = seqStart;
-				shortestDistance = distance;
+			if (distance < shortestLength && (!isOverflowed || outputOverflowedCombo)) {
+				shortestStartIndex = seqStart;
+				shortestLength = distance;
 			}
 		}
 
 		return {
-			shortest: {idx: shortestStart, length: shortestDistance},
-			first: {idx: firstStart, length: firstDistance}
+			shortest: {idx: shortestStartIndex, length: shortestLength},
+			first: {idx: firstStartIndex, length: firstLength}
 		};
 	};
 
