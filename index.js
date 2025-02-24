@@ -156,9 +156,9 @@ app.controller('myCtrl', function ($scope) {
 		window.localStorage.setItem("fthof_save_code", saveStr);
 
 		// set to $scope
-		$scope.seed = saveData.seed;
-		$scope.ascensionMode = saveData.ascensionMode;
-		$scope.spellsCast = saveData.spellsCast;
+		$scope.seed            = saveData.seed;
+		$scope.ascensionMode   = saveData.ascensionMode;
+		$scope.spellsCast      = saveData.spellsCast;
 		$scope.spellsCastTotal = saveData.spellsCastTotal;
 	};
 
@@ -270,7 +270,7 @@ app.controller('myCtrl', function ($scope) {
 
 		// set to $scope
 		$scope.cookies             = cookies;
-		$scope.firstRandomNumbers         = firstRandomNumbers;
+		$scope.firstRandomNumbers  = firstRandomNumbers;
 		$scope.baseBackfireChance  = baseBackfireChance;
 		$scope.backfireChance      = backfireChance;
 		$scope.displayCookies      = displayCookies;
