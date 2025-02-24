@@ -92,27 +92,25 @@ app.controller('myCtrl', function ($scope) {
 	const previousSaveCode = window.localStorage.getItem("fthof_save_code");
 	if (previousSaveCode) $scope.saveString = previousSaveCode;
 
-	/**
-	 * push more items to FtHoF list
-	 *
-	 * @param {number=} count load row count (default: 50)
-	 */
-	const loadMore = (count = 50) => {
-		$scope.lookahead += count;
-		updateCookies();
-	};
 
 	/**
-	 * pop and push items to FtHoF list
+	 * toggle interface button
 	 *
-	 * @param {number=} count cast count (default: 1)
+	 * @param {number} contentId number of "content-*"
 	 */
-	const castSpell = (count = 1) => {
-		const callCount = count;
-		$scope.spellsCast += callCount;
-		$scope.spellsCastTotal += callCount;
-		updateCookies();
+	const collapseInterface = (contentId) => {
+		console.log("content-" + contentId);
+		if (contentId) {
+			const content = document.getElementById("content-" + contentId);
+			if (content === null) throw Error("not found: #content-" + contentId);
+			if (content.style.display === "block") {
+				content.style.display = "none";
+			} else {
+				content.style.display = "block";
+			}
+		}
 	};
+
 
 	/**
 	 * log $scope (debug function)
@@ -120,6 +118,7 @@ app.controller('myCtrl', function ($scope) {
 	const printScope = () => {
 		console.log($scope);
 	};
+
 
 	/**
 	 * load save code
@@ -161,6 +160,265 @@ app.controller('myCtrl', function ($scope) {
 		$scope.spellsCast      = saveData.spellsCast;
 		$scope.spellsCastTotal = saveData.spellsCastTotal;
 	};
+
+
+	/**
+	 * calculate base fail chance of FtHoF
+	 * (without considering count of GCs on screen)
+	 * simulating: minigameGrimoire.js > M.getFailChance (L289 on v2.052)
+	 *
+	 * @returns {number} fail chance of FtHoF
+	 */
+	const getBaseFailChance = () => {
+		let failChance = 0.15;
+		if ($scope.buffDI) failChance *= 0.1;
+		//if (Game.hasBuff('Magic inept')) failChance*=5;  // TODO: not implemented
+		failChance *= 1 + 0.1 * $scope.auraSI;  // TODO: Reality Bending x1.1
+		return failChance;
+	};
+
+
+	/**
+	 * calculate fail chance of FtHoF
+	 * simulating: minigameGrimoire.js > M.getFailChance (L289 on v2.052)
+	 *
+	 * @param {number=} baseFailChance
+	 * @returns {number} fail chance of FtHoF
+	 */
+	const getFailChance = (baseFailChance) => {
+		const failChance = (
+			(baseFailChance || getBaseFailChance())
+			+ 0.15 * $scope.screenCookieCount  // L46
+		);
+		return failChance;
+	};
+
+
+	/**
+	 * get cast result object of FtHoF
+	 * simulating target: minigameGrimoire.js > M.castSpell (L299 on v2.052)
+	 *
+	 * @param {number} spellsCastTotal total spell cast count before this cast
+	 * @param {boolean} isOneChange true if one change
+	 * @param {("GC" | "RC")=} forceCookie "GC": force GC, "RC": force RC, default: roll with Math.random()
+	 * @returns {FthofResult} FtHoF cast result
+	 */
+	const castFtHoF = (spellsCastTotal, isOneChange, forceCookie) => {
+		// set seed (L312)
+		Math_seedrandom($scope.seed + '/' + spellsCastTotal);
+
+		// get fail chance (L307 > L289)
+		const failChance = (() => {
+			// return 0.0 or 1.0 if forced
+			if (forceCookie == "GC") return 0.0;
+			if (forceCookie == "RC") return 1.0;
+
+			// calculate failChance (same as L289)
+			return getFailChance();
+		})();
+
+		// roll casting result (L313)
+		const isWin = (!true || Math.random() < (1 - failChance));
+
+		// spell.win() or spell.fail() is called at this point
+		//   M.spells > 'hand of fate' > win (L48), fail (L66)
+		//   > new Game.shimmer('golden',{*:true}) (L50, L68)
+		// and Math.random() is called in main.js
+		//   Game.shimmer > this.init(); (main.js L5215)
+		//   > Game.shimmerTypes[this.type].initFunc(this); (main.js L5223)
+		//   > Game.shimmerTypes > 'golden' > initFunc (main.js L5320)
+
+		// call Math.random() for chime (main.js L5322 > main.js L917)
+		// this call is no longer active: L885
+		//if (chime && $scope.ascensionMode != 1) Math.random();
+
+		// season is valentines or easter (main.js L5343, main.js L5353)
+		if (isOneChange) Math.random();
+
+		// determine X and Y position to spawn (main.js L5358, main.js L5359)
+		Math.random();
+		Math.random();
+
+		// initializing GC/RC finished, back to spell.win() or spell.fail()
+
+		/**
+		 * choices of GC/RC effect name
+		 * @type {string[]}
+		 */
+		let choices = [];
+
+		/** FtHoF cast result */
+		const cookie = {};
+
+		// choose cookie effect
+		if (isWin) {
+			// choices of golden cookie (L52)
+			choices.push('Frenzy', 'Lucky');
+			if (!$scope.dragonflight) choices.push('Click Frenzy');
+			if (Math.random() < 0.1) choices.push('Cookie Storm', 'Cookie Storm', 'Blab');
+			if (Math.random() < 0.25) choices.push('Building Special');  // Game.BuildingsOwned>=10 is ignored
+			if (Math.random() < 0.15) choices = ['Cookie Storm Drop'];
+			if (Math.random() < 0.0001) choices.push('Free Sugar Lump');
+			cookie.type = choose(choices);
+
+			// There is an additional Math.random() in L62,
+			// but this doesn't affect the result because choice is done.
+			//if (cookie.type == 'Cookie Storm Drop') Math.random();
+
+			// cookie is GC
+			cookie.wrath = false;
+
+		} else {
+			// choices of red cookie (L70)
+			choices.push('Clot', 'Ruin');
+			if (Math.random() < 0.1) choices.push('Cursed Finger', 'Elder Frenzy');
+			if (Math.random() < 0.003) choices.push('Free Sugar Lump');
+			if (Math.random() < 0.1) choices = ['Blab'];
+			cookie.type = choose(choices);
+
+			// cookie is RC
+			cookie.wrath = true;
+		}
+
+		// set description
+		const description = cookieEffectNameToDescription[cookie.type];
+		if (!description) console.error("No description in dictionary: " + cookie.type);
+		cookie.description = description;
+
+		// add noteworthy info
+		cookie.noteworthy = false;
+		if (cookie.type == 'Building Special') cookie.noteworthy = true;
+		if (cookie.type == 'Elder Frenzy') cookie.noteworthy = true;
+
+		// return FtHoF cast result
+		return cookie;
+	};
+
+
+	//want to return shortest, and first sequence for a given combo_length
+	//if nothing that satisfies maxSpread, shortest will still be filled but first will be empty
+	/**
+	 * find comboes from indexes
+	 *
+	 * @param {number} comboLength target length of combo
+	 * @param {number} maxSpread number of max spread (padding; neither BS nor skip)
+	 * @param {number[]} comboIndexes indexes of buff (Building Special etc.)
+	 * @param {number[]} skipIndexes indexes of skippable GFD (Resurrect Abomination etc.)
+	 * @returns {object} found result
+	 */
+	const findCombos = (comboLength, maxSpread, comboIndexes, skipIndexes) => {
+		// whether to output combos exceeding maxSpread
+		const outputOverflowedCombo = false;
+
+		// combo with the shortest length
+		let shortestLength = 10000000;
+		let shortestStartIndex = -1;
+
+		// combo that appears first
+		let firstLength = 10000000;
+		let firstStartIndex = -1
+
+		// find combos that can cast in comboIndexes
+		for (let i = 0; i + comboLength - 1 < comboIndexes.length; i++) {
+			const seqStart = comboIndexes[i];
+			const seqEnd = comboIndexes[i + comboLength - 1];
+			const baseDistance = seqEnd - seqStart + 1;
+
+			const skips = skipIndexes.filter(
+				(index) => index > seqStart && index < seqEnd && !comboIndexes.includes(index)
+			);
+
+			const distance = baseDistance - skips.length;
+			const isOverflowed = (distance > comboLength + maxSpread);
+			if (firstStartIndex == -1 && !isOverflowed) {
+				firstStartIndex = seqStart;
+				firstLength = distance;
+			}
+
+			if (distance < shortestLength && (!isOverflowed || outputOverflowedCombo)) {
+				shortestStartIndex = seqStart;
+				shortestLength = distance;
+			}
+		}
+
+		return {
+			shortest: {idx: shortestStartIndex, length: shortestLength},
+			first: {idx: firstStartIndex, length: firstLength}
+		};
+	};
+
+
+	/**
+	 * get cast result object of Gambler's Fever Dream
+	 *
+	 * @param {number} spellsCast index of cast to see (with total cast)
+	 * @returns GFD cast result
+	 */
+	const check_gambler = (spellsCast) => {
+		Math_seedrandom($scope.seed + '/' + spellsCast);
+
+		let spells = [];
+		for (const i in M_spells) {
+			if (i != "gambler's fever dream")
+				spells.push(M_spells[i]);
+		}
+
+		const gfdSpell = choose(spells);
+		//simplifying the below cause this isn't patched yet afaict and i'll never be playing with diminished ineptitutde backfire
+		const gfdBackfire = 0.5; /*M.getFailChance(gfdSpell);
+
+		if(FortuneCookie.detectKUGamblerPatch()) gfdBackfire *= 2;
+		else gfdBackfire = Math.max(gfdBackfire, 0.5);*/
+
+		let gamblerSpell = {};
+		gamblerSpell.type = gfdSpell.name;
+		gamblerSpell.hasBs = false;
+		gamblerSpell.hasEf = false;
+
+		Math_seedrandom($scope.seed + '/' + (spellsCast + 1));
+		if (Math.random() < (1 - gfdBackfire)) {
+			gamblerSpell.backfire = false;
+
+			if (gfdSpell.name == "Force the Hand of Fate") {
+				gamblerSpell.innerCookie1 = castFtHoF(spellsCast + 1, false, "GC");
+				gamblerSpell.innerCookie2 = castFtHoF(spellsCast + 1, true, "GC");
+
+				gamblerSpell.hasBs = gamblerSpell.innerCookie1.type == 'Building Special' || gamblerSpell.innerCookie2.type == 'Building Special';
+			}
+
+			//TODO: Do something with edifice to make it clear if it will fail or not. like this:
+			//if(gfdSpell.name == "Spontaneous Edifice") spellOutcome += ' (' + FortuneCookie.gamblerEdificeChecker(spellsCast + 1, true) + ')';
+		} else {
+			gamblerSpell.backfire = true;
+
+			if (gfdSpell.name == "Force the Hand of Fate") {
+				gamblerSpell.innerCookie1 = castFtHoF(spellsCast + 1, false, "RC");
+				gamblerSpell.innerCookie2 = castFtHoF(spellsCast + 1, true, "RC");
+
+				gamblerSpell.hasEf = gamblerSpell.innerCookie1.type == 'Elder Frenzy' || gamblerSpell.innerCookie2.type == 'Elder Frenzy';
+			}
+
+			//TODO: again, handle spontaneous edifice
+			//if(gfdSpell.name == "Spontaneous Edifice") spellOutcome += ' (' + FortuneCookie.gamblerEdificeChecker(spellsCast + 1, false) + ')';
+		}
+
+		return gamblerSpell;
+	};
+
+
+	/**
+	 * determine whether passed cookies may trigger any buffs
+	 *
+	 * @param {boolean} include_ef whether include Elder Fever
+	 * @param  {...object} cookies cookie objects that may trigger buff
+	 * @returns {boolean} true if triggers buff
+	 */
+	const cookiesContainBuffs = (include_ef, ...cookies) => {
+		return cookies.some((cookie) => {
+			return cookie.type == 'Building Special' || (include_ef && cookie.type == 'Elder Frenzy');
+		});
+	};
+
 
 	/**
 	 * calculate future FtHoF que and display result
@@ -277,284 +535,38 @@ app.controller('myCtrl', function ($scope) {
 		$scope.combos              = combos;
 	};
 
+
 	/**
-	 * toggle interface button
+	 * pop and push items to FtHoF list
 	 *
-	 * @param {number} contentId number of "content-*"
+	 * @param {number=} count cast count (default: 1)
 	 */
-	const collapseInterface = (contentId) => {
-		console.log("content-" + contentId);
-		if (contentId) {
-			const content = document.getElementById("content-" + contentId);
-			if (content === null) throw Error("not found: #content-" + contentId);
-			if (content.style.display === "block") {
-				content.style.display = "none";
-			} else {
-				content.style.display = "block";
-			}
-		}
+	const castSpell = (count = 1) => {
+		const callCount = count;
+		$scope.spellsCast += callCount;
+		$scope.spellsCastTotal += callCount;
+		updateCookies();
 	};
 
-	//want to return shortest, and first sequence for a given combo_length
-	//if nothing that satisfies maxSpread, shortest will still be filled but first will be empty
-	/**
-	 * find comboes from indexes
-	 *
-	 * @param {number} comboLength target length of combo
-	 * @param {number} maxSpread number of max spread (padding; neither BS nor skip)
-	 * @param {number[]} comboIndexes indexes of buff (Building Special etc.)
-	 * @param {number[]} skipIndexes indexes of skippable GFD (Resurrect Abomination etc.)
-	 * @returns {object} found result
-	 */
-	const findCombos = (comboLength, maxSpread, comboIndexes, skipIndexes) => {
-		// whether to output combos exceeding maxSpread
-		const outputOverflowedCombo = false;
-
-		// combo with the shortest length
-		let shortestLength = 10000000;
-		let shortestStartIndex = -1;
-
-		// combo that appears first
-		let firstLength = 10000000;
-		let firstStartIndex = -1
-
-		// find combos that can cast in comboIndexes
-		for (let i = 0; i + comboLength - 1 < comboIndexes.length; i++) {
-			const seqStart = comboIndexes[i];
-			const seqEnd = comboIndexes[i + comboLength - 1];
-			const baseDistance = seqEnd - seqStart + 1;
-
-			const skips = skipIndexes.filter(
-				(index) => index > seqStart && index < seqEnd && !comboIndexes.includes(index)
-			);
-
-			const distance = baseDistance - skips.length;
-			const isOverflowed = (distance > comboLength + maxSpread);
-			if (firstStartIndex == -1 && !isOverflowed) {
-				firstStartIndex = seqStart;
-				firstLength = distance;
-			}
-
-			if (distance < shortestLength && (!isOverflowed || outputOverflowedCombo)) {
-				shortestStartIndex = seqStart;
-				shortestLength = distance;
-			}
-		}
-
-		return {
-			shortest: {idx: shortestStartIndex, length: shortestLength},
-			first: {idx: firstStartIndex, length: firstLength}
-		};
-	};
 
 	/**
-	 * determine whether passed cookies may trigger any buffs
+	 * push more items to FtHoF list
 	 *
-	 * @param {boolean} include_ef whether include Elder Fever
-	 * @param  {...object} cookies cookie objects that may trigger buff
-	 * @returns {boolean} true if triggers buff
+	 * @param {number=} count load row count (default: 50)
 	 */
-	const cookiesContainBuffs = (include_ef, ...cookies) => {
-		return cookies.some((cookie) => {
-			return cookie.type == 'Building Special' || (include_ef && cookie.type == 'Elder Frenzy');
-		});
-	};
-
-	/**
-	 * get cast result object of Gambler's Fever Dream
-	 *
-	 * @param {number} spellsCast index of cast to see (with total cast)
-	 * @returns GFD cast result
-	 */
-	const check_gambler = (spellsCast) => {
-		Math_seedrandom($scope.seed + '/' + spellsCast);
-
-		let spells = [];
-		for (const i in M_spells) {
-			if (i != "gambler's fever dream")
-				spells.push(M_spells[i]);
-		}
-
-		const gfdSpell = choose(spells);
-		//simplifying the below cause this isn't patched yet afaict and i'll never be playing with diminished ineptitutde backfire
-		const gfdBackfire = 0.5; /*M.getFailChance(gfdSpell);
-
-		if(FortuneCookie.detectKUGamblerPatch()) gfdBackfire *= 2;
-		else gfdBackfire = Math.max(gfdBackfire, 0.5);*/
-
-		let gamblerSpell = {};
-		gamblerSpell.type = gfdSpell.name;
-		gamblerSpell.hasBs = false;
-		gamblerSpell.hasEf = false;
-
-		Math_seedrandom($scope.seed + '/' + (spellsCast + 1));
-		if (Math.random() < (1 - gfdBackfire)) {
-			gamblerSpell.backfire = false;
-
-			if (gfdSpell.name == "Force the Hand of Fate") {
-				gamblerSpell.innerCookie1 = castFtHoF(spellsCast + 1, false, "GC");
-				gamblerSpell.innerCookie2 = castFtHoF(spellsCast + 1, true, "GC");
-
-				gamblerSpell.hasBs = gamblerSpell.innerCookie1.type == 'Building Special' || gamblerSpell.innerCookie2.type == 'Building Special';
-			}
-
-			//TODO: Do something with edifice to make it clear if it will fail or not. like this:
-			//if(gfdSpell.name == "Spontaneous Edifice") spellOutcome += ' (' + FortuneCookie.gamblerEdificeChecker(spellsCast + 1, true) + ')';
-		} else {
-			gamblerSpell.backfire = true;
-
-			if (gfdSpell.name == "Force the Hand of Fate") {
-				gamblerSpell.innerCookie1 = castFtHoF(spellsCast + 1, false, "RC");
-				gamblerSpell.innerCookie2 = castFtHoF(spellsCast + 1, true, "RC");
-
-				gamblerSpell.hasEf = gamblerSpell.innerCookie1.type == 'Elder Frenzy' || gamblerSpell.innerCookie2.type == 'Elder Frenzy';
-			}
-
-			//TODO: again, handle spontaneous edifice
-			//if(gfdSpell.name == "Spontaneous Edifice") spellOutcome += ' (' + FortuneCookie.gamblerEdificeChecker(spellsCast + 1, false) + ')';
-		}
-
-		return gamblerSpell;
-	};
-
-	/**
-	 * calculate base fail chance of FtHoF
-	 * (without considering count of GCs on screen)
-	 * simulating: minigameGrimoire.js > M.getFailChance (L289 on v2.052)
-	 *
-	 * @returns {number} fail chance of FtHoF
-	 */
-	const getBaseFailChance = () => {
-		let failChance = 0.15;
-		if ($scope.buffDI) failChance *= 0.1;
-		//if (Game.hasBuff('Magic inept')) failChance*=5;  // TODO: not implemented
-		failChance *= 1 + 0.1 * $scope.auraSI;  // TODO: Reality Bending x1.1
-		return failChance;
-	};
-
-	/**
-	 * calculate fail chance of FtHoF
-	 * simulating: minigameGrimoire.js > M.getFailChance (L289 on v2.052)
-	 *
-	 * @param {number=} baseFailChance
-	 * @returns {number} fail chance of FtHoF
-	 */
-	const getFailChance = (baseFailChance) => {
-		const failChance = (
-			(baseFailChance || getBaseFailChance())
-			+ 0.15 * $scope.screenCookieCount  // L46
-		);
-		return failChance;
-	};
-
-	/**
-	 * get cast result object of FtHoF
-	 * simulating target: minigameGrimoire.js > M.castSpell (L299 on v2.052)
-	 *
-	 * @param {number} spellsCastTotal total spell cast count before this cast
-	 * @param {boolean} isOneChange true if one change
-	 * @param {("GC" | "RC")=} forceCookie "GC": force GC, "RC": force RC, default: roll with Math.random()
-	 * @returns {FthofResult} FtHoF cast result
-	 */
-	const castFtHoF = (spellsCastTotal, isOneChange, forceCookie) => {
-		// set seed (L312)
-		Math_seedrandom($scope.seed + '/' + spellsCastTotal);
-
-		// get fail chance (L307 > L289)
-		const failChance = (() => {
-			// return 0.0 or 1.0 if forced
-			if (forceCookie == "GC") return 0.0;
-			if (forceCookie == "RC") return 1.0;
-
-			// calculate failChance (same as L289)
-			return getFailChance();
-		})();
-
-		// roll casting result (L313)
-		const isWin = (!true || Math.random() < (1 - failChance));
-
-		// spell.win() or spell.fail() is called at this point
-		//   M.spells > 'hand of fate' > win (L48), fail (L66)
-		//   > new Game.shimmer('golden',{*:true}) (L50, L68)
-		// and Math.random() is called in main.js
-		//   Game.shimmer > this.init(); (main.js L5215)
-		//   > Game.shimmerTypes[this.type].initFunc(this); (main.js L5223)
-		//   > Game.shimmerTypes > 'golden' > initFunc (main.js L5320)
-
-		// call Math.random() for chime (main.js L5322 > main.js L917)
-		// this call is no longer active: L885
-		//if (chime && $scope.ascensionMode != 1) Math.random();
-
-		// season is valentines or easter (main.js L5343, main.js L5353)
-		if (isOneChange) Math.random();
-
-		// determine X and Y position to spawn (main.js L5358, main.js L5359)
-		Math.random();
-		Math.random();
-
-		// initializing GC/RC finished, back to spell.win() or spell.fail()
-
-		/**
-		 * choices of GC/RC effect name
-		 * @type {string[]}
-		 */
-		let choices = [];
-
-		/** FtHoF cast result */
-		const cookie = {};
-
-		// choose cookie effect
-		if (isWin) {
-			// choices of golden cookie (L52)
-			choices.push('Frenzy', 'Lucky');
-			if (!$scope.dragonflight) choices.push('Click Frenzy');
-			if (Math.random() < 0.1) choices.push('Cookie Storm', 'Cookie Storm', 'Blab');
-			if (Math.random() < 0.25) choices.push('Building Special');  // Game.BuildingsOwned>=10 is ignored
-			if (Math.random() < 0.15) choices = ['Cookie Storm Drop'];
-			if (Math.random() < 0.0001) choices.push('Free Sugar Lump');
-			cookie.type = choose(choices);
-
-			// There is an additional Math.random() in L62,
-			// but this doesn't affect the result because choice is done.
-			//if (cookie.type == 'Cookie Storm Drop') Math.random();
-
-			// cookie is GC
-			cookie.wrath = false;
-
-		} else {
-			// choices of red cookie (L70)
-			choices.push('Clot', 'Ruin');
-			if (Math.random() < 0.1) choices.push('Cursed Finger', 'Elder Frenzy');
-			if (Math.random() < 0.003) choices.push('Free Sugar Lump');
-			if (Math.random() < 0.1) choices = ['Blab'];
-			cookie.type = choose(choices);
-
-			// cookie is RC
-			cookie.wrath = true;
-		}
-
-		// set description
-		const description = cookieEffectNameToDescription[cookie.type];
-		if (!description) console.error("No description in dictionary: " + cookie.type);
-		cookie.description = description;
-
-		// add noteworthy info
-		cookie.noteworthy = false;
-		if (cookie.type == 'Building Special') cookie.noteworthy = true;
-		if (cookie.type == 'Elder Frenzy') cookie.noteworthy = true;
-
-		// return FtHoF cast result
-		return cookie;
+	const loadMore = (count = 50) => {
+		$scope.lookahead += count;
+		updateCookies();
 	};
 
 
 	// set functions to $scope that called from index.html
-	$scope.loadMore          = loadMore;
-	$scope.castSpell         = castSpell;
-	$scope.printScope        = printScope;
-	$scope.loadSaveCode          = loadSaveCode;
-	$scope.updateCookies     = updateCookies;
 	$scope.collapseInterface = collapseInterface;
+	$scope.printScope        = printScope;
+	$scope.loadSaveCode      = loadSaveCode;
+	$scope.updateCookies     = updateCookies;
+	$scope.castSpell         = castSpell;
+	$scope.loadMore          = loadMore;
 });
 
 
