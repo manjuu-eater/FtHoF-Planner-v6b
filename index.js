@@ -403,8 +403,9 @@ app.controller('myCtrl', function ($scope) {
 		// set backfire result
 		gfdResult.backfire = !isChildSpellWin;
 
-		// set the result of FtHoF called by GFD
+		// set the result of child spells called by GFD
 		if (castSpellName.name == "Force the Hand of Fate") {
+			// add result of casting FtHoF
 			if (isChildSpellWin) {
 				gfdResult.innerCookie1 = castFtHoF(spellsCastTotal + 1, false, "GC");
 				gfdResult.innerCookie2 = castFtHoF(spellsCastTotal + 1, true, "GC");
@@ -422,10 +423,16 @@ app.controller('myCtrl', function ($scope) {
 					|| gfdResult.innerCookie2.type == "Elder Frenzy"
 				);
 			}
-		}
 
-		//TODO: Do something with edifice to make it clear if it will fail or not. like this:
-		//if(gfdSpell.name == "Spontaneous Edifice") spellOutcome += ' (' + FortuneCookie.gamblerEdificeChecker(spellsCast + 1, true) + ')';
+		} else if (gfdResult.name == "Spontaneous Edifice") {
+			// add result of SE
+
+			// get random number when choosing building (L134, L144)
+			const secondRandomNumber = Math.random();
+
+			// set to GFD result object
+			gfdResult.spontaneousEdificeRandomNumber = secondRandomNumber;
+		}
 
 		// return GFD result object
 		return gfdResult;
