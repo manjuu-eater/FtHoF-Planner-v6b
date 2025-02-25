@@ -167,7 +167,8 @@ app.controller('myCtrl', function ($scope) {
 	 * calculate base fail chance of FtHoF
 	 * (without considering count of GCs on screen)
 	 *
-	 * simulating: minigameGrimoire.js > M.getFailChance (L289 on v2.052)
+	 * simulating: minigameGrimoire.js v2.052
+	 *             > M.getFailChance (L289)
 	 *
 	 * @returns {number} fail chance of FtHoF
 	 */
@@ -183,8 +184,9 @@ app.controller('myCtrl', function ($scope) {
 	/**
 	 * calculate fail chance of FtHoF
 	 *
-	 * simulating: minigameGrimoire.js > M.getFailChance (L289 on v2.052)
-	 *             M.spells['hand of fate'].failFunc() (L46)
+	 * simulating: minigameGrimoire.js v2.052
+	 *             > M.getFailChance (L289)
+	 *             > M.spells['hand of fate'].failFunc() (L295 > L46)
 	 *
 	 * @param {number=} baseFailChance
 	 * @returns {number} fail chance of FtHoF
@@ -201,7 +203,9 @@ app.controller('myCtrl', function ($scope) {
 	/**
 	 * get cast result object of FtHoF
 	 *
-	 * simulating: minigameGrimoire.js > M.castSpell (L299 on v2.052)
+	 * simulating: minigameGrimoire.js v2.052
+	 *             > M.castSpell (L299)
+	 *             > spell.win(), spell.fail() (L313 > L48, 66)
 	 *
 	 * @param {number} spellsCastTotal total spell cast count before this cast
 	 * @param {boolean} isOneChange true if one change
