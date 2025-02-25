@@ -87,28 +87,28 @@
         <md-divider></md-divider>
 
         <label>Lookahead length</label>
-        <input type="number" ng-model="lookahead" min=10 max=1000>
+        <input type="number" ng-model="lookahead" min="10" max="1000">
 
         <md-divider></md-divider>
 
         <label>Min Combo</label>
-        <input type="number" ng-model="minComboLength" min=1 max=20>
+        <input type="number" ng-model="minComboLength" min="1" max="20">
 
         <label>Max Combo</label>
-        <input type="number" ng-model="maxComboLength" min=1 max=20>
+        <input type="number" ng-model="maxComboLength" min="1" max="20">
 
         <label>Max Spread</label>
-        <input type="number" ng-model="maxSpread" min=0 max=99>
+        <input type="number" ng-model="maxSpread" min="0" max="99">
 
-        <md-checkbox ng-checked=true ng-model="includeEF" aria-label="Include Elder Frenzy">
+        <md-checkbox ng-checked="true" ng-model="includeEF" aria-label="Include Elder Frenzy">
             Include Elder Frenzies
         </md-checkbox>
 
-        <md-checkbox ng-checked=true ng-model="skipRA" aria-label="Allow Abomination Skips">
+        <md-checkbox ng-checked="true" ng-model="skipRA" aria-label="Allow Abomination Skips">
             Skip Abominations
         </md-checkbox>
 
-        <md-checkbox ng-checked=true ng-model="skipSE" aria-label="Allow Spontaneous Edifice Skips">
+        <md-checkbox ng-checked="true" ng-model="skipSE" aria-label="Allow Spontaneous Edifice Skips">
             Skip Spontaneous Edifices
         </md-checkbox>
 
@@ -116,7 +116,7 @@
         <md-divider></md-divider>
 
         <label>Golden Cookies on screen</label>
-        <input type="number" ng-model="screenCookieCount" min=0 max=10>
+        <input type="number" ng-model="screenCookieCount" min="0" max="10">
 
         <md-checkbox ng-model="dragonflight" aria-label="Dragonflight Buff Active">
             Dragonflight Buff Active
