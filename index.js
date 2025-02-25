@@ -369,11 +369,9 @@ app.controller('myCtrl', function ($scope) {
 		}
 
 		const gfdSpell = choose(spells);
-		//simplifying the below cause this isn't patched yet afaict and i'll never be playing with diminished ineptitutde backfire
-		const gfdBackfire = 0.5; /*M.getFailChance(gfdSpell);
 
-		if(FortuneCookie.detectKUGamblerPatch()) gfdBackfire *= 2;
-		else gfdBackfire = Math.max(gfdBackfire, 0.5);*/
+		// chance of GFD backfire (increases above 0.5 only if DI debuff is active)
+		const gfdBackfire = Math.max(getBaseFailChance(), 0.5);
 
 		let gamblerSpell = {};
 		gamblerSpell.type = gfdSpell.name;
