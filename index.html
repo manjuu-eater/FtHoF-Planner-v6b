@@ -100,21 +100,29 @@
 
 
 		<!-- Options: Lookahead Length -->
-		<label>Lookahead length</label>
-		<input type="number" class="w3" min="10" max="1000" step="10" ng-model="lookahead">
+		<label>
+			Lookahead length
+			<input type="number" class="w3" min="10" max="1000" step="10" ng-model="lookahead">
+		</label>
 
 		<md-divider></md-divider>
 
 
 		<!-- Options: Combos -->
-		<label>Min Combo</label>
-		<input type="number" class="w2" min="1" max="20" ng-model="minComboLength">
+		<label>
+			Min Combo
+			<input type="number" class="w2" min="1" max="20" ng-model="minComboLength">
+		</label>
 
-		<label>Max Combo</label>
-		<input type="number" class="w2" min="1" max="20" ng-model="maxComboLength">
+		<label>
+			Max Combo
+			<input type="number" class="w2" min="1" max="20" ng-model="maxComboLength">
+		</label>
 
-		<label>Max Spread</label>
-		<input type="number" class="w2" min="0" max="99" ng-model="maxSpread">
+		<label>
+			Max Spread
+			<input type="number" class="w2" min="0" max="99" ng-model="maxSpread">
+		</label>
 
 		<md-checkbox ng-checked="true" ng-model="includeEF">
 			Include Elder Frenzies
@@ -132,8 +140,10 @@
 
 
 		<!-- Options: Buffs / Debuffs that affect fail chance -->
-		<label>Golden Cookies on screen</label>
-		<input type="number" class="w2" min="0" max="10" ng-model="screenCookieCount">
+		<label>
+			Golden Cookies on screen
+			<input type="number" class="w2" min="0" max="10" ng-model="screenCookieCount">
+		</label>
 
 		<md-checkbox ng-model="dragonflight">
 			Dragonflight Buff Active
