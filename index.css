@@ -4,7 +4,18 @@ html, body {
 
 input {
     margin: 8px 0;
-    width: 80px;
+}
+input.w2 {
+    width: 2em;
+}
+input.w3 {
+    width: 3em;
+}
+input.w4 {
+    width: 4em;
+}
+input.w5 {
+    width: 5em;
 }
 
 .content {

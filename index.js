@@ -81,6 +81,7 @@ app.controller('myCtrl', function ($scope) {
 	$scope.dragonflight = false
 	$scope.auraSI = false
 	$scope.buffDI = false
+	$scope.debuffDI = false
 	$scope.screenCookieCount = 0
 	$scope.minComboLength = 2
 	$scope.maxComboLength = 4
@@ -165,14 +166,16 @@ app.controller('myCtrl', function ($scope) {
 	/**
 	 * calculate base fail chance of FtHoF
 	 * (without considering count of GCs on screen)
-	 * simulating: minigameGrimoire.js > M.getFailChance (L289 on v2.052)
+	 *
+	 * simulating: minigameGrimoire.js v2.052
+	 *             > M.getFailChance (L289)
 	 *
 	 * @returns {number} fail chance of FtHoF
 	 */
 	const getBaseFailChance = () => {
 		let failChance = 0.15;
-		if ($scope.buffDI) failChance *= 0.1;
-		//if (Game.hasBuff('Magic inept')) failChance*=5;  // TODO: not implemented
+		if ($scope.buffDI) failChance *= 0.1;  // Diminish Ineptitude Buff
+		if ($scope.debuffDI) failChance *= 5;  // Diminish Ineptitude Debuff
 		failChance *= 1 + 0.1 * $scope.auraSI;  // TODO: Reality Bending x1.1
 		return failChance;
 	};
@@ -180,15 +183,18 @@ app.controller('myCtrl', function ($scope) {
 
 	/**
 	 * calculate fail chance of FtHoF
-	 * simulating: minigameGrimoire.js > M.getFailChance (L289 on v2.052)
+	 *
+	 * simulating: minigameGrimoire.js v2.052
+	 *             > M.getFailChance (L289)
+	 *             > M.spells['hand of fate'].failFunc() (L295 > L46)
 	 *
 	 * @param {number=} baseFailChance
 	 * @returns {number} fail chance of FtHoF
 	 */
-	const getFailChance = (baseFailChance) => {
+	const getFthofFailChance = (baseFailChance) => {
 		const failChance = (
 			(baseFailChance || getBaseFailChance())
-			+ 0.15 * $scope.screenCookieCount  // L46
+			+ 0.15 * $scope.screenCookieCount  // (L295 > L46)
 		);
 		return failChance;
 	};
@@ -196,7 +202,10 @@ app.controller('myCtrl', function ($scope) {
 
 	/**
 	 * get cast result object of FtHoF
-	 * simulating target: minigameGrimoire.js > M.castSpell (L299 on v2.052)
+	 *
+	 * simulating: minigameGrimoire.js v2.052
+	 *             > M.castSpell (L299)
+	 *             > spell.win(), spell.fail() (L313 > L48, 66)
 	 *
 	 * @param {number} spellsCastTotal total spell cast count before this cast
 	 * @param {boolean} isOneChange true if one change
@@ -214,7 +223,7 @@ app.controller('myCtrl', function ($scope) {
 			if (forceCookie == "RC") return 1.0;
 
 			// calculate failChance (same as L289)
-			return getFailChance();
+			return getFthofFailChance();
 		})();
 
 		// roll casting result (L313)
@@ -351,58 +360,82 @@ app.controller('myCtrl', function ($scope) {
 	/**
 	 * get cast result object of Gambler's Fever Dream
 	 *
-	 * @param {number} spellsCast index of cast to see (with total cast)
+	 * simulating: minigameGrimoire.js v2.052
+	 *             > M.castSpell (L299)
+	 *             > spell.win() (L313 > L195)  note: GFD itself always win
+	 *             > setTimeout(... M.castSpell ...) (L206 > L299)
+	 *
+	 * @param {number} spellsCastTotal total spell cast count before this cast
 	 * @returns GFD cast result
 	 */
-	const check_gambler = (spellsCast) => {
-		Math_seedrandom($scope.seed + '/' + spellsCast);
+	const castGFD = (spellsCastTotal) => {
+		// set seed for GFD spell selection (L312)
+		Math_seedrandom($scope.seed + "/" + spellsCastTotal);
 
-		let spells = [];
+		// make spells list that GFD can cast with max MP (L199)
+		const spells = [];
 		for (const i in M_spells) {
 			if (i != "gambler's fever dream")
 				spells.push(M_spells[i]);
 		}
 
-		const gfdSpell = choose(spells);
-		//simplifying the below cause this isn't patched yet afaict and i'll never be playing with diminished ineptitutde backfire
-		const gfdBackfire = 0.5; /*M.getFailChance(gfdSpell);
+		// choose a spell to be cast (L202)
+		const castSpellName = choose(spells);
 
-		if(FortuneCookie.detectKUGamblerPatch()) gfdBackfire *= 2;
-		else gfdBackfire = Math.max(gfdBackfire, 0.5);*/
+		// chance of GFD backfire (L206 > L299 > L311)
+		// note1: **code behavior differs from description!!**
+		// note2: increases above 0.5 only if DI debuff is active
+		const gfdBackfire = Math.max(getBaseFailChance(), 0.5);
 
-		let gamblerSpell = {};
-		gamblerSpell.type = gfdSpell.name;
-		gamblerSpell.hasBs = false;
-		gamblerSpell.hasEf = false;
+		// return object
+		const gfdResult = {};
+		gfdResult.type = castSpellName.name;
+		gfdResult.hasBs = false;
+		gfdResult.hasEf = false;
 
-		Math_seedrandom($scope.seed + '/' + (spellsCast + 1));
-		if (Math.random() < (1 - gfdBackfire)) {
-			gamblerSpell.backfire = false;
+		// set seed for child spell that is cast by GFD (L312)
+		// note: this seed may change with continuous GFD casts (spellsCast increases)
+		Math_seedrandom($scope.seed + "/" + (spellsCastTotal + 1));
 
-			if (gfdSpell.name == "Force the Hand of Fate") {
-				gamblerSpell.innerCookie1 = castFtHoF(spellsCast + 1, false, "GC");
-				gamblerSpell.innerCookie2 = castFtHoF(spellsCast + 1, true, "GC");
+		// roll casting result (L313)
+		const isChildSpellWin = Math.random() < (1 - gfdBackfire);
 
-				gamblerSpell.hasBs = gamblerSpell.innerCookie1.type == 'Building Special' || gamblerSpell.innerCookie2.type == 'Building Special';
+		// set backfire result
+		gfdResult.backfire = !isChildSpellWin;
+
+		// set the result of child spells called by GFD
+		if (castSpellName.name == "Force the Hand of Fate") {
+			// add result of casting FtHoF
+			if (isChildSpellWin) {
+				gfdResult.innerCookie1 = castFtHoF(spellsCastTotal + 1, false, "GC");
+				gfdResult.innerCookie2 = castFtHoF(spellsCastTotal + 1, true, "GC");
+
+				gfdResult.hasBs = (
+					gfdResult.innerCookie1.type == "Building Special"
+					|| gfdResult.innerCookie2.type == "Building Special"
+				);
+			} else {
+				gfdResult.innerCookie1 = castFtHoF(spellsCastTotal + 1, false, "RC");
+				gfdResult.innerCookie2 = castFtHoF(spellsCastTotal + 1, true, "RC");
+
+				gfdResult.hasEf = (
+					gfdResult.innerCookie1.type == "Elder Frenzy"
+					|| gfdResult.innerCookie2.type == "Elder Frenzy"
+				);
 			}
 
-			//TODO: Do something with edifice to make it clear if it will fail or not. like this:
-			//if(gfdSpell.name == "Spontaneous Edifice") spellOutcome += ' (' + FortuneCookie.gamblerEdificeChecker(spellsCast + 1, true) + ')';
-		} else {
-			gamblerSpell.backfire = true;
+		} else if (gfdResult.name == "Spontaneous Edifice") {
+			// add result of SE
 
-			if (gfdSpell.name == "Force the Hand of Fate") {
-				gamblerSpell.innerCookie1 = castFtHoF(spellsCast + 1, false, "RC");
-				gamblerSpell.innerCookie2 = castFtHoF(spellsCast + 1, true, "RC");
+			// get random number when choosing building (L134, L144)
+			const secondRandomNumber = Math.random();
 
-				gamblerSpell.hasEf = gamblerSpell.innerCookie1.type == 'Elder Frenzy' || gamblerSpell.innerCookie2.type == 'Elder Frenzy';
-			}
-
-			//TODO: again, handle spontaneous edifice
-			//if(gfdSpell.name == "Spontaneous Edifice") spellOutcome += ' (' + FortuneCookie.gamblerEdificeChecker(spellsCast + 1, false) + ')';
+			// set to GFD result object
+			gfdResult.spontaneousEdificeRandomNumber = secondRandomNumber;
 		}
 
-		return gamblerSpell;
+		// return GFD result object
+		return gfdResult;
 	};
 
 
@@ -429,7 +462,7 @@ app.controller('myCtrl', function ($scope) {
 			lookahead,
 			minComboLength, maxComboLength, maxSpread,
 			includeEF, skipRA, skipSE,
-			screenCookieCount, auraSI, buffDI,
+			screenCookieCount, auraSI, buffDI, debuffDI,
 			seed,
 			spellsCastTotal,
 		} = $scope;
@@ -437,10 +470,11 @@ app.controller('myCtrl', function ($scope) {
 		// variables to set $scope.*
 		const cookies = []
 		const firstRandomNumbers = [];
-		const baseBackfireChance = 0.15*(auraSI?1.1:1)*(buffDI?0.1:1);
+		const baseBackfireChance = 0.15*(auraSI?1.1:1)*(buffDI?0.1:1)*(debuffDI?5:1);
 		const backfireChance = baseBackfireChance+0.15*screenCookieCount;
 		const displayCookies = [];
 		const combos = {};
+		const sugarIndexes = [];
 
 		// srart timer
 		console.time("updateCookies");
@@ -448,24 +482,26 @@ app.controller('myCtrl', function ($scope) {
 		const comboIndexes = [];
 		const skipIndexes = [];
 		for (let i = 0; i < lookahead; i++) {
-			const currentTotalSpell = i+spellsCastTotal;
+			const currentTotalSpell = i + spellsCastTotal;
+
+			// get first random number and push to array
 			Math_seedrandom(seed + '/' + currentTotalSpell);
 			const roll = Math.random();
 			firstRandomNumbers.push(roll);
 
-			const cookie = [];
-			const displayCookie = [];
+			// FtHoF success or backfire (L313)
+			const isFthofWin = roll < 1 - backfireChance;
+
+			// get FtHoF results (both success and backfire)
 			const cookie0GC = castFtHoF(spellsCastTotal + i, false, "GC");
 			const cookie1GC = castFtHoF(spellsCastTotal + i, true, "GC");
 			const cookie0RC = castFtHoF(spellsCastTotal + i, false, "RC");
 			const cookie1RC = castFtHoF(spellsCastTotal + i, true, "RC");
-			const gambler = check_gambler(spellsCastTotal + i);
-			cookie.push(cookie0GC);
-			cookie.push(cookie1GC);
-			cookie.push(cookie0RC);
-			cookie.push(cookie1RC);
-			cookie.push(gambler);
+			const gambler = castGFD(spellsCastTotal + i);
+			const cookie = [cookie0GC, cookie1GC, cookie0RC, cookie1RC, gambler];
+			const displayCookie = [];
 
+			// determine whether current cookies can be part of a combo
 			if (
 				cookiesContainBuffs(includeEF, cookie0GC, cookie1GC, cookie0RC, cookie1RC)
 				|| gambler.hasBs
@@ -474,6 +510,7 @@ app.controller('myCtrl', function ($scope) {
 				comboIndexes.push(i);
 			}
 
+			// determine whether GFD can be skipped
 			if (
 				(skipRA && gambler.type == 'Resurrect Abomination')
 				|| (skipSE && gambler.type == 'Spontaneous Edifice' && !gambler.backfire)
@@ -481,7 +518,13 @@ app.controller('myCtrl', function ($scope) {
 				skipIndexes.push(i);
 			}
 
-			if (firstRandomNumbers[i] + backfireChance < 1) {
+			// determine whether Sugar Lump can be get
+			if ([cookie0GC.type, cookie1GC.type, cookie0RC.type, cookie1RC.type].includes("Free Sugar Lump")) {
+				sugarIndexes.push(i);
+			}
+
+			// add good effect information about hidden GC/RC
+			if (isFthofWin) {
 				displayCookie.push(cookie0GC);
 				displayCookie.push(cookie1GC);
 				if (cookie0RC.type == "Elder Frenzy") {
@@ -508,17 +551,22 @@ app.controller('myCtrl', function ($scope) {
 				if (cookie0GC.type == "Free Sugar Lump") cookie0RC.type += " (Lump)";
 				if (cookie1GC.type == "Free Sugar Lump") cookie1RC.type += " (Lump)";
 			}
+
+			// push GFD result to displayCookie
 			displayCookie.push(gambler);
 
 			// push to array
 			cookies.push(cookie);
 			displayCookies.push(displayCookie);
 		}
+
+		// log
 		console.log("cookies:", cookies);
 		console.log("comboIndexes:", comboIndexes);
 		console.log("skipIndexes:", skipIndexes);
 		console.timeLog("updateCookies");
 
+		// find combos
 		for (let combo_length = minComboLength; combo_length <= maxComboLength; combo_length++) {
 			combos[combo_length] = findCombos(combo_length, maxSpread, comboIndexes, skipIndexes);
 		}
@@ -533,6 +581,7 @@ app.controller('myCtrl', function ($scope) {
 		$scope.backfireChance      = backfireChance;
 		$scope.displayCookies      = displayCookies;
 		$scope.combos              = combos;
+		$scope.sugarIndexes        = sugarIndexes;
 	};
 
 
