@@ -186,7 +186,7 @@ app.controller('myCtrl', function ($scope) {
 	 * @param {number=} baseFailChance
 	 * @returns {number} fail chance of FtHoF
 	 */
-	const getFailChance = (baseFailChance) => {
+	const getFthofFailChance = (baseFailChance) => {
 		const failChance = (
 			(baseFailChance || getBaseFailChance())
 			+ 0.15 * $scope.screenCookieCount  // L46
@@ -215,7 +215,7 @@ app.controller('myCtrl', function ($scope) {
 			if (forceCookie == "RC") return 1.0;
 
 			// calculate failChance (same as L289)
-			return getFailChance();
+			return getFthofFailChance();
 		})();
 
 		// roll casting result (L313)
