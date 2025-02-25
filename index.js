@@ -356,29 +356,44 @@ app.controller('myCtrl', function ($scope) {
 	/**
 	 * get cast result object of Gambler's Fever Dream
 	 *
+	 * simulating: minigameGrimoire.js v2.052
+	 *             > M.castSpell (L299)
+	 *             > spell.win() (L313 > L195)  note: GFD itself always win
+	 *             > setTimeout(... M.castSpell ...) (L206 > L299)
+	 *
 	 * @param {number} spellsCast index of cast to see (with total cast)
 	 * @returns GFD cast result
 	 */
 	const check_gambler = (spellsCast) => {
+		// set seed for GFD spell selection (L312)
 		Math_seedrandom($scope.seed + '/' + spellsCast);
 
+		// make spells list that GFD can cast with max MP (L199)
 		let spells = [];
 		for (const i in M_spells) {
 			if (i != "gambler's fever dream")
 				spells.push(M_spells[i]);
 		}
 
+		// choose a spell to be cast (L202)
 		const gfdSpell = choose(spells);
 
-		// chance of GFD backfire (increases above 0.5 only if DI debuff is active)
+		// chance of GFD backfire (L206 > L299 > L311)
+		// note1: **code behavior differs from description!!**
+		// note2: increases above 0.5 only if DI debuff is active
 		const gfdBackfire = Math.max(getBaseFailChance(), 0.5);
 
+		// return object
 		let gamblerSpell = {};
 		gamblerSpell.type = gfdSpell.name;
 		gamblerSpell.hasBs = false;
 		gamblerSpell.hasEf = false;
 
+		// set seed for child spell that is cast by GFD
+		// note: this seed may change with continuous GFD casts (spellsCast increases)
 		Math_seedrandom($scope.seed + '/' + (spellsCast + 1));
+
+		// set success or fail result to return object
 		if (Math.random() < (1 - gfdBackfire)) {
 			gamblerSpell.backfire = false;
 
@@ -405,6 +420,7 @@ app.controller('myCtrl', function ($scope) {
 			//if(gfdSpell.name == "Spontaneous Edifice") spellOutcome += ' (' + FortuneCookie.gamblerEdificeChecker(spellsCast + 1, false) + ')';
 		}
 
+		// return GFD result object
 		return gamblerSpell;
 	};
 
