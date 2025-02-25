@@ -364,7 +364,7 @@ app.controller('myCtrl', function ($scope) {
 	 * @param {number} spellsCast index of cast to see (with total cast)
 	 * @returns GFD cast result
 	 */
-	const check_gambler = (spellsCast) => {
+	const castGFD = (spellsCast) => {
 		// set seed for GFD spell selection (L312)
 		Math_seedrandom($scope.seed + '/' + spellsCast);
 
@@ -482,7 +482,7 @@ app.controller('myCtrl', function ($scope) {
 			const cookie1GC = castFtHoF(spellsCastTotal + i, true, "GC");
 			const cookie0RC = castFtHoF(spellsCastTotal + i, false, "RC");
 			const cookie1RC = castFtHoF(spellsCastTotal + i, true, "RC");
-			const gambler = check_gambler(spellsCastTotal + i);
+			const gambler = castGFD(spellsCastTotal + i);
 			const cookie = [cookie0GC, cookie1GC, cookie0RC, cookie1RC, gambler];
 			const displayCookie = [];
 
