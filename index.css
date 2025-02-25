@@ -11,6 +11,12 @@ input.w2 {
 input.w3 {
     width: 3em;
 }
+input.w4 {
+    width: 4em;
+}
+input.w5 {
+    width: 5em;
+}
 
 .content {
     max-width: 1440px;
