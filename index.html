@@ -96,6 +96,30 @@
 			</li>
 		</ul>
 
+		<!-- Sugar Lumps -->
+		<ul ng-if="sugarIndexes">
+			<li>
+				<b>Sugar Lumps</b>
+				<ul ng-if="sugarIndexes.length == 0">
+					<li>No Sugar Lumps is found...</li>
+				</ul>
+				<ul ng-repeat="sugarIndex in sugarIndexes">
+					<li>
+						found in
+						<a href="#{{sugarIndex + 1}}">#{{sugarIndex + 1}}</a>
+						with {{
+							(
+								firstRandomNumbers[$index] + baseBackfireChance > 1
+								? 0
+								: ((1.075-firstRandomNumbers[$index] - baseBackfireChance) / 0.15).toFixed(0)
+							)
+							+ " screen GC"
+						}}
+					</li>
+				</ul>
+			</li>
+		</ul>
+
 		<md-divider></md-divider>
 
 

@@ -474,6 +474,7 @@ app.controller('myCtrl', function ($scope) {
 		const backfireChance = baseBackfireChance+0.15*screenCookieCount;
 		const displayCookies = [];
 		const combos = {};
+		const sugarIndexes = [];
 
 		// srart timer
 		console.time("updateCookies");
@@ -515,6 +516,11 @@ app.controller('myCtrl', function ($scope) {
 				|| (skipSE && gambler.type == 'Spontaneous Edifice' && !gambler.backfire)
 			) {
 				skipIndexes.push(i);
+			}
+
+			// determine whether Sugar Lump can be get
+			if ([cookie0GC.type, cookie1GC.type, cookie0RC.type, cookie1RC.type].includes("Free Sugar Lump")) {
+				sugarIndexes.push(i);
 			}
 
 			// add good effect information about hidden GC/RC
@@ -575,6 +581,7 @@ app.controller('myCtrl', function ($scope) {
 		$scope.backfireChance      = backfireChance;
 		$scope.displayCookies      = displayCookies;
 		$scope.combos              = combos;
+		$scope.sugarIndexes        = sugarIndexes;
 	};
 
 
