@@ -81,6 +81,7 @@ app.controller('myCtrl', function ($scope) {
 	$scope.dragonflight = false
 	$scope.auraSI = false
 	$scope.buffDI = false
+	$scope.debuffDI = false
 	$scope.screenCookieCount = 0
 	$scope.minComboLength = 2
 	$scope.maxComboLength = 4
@@ -171,8 +172,8 @@ app.controller('myCtrl', function ($scope) {
 	 */
 	const getBaseFailChance = () => {
 		let failChance = 0.15;
-		if ($scope.buffDI) failChance *= 0.1;
-		//if (Game.hasBuff('Magic inept')) failChance*=5;  // TODO: not implemented
+		if ($scope.buffDI) failChance *= 0.1;  // Diminish Ineptitude Buff
+		if ($scope.debuffDI) failChance *= 5;  // Diminish Ineptitude Debuff
 		failChance *= 1 + 0.1 * $scope.auraSI;  // TODO: Reality Bending x1.1
 		return failChance;
 	};
@@ -429,7 +430,7 @@ app.controller('myCtrl', function ($scope) {
 			lookahead,
 			minComboLength, maxComboLength, maxSpread,
 			includeEF, skipRA, skipSE,
-			screenCookieCount, auraSI, buffDI,
+			screenCookieCount, auraSI, buffDI, debuffDI,
 			seed,
 			spellsCastTotal,
 		} = $scope;
@@ -437,7 +438,7 @@ app.controller('myCtrl', function ($scope) {
 		// variables to set $scope.*
 		const cookies = []
 		const firstRandomNumbers = [];
-		const baseBackfireChance = 0.15*(auraSI?1.1:1)*(buffDI?0.1:1);
+		const baseBackfireChance = 0.15*(auraSI?1.1:1)*(buffDI?0.1:1)*(debuffDI?5:1);
 		const backfireChance = baseBackfireChance+0.15*screenCookieCount;
 		const displayCookies = [];
 		const combos = {};
