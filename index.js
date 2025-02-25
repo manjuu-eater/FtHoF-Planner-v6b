@@ -373,7 +373,7 @@ app.controller('myCtrl', function ($scope) {
 		Math_seedrandom($scope.seed + '/' + spellsCast);
 
 		// make spells list that GFD can cast with max MP (L199)
-		let spells = [];
+		const spells = [];
 		for (const i in M_spells) {
 			if (i != "gambler's fever dream")
 				spells.push(M_spells[i]);
@@ -388,7 +388,7 @@ app.controller('myCtrl', function ($scope) {
 		const gfdBackfire = Math.max(getBaseFailChance(), 0.5);
 
 		// return object
-		let gamblerSpell = {};
+		const gamblerSpell = {};
 		gamblerSpell.type = gfdSpell.name;
 		gamblerSpell.hasBs = false;
 		gamblerSpell.hasEf = false;
