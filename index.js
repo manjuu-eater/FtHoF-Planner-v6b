@@ -403,9 +403,9 @@ app.controller('myCtrl', function ($scope) {
 		// set backfire result
 		gfdResult.backfire = !isChildSpellWin;
 
-		// set success or fail result to return object
-		if (isChildSpellWin) {
-			if (castSpellName.name == "Force the Hand of Fate") {
+		// set the result of FtHoF called by GFD
+		if (castSpellName.name == "Force the Hand of Fate") {
+			if (isChildSpellWin) {
 				gfdResult.innerCookie1 = castFtHoF(spellsCastTotal + 1, false, "GC");
 				gfdResult.innerCookie2 = castFtHoF(spellsCastTotal + 1, true, "GC");
 
@@ -413,12 +413,7 @@ app.controller('myCtrl', function ($scope) {
 					gfdResult.innerCookie1.type == "Building Special"
 					|| gfdResult.innerCookie2.type == "Building Special"
 				);
-			}
-
-			//TODO: Do something with edifice to make it clear if it will fail or not. like this:
-			//if(gfdSpell.name == "Spontaneous Edifice") spellOutcome += ' (' + FortuneCookie.gamblerEdificeChecker(spellsCast + 1, true) + ')';
-		} else {
-			if (castSpellName.name == "Force the Hand of Fate") {
+			} else {
 				gfdResult.innerCookie1 = castFtHoF(spellsCastTotal + 1, false, "RC");
 				gfdResult.innerCookie2 = castFtHoF(spellsCastTotal + 1, true, "RC");
 
@@ -427,10 +422,10 @@ app.controller('myCtrl', function ($scope) {
 					|| gfdResult.innerCookie2.type == "Elder Frenzy"
 				);
 			}
-
-			//TODO: again, handle spontaneous edifice
-			//if(gfdSpell.name == "Spontaneous Edifice") spellOutcome += ' (' + FortuneCookie.gamblerEdificeChecker(spellsCast + 1, false) + ')';
 		}
+
+		//TODO: Do something with edifice to make it clear if it will fail or not. like this:
+		//if(gfdSpell.name == "Spontaneous Edifice") spellOutcome += ' (' + FortuneCookie.gamblerEdificeChecker(spellsCast + 1, true) + ')';
 
 		// return GFD result object
 		return gfdResult;
