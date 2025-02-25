@@ -1,26 +1,32 @@
 <!DOCTYPE html>
 <html lang="en-US" xmlns="http://www.w3.org/1999/html">
 <head>
-    <!-- Angular Material requires Angular.js Libraries -->
+    <!-- AngularJS Libraries -->
+    <!-- (Angular Material requires these files) -->
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-animate.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-aria.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-messages.min.js"></script>
+
     <!-- Angular Material Library -->
     <script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.8/angular-material.min.js"></script>
 
+    <!-- FtHoF Library Files -->
     <script src="./lib/seedrandom.min.js"></script>
     <script src="./lib/base64.js"></script>
     <script type="module" src="index.js"></script>
 
+    <!-- icon, styles -->
     <link rel="shortcut icon" type="image/x-icon" href="img/favicon.ico?">
     <link rel="stylesheet" type="text/css" href="index.css">
     <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.8/angular-material.min.css">
 
-
+    <!-- page tilte -->
     <title>FtHoF Planner v6</title>
 </head>
 <body>
+
+<!-- header title -->
 <md-toolbar>
     <div class="md-toolbar-tools">
         <h1>
@@ -28,8 +34,11 @@
         </h1>
     </div>
 </md-toolbar>
+
+<!-- AngularJS Main View -->
 <div ng-app="myApp" ng-controller="myCtrl">
     <div class="content">
+        <!-- Save Code -->
         <div layout="row">
             <md-input-container flex>
                 <label>Save Code</label>
@@ -40,6 +49,8 @@
             </md-button>
         </div>
 
+
+        <!-- Description of FtHoF -->
         <p><b>
             Based on FtHoF planner v1, v2, v3, v4, v5 by RebelKeithy, Skeezy, Eminenti, Mylaaan and Joseph3079.
             Huge thanks to them for creating such a helpful tool.<br>
@@ -48,7 +59,6 @@
         <p><b>
             The current version is compatible with cookie clicker 2.052, "often imitated, never duplicated".
         </b></p>
-
         <p>
             RebelKeithy, Skeezy, Mylaaan, & Joseph3079 made a guide explaining the options/features we added.<br>
             <b>◆ <a href="./user_guide.html">User Guide</a></b>
@@ -56,6 +66,8 @@
 
         <md-divider></md-divider>
 
+
+        <!-- Comobs Result -->
         <ul ng-if="combos">
             <li class="combo-listitem" ng-repeat="combo in combos">
                 <b>{{$index + minComboLength}}x Combo</b>
@@ -86,11 +98,15 @@
 
         <md-divider></md-divider>
 
+
+        <!-- Options: Lookahead Length -->
         <label>Lookahead length</label>
         <input type="number" ng-model="lookahead" min="10" max="1000" step="10">
 
         <md-divider></md-divider>
 
+
+        <!-- Options: Combos -->
         <label>Min Combo</label>
         <input type="number" ng-model="minComboLength" min="1" max="20">
 
@@ -112,9 +128,10 @@
             Skip Spontaneous Edifices
         </md-checkbox>
 
-
         <md-divider></md-divider>
 
+
+        <!-- Options: Buffs / Debuffs that affect fail chance -->
         <label>Golden Cookies on screen</label>
         <input type="number" ng-model="screenCookieCount" min="0" max="10">
 
@@ -130,9 +147,10 @@
             Diminish Ineptitude Active
         </md-checkbox>
 
-
         <md-divider></md-divider>
 
+
+        <!-- Buttons -->
         <md-button class="md-raised md-primary" ng-click="updateCookies()">Apply Settings</md-button>
         <md-button class="md-raised md-primary" ng-click="castSpell()">Cast Spell</md-button>
         <md-button class="md-raised md-primary" ng-click="castSpell(5)">x5</md-button>
@@ -141,6 +159,7 @@
 
         <md-divider></md-divider>
 
+        <!-- FtHoF Planner Main Result Area -->
         <table>
             <colgroup>
                 <col class="spell">
@@ -240,8 +259,10 @@
             </tbody>
         </table>
 
+        <!-- Load More Button -->
         <md-button class="md-raised md-primary" ng-click="loadMore()">Load More</md-button>
     </div>
 </div>
+
 </body>
 </html>
