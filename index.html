@@ -109,9 +109,9 @@
 						<a href="#{{sugarIndex + 1}}">#{{sugarIndex + 1}}</a>
 						with {{
 							(
-								firstRandomNumbers[$index] + baseBackfireChance > 1
+								firstRandomNumbers[sugarIndex] + baseBackfireChance > 1
 								? 0
-								: ((1.075-firstRandomNumbers[$index] - baseBackfireChance) / 0.15).toFixed(0)
+								: ((1.075-firstRandomNumbers[sugarIndex] - baseBackfireChance) / 0.15).toFixed(0)
 							)
 							+ " screen GC"
 						}}
