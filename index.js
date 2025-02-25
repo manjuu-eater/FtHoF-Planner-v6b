@@ -365,12 +365,12 @@ app.controller('myCtrl', function ($scope) {
 	 *             > spell.win() (L313 > L195)  note: GFD itself always win
 	 *             > setTimeout(... M.castSpell ...) (L206 > L299)
 	 *
-	 * @param {number} spellsCast index of cast to see (with total cast)
+	 * @param {number} spellsCastTotal total spell cast count before this cast
 	 * @returns GFD cast result
 	 */
-	const castGFD = (spellsCast) => {
+	const castGFD = (spellsCastTotal) => {
 		// set seed for GFD spell selection (L312)
-		Math_seedrandom($scope.seed + '/' + spellsCast);
+		Math_seedrandom($scope.seed + "/" + spellsCastTotal);
 
 		// make spells list that GFD can cast with max MP (L199)
 		const spells = [];
@@ -380,7 +380,7 @@ app.controller('myCtrl', function ($scope) {
 		}
 
 		// choose a spell to be cast (L202)
-		const gfdSpell = choose(spells);
+		const castSpellName = choose(spells);
 
 		// chance of GFD backfire (L206 > L299 > L311)
 		// note1: **code behavior differs from description!!**
@@ -388,36 +388,44 @@ app.controller('myCtrl', function ($scope) {
 		const gfdBackfire = Math.max(getBaseFailChance(), 0.5);
 
 		// return object
-		const gamblerSpell = {};
-		gamblerSpell.type = gfdSpell.name;
-		gamblerSpell.hasBs = false;
-		gamblerSpell.hasEf = false;
+		const gfdResult = {};
+		gfdResult.type = castSpellName.name;
+		gfdResult.hasBs = false;
+		gfdResult.hasEf = false;
 
-		// set seed for child spell that is cast by GFD
+		// set seed for child spell that is cast by GFD (L312)
 		// note: this seed may change with continuous GFD casts (spellsCast increases)
-		Math_seedrandom($scope.seed + '/' + (spellsCast + 1));
+		Math_seedrandom($scope.seed + "/" + (spellsCastTotal + 1));
+
+		// roll casting result (L313)
+		const isChildSpellWin = Math.random() < (1 - gfdBackfire);
+
+		// set backfire result
+		gfdResult.backfire = !isChildSpellWin;
 
 		// set success or fail result to return object
-		if (Math.random() < (1 - gfdBackfire)) {
-			gamblerSpell.backfire = false;
+		if (isChildSpellWin) {
+			if (castSpellName.name == "Force the Hand of Fate") {
+				gfdResult.innerCookie1 = castFtHoF(spellsCastTotal + 1, false, "GC");
+				gfdResult.innerCookie2 = castFtHoF(spellsCastTotal + 1, true, "GC");
 
-			if (gfdSpell.name == "Force the Hand of Fate") {
-				gamblerSpell.innerCookie1 = castFtHoF(spellsCast + 1, false, "GC");
-				gamblerSpell.innerCookie2 = castFtHoF(spellsCast + 1, true, "GC");
-
-				gamblerSpell.hasBs = gamblerSpell.innerCookie1.type == 'Building Special' || gamblerSpell.innerCookie2.type == 'Building Special';
+				gfdResult.hasBs = (
+					gfdResult.innerCookie1.type == "Building Special"
+					|| gfdResult.innerCookie2.type == "Building Special"
+				);
 			}
 
 			//TODO: Do something with edifice to make it clear if it will fail or not. like this:
 			//if(gfdSpell.name == "Spontaneous Edifice") spellOutcome += ' (' + FortuneCookie.gamblerEdificeChecker(spellsCast + 1, true) + ')';
 		} else {
-			gamblerSpell.backfire = true;
+			if (castSpellName.name == "Force the Hand of Fate") {
+				gfdResult.innerCookie1 = castFtHoF(spellsCastTotal + 1, false, "RC");
+				gfdResult.innerCookie2 = castFtHoF(spellsCastTotal + 1, true, "RC");
 
-			if (gfdSpell.name == "Force the Hand of Fate") {
-				gamblerSpell.innerCookie1 = castFtHoF(spellsCast + 1, false, "RC");
-				gamblerSpell.innerCookie2 = castFtHoF(spellsCast + 1, true, "RC");
-
-				gamblerSpell.hasEf = gamblerSpell.innerCookie1.type == 'Elder Frenzy' || gamblerSpell.innerCookie2.type == 'Elder Frenzy';
+				gfdResult.hasEf = (
+					gfdResult.innerCookie1.type == "Elder Frenzy"
+					|| gfdResult.innerCookie2.type == "Elder Frenzy"
+				);
 			}
 
 			//TODO: again, handle spontaneous edifice
@@ -425,7 +433,7 @@ app.controller('myCtrl', function ($scope) {
 		}
 
 		// return GFD result object
-		return gamblerSpell;
+		return gfdResult;
 	};
 
 
