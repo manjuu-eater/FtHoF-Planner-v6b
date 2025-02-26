@@ -482,9 +482,9 @@ app.controller('myCtrl', function ($scope) {
 
 		// determine child FtHoF result can be a part of combo
 		if (
-			gfdResult.type == "Resurrect Abomination"
-			|| (gfdResult.type == "Spontaneous Edifice" && gfdResult.isWin)
-			|| (gfdResult.type == "Stretch Time")
+			castSpell.name == "Resurrect Abomination"
+			|| (castSpell.name == "Spontaneous Edifice" && gfdResult.isWin)
+			|| (castSpell.name == "Stretch Time")
 		) {
 			gfdResult.canSkip = true;
 		}
