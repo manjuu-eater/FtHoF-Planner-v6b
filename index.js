@@ -243,7 +243,7 @@ app.controller('myCtrl', function ($scope) {
 			return getFthofFailChance();
 		})();
 
-		// roll casting result (L313)
+		// roll for casting result (L313)
 		const isWin = (!true || Math.random() < (1 - failChance));
 
 		// spell.win() or spell.fail() is called at this point
@@ -414,10 +414,10 @@ app.controller('myCtrl', function ($scope) {
 		// note: this seed may change with continuous GFD casts (spellsCastTotal increases)
 		Math_seedrandom(seed + "/" + (spellsCastTotal + 1));
 
-		// roll casting result (L313)
+		// roll for casting result (L313)
 		const isChildSpellWin = Math.random() < (1 - gfdBackfire);
 
-		// set backfire result
+		// set success / backfire result
 		gfdResult.isWin = isChildSpellWin;
 
 		// set the result of child spells called by GFD
