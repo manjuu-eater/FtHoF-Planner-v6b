@@ -540,6 +540,10 @@ app.controller('myCtrl', function ($scope) {
 			const isSugar = [cookie0GC.type, cookie1GC.type, cookie0RC.type, cookie1RC.type].includes("Free Sugar Lump");
 			if (isSugar) sugarIndexes.push(i);
 
+			// No Change, One Change cookie to display
+			const cookie0 = isFthofWin ? cookie0GC : cookie0RC;
+			const cookie1 = isFthofWin ? cookie1GC : cookie1RC;
+
 			// add good effect information about hidden GC/RC
 			if (isFthofWin) {
 				displayCookie.push(cookie0GC);
@@ -580,7 +584,11 @@ app.controller('myCtrl', function ($scope) {
 			const grimoireResult = {
 				num: i + 1,
 				firstRandomNumber: randomNumber,
-				isFthofWin, cookie0GC, cookie1GC, cookie0RC, cookie1RC,
+
+				isFthofWin,
+				cookie0, cookie0GC, cookie0RC,
+				cookie1, cookie1GC, cookie1RC,
+
 				gambler,
 				displayCookie,
 				isCombo, isSkip, isSugar,
