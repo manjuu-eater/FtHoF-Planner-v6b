@@ -162,6 +162,10 @@
 			Skip Spontaneous Edifices
 		</md-checkbox>
 
+		<md-checkbox ng-checked="false" ng-model="skipST">
+			Skip Stretch Time
+		</md-checkbox>
+
 		<md-divider></md-divider>
 
 
@@ -297,6 +301,7 @@
 							'highlight skip': (
 								result.gambler.type == 'Resurrect Abomination'
 								|| (result.gambler.type == 'Spontaneous Edifice' && result.gambler.isWin)
+								|| (result.gambler.type == 'Stretch Time')
 							),
 						}" title="{{result.gambler.innerCookie1.type + '; ' + result.gambler.innerCookie2.type}}">
 							{{result.gambler ? result.gambler.type : "Blank"}}

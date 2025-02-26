@@ -478,7 +478,7 @@ app.controller('myCtrl', function ($scope) {
 		const {
 			lookahead,
 			minComboLength, maxComboLength, maxSpread,
-			includeEF, skipRA, skipSE,
+			includeEF, skipRA, skipSE, skipST,
 			seed,
 			spellsCastTotal,
 		} = $scope;
@@ -533,6 +533,7 @@ app.controller('myCtrl', function ($scope) {
 			const isSkip = (
 				(skipRA && gambler.type == 'Resurrect Abomination')
 				|| (skipSE && gambler.type == 'Spontaneous Edifice' && gambler.isWin)
+				|| (skipST && gambler.type == 'Stretch Time')
 			);
 			if (isSkip) skipIndexes.push(i);
 
