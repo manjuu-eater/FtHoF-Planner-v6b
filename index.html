@@ -241,13 +241,8 @@
 				<tr ng-repeat="result in grimoireResults" id="{{result.num}}">
 					<!-- Spell # -->
 					<td><div>
-						{{
-							"#"
-							+ result.num
-							+ " (" + (spellsCast + result.num)
-							+ " | " + (spellsCastTotal + result.num)
-							+ ")"
-						}}
+						#{{result.num}}
+						({{spellsCast + result.num}} | {{spellsCastTotal + result.num}})
 					</div></td>
 
 					<!-- Random Number -->
