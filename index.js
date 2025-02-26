@@ -226,7 +226,7 @@ app.controller('myCtrl', function ($scope) {
 	 * @param {string} seed five-letter string like "abcde" used as a seed in game
 	 * @param {number} spellsCastTotal total spell cast count before this cast
 	 * @param {boolean} isOneChange true if one change
-	 * @param {("GC" | "RC")=} forceCookie "GC": force GC, "RC": force RC, default: roll with Math.random()
+	 * @param {("GC" | "WC")=} forceCookie "GC": force GC, "WC": force WC, default: roll with Math.random()
 	 * @returns {FthofResult} FtHoF cast result
 	 */
 	const castFtHoF = (seed, spellsCastTotal, isOneChange, forceCookie) => {
@@ -237,7 +237,7 @@ app.controller('myCtrl', function ($scope) {
 		const failChance = (() => {
 			// return 0.0 or 1.0 if forced
 			if (forceCookie == "GC") return 0.0;
-			if (forceCookie == "RC") return 1.0;
+			if (forceCookie == "WC") return 1.0;
 
 			// calculate failChance (same as L289)
 			return getFthofFailChance();
@@ -265,10 +265,10 @@ app.controller('myCtrl', function ($scope) {
 		Math.random();
 		Math.random();
 
-		// initializing GC/RC finished, back to spell.win() or spell.fail()
+		// initializing GC/WC finished, back to spell.win() or spell.fail()
 
 		/**
-		 * choices of GC/RC effect name
+		 * choices of GC/WC effect name
 		 * @type {string[]}
 		 */
 		let choices = [];
@@ -302,7 +302,7 @@ app.controller('myCtrl', function ($scope) {
 			if (Math.random() < 0.1) choices = ['Blab'];
 			fthofResult.type = choose(choices);
 
-			// cookie is RC
+			// cookie is WC
 			fthofResult.wrath = true;
 		}
 
@@ -432,8 +432,8 @@ app.controller('myCtrl', function ($scope) {
 					|| gfdResult.innerCookie2.type == "Building Special"
 				);
 			} else {
-				gfdResult.innerCookie1 = castFtHoF(seed, spellsCastTotal + 1, false, "RC");
-				gfdResult.innerCookie2 = castFtHoF(seed, spellsCastTotal + 1, true, "RC");
+				gfdResult.innerCookie1 = castFtHoF(seed, spellsCastTotal + 1, false, "WC");
+				gfdResult.innerCookie2 = castFtHoF(seed, spellsCastTotal + 1, true, "WC");
 
 				gfdResult.hasEf = (
 					gfdResult.innerCookie1.type == "Elder Frenzy"
@@ -515,15 +515,15 @@ app.controller('myCtrl', function ($scope) {
 			// get FtHoF results (both success and backfire)
 			const cookie0GC = castFtHoF(seed, spellsCastTotal + i, false, "GC");
 			const cookie1GC = castFtHoF(seed, spellsCastTotal + i, true, "GC");
-			const cookie0RC = castFtHoF(seed, spellsCastTotal + i, false, "RC");
-			const cookie1RC = castFtHoF(seed, spellsCastTotal + i, true, "RC");
+			const cookie0WC = castFtHoF(seed, spellsCastTotal + i, false, "WC");
+			const cookie1WC = castFtHoF(seed, spellsCastTotal + i, true, "WC");
 			const gambler = castGFD(seed, spellsCastTotal + i);
-			const cookie = [cookie0GC, cookie1GC, cookie0RC, cookie1RC, gambler];
+			const cookie = [cookie0GC, cookie1GC, cookie0WC, cookie1WC, gambler];
 			const displayCookie = [];
 
 			// determine whether current cookies can be part of a combo
 			const isCombo = (
-				hasCookieBuff(includeEF, cookie0GC, cookie1GC, cookie0RC, cookie1RC)
+				hasCookieBuff(includeEF, cookie0GC, cookie1GC, cookie0WC, cookie1WC)
 				|| gambler.hasBs
 				|| (includeEF && gambler.hasEf)
 			);
@@ -537,46 +537,46 @@ app.controller('myCtrl', function ($scope) {
 			if (isSkip) skipIndexes.push(i);
 
 			// determine whether Sugar Lump can be get
-			const isSugar = [cookie0GC.type, cookie1GC.type, cookie0RC.type, cookie1RC.type].includes("Free Sugar Lump");
+			const isSugar = [cookie0GC.type, cookie1GC.type, cookie0WC.type, cookie1WC.type].includes("Free Sugar Lump");
 			if (isSugar) sugarIndexes.push(i);
 
 			// No Change, One Change cookie to display
-			const cookie0 = isFthofWin ? cookie0GC : cookie0RC;
-			const cookie1 = isFthofWin ? cookie1GC : cookie1RC;
+			const cookie0 = isFthofWin ? cookie0GC : cookie0WC;
+			const cookie1 = isFthofWin ? cookie1GC : cookie1WC;
 
-			// add good effect information about hidden GC/RC
+			// add good effect information about hidden GC/WC
 			let isOtherCookieNotable0 = false;
 			let isOtherCookieNotable1 = false;
 			if (isFthofWin) {
 				displayCookie.push(cookie0GC);
 				displayCookie.push(cookie1GC);
-				if (cookie0RC.type == "Elder Frenzy") {
+				if (cookie0WC.type == "Elder Frenzy") {
 					cookie0GC.type += " (EF)";
 					cookie0GC.noteworthy = true;
 					isOtherCookieNotable0 = true;
 				}
-				if (cookie1RC.type == "Elder Frenzy") {
+				if (cookie1WC.type == "Elder Frenzy") {
 					cookie1GC.type += " (EF)";
 					cookie1GC.noteworthy = true;
 					isOtherCookieNotable1 = true;
 				}
-				if (cookie0RC.type == "Free Sugar Lump") cookie0GC.type += " (Lump)";
-				if (cookie1RC.type == "Free Sugar Lump") cookie1GC.type += " (Lump)";
+				if (cookie0WC.type == "Free Sugar Lump") cookie0GC.type += " (Lump)";
+				if (cookie1WC.type == "Free Sugar Lump") cookie1GC.type += " (Lump)";
 			} else {
-				displayCookie.push(cookie0RC);
-				displayCookie.push(cookie1RC);
+				displayCookie.push(cookie0WC);
+				displayCookie.push(cookie1WC);
 				if (cookie0GC.type == "Building Special") {
-					cookie0RC.type += " (BS)";
-					cookie0RC.noteworthy = true;
+					cookie0WC.type += " (BS)";
+					cookie0WC.noteworthy = true;
 					isOtherCookieNotable0 = true;
 				}
 				if (cookie1GC.type == "Building Special") {
-					cookie1RC.type += " (BS)";
-					cookie1RC.noteworthy = true;
+					cookie1WC.type += " (BS)";
+					cookie1WC.noteworthy = true;
 					isOtherCookieNotable1 = true;
 				}
-				if (cookie0GC.type == "Free Sugar Lump") cookie0RC.type += " (Lump)";
-				if (cookie1GC.type == "Free Sugar Lump") cookie1RC.type += " (Lump)";
+				if (cookie0GC.type == "Free Sugar Lump") cookie0WC.type += " (Lump)";
+				if (cookie1GC.type == "Free Sugar Lump") cookie1WC.type += " (Lump)";
 			}
 
 			// push GFD result to displayCookie
@@ -592,8 +592,8 @@ app.controller('myCtrl', function ($scope) {
 				firstRandomNumber: randomNumber,
 
 				isFthofWin,
-				cookie0, cookie0GC, cookie0RC, isOtherCookieNotable0,
-				cookie1, cookie1GC, cookie1RC, isOtherCookieNotable1,
+				cookie0, cookie0GC, cookie0WC, isOtherCookieNotable0,
+				cookie1, cookie1GC, cookie1WC, isOtherCookieNotable1,
 
 				gambler,
 				displayCookie,
