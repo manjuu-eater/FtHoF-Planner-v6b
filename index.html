@@ -263,8 +263,8 @@
 					<td><div>
 						<img ng-if= "result.isFthofWin" ng-src="img/GoldCookie.png">
 						<img ng-if="!result.isFthofWin" ng-src="img/WrathCookie.png">
-						<div class="{{displayCookies[$index][0].noteworthy ? 'highlight combo' : ''}}">
-							{{displayCookies[$index][0].type}}
+						<div ng-class="{'highlight combo': result.cookie0.noteworthy}">
+							{{result.cookie0.type}}
 						</div>
 					</div></td>
 
@@ -272,8 +272,8 @@
 					<td><div>
 						<img ng-if= "result.isFthofWin" ng-src="img/GoldCookie.png">
 						<img ng-if="!result.isFthofWin" ng-src="img/WrathCookie.png">
-						<div class="{{displayCookies[$index][1].noteworthy ? 'highlight combo' : ''}}">
-							{{displayCookies[$index][1].type}}
+						<div ng-class="{'highlight combo': result.cookie1.noteworthy}">
+							{{result.cookie1.type}}
 						</div>
 					</div></td>
 
