@@ -35,7 +35,11 @@ import {
  * @property {boolean} hasEf
  * @property {boolean} isWin
  * @property {FthofResult=} cookie0
+ * @property {FthofResult=} cookie0GC
+ * @property {FthofResult=} cookie0WC
  * @property {FthofResult=} cookie1
+ * @property {FthofResult=} cookie1GC
+ * @property {FthofResult=} cookie1WC
  * @property {number=} spontaneousEdificeRandomNumber
  */
 
@@ -423,11 +427,18 @@ app.controller('myCtrl', function ($scope) {
 		// set the result of child spells called by GFD
 		if (castSpell.name == "Force the Hand of Fate") {
 			// cast FtHoF, set to return object
-			const forceCookie = isChildSpellWin ? "GC" : "WC";
-			const fthofCookieWithGfd0 = castFtHoF(seed, spellsCastTotal + 1, false, forceCookie);
-			const fthofCookieWithGfd1 = castFtHoF(seed, spellsCastTotal + 1, true, forceCookie);
-			gfdResult.cookie0 = fthofCookieWithGfd0;
-			gfdResult.cookie1 = fthofCookieWithGfd1;
+			const cookie0GC = castFtHoF(seed, spellsCastTotal + 1, false, "GC");
+			const cookie1GC = castFtHoF(seed, spellsCastTotal + 1, true, "GC");
+			const cookie0WC = castFtHoF(seed, spellsCastTotal + 1, false, "WC");
+			const cookie1WC = castFtHoF(seed, spellsCastTotal + 1, true, "WC");
+			const cookie0 = isChildSpellWin ? cookie0GC : cookie0WC;
+			const cookie1 = isChildSpellWin ? cookie1GC : cookie1WC;
+
+			// set to return object
+			Object.assign(gfdResult, {
+				cookie0, cookie0GC, cookie0WC,
+				cookie1, cookie1GC, cookie1WC,
+			});
 
 			// add result of casting FtHoF
 			if (isChildSpellWin) {
