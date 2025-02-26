@@ -274,7 +274,7 @@ app.controller('myCtrl', function ($scope) {
 		let choices = [];
 
 		/** FtHoF cast result */
-		const cookie = {};
+		const fthofResult = {};
 
 		// choose cookie effect
 		if (isWin) {
@@ -285,14 +285,14 @@ app.controller('myCtrl', function ($scope) {
 			if (Math.random() < 0.25) choices.push('Building Special');  // Game.BuildingsOwned>=10 is ignored
 			if (Math.random() < 0.15) choices = ['Cookie Storm Drop'];
 			if (Math.random() < 0.0001) choices.push('Free Sugar Lump');
-			cookie.type = choose(choices);
+			fthofResult.type = choose(choices);
 
 			// There is an additional Math.random() in L62,
 			// but this doesn't affect the result because choice is done.
 			//if (cookie.type == 'Cookie Storm Drop') Math.random();
 
 			// cookie is GC
-			cookie.wrath = false;
+			fthofResult.wrath = false;
 
 		} else {
 			// choices of red cookie (L70)
@@ -300,24 +300,24 @@ app.controller('myCtrl', function ($scope) {
 			if (Math.random() < 0.1) choices.push('Cursed Finger', 'Elder Frenzy');
 			if (Math.random() < 0.003) choices.push('Free Sugar Lump');
 			if (Math.random() < 0.1) choices = ['Blab'];
-			cookie.type = choose(choices);
+			fthofResult.type = choose(choices);
 
 			// cookie is RC
-			cookie.wrath = true;
+			fthofResult.wrath = true;
 		}
 
 		// set description
-		const description = cookieEffectNameToDescription[cookie.type];
-		if (!description) console.error("No description in dictionary: " + cookie.type);
-		cookie.description = description;
+		const description = cookieEffectNameToDescription[fthofResult.type];
+		if (!description) console.error("No description in dictionary: " + fthofResult.type);
+		fthofResult.description = description;
 
 		// add noteworthy info
-		cookie.noteworthy = false;
-		if (cookie.type == 'Building Special') cookie.noteworthy = true;
-		if (cookie.type == 'Elder Frenzy') cookie.noteworthy = true;
+		fthofResult.noteworthy = false;
+		if (fthofResult.type == 'Building Special') fthofResult.noteworthy = true;
+		if (fthofResult.type == 'Elder Frenzy') fthofResult.noteworthy = true;
 
 		// return FtHoF cast result
-		return cookie;
+		return fthofResult;
 	};
 
 
