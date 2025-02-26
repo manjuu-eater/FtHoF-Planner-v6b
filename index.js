@@ -479,7 +479,6 @@ app.controller('myCtrl', function ($scope) {
 			lookahead,
 			minComboLength, maxComboLength, maxSpread,
 			includeEF, skipRA, skipSE,
-			screenCookieCount, auraSI, buffDI, debuffDI,
 			seed,
 			spellsCastTotal,
 		} = $scope;
@@ -487,8 +486,8 @@ app.controller('myCtrl', function ($scope) {
 		// variables to set $scope.*
 		const cookies = []
 		const firstRandomNumbers = [];
-		const baseBackfireChance = 0.15*(auraSI?1.1:1)*(buffDI?0.1:1)*(debuffDI?5:1);
-		const backfireChance = baseBackfireChance+0.15*screenCookieCount;
+		const baseBackfireChance = getBaseFailChance();
+		const fthofBackfireChance = getFthofFailChance(baseBackfireChance);
 		const displayCookies = [];
 		const combos = {};
 		const sugarIndexes = [];
@@ -507,7 +506,7 @@ app.controller('myCtrl', function ($scope) {
 			firstRandomNumbers.push(roll);
 
 			// FtHoF success or backfire (L313)
-			const isFthofWin = roll < 1 - backfireChance;
+			const isFthofWin = roll < 1 - fthofBackfireChance;
 
 			// get FtHoF results (both success and backfire)
 			const cookie0GC = castFtHoF(spellsCastTotal + i, false, "GC");
@@ -595,7 +594,7 @@ app.controller('myCtrl', function ($scope) {
 		$scope.cookies             = cookies;
 		$scope.firstRandomNumbers  = firstRandomNumbers;
 		$scope.baseBackfireChance  = baseBackfireChance;
-		$scope.backfireChance      = backfireChance;
+		$scope.backfireChance      = fthofBackfireChance;
 		$scope.displayCookies      = displayCookies;
 		$scope.combos              = combos;
 		$scope.sugarIndexes        = sugarIndexes;
