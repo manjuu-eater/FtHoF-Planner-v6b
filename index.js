@@ -34,6 +34,7 @@ import {
  * @property {boolean} hasBs
  * @property {boolean} hasEf
  * @property {boolean} canCombo
+ * @property {boolean} canSkip
  * @property {boolean} isWin
  * @property {FthofResult=} cookie0
  * @property {FthofResult=} cookie0GC
@@ -415,6 +416,7 @@ app.controller('myCtrl', function ($scope) {
 		gfdResult.hasBs = false;
 		gfdResult.hasEf = false;
 		gfdResult.canCombo = false;
+		gfdResult.canSkip = false;
 
 		// set seed for child spell that is cast by GFD (L312)
 		// note: this seed may change with continuous GFD casts (spellsCastTotal increases)
@@ -471,6 +473,15 @@ app.controller('myCtrl', function ($scope) {
 
 			// set to GFD result object
 			gfdResult.spontaneousEdificeRandomNumber = secondRandomNumber;
+		}
+
+		// determine child FtHoF result can be a part of combo
+		if (
+			gfdResult.type == "Resurrect Abomination"
+			|| (gfdResult.type == "Spontaneous Edifice" && gfdResult.isWin)
+			|| (gfdResult.type == "Stretch Time")
+		) {
+			gfdResult.canSkip = true;
 		}
 
 		// return GFD result object
