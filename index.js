@@ -492,6 +492,9 @@ app.controller('myCtrl', function ($scope) {
 		const combos = {};
 		const sugarIndexes = [];
 
+		// object that contain FtHoF and GFD result, combo / skip indexes, etc.
+		const grimoireResults = [];
+
 		// srart timer
 		console.time("updateCookies");
 
@@ -503,11 +506,11 @@ app.controller('myCtrl', function ($scope) {
 
 			// get first random number and push to array
 			Math_seedrandom(seed + '/' + currentTotalSpell);
-			const roll = Math.random();
-			firstRandomNumbers.push(roll);
+			const randomNumber = Math.random();
+			firstRandomNumbers.push(randomNumber);
 
 			// FtHoF success or backfire (L313)
-			const isFthofWin = roll < 1 - fthofBackfireChance;
+			const isFthofWin = randomNumber < 1 - fthofBackfireChance;
 
 			// get FtHoF results (both success and backfire)
 			const cookie0GC = castFtHoF(spellsCastTotal + i, false, "GC");
@@ -575,6 +578,15 @@ app.controller('myCtrl', function ($scope) {
 			// push to array
 			cookies.push(cookie);
 			displayCookies.push(displayCookie);
+
+			// set to object and push to array
+			const grimoireResult = {
+				firstRandomNumber: randomNumber,
+				cookie0GC, cookie1GC, cookie0RC, cookie1RC, gambler,
+				displayCookie,
+				//isCombo, isSkip, isSugar,
+			};
+			grimoireResults.push(grimoireResult);
 		}
 
 		// log
@@ -599,6 +611,7 @@ app.controller('myCtrl', function ($scope) {
 		$scope.displayCookies      = displayCookies;
 		$scope.combos              = combos;
 		$scope.sugarIndexes        = sugarIndexes;
+		$scope.grimoireResults     = grimoireResults;
 	};
 
 
