@@ -580,7 +580,8 @@ app.controller('myCtrl', function ($scope) {
 			const grimoireResult = {
 				num: i + 1,
 				firstRandomNumber: randomNumber,
-				cookie0GC, cookie1GC, cookie0RC, cookie1RC, gambler,
+				isFthofWin, cookie0GC, cookie1GC, cookie0RC, cookie1RC,
+				gambler,
 				displayCookie,
 				isCombo, isSkip, isSugar,
 			};
