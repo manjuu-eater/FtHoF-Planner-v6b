@@ -537,7 +537,7 @@ app.controller('myCtrl', function ($scope) {
 		const skipIndexes = [];
 		for (let i = 0; i < lookahead; i++) {
 			// total spell cast count before this cast
-			const currentTotalSpell = i + spellsCastTotal;
+			const currentTotalSpell = spellsCastTotal + i;
 
 			// get first random number and push to array
 			Math_seedrandom(seed + '/' + currentTotalSpell);
@@ -548,11 +548,11 @@ app.controller('myCtrl', function ($scope) {
 			const isFthofWin = randomNumber < 1 - fthofBackfireChance;
 
 			// get FtHoF results (both success and backfire)
-			const cookie0GC = castFtHoF(seed, spellsCastTotal + i, false, "GC");
-			const cookie1GC = castFtHoF(seed, spellsCastTotal + i, true, "GC");
-			const cookie0WC = castFtHoF(seed, spellsCastTotal + i, false, "WC");
-			const cookie1WC = castFtHoF(seed, spellsCastTotal + i, true, "WC");
-			const gambler = castGFD(seed, spellsCastTotal + i);
+			const cookie0GC = castFtHoF(seed, currentTotalSpell, false, "GC");
+			const cookie1GC = castFtHoF(seed, currentTotalSpell, true, "GC");
+			const cookie0WC = castFtHoF(seed, currentTotalSpell, false, "WC");
+			const cookie1WC = castFtHoF(seed, currentTotalSpell, true, "WC");
+			const gambler = castGFD(seed, currentTotalSpell);
 			const cookie = [cookie0GC, cookie1GC, cookie0WC, cookie1WC, gambler];
 			const displayCookie = [];
 
