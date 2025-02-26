@@ -394,7 +394,7 @@ app.controller('myCtrl', function ($scope) {
 		gfdResult.hasEf = false;
 
 		// set seed for child spell that is cast by GFD (L312)
-		// note: this seed may change with continuous GFD casts (spellsCast increases)
+		// note: this seed may change with continuous GFD casts (spellsCastTotal increases)
 		Math_seedrandom($scope.seed + "/" + (spellsCastTotal + 1));
 
 		// roll casting result (L313)
