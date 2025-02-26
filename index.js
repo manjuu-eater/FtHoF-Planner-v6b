@@ -422,19 +422,20 @@ app.controller('myCtrl', function ($scope) {
 
 		// set the result of child spells called by GFD
 		if (castSpell.name == "Force the Hand of Fate") {
+			// cast FtHoF, set to return object
+			const forceCookie = isChildSpellWin ? "GC" : "WC";
+			const fthofCookieWithGfd0 = castFtHoF(seed, spellsCastTotal + 1, false, forceCookie);
+			const fthofCookieWithGfd1 = castFtHoF(seed, spellsCastTotal + 1, true, forceCookie);
+			gfdResult.innerCookie1 = fthofCookieWithGfd0;
+			gfdResult.innerCookie2 = fthofCookieWithGfd1;
+
 			// add result of casting FtHoF
 			if (isChildSpellWin) {
-				gfdResult.innerCookie1 = castFtHoF(seed, spellsCastTotal + 1, false, "GC");
-				gfdResult.innerCookie2 = castFtHoF(seed, spellsCastTotal + 1, true, "GC");
-
 				gfdResult.hasBs = (
 					gfdResult.innerCookie1.type == "Building Special"
 					|| gfdResult.innerCookie2.type == "Building Special"
 				);
 			} else {
-				gfdResult.innerCookie1 = castFtHoF(seed, spellsCastTotal + 1, false, "WC");
-				gfdResult.innerCookie2 = castFtHoF(seed, spellsCastTotal + 1, true, "WC");
-
 				gfdResult.hasEf = (
 					gfdResult.innerCookie1.type == "Elder Frenzy"
 					|| gfdResult.innerCookie2.type == "Elder Frenzy"
