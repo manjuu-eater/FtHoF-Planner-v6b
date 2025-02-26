@@ -297,12 +297,8 @@
 						<img ng-if= "result.gambler.isWin" ng-src="img/GoldCookie.png">
 						<img ng-if="!result.gambler.isWin" ng-src="img/WrathCookie.png">
 						<div ng-class="{
-							'highlight combo': (result.gambler.hasBs || result.gambler.hasEf),
-							'highlight skip': (
-								result.gambler.type == 'Resurrect Abomination'
-								|| (result.gambler.type == 'Spontaneous Edifice' && result.gambler.isWin)
-								|| (result.gambler.type == 'Stretch Time')
-							),
+							'highlight combo': result.gambler.canCombo,
+							'highlight skip':  result.gambler.canSkip,
 						}" title="{{result.gambler.cookie0.type + '; ' + result.gambler.cookie1.type}}">
 							{{result.gambler ? result.gambler.type : "Blank"}}
 						</div>
