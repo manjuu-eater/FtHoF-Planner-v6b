@@ -578,6 +578,7 @@ app.controller('myCtrl', function ($scope) {
 
 			// set to object and push to array
 			const grimoireResult = {
+				num: i + 1,
 				firstRandomNumber: randomNumber,
 				cookie0GC, cookie1GC, cookie0RC, cookie1RC, gambler,
 				displayCookie,
