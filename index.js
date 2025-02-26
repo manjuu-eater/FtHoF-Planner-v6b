@@ -35,9 +35,9 @@ import {
  * @property {boolean} hasBs
  * @property {boolean} hasEf
  * @property {boolean} backfire
- * @property {FthofResult} innerCookie1
- * @property {FthofResult} innerCookie2
- * @property {number} spontaneousEdificeRandomNumber
+ * @property {FthofResult=} innerCookie1
+ * @property {FthofResult=} innerCookie2
+ * @property {number=} spontaneousEdificeRandomNumber
  */
 
 
