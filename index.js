@@ -9,12 +9,18 @@
 // import game related objects and functions
 import {
 	Math_seedrandom, choose, M_spells,
-	spellNames,
 	cookieEffectNameToDescription,
 } from "./game_related_data.js";
 
 
 // type definition
+/**
+ * @typedef {object} GameSaveData
+ * @property {string} seed
+ * @property {number} ascensionMode
+ * @property {number} spellsCast
+ * @property {number} spellsCastTotal
+ */
 /**
  * @typedef {object} FthofResult
  * @property {string} type
@@ -22,13 +28,29 @@ import {
  * @property {string} description
  * @property {boolean} noteworthy
  */
+/**
+ * @typedef {object} GfdResult
+ * @property {string} type
+ * @property {boolean} hasBs
+ * @property {boolean} hasEf
+ * @property {boolean} canCombo
+ * @property {boolean} canSkip
+ * @property {boolean} isWin
+ * @property {FthofResult=} cookie0
+ * @property {FthofResult=} cookie0GC
+ * @property {FthofResult=} cookie0WC
+ * @property {FthofResult=} cookie1
+ * @property {FthofResult=} cookie1GC
+ * @property {FthofResult=} cookie1WC
+ * @property {number=} spontaneousEdificeRandomNumber
+ */
 
 
 /**
  * Extract save data about Magic tower minigame from exported save code.
  *
  * @param {string} saveCode exported save code
- * @returns extracted save data
+ * @returns {GameSaveData} extracted save data
  */
 const extractSaveData = (saveCode) => {
 	// return object
@@ -207,26 +229,27 @@ app.controller('myCtrl', function ($scope) {
 	 *             > M.castSpell (L299)
 	 *             > spell.win(), spell.fail() (L313 > L48, 66)
 	 *
+	 * @param {string} seed five-letter string like "abcde" used as a seed in game
 	 * @param {number} spellsCastTotal total spell cast count before this cast
 	 * @param {boolean} isOneChange true if one change
-	 * @param {("GC" | "RC")=} forceCookie "GC": force GC, "RC": force RC, default: roll with Math.random()
+	 * @param {("GC" | "WC")=} forceCookie "GC": force GC, "WC": force WC, default: roll with Math.random()
 	 * @returns {FthofResult} FtHoF cast result
 	 */
-	const castFtHoF = (spellsCastTotal, isOneChange, forceCookie) => {
+	const castFtHoF = (seed, spellsCastTotal, isOneChange, forceCookie) => {
 		// set seed (L312)
-		Math_seedrandom($scope.seed + '/' + spellsCastTotal);
+		Math_seedrandom(seed + '/' + spellsCastTotal);
 
 		// get fail chance (L307 > L289)
 		const failChance = (() => {
 			// return 0.0 or 1.0 if forced
 			if (forceCookie == "GC") return 0.0;
-			if (forceCookie == "RC") return 1.0;
+			if (forceCookie == "WC") return 1.0;
 
 			// calculate failChance (same as L289)
 			return getFthofFailChance();
 		})();
 
-		// roll casting result (L313)
+		// roll for casting result (L313)
 		const isWin = (!true || Math.random() < (1 - failChance));
 
 		// spell.win() or spell.fail() is called at this point
@@ -248,16 +271,16 @@ app.controller('myCtrl', function ($scope) {
 		Math.random();
 		Math.random();
 
-		// initializing GC/RC finished, back to spell.win() or spell.fail()
+		// initializing GC/WC finished, back to spell.win() or spell.fail()
 
 		/**
-		 * choices of GC/RC effect name
+		 * choices of GC/WC effect name
 		 * @type {string[]}
 		 */
 		let choices = [];
 
 		/** FtHoF cast result */
-		const cookie = {};
+		const fthofResult = {};
 
 		// choose cookie effect
 		if (isWin) {
@@ -268,14 +291,14 @@ app.controller('myCtrl', function ($scope) {
 			if (Math.random() < 0.25) choices.push('Building Special');  // Game.BuildingsOwned>=10 is ignored
 			if (Math.random() < 0.15) choices = ['Cookie Storm Drop'];
 			if (Math.random() < 0.0001) choices.push('Free Sugar Lump');
-			cookie.type = choose(choices);
+			fthofResult.type = choose(choices);
 
 			// There is an additional Math.random() in L62,
 			// but this doesn't affect the result because choice is done.
 			//if (cookie.type == 'Cookie Storm Drop') Math.random();
 
 			// cookie is GC
-			cookie.wrath = false;
+			fthofResult.wrath = false;
 
 		} else {
 			// choices of red cookie (L70)
@@ -283,24 +306,24 @@ app.controller('myCtrl', function ($scope) {
 			if (Math.random() < 0.1) choices.push('Cursed Finger', 'Elder Frenzy');
 			if (Math.random() < 0.003) choices.push('Free Sugar Lump');
 			if (Math.random() < 0.1) choices = ['Blab'];
-			cookie.type = choose(choices);
+			fthofResult.type = choose(choices);
 
-			// cookie is RC
-			cookie.wrath = true;
+			// cookie is WC
+			fthofResult.wrath = true;
 		}
 
 		// set description
-		const description = cookieEffectNameToDescription[cookie.type];
-		if (!description) console.error("No description in dictionary: " + cookie.type);
-		cookie.description = description;
+		const description = cookieEffectNameToDescription[fthofResult.type];
+		if (!description) console.error("No description in dictionary: " + fthofResult.type);
+		fthofResult.description = description;
 
 		// add noteworthy info
-		cookie.noteworthy = false;
-		if (cookie.type == 'Building Special') cookie.noteworthy = true;
-		if (cookie.type == 'Elder Frenzy') cookie.noteworthy = true;
+		fthofResult.noteworthy = false;
+		if (fthofResult.type == 'Building Special') fthofResult.noteworthy = true;
+		if (fthofResult.type == 'Elder Frenzy') fthofResult.noteworthy = true;
 
 		// return FtHoF cast result
-		return cookie;
+		return fthofResult;
 	};
 
 
@@ -365,66 +388,86 @@ app.controller('myCtrl', function ($scope) {
 	 *             > spell.win() (L313 > L195)  note: GFD itself always win
 	 *             > setTimeout(... M.castSpell ...) (L206 > L299)
 	 *
+	 * @param {string} seed five-letter string like "abcde" used as a seed in game
 	 * @param {number} spellsCastTotal total spell cast count before this cast
-	 * @returns GFD cast result
+	 * @returns {GfdResult} GFD cast result
 	 */
-	const castGFD = (spellsCastTotal) => {
+	const castGFD = (seed, spellsCastTotal) => {
 		// set seed for GFD spell selection (L312)
-		Math_seedrandom($scope.seed + "/" + spellsCastTotal);
+		Math_seedrandom(seed + "/" + spellsCastTotal);
 
 		// make spells list that GFD can cast with max MP (L199)
 		const spells = [];
-		for (const i in M_spells) {
-			if (i != "gambler's fever dream")
-				spells.push(M_spells[i]);
+		for (const spellKey in M_spells) {
+			if (spellKey != "gambler's fever dream") spells.push(M_spells[spellKey]);
 		}
 
 		// choose a spell to be cast (L202)
-		const castSpellName = choose(spells);
+		const castSpell = choose(spells);
 
 		// chance of GFD backfire (L206 > L299 > L311)
 		// note1: **code behavior differs from description!!**
 		// note2: increases above 0.5 only if DI debuff is active
 		const gfdBackfire = Math.max(getBaseFailChance(), 0.5);
 
-		// return object
+		/** return object  @type {GfdResult} */
 		const gfdResult = {};
-		gfdResult.type = castSpellName.name;
+		gfdResult.type = castSpell.name;
 		gfdResult.hasBs = false;
 		gfdResult.hasEf = false;
+		gfdResult.canCombo = false;
+		gfdResult.canSkip = false;
 
 		// set seed for child spell that is cast by GFD (L312)
-		// note: this seed may change with continuous GFD casts (spellsCast increases)
-		Math_seedrandom($scope.seed + "/" + (spellsCastTotal + 1));
+		// note: this seed may change with continuous GFD casts (spellsCastTotal increases)
+		Math_seedrandom(seed + "/" + (spellsCastTotal + 1));
 
-		// roll casting result (L313)
+		// roll for casting result (L313)
 		const isChildSpellWin = Math.random() < (1 - gfdBackfire);
 
-		// set backfire result
-		gfdResult.backfire = !isChildSpellWin;
+		// set success / backfire result
+		gfdResult.isWin = isChildSpellWin;
 
 		// set the result of child spells called by GFD
-		if (castSpellName.name == "Force the Hand of Fate") {
-			// add result of casting FtHoF
+		if (castSpell.name == "Force the Hand of Fate") {
+			// cast FtHoF, set to return object
+			const cookie0GC = castFtHoF(seed, spellsCastTotal + 1, false, "GC");
+			const cookie1GC = castFtHoF(seed, spellsCastTotal + 1, true, "GC");
+			const cookie0WC = castFtHoF(seed, spellsCastTotal + 1, false, "WC");
+			const cookie1WC = castFtHoF(seed, spellsCastTotal + 1, true, "WC");
+			const cookie0 = isChildSpellWin ? cookie0GC : cookie0WC;
+			const cookie1 = isChildSpellWin ? cookie1GC : cookie1WC;
+
+			// set to return object
+			gfdResult.cookie0 = cookie0;
+			gfdResult.cookie1 = cookie1;
+			gfdResult.cookie0GC = cookie0GC;
+			gfdResult.cookie0WC = cookie0WC;
+			gfdResult.cookie1GC = cookie1GC;
+			gfdResult.cookie1WC = cookie1WC;
+
+			// determine child FtHoF result can be a part of combo
 			if (isChildSpellWin) {
-				gfdResult.innerCookie1 = castFtHoF(spellsCastTotal + 1, false, "GC");
-				gfdResult.innerCookie2 = castFtHoF(spellsCastTotal + 1, true, "GC");
-
-				gfdResult.hasBs = (
-					gfdResult.innerCookie1.type == "Building Special"
-					|| gfdResult.innerCookie2.type == "Building Special"
+				const hasBs = (
+					gfdResult.cookie0.type == "Building Special"
+					|| gfdResult.cookie1.type == "Building Special"
 				);
+				if (hasBs) {
+					gfdResult.hasBs = true;
+					gfdResult.canCombo = true;
+				}
 			} else {
-				gfdResult.innerCookie1 = castFtHoF(spellsCastTotal + 1, false, "RC");
-				gfdResult.innerCookie2 = castFtHoF(spellsCastTotal + 1, true, "RC");
-
-				gfdResult.hasEf = (
-					gfdResult.innerCookie1.type == "Elder Frenzy"
-					|| gfdResult.innerCookie2.type == "Elder Frenzy"
+				const hasEf = (
+					gfdResult.cookie0.type == "Elder Frenzy"
+					|| gfdResult.cookie1.type == "Elder Frenzy"
 				);
+				if (hasEf) {
+					gfdResult.hasEf = true;
+					gfdResult.canCombo = true;
+				}
 			}
 
-		} else if (gfdResult.name == "Spontaneous Edifice") {
+		} else if (castSpell.name == "Spontaneous Edifice") {
 			// add result of SE
 
 			// get random number when choosing building (L134, L144)
@@ -432,6 +475,15 @@ app.controller('myCtrl', function ($scope) {
 
 			// set to GFD result object
 			gfdResult.spontaneousEdificeRandomNumber = secondRandomNumber;
+		}
+
+		// determine child FtHoF result can be a part of combo
+		if (
+			gfdResult.type == "Resurrect Abomination"
+			|| (gfdResult.type == "Spontaneous Edifice" && gfdResult.isWin)
+			|| (gfdResult.type == "Stretch Time")
+		) {
+			gfdResult.canSkip = true;
 		}
 
 		// return GFD result object
@@ -446,7 +498,7 @@ app.controller('myCtrl', function ($scope) {
 	 * @param  {...object} cookies cookie objects that may trigger buff
 	 * @returns {boolean} true if triggers buff
 	 */
-	const cookiesContainBuffs = (include_ef, ...cookies) => {
+	const hasCookieBuff = (include_ef, ...cookies) => {
 		return cookies.some((cookie) => {
 			return cookie.type == 'Building Special' || (include_ef && cookie.type == 'Elder Frenzy');
 		});
@@ -461,8 +513,7 @@ app.controller('myCtrl', function ($scope) {
 		const {
 			lookahead,
 			minComboLength, maxComboLength, maxSpread,
-			includeEF, skipRA, skipSE,
-			screenCookieCount, auraSI, buffDI, debuffDI,
+			includeEF, skipRA, skipSE, skipST,
 			seed,
 			spellsCastTotal,
 		} = $scope;
@@ -470,11 +521,14 @@ app.controller('myCtrl', function ($scope) {
 		// variables to set $scope.*
 		const cookies = []
 		const firstRandomNumbers = [];
-		const baseBackfireChance = 0.15*(auraSI?1.1:1)*(buffDI?0.1:1)*(debuffDI?5:1);
-		const backfireChance = baseBackfireChance+0.15*screenCookieCount;
+		const baseBackfireChance = getBaseFailChance();
+		const fthofBackfireChance = getFthofFailChance(baseBackfireChance);
 		const displayCookies = [];
 		const combos = {};
 		const sugarIndexes = [];
+
+		// object that contain FtHoF and GFD result, combo / skip indexes, etc.
+		const grimoireResults = [];
 
 		// srart timer
 		console.time("updateCookies");
@@ -482,74 +536,83 @@ app.controller('myCtrl', function ($scope) {
 		const comboIndexes = [];
 		const skipIndexes = [];
 		for (let i = 0; i < lookahead; i++) {
-			const currentTotalSpell = i + spellsCastTotal;
+			// total spell cast count before this cast
+			const currentTotalSpell = spellsCastTotal + i;
 
 			// get first random number and push to array
 			Math_seedrandom(seed + '/' + currentTotalSpell);
-			const roll = Math.random();
-			firstRandomNumbers.push(roll);
+			const randomNumber = Math.random();
+			firstRandomNumbers.push(randomNumber);
 
 			// FtHoF success or backfire (L313)
-			const isFthofWin = roll < 1 - backfireChance;
+			const isFthofWin = randomNumber < 1 - fthofBackfireChance;
 
 			// get FtHoF results (both success and backfire)
-			const cookie0GC = castFtHoF(spellsCastTotal + i, false, "GC");
-			const cookie1GC = castFtHoF(spellsCastTotal + i, true, "GC");
-			const cookie0RC = castFtHoF(spellsCastTotal + i, false, "RC");
-			const cookie1RC = castFtHoF(spellsCastTotal + i, true, "RC");
-			const gambler = castGFD(spellsCastTotal + i);
-			const cookie = [cookie0GC, cookie1GC, cookie0RC, cookie1RC, gambler];
+			const cookie0GC = castFtHoF(seed, currentTotalSpell, false, "GC");
+			const cookie1GC = castFtHoF(seed, currentTotalSpell, true, "GC");
+			const cookie0WC = castFtHoF(seed, currentTotalSpell, false, "WC");
+			const cookie1WC = castFtHoF(seed, currentTotalSpell, true, "WC");
+			const gambler = castGFD(seed, currentTotalSpell);
+			const cookie = [cookie0GC, cookie1GC, cookie0WC, cookie1WC, gambler];
 			const displayCookie = [];
 
 			// determine whether current cookies can be part of a combo
-			if (
-				cookiesContainBuffs(includeEF, cookie0GC, cookie1GC, cookie0RC, cookie1RC)
+			const isCombo = (
+				hasCookieBuff(includeEF, cookie0GC, cookie1GC, cookie0WC, cookie1WC)
 				|| gambler.hasBs
 				|| (includeEF && gambler.hasEf)
-			) {
-				comboIndexes.push(i);
-			}
+			);
+			if (isCombo) comboIndexes.push(i);
 
 			// determine whether GFD can be skipped
-			if (
+			const isSkip = (
 				(skipRA && gambler.type == 'Resurrect Abomination')
-				|| (skipSE && gambler.type == 'Spontaneous Edifice' && !gambler.backfire)
-			) {
-				skipIndexes.push(i);
-			}
+				|| (skipSE && gambler.type == 'Spontaneous Edifice' && gambler.isWin)
+				|| (skipST && gambler.type == 'Stretch Time')
+			);
+			if (isSkip) skipIndexes.push(i);
 
 			// determine whether Sugar Lump can be get
-			if ([cookie0GC.type, cookie1GC.type, cookie0RC.type, cookie1RC.type].includes("Free Sugar Lump")) {
-				sugarIndexes.push(i);
-			}
+			const isSugar = [cookie0GC.type, cookie1GC.type, cookie0WC.type, cookie1WC.type].includes("Free Sugar Lump");
+			if (isSugar) sugarIndexes.push(i);
 
-			// add good effect information about hidden GC/RC
+			// No Change, One Change cookie to display
+			const cookie0 = isFthofWin ? cookie0GC : cookie0WC;
+			const cookie1 = isFthofWin ? cookie1GC : cookie1WC;
+
+			// add good effect information about hidden GC/WC
+			let isOtherCookieNotable0 = false;
+			let isOtherCookieNotable1 = false;
 			if (isFthofWin) {
 				displayCookie.push(cookie0GC);
 				displayCookie.push(cookie1GC);
-				if (cookie0RC.type == "Elder Frenzy") {
+				if (cookie0WC.type == "Elder Frenzy") {
 					cookie0GC.type += " (EF)";
 					cookie0GC.noteworthy = true;
+					isOtherCookieNotable0 = true;
 				}
-				if (cookie1RC.type == "Elder Frenzy") {
+				if (cookie1WC.type == "Elder Frenzy") {
 					cookie1GC.type += " (EF)";
 					cookie1GC.noteworthy = true;
+					isOtherCookieNotable1 = true;
 				}
-				if (cookie0RC.type == "Free Sugar Lump") cookie0GC.type += " (Lump)";
-				if (cookie1RC.type == "Free Sugar Lump") cookie1GC.type += " (Lump)";
+				if (cookie0WC.type == "Free Sugar Lump") cookie0GC.type += " (Lump)";
+				if (cookie1WC.type == "Free Sugar Lump") cookie1GC.type += " (Lump)";
 			} else {
-				displayCookie.push(cookie0RC);
-				displayCookie.push(cookie1RC);
+				displayCookie.push(cookie0WC);
+				displayCookie.push(cookie1WC);
 				if (cookie0GC.type == "Building Special") {
-					cookie0RC.type += " (BS)";
-					cookie0RC.noteworthy = true;
+					cookie0WC.type += " (BS)";
+					cookie0WC.noteworthy = true;
+					isOtherCookieNotable0 = true;
 				}
 				if (cookie1GC.type == "Building Special") {
-					cookie1RC.type += " (BS)";
-					cookie1RC.noteworthy = true;
+					cookie1WC.type += " (BS)";
+					cookie1WC.noteworthy = true;
+					isOtherCookieNotable1 = true;
 				}
-				if (cookie0GC.type == "Free Sugar Lump") cookie0RC.type += " (Lump)";
-				if (cookie1GC.type == "Free Sugar Lump") cookie1RC.type += " (Lump)";
+				if (cookie0GC.type == "Free Sugar Lump") cookie0WC.type += " (Lump)";
+				if (cookie1GC.type == "Free Sugar Lump") cookie1WC.type += " (Lump)";
 			}
 
 			// push GFD result to displayCookie
@@ -558,6 +621,21 @@ app.controller('myCtrl', function ($scope) {
 			// push to array
 			cookies.push(cookie);
 			displayCookies.push(displayCookie);
+
+			// set to object and push to array
+			const grimoireResult = {
+				num: i + 1,
+				firstRandomNumber: randomNumber,
+
+				isFthofWin,
+				cookie0, cookie0GC, cookie0WC, isOtherCookieNotable0,
+				cookie1, cookie1GC, cookie1WC, isOtherCookieNotable1,
+
+				gambler,
+				displayCookie,
+				isCombo, isSkip, isSugar,
+			};
+			grimoireResults.push(grimoireResult);
 		}
 
 		// log
@@ -578,10 +656,11 @@ app.controller('myCtrl', function ($scope) {
 		$scope.cookies             = cookies;
 		$scope.firstRandomNumbers  = firstRandomNumbers;
 		$scope.baseBackfireChance  = baseBackfireChance;
-		$scope.backfireChance      = backfireChance;
+		$scope.backfireChance      = fthofBackfireChance;
 		$scope.displayCookies      = displayCookies;
 		$scope.combos              = combos;
 		$scope.sugarIndexes        = sugarIndexes;
+		$scope.grimoireResults     = grimoireResults;
 	};
 
 

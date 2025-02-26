@@ -148,6 +148,8 @@
 			<input type="number" class="w3" min="0" max="99" ng-model="maxSpread">
 		</label>
 
+		<br>
+
 		<md-checkbox ng-checked="true" ng-model="includeEF">
 			Include Elder Frenzies
 		</md-checkbox>
@@ -160,14 +162,21 @@
 			Skip Spontaneous Edifices
 		</md-checkbox>
 
+		<md-checkbox ng-checked="false" ng-model="skipST">
+			Skip Stretch Time
+		</md-checkbox>
+
 		<md-divider></md-divider>
 
 
 		<!-- Options: Buffs / Debuffs that affect fail chance -->
 		<label>
-			Golden Cookies on screen
+			Cookies<img src="img/GoldCookie.png" class="mini"><!--
+			--><img src="img/WrathCookie.png" class="mini"> on screen
 			<input type="number" class="w3" min="0" max="10" ng-model="screenCookieCount">
 		</label>
+
+		<br>
 
 		<md-checkbox ng-model="dragonflight">
 			Dragonflight Buff Active
@@ -238,16 +247,11 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr ng-repeat="cookie_list in cookies" id="{{$index + 1}}">
+				<tr ng-repeat="result in grimoireResults" id="{{result.num}}">
 					<!-- Spell # -->
 					<td><div>
-						{{
-							"#"
-							+ ($index + 1)
-							+ " (" + (spellsCast+$index+1)
-							+ " | " + (spellsCastTotal+$index+1)
-							+ ")"
-						}}
+						#{{result.num}}
+						({{spellsCast + result.num}} | {{spellsCastTotal + result.num}})
 					</div></td>
 
 					<!-- Random Number -->
@@ -266,31 +270,37 @@
 
 					<!-- No Change -->
 					<td><div>
-						<img ng-src="{{displayCookies[$index][0].wrath ? 'img/WrathCookie.png' : 'img/GoldCookie.png'}}">
-						<div class="{{displayCookies[$index][0].noteworthy ? 'highlight combo' : ''}}">
-							{{displayCookies[$index][0].type}}
+						<img ng-if= "result.isFthofWin" ng-src="img/GoldCookie.png">
+						<img ng-if="!result.isFthofWin" ng-src="img/WrathCookie.png">
+						<div ng-class="{
+							'highlight combo': result.cookie0.noteworthy,
+							'highlight notable': result.isOtherCookieNotable0,
+						}">
+							{{result.cookie0.type}}
 						</div>
 					</div></td>
 
 					<!-- One Change -->
 					<td><div>
-						<img ng-src="{{displayCookies[$index][1].wrath ? 'img/WrathCookie.png' : 'img/GoldCookie.png'}}">
-						<div class="{{displayCookies[$index][1].noteworthy ? 'highlight combo' : ''}}">
-							{{displayCookies[$index][1].type}}
+						<img ng-if= "result.isFthofWin" ng-src="img/GoldCookie.png">
+						<img ng-if="!result.isFthofWin" ng-src="img/WrathCookie.png">
+						<div ng-class="{
+							'highlight combo': result.cookie1.noteworthy,
+							'highlight notable': result.isOtherCookieNotable1,
+						}">
+							{{result.cookie1.type}}
 						</div>
 					</div></td>
 
 					<!-- Gambler's Dream -->
 					<td><div>
-						<img ng-src="{{displayCookies[$index][2].backfire? ' img/WrathCookie.png' : 'img/GoldCookie.png'}}">
-						<div class="{{
-							(displayCookies[$index][2].hasBs || displayCookies[$index][2].hasEf)
-								? 'highlight combo'
-								: (displayCookies[$index][2].type == 'Resurrect Abomination' || (displayCookies[$index][2].type == 'Spontaneous Edifice' && !displayCookies[$index][2].backfire))
-									? 'highlight skip'
-									: '';
-						}}" title="{{displayCookies[$index][2].innerCookie1.type + '; ' + displayCookies[$index][2].innerCookie2.type}}">
-							{{displayCookies[$index][2] ? displayCookies[$index][2].type : "Blank"}}
+						<img ng-if= "result.gambler.isWin" ng-src="img/GoldCookie.png">
+						<img ng-if="!result.gambler.isWin" ng-src="img/WrathCookie.png">
+						<div ng-class="{
+							'highlight combo': result.gambler.canCombo,
+							'highlight skip':  result.gambler.canSkip,
+						}" title="{{result.gambler.cookie0.type + '; ' + result.gambler.cookie1.type}}">
+							{{result.gambler ? result.gambler.type : "Blank"}}
 						</div>
 					</div></td>
 				</tr>

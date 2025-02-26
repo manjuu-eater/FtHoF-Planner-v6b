@@ -38,6 +38,11 @@ a:hover, a.hover {
     text-decoration: underline;
 }
 
+/* inline image */
+img.mini {
+    height: .9em;
+}
+
 
 /* save code */
 input#save_code {
@@ -68,6 +73,10 @@ div.highlight {
 }
 .highlight.skip {
     background-color: lightblue;
+}
+.highlight.notable {
+    border: dashed 3px orange;
+    /* border-radius: 3px; */
 }
 
 
