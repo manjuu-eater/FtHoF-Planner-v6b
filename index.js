@@ -467,7 +467,7 @@ app.controller('myCtrl', function ($scope) {
 				}
 			}
 
-		} else if (gfdResult.name == "Spontaneous Edifice") {
+		} else if (castSpell.name == "Spontaneous Edifice") {
 			// add result of SE
 
 			// get random number when choosing building (L134, L144)
