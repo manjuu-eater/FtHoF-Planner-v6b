@@ -34,8 +34,8 @@ import {
  * @property {boolean} hasBs
  * @property {boolean} hasEf
  * @property {boolean} isWin
- * @property {FthofResult=} innerCookie1
- * @property {FthofResult=} innerCookie2
+ * @property {FthofResult=} cookie0
+ * @property {FthofResult=} cookie1
  * @property {number=} spontaneousEdificeRandomNumber
  */
 
@@ -426,19 +426,19 @@ app.controller('myCtrl', function ($scope) {
 			const forceCookie = isChildSpellWin ? "GC" : "WC";
 			const fthofCookieWithGfd0 = castFtHoF(seed, spellsCastTotal + 1, false, forceCookie);
 			const fthofCookieWithGfd1 = castFtHoF(seed, spellsCastTotal + 1, true, forceCookie);
-			gfdResult.innerCookie1 = fthofCookieWithGfd0;
-			gfdResult.innerCookie2 = fthofCookieWithGfd1;
+			gfdResult.cookie0 = fthofCookieWithGfd0;
+			gfdResult.cookie1 = fthofCookieWithGfd1;
 
 			// add result of casting FtHoF
 			if (isChildSpellWin) {
 				gfdResult.hasBs = (
-					gfdResult.innerCookie1.type == "Building Special"
-					|| gfdResult.innerCookie2.type == "Building Special"
+					gfdResult.cookie0.type == "Building Special"
+					|| gfdResult.cookie1.type == "Building Special"
 				);
 			} else {
 				gfdResult.hasEf = (
-					gfdResult.innerCookie1.type == "Elder Frenzy"
-					|| gfdResult.innerCookie2.type == "Elder Frenzy"
+					gfdResult.cookie0.type == "Elder Frenzy"
+					|| gfdResult.cookie1.type == "Elder Frenzy"
 				);
 			}
 
