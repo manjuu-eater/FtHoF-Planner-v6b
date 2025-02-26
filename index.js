@@ -16,6 +16,13 @@ import {
 
 // type definition
 /**
+ * @typedef {object} GameSaveData
+ * @property {string} seed
+ * @property {number} ascensionMode
+ * @property {number} spellsCast
+ * @property {number} spellsCastTotal
+ */
+/**
  * @typedef {object} FthofResult
  * @property {string} type
  * @property {boolean} wrath
@@ -38,7 +45,7 @@ import {
  * Extract save data about Magic tower minigame from exported save code.
  *
  * @param {string} saveCode exported save code
- * @returns extracted save data
+ * @returns {GameSaveData} extracted save data
  */
 const extractSaveData = (saveCode) => {
 	// return object
