@@ -392,9 +392,8 @@ app.controller('myCtrl', function ($scope) {
 
 		// make spells list that GFD can cast with max MP (L199)
 		const spells = [];
-		for (const i in M_spells) {
-			if (i != "gambler's fever dream")
-				spells.push(M_spells[i]);
+		for (const spellKey in M_spells) {
+			if (spellKey != "gambler's fever dream") spells.push(M_spells[spellKey]);
 		}
 
 		// choose a spell to be cast (L202)
