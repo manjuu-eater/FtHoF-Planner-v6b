@@ -171,8 +171,8 @@
 
 		<!-- Options: Buffs / Debuffs that affect fail chance -->
 		<label>
-			Cookies<img src="img/GoldCookie.png" class="mini"><!--
-			--><img src="img/WrathCookie.png" class="mini"> on screen
+			Cookies<img src="img/goldCookie.png" class="mini"><!--
+			--><img src="img/wrathCookie.png" class="mini"> on screen
 			<input type="number" class="w3" min="0" max="10" ng-model="screenCookieCount">
 		</label>
 
@@ -270,8 +270,8 @@
 
 					<!-- No Change -->
 					<td><div>
-						<img ng-if= "result.isFthofWin" ng-src="img/GoldCookie.png">
-						<img ng-if="!result.isFthofWin" ng-src="img/WrathCookie.png">
+						<img ng-if= "result.isFthofWin" ng-src="img/goldCookie.png">
+						<img ng-if="!result.isFthofWin" ng-src="img/wrathCookie.png">
 						<div ng-class="{
 							'highlight combo': result.cookie0.noteworthy,
 							'highlight notable': result.isOtherCookieNotable0,
@@ -282,8 +282,8 @@
 
 					<!-- One Change -->
 					<td><div>
-						<img ng-if= "result.isFthofWin" ng-src="img/GoldCookie.png">
-						<img ng-if="!result.isFthofWin" ng-src="img/WrathCookie.png">
+						<img ng-if= "result.isFthofWin" ng-src="img/goldCookie.png">
+						<img ng-if="!result.isFthofWin" ng-src="img/wrathCookie.png">
 						<div ng-class="{
 							'highlight combo': result.cookie1.noteworthy,
 							'highlight notable': result.isOtherCookieNotable1,
@@ -294,8 +294,8 @@
 
 					<!-- Gambler's Dream -->
 					<td><div>
-						<img ng-if= "result.gambler.isWin" ng-src="img/GoldCookie.png">
-						<img ng-if="!result.gambler.isWin" ng-src="img/WrathCookie.png">
+						<img ng-if= "result.gambler.isWin" ng-src="img/goldCookie.png">
+						<img ng-if="!result.gambler.isWin" ng-src="img/wrathCookie.png">
 						<div ng-class="{
 							'highlight combo': result.gambler.canCombo,
 							'highlight skip':  result.gambler.canSkip,
