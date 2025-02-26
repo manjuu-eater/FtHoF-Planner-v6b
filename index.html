@@ -266,7 +266,8 @@
 
 					<!-- No Change -->
 					<td><div>
-						<img ng-src="{{displayCookies[$index][0].wrath ? 'img/WrathCookie.png' : 'img/GoldCookie.png'}}">
+						<img ng-if=" result.isFthofWin" ng-src="img/GoldCookie.png">
+						<img ng-if="!result.isFthofWin" ng-src="img/WrathCookie.png">
 						<div class="{{displayCookies[$index][0].noteworthy ? 'highlight combo' : ''}}">
 							{{displayCookies[$index][0].type}}
 						</div>
@@ -274,7 +275,8 @@
 
 					<!-- One Change -->
 					<td><div>
-						<img ng-src="{{displayCookies[$index][1].wrath ? 'img/WrathCookie.png' : 'img/GoldCookie.png'}}">
+						<img ng-if=" result.isFthofWin" ng-src="img/GoldCookie.png">
+						<img ng-if="!result.isFthofWin" ng-src="img/WrathCookie.png">
 						<div class="{{displayCookies[$index][1].noteworthy ? 'highlight combo' : ''}}">
 							{{displayCookies[$index][1].type}}
 						</div>
