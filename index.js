@@ -381,12 +381,13 @@ app.controller('myCtrl', function ($scope) {
 	 *             > spell.win() (L313 > L195)  note: GFD itself always win
 	 *             > setTimeout(... M.castSpell ...) (L206 > L299)
 	 *
+	 * @param {string} seed five-letter string like "abcde" used as a seed in game
 	 * @param {number} spellsCastTotal total spell cast count before this cast
 	 * @returns {GfdResult} GFD cast result
 	 */
-	const castGFD = (spellsCastTotal) => {
+	const castGFD = (seed, spellsCastTotal) => {
 		// set seed for GFD spell selection (L312)
-		Math_seedrandom($scope.seed + "/" + spellsCastTotal);
+		Math_seedrandom(seed + "/" + spellsCastTotal);
 
 		// make spells list that GFD can cast with max MP (L199)
 		const spells = [];
@@ -411,7 +412,7 @@ app.controller('myCtrl', function ($scope) {
 
 		// set seed for child spell that is cast by GFD (L312)
 		// note: this seed may change with continuous GFD casts (spellsCastTotal increases)
-		Math_seedrandom($scope.seed + "/" + (spellsCastTotal + 1));
+		Math_seedrandom(seed + "/" + (spellsCastTotal + 1));
 
 		// roll casting result (L313)
 		const isChildSpellWin = Math.random() < (1 - gfdBackfire);
@@ -516,7 +517,7 @@ app.controller('myCtrl', function ($scope) {
 			const cookie1GC = castFtHoF(spellsCastTotal + i, true, "GC");
 			const cookie0RC = castFtHoF(spellsCastTotal + i, false, "RC");
 			const cookie1RC = castFtHoF(spellsCastTotal + i, true, "RC");
-			const gambler = castGFD(spellsCastTotal + i);
+			const gambler = castGFD(seed, spellsCastTotal + i);
 			const cookie = [cookie0GC, cookie1GC, cookie0RC, cookie1RC, gambler];
 			const displayCookie = [];
 
