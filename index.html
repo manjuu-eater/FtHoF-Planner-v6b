@@ -285,15 +285,16 @@
 
 					<!-- Gambler's Dream -->
 					<td><div>
-						<img ng-src="{{displayCookies[$index][2].isWin ? 'img/GoldCookie.png' : ' img/WrathCookie.png'}}">
-						<div class="{{
-							(displayCookies[$index][2].hasBs || displayCookies[$index][2].hasEf)
-								? 'highlight combo'
-								: (displayCookies[$index][2].type == 'Resurrect Abomination' || (displayCookies[$index][2].type == 'Spontaneous Edifice' && displayCookies[$index][2].isWin))
-									? 'highlight skip'
-									: '';
-						}}" title="{{displayCookies[$index][2].innerCookie1.type + '; ' + displayCookies[$index][2].innerCookie2.type}}">
-							{{displayCookies[$index][2] ? displayCookies[$index][2].type : "Blank"}}
+						<img ng-if= "result.gambler.isWin" ng-src="img/GoldCookie.png">
+						<img ng-if="!result.gambler.isWin" ng-src="img/WrathCookie.png">
+						<div ng-class="{
+							'highlight combo': (result.gambler.hasBs || result.gambler.hasEf),
+							'highlight skip': (
+								result.gambler.type == 'Resurrect Abomination'
+								|| (result.gambler.type == 'Spontaneous Edifice' && result.gambler.isWin)
+							),
+						}" title="{{result.gambler.innerCookie1.type + '; ' + result.gambler.innerCookie2.type}}">
+							{{result.gambler ? result.gambler.type : "Blank"}}
 						</div>
 					</div></td>
 				</tr>
