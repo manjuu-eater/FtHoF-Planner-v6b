@@ -545,16 +545,20 @@ app.controller('myCtrl', function ($scope) {
 			const cookie1 = isFthofWin ? cookie1GC : cookie1RC;
 
 			// add good effect information about hidden GC/RC
+			let isOtherCookieNotable0 = false;
+			let isOtherCookieNotable1 = false;
 			if (isFthofWin) {
 				displayCookie.push(cookie0GC);
 				displayCookie.push(cookie1GC);
 				if (cookie0RC.type == "Elder Frenzy") {
 					cookie0GC.type += " (EF)";
 					cookie0GC.noteworthy = true;
+					isOtherCookieNotable0 = true;
 				}
 				if (cookie1RC.type == "Elder Frenzy") {
 					cookie1GC.type += " (EF)";
 					cookie1GC.noteworthy = true;
+					isOtherCookieNotable1 = true;
 				}
 				if (cookie0RC.type == "Free Sugar Lump") cookie0GC.type += " (Lump)";
 				if (cookie1RC.type == "Free Sugar Lump") cookie1GC.type += " (Lump)";
@@ -564,10 +568,12 @@ app.controller('myCtrl', function ($scope) {
 				if (cookie0GC.type == "Building Special") {
 					cookie0RC.type += " (BS)";
 					cookie0RC.noteworthy = true;
+					isOtherCookieNotable0 = true;
 				}
 				if (cookie1GC.type == "Building Special") {
 					cookie1RC.type += " (BS)";
 					cookie1RC.noteworthy = true;
+					isOtherCookieNotable1 = true;
 				}
 				if (cookie0GC.type == "Free Sugar Lump") cookie0RC.type += " (Lump)";
 				if (cookie1GC.type == "Free Sugar Lump") cookie1RC.type += " (Lump)";
@@ -586,8 +592,8 @@ app.controller('myCtrl', function ($scope) {
 				firstRandomNumber: randomNumber,
 
 				isFthofWin,
-				cookie0, cookie0GC, cookie0RC,
-				cookie1, cookie1GC, cookie1RC,
+				cookie0, cookie0GC, cookie0RC, isOtherCookieNotable0,
+				cookie1, cookie1GC, cookie1RC, isOtherCookieNotable1,
 
 				gambler,
 				displayCookie,
