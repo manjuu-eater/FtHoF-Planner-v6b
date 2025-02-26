@@ -22,6 +22,16 @@ import {
  * @property {string} description
  * @property {boolean} noteworthy
  */
+/**
+ * @typedef {object} GfdResult
+ * @property {string} type
+ * @property {boolean} hasBs
+ * @property {boolean} hasEf
+ * @property {boolean} backfire
+ * @property {FthofResult} innerCookie1
+ * @property {FthofResult} innerCookie2
+ * @property {number} spontaneousEdificeRandomNumber
+ */
 
 
 /**
@@ -366,7 +376,7 @@ app.controller('myCtrl', function ($scope) {
 	 *             > setTimeout(... M.castSpell ...) (L206 > L299)
 	 *
 	 * @param {number} spellsCastTotal total spell cast count before this cast
-	 * @returns GFD cast result
+	 * @returns {GfdResult} GFD cast result
 	 */
 	const castGFD = (spellsCastTotal) => {
 		// set seed for GFD spell selection (L312)
