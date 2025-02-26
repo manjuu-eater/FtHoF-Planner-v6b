@@ -522,26 +522,23 @@ app.controller('myCtrl', function ($scope) {
 			const displayCookie = [];
 
 			// determine whether current cookies can be part of a combo
-			if (
+			const isCombo = (
 				hasCookieBuff(includeEF, cookie0GC, cookie1GC, cookie0RC, cookie1RC)
 				|| gambler.hasBs
 				|| (includeEF && gambler.hasEf)
-			) {
-				comboIndexes.push(i);
-			}
+			);
+			if (isCombo) comboIndexes.push(i);
 
 			// determine whether GFD can be skipped
-			if (
+			const isSkip = (
 				(skipRA && gambler.type == 'Resurrect Abomination')
 				|| (skipSE && gambler.type == 'Spontaneous Edifice' && !gambler.backfire)
-			) {
-				skipIndexes.push(i);
-			}
+			);
+			if (isSkip) skipIndexes.push(i);
 
 			// determine whether Sugar Lump can be get
-			if ([cookie0GC.type, cookie1GC.type, cookie0RC.type, cookie1RC.type].includes("Free Sugar Lump")) {
-				sugarIndexes.push(i);
-			}
+			const isSugar = [cookie0GC.type, cookie1GC.type, cookie0RC.type, cookie1RC.type].includes("Free Sugar Lump");
+			if (isSugar) sugarIndexes.push(i);
 
 			// add good effect information about hidden GC/RC
 			if (isFthofWin) {
@@ -584,7 +581,7 @@ app.controller('myCtrl', function ($scope) {
 				firstRandomNumber: randomNumber,
 				cookie0GC, cookie1GC, cookie0RC, cookie1RC, gambler,
 				displayCookie,
-				//isCombo, isSkip, isSugar,
+				isCombo, isSkip, isSugar,
 			};
 			grimoireResults.push(grimoireResult);
 		}
