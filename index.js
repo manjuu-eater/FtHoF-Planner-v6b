@@ -9,7 +9,6 @@
 // import game related objects and functions
 import {
 	Math_seedrandom, choose, M_spells,
-	spellNames,
 	cookieEffectNameToDescription,
 } from "./game_related_data.js";
 
