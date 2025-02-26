@@ -446,7 +446,7 @@ app.controller('myCtrl', function ($scope) {
 	 * @param  {...object} cookies cookie objects that may trigger buff
 	 * @returns {boolean} true if triggers buff
 	 */
-	const cookiesContainBuffs = (include_ef, ...cookies) => {
+	const hasCookieBuff = (include_ef, ...cookies) => {
 		return cookies.some((cookie) => {
 			return cookie.type == 'Building Special' || (include_ef && cookie.type == 'Elder Frenzy');
 		});
@@ -503,7 +503,7 @@ app.controller('myCtrl', function ($scope) {
 
 			// determine whether current cookies can be part of a combo
 			if (
-				cookiesContainBuffs(includeEF, cookie0GC, cookie1GC, cookie0RC, cookie1RC)
+				hasCookieBuff(includeEF, cookie0GC, cookie1GC, cookie0RC, cookie1RC)
 				|| gambler.hasBs
 				|| (includeEF && gambler.hasEf)
 			) {
