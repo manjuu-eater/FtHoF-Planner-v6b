@@ -397,7 +397,7 @@ app.controller('myCtrl', function ($scope) {
 		}
 
 		// choose a spell to be cast (L202)
-		const castSpellName = choose(spells);
+		const castSpell = choose(spells);
 
 		// chance of GFD backfire (L206 > L299 > L311)
 		// note1: **code behavior differs from description!!**
@@ -406,7 +406,7 @@ app.controller('myCtrl', function ($scope) {
 
 		// return object
 		const gfdResult = {};
-		gfdResult.type = castSpellName.name;
+		gfdResult.type = castSpell.name;
 		gfdResult.hasBs = false;
 		gfdResult.hasEf = false;
 
@@ -421,7 +421,7 @@ app.controller('myCtrl', function ($scope) {
 		gfdResult.backfire = !isChildSpellWin;
 
 		// set the result of child spells called by GFD
-		if (castSpellName.name == "Force the Hand of Fate") {
+		if (castSpell.name == "Force the Hand of Fate") {
 			// add result of casting FtHoF
 			if (isChildSpellWin) {
 				gfdResult.innerCookie1 = castFtHoF(spellsCastTotal + 1, false, "GC");
