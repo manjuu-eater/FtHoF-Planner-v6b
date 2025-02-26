@@ -216,3 +216,21 @@ export const cookieEffectNameToDescription = {
 	"Free Sugar Lump":
 		"Add a free sugar lump to the pool",
 };
+
+
+/**
+ * dictionary of spell icon image file url
+ *
+ * @type { { [key: string]: string } }
+ */
+export const spellNameToIconUrl = {
+	"Conjure Baked Goods":    "./img/spell0.png",
+	"Force the Hand of Fate": "./img/spell1.png",
+	"Stretch Time":           "./img/spell2.png",
+	"Spontaneous Edifice":    "./img/spell3.png",
+	"Haggler's Charm":        "./img/spell4.png",
+	"Summon Crafty Pixies":   "./img/spell5.png",
+	"Gambler's Fever Dream":  "./img/spell6.png",
+	"Resurrect Abomination":  "./img/spell7.png",
+	"Diminish Ineptitude":    "./img/spell8.png",
+};

@@ -79,6 +79,20 @@ div.highlight {
     /* border-radius: 3px; */
 }
 
+/* GFD image */
+img.gfd {
+    border: solid 4px transparent;
+    border-radius: 4px;
+}
+img.gfd.success {
+    border-color: gold;
+    background-color: gold;
+}
+img.gfd.backfire {
+    border-color: orangered;
+    background-color: orangered;
+}
+
 
 /* CSS to make <table> look like the Angular Material theme */
 table {

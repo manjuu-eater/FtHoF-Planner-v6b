@@ -10,6 +10,7 @@
 import {
 	Math_seedrandom, choose, M_spells,
 	cookieEffectNameToDescription,
+	spellNameToIconUrl,
 } from "./game_related_data.js";
 
 
@@ -31,6 +32,7 @@ import {
 /**
  * @typedef {object} GfdResult
  * @property {string} type
+ * @property {string} imageUrl
  * @property {boolean} hasBs
  * @property {boolean} hasEf
  * @property {boolean} canCombo
@@ -413,6 +415,7 @@ app.controller('myCtrl', function ($scope) {
 		/** return object  @type {GfdResult} */
 		const gfdResult = {};
 		gfdResult.type = castSpell.name;
+		gfdResult.imageUrl = spellNameToIconUrl[castSpell.name];
 		gfdResult.hasBs = false;
 		gfdResult.hasEf = false;
 		gfdResult.canCombo = false;
@@ -479,9 +482,9 @@ app.controller('myCtrl', function ($scope) {
 
 		// determine child FtHoF result can be a part of combo
 		if (
-			gfdResult.type == "Resurrect Abomination"
-			|| (gfdResult.type == "Spontaneous Edifice" && gfdResult.isWin)
-			|| (gfdResult.type == "Stretch Time")
+			castSpell.name == "Resurrect Abomination"
+			|| (castSpell.name == "Spontaneous Edifice" && gfdResult.isWin)
+			|| (castSpell.name == "Stretch Time")
 		) {
 			gfdResult.canSkip = true;
 		}
