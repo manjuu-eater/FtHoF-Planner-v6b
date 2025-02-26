@@ -223,14 +223,15 @@ app.controller('myCtrl', function ($scope) {
 	 *             > M.castSpell (L299)
 	 *             > spell.win(), spell.fail() (L313 > L48, 66)
 	 *
+	 * @param {string} seed five-letter string like "abcde" used as a seed in game
 	 * @param {number} spellsCastTotal total spell cast count before this cast
 	 * @param {boolean} isOneChange true if one change
 	 * @param {("GC" | "RC")=} forceCookie "GC": force GC, "RC": force RC, default: roll with Math.random()
 	 * @returns {FthofResult} FtHoF cast result
 	 */
-	const castFtHoF = (spellsCastTotal, isOneChange, forceCookie) => {
+	const castFtHoF = (seed, spellsCastTotal, isOneChange, forceCookie) => {
 		// set seed (L312)
-		Math_seedrandom($scope.seed + '/' + spellsCastTotal);
+		Math_seedrandom(seed + '/' + spellsCastTotal);
 
 		// get fail chance (L307 > L289)
 		const failChance = (() => {
@@ -424,16 +425,16 @@ app.controller('myCtrl', function ($scope) {
 		if (castSpell.name == "Force the Hand of Fate") {
 			// add result of casting FtHoF
 			if (isChildSpellWin) {
-				gfdResult.innerCookie1 = castFtHoF(spellsCastTotal + 1, false, "GC");
-				gfdResult.innerCookie2 = castFtHoF(spellsCastTotal + 1, true, "GC");
+				gfdResult.innerCookie1 = castFtHoF(seed, spellsCastTotal + 1, false, "GC");
+				gfdResult.innerCookie2 = castFtHoF(seed, spellsCastTotal + 1, true, "GC");
 
 				gfdResult.hasBs = (
 					gfdResult.innerCookie1.type == "Building Special"
 					|| gfdResult.innerCookie2.type == "Building Special"
 				);
 			} else {
-				gfdResult.innerCookie1 = castFtHoF(spellsCastTotal + 1, false, "RC");
-				gfdResult.innerCookie2 = castFtHoF(spellsCastTotal + 1, true, "RC");
+				gfdResult.innerCookie1 = castFtHoF(seed, spellsCastTotal + 1, false, "RC");
+				gfdResult.innerCookie2 = castFtHoF(seed, spellsCastTotal + 1, true, "RC");
 
 				gfdResult.hasEf = (
 					gfdResult.innerCookie1.type == "Elder Frenzy"
@@ -513,10 +514,10 @@ app.controller('myCtrl', function ($scope) {
 			const isFthofWin = randomNumber < 1 - fthofBackfireChance;
 
 			// get FtHoF results (both success and backfire)
-			const cookie0GC = castFtHoF(spellsCastTotal + i, false, "GC");
-			const cookie1GC = castFtHoF(spellsCastTotal + i, true, "GC");
-			const cookie0RC = castFtHoF(spellsCastTotal + i, false, "RC");
-			const cookie1RC = castFtHoF(spellsCastTotal + i, true, "RC");
+			const cookie0GC = castFtHoF(seed, spellsCastTotal + i, false, "GC");
+			const cookie1GC = castFtHoF(seed, spellsCastTotal + i, true, "GC");
+			const cookie0RC = castFtHoF(seed, spellsCastTotal + i, false, "RC");
+			const cookie1RC = castFtHoF(seed, spellsCastTotal + i, true, "RC");
 			const gambler = castGFD(seed, spellsCastTotal + i);
 			const cookie = [cookie0GC, cookie1GC, cookie0RC, cookie1RC, gambler];
 			const displayCookie = [];
