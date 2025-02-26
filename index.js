@@ -33,6 +33,7 @@ import {
  * @property {string} type
  * @property {boolean} hasBs
  * @property {boolean} hasEf
+ * @property {boolean} canCombo
  * @property {boolean} isWin
  * @property {FthofResult=} cookie0
  * @property {FthofResult=} cookie0GC
@@ -413,6 +414,7 @@ app.controller('myCtrl', function ($scope) {
 		gfdResult.type = castSpell.name;
 		gfdResult.hasBs = false;
 		gfdResult.hasEf = false;
+		gfdResult.canCombo = false;
 
 		// set seed for child spell that is cast by GFD (L312)
 		// note: this seed may change with continuous GFD casts (spellsCastTotal increases)
@@ -440,17 +442,25 @@ app.controller('myCtrl', function ($scope) {
 				cookie1, cookie1GC, cookie1WC,
 			});
 
-			// add result of casting FtHoF
+			// determine child FtHoF result can be a part of combo
 			if (isChildSpellWin) {
-				gfdResult.hasBs = (
+				const hasBs = (
 					gfdResult.cookie0.type == "Building Special"
 					|| gfdResult.cookie1.type == "Building Special"
 				);
+				if (hasBs) {
+					gfdResult.hasBs = true;
+					gfdResult.canCombo = true;
+				}
 			} else {
-				gfdResult.hasEf = (
+				const hasEf = (
 					gfdResult.cookie0.type == "Elder Frenzy"
 					|| gfdResult.cookie1.type == "Elder Frenzy"
 				);
+				if (hasEf) {
+					gfdResult.hasEf = true;
+					gfdResult.canCombo = true;
+				}
 			}
 
 		} else if (gfdResult.name == "Spontaneous Edifice") {
