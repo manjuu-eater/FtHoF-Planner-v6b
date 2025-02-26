@@ -238,14 +238,14 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr ng-repeat="result in grimoireResults" id="{{$index + 1}}">
+				<tr ng-repeat="result in grimoireResults" id="{{result.num}}">
 					<!-- Spell # -->
 					<td><div>
 						{{
 							"#"
-							+ ($index + 1)
-							+ " (" + (spellsCast+$index+1)
-							+ " | " + (spellsCastTotal+$index+1)
+							+ result.num
+							+ " (" + (spellsCast + result.num)
+							+ " | " + (spellsCastTotal + result.num)
 							+ ")"
 						}}
 					</div></td>
