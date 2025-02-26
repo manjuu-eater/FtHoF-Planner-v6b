@@ -498,6 +498,7 @@ app.controller('myCtrl', function ($scope) {
 		const comboIndexes = [];
 		const skipIndexes = [];
 		for (let i = 0; i < lookahead; i++) {
+			// total spell cast count before this cast
 			const currentTotalSpell = i + spellsCastTotal;
 
 			// get first random number and push to array
