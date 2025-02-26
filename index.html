@@ -294,8 +294,10 @@
 
 					<!-- Gambler's Dream -->
 					<td><div>
-						<img ng-if= "result.gambler.isWin" ng-src="img/goldCookie.png">
-						<img ng-if="!result.gambler.isWin" ng-src="img/wrathCookie.png">
+						<img ng-src="{{result.gambler.imageUrl}}" ng-class="{
+							success: result.gambler.isWin,
+							backfire: !result.gambler.isWin,
+						}" class="gfd">
 						<div ng-class="{
 							'highlight combo': result.gambler.canCombo,
 							'highlight skip':  result.gambler.canSkip,
