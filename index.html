@@ -285,11 +285,11 @@
 
 					<!-- Gambler's Dream -->
 					<td><div>
-						<img ng-src="{{displayCookies[$index][2].backfire? ' img/WrathCookie.png' : 'img/GoldCookie.png'}}">
+						<img ng-src="{{displayCookies[$index][2].isWin ? 'img/GoldCookie.png' : ' img/WrathCookie.png'}}">
 						<div class="{{
 							(displayCookies[$index][2].hasBs || displayCookies[$index][2].hasEf)
 								? 'highlight combo'
-								: (displayCookies[$index][2].type == 'Resurrect Abomination' || (displayCookies[$index][2].type == 'Spontaneous Edifice' && !displayCookies[$index][2].backfire))
+								: (displayCookies[$index][2].type == 'Resurrect Abomination' || (displayCookies[$index][2].type == 'Spontaneous Edifice' && displayCookies[$index][2].isWin))
 									? 'highlight skip'
 									: '';
 						}}" title="{{displayCookies[$index][2].innerCookie1.type + '; ' + displayCookies[$index][2].innerCookie2.type}}">

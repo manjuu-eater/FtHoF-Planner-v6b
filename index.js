@@ -33,7 +33,7 @@ import {
  * @property {string} type
  * @property {boolean} hasBs
  * @property {boolean} hasEf
- * @property {boolean} backfire
+ * @property {boolean} isWin
  * @property {FthofResult=} innerCookie1
  * @property {FthofResult=} innerCookie2
  * @property {number=} spontaneousEdificeRandomNumber
@@ -417,7 +417,7 @@ app.controller('myCtrl', function ($scope) {
 		const isChildSpellWin = Math.random() < (1 - gfdBackfire);
 
 		// set backfire result
-		gfdResult.backfire = !isChildSpellWin;
+		gfdResult.isWin = isChildSpellWin;
 
 		// set the result of child spells called by GFD
 		if (castSpell.name == "Force the Hand of Fate") {
@@ -531,7 +531,7 @@ app.controller('myCtrl', function ($scope) {
 			// determine whether GFD can be skipped
 			const isSkip = (
 				(skipRA && gambler.type == 'Resurrect Abomination')
-				|| (skipSE && gambler.type == 'Spontaneous Edifice' && !gambler.backfire)
+				|| (skipSE && gambler.type == 'Spontaneous Edifice' && gambler.isWin)
 			);
 			if (isSkip) skipIndexes.push(i);
 
