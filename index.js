@@ -410,7 +410,7 @@ app.controller('myCtrl', function ($scope) {
 		// note2: increases above 0.5 only if DI debuff is active
 		const gfdBackfire = Math.max(getBaseFailChance(), 0.5);
 
-		// return object
+		/** return object  @type {GfdResult} */
 		const gfdResult = {};
 		gfdResult.type = castSpell.name;
 		gfdResult.hasBs = false;
