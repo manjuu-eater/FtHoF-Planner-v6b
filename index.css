@@ -69,6 +69,10 @@ div.highlight {
 .highlight.skip {
     background-color: lightblue;
 }
+.highlight.notable {
+    border: dashed 3px orange;
+    /* border-radius: 3px; */
+}
 
 
 /* CSS to make <table> look like the Angular Material theme */
