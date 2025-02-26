@@ -439,10 +439,12 @@ app.controller('myCtrl', function ($scope) {
 			const cookie1 = isChildSpellWin ? cookie1GC : cookie1WC;
 
 			// set to return object
-			Object.assign(gfdResult, {
-				cookie0, cookie0GC, cookie0WC,
-				cookie1, cookie1GC, cookie1WC,
-			});
+			gfdResult.cookie0 = cookie0;
+			gfdResult.cookie1 = cookie1;
+			gfdResult.cookie0GC = cookie0GC;
+			gfdResult.cookie0WC = cookie0WC;
+			gfdResult.cookie1GC = cookie1GC;
+			gfdResult.cookie1WC = cookie1WC;
 
 			// determine child FtHoF result can be a part of combo
 			if (isChildSpellWin) {
