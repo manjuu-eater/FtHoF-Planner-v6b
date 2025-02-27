@@ -307,7 +307,13 @@
 							success: result.gfd.isWin,
 							backfire: !result.gfd.isWin,
 						}" class="gfd">
-						<div ng-class="{
+						<div ng-if="isSingleSeason" ng-class="{
+							'highlight combo': result.gfd.canCombo,
+							'highlight skip':  result.gfd.canSkip,
+						}" title="{{result.gfd.cookie0.name}}">
+							{{result.gfd ? result.gfd.name : "Blank"}}
+						</div>
+						<div ng-if="!isSingleSeason" ng-class="{
 							'highlight combo': result.gfd.canCombo,
 							'highlight skip':  result.gfd.canSkip,
 						}" title="{{result.gfd.cookie0.name + '; ' + result.gfd.cookie1.name}}">
