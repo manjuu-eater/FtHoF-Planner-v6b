@@ -495,10 +495,11 @@ app.controller("myCtrl", function ($scope) {
 	 * determine whether passed FtHoF results have one of passed effects
 	 *
 	 * @param {FthofResult[]} cookies array of FthofResults to see
-	 * @param {string[]} effectNames array of effect names
+	 * @param {string | string[]} effect effect name or names
 	 * @returns {boolean} true if have
 	 */
-	const hasCookieEffect = (cookies, effectNames) => {
+	const hasCookieEffect = (cookies, effect) => {
+		const effectNames = (typeof effect == "string" ? [effect] : effect);
 		for (const cookie of cookies) {
 			for (const effectName of effectNames) {
 				if (cookie.name == effectName) return true;
