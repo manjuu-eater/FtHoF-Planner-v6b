@@ -564,23 +564,23 @@ app.controller("myCtrl", function ($scope) {
 			const cookie1GC = castFtHoF(seed, currentTotalSpell, true, "GC");
 			const cookie0WC = castFtHoF(seed, currentTotalSpell, false, "WC");
 			const cookie1WC = castFtHoF(seed, currentTotalSpell, true, "WC");
-			const gambler = castGFD(seed, currentTotalSpell);
-			const cookie = [cookie0GC, cookie1GC, cookie0WC, cookie1WC, gambler];
+			const gfd = castGFD(seed, currentTotalSpell);
+			const cookie = [cookie0GC, cookie1GC, cookie0WC, cookie1WC, gfd];
 			const displayCookie = [];
 
 			// determine whether current cookies can be part of a combo
 			const isCombo = (
 				hasCookieBuff(includeEF, cookie0GC, cookie1GC, cookie0WC, cookie1WC)
-				|| gambler.hasBs
-				|| (includeEF && gambler.hasEf)
+				|| gfd.hasBs
+				|| (includeEF && gfd.hasEf)
 			);
 			if (isCombo) comboIndexes.push(i);
 
 			// determine whether GFD can be skipped
 			const isSkip = (
-				(skipRA && gambler.name == "Resurrect Abomination")
-				|| (skipSE && gambler.name == "Spontaneous Edifice" && gambler.isWin)
-				|| (skipST && gambler.name == "Stretch Time")
+				(skipRA && gfd.name == "Resurrect Abomination")
+				|| (skipSE && gfd.name == "Spontaneous Edifice" && gfd.isWin)
+				|| (skipST && gfd.name == "Stretch Time")
 			);
 			if (isSkip) skipIndexes.push(i);
 
@@ -628,7 +628,7 @@ app.controller("myCtrl", function ($scope) {
 			}
 
 			// push GFD result to displayCookie
-			displayCookie.push(gambler);
+			displayCookie.push(gfd);
 
 			// push to array
 			cookies.push(cookie);
@@ -643,7 +643,7 @@ app.controller("myCtrl", function ($scope) {
 				cookie0, cookie0GC, cookie0WC, isOtherCookieNotable0,
 				cookie1, cookie1GC, cookie1WC, isOtherCookieNotable1,
 
-				gambler,
+				gfd,
 				displayCookie,
 				isCombo, isSkip, isSugar,
 			};
