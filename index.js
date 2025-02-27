@@ -60,12 +60,12 @@ const extractSaveData = (saveCode) => {
 
 	// load save data
 	// detail: console.log(Game.WriteSave(3))
-	const decoded = Base64.decode(saveCode.split('!END!')[0]);
-	const pipeSplited = decoded.split('|');
+	const decoded = Base64.decode(saveCode.split("!END!")[0]);
+	const pipeSplited = decoded.split("|");
 
-	const runDetails = pipeSplited[2].split(';');
-	const miscGameData = pipeSplited[4].split(';');
-	const buildings = pipeSplited[5].split(';');
+	const runDetails = pipeSplited[2].split(";");
+	const miscGameData = pipeSplited[4].split(";");
+	const buildings = pipeSplited[5].split(";");
 
 	const seed = runDetails[4];
 	saveData.seed = seed;
@@ -85,19 +85,19 @@ const extractSaveData = (saveCode) => {
 
 	const spellsCast = parseInt(strSpellsCast) || 0;
 	saveData.spellsCast = spellsCast;
-	console.log('Spells cast this ascension: ' + spellsCast);
+	console.log("Spells cast this ascension: " + spellsCast);
 
 	const spellsCastTotal = parseInt(strSpellsCastTotal) || 0;
 	saveData.spellsCastTotal = spellsCastTotal;
-	console.log('Total spells cast: ' + spellsCastTotal);
+	console.log("Total spells cast: " + spellsCastTotal);
 
 	// return
 	return saveData;
 };
 
 
-const app = window.angular.module('myApp', ['ngMaterial']);
-app.controller('myCtrl', function ($scope) {
+const app = window.angular.module("myApp", ["ngMaterial"]);
+app.controller("myCtrl", function ($scope) {
 	$scope.seed = ""
 	$scope.ascensionMode = 0
 	$scope.spellsCastTotal = 0
@@ -239,7 +239,7 @@ app.controller('myCtrl', function ($scope) {
 	 */
 	const castFtHoF = (seed, spellsCastTotal, isOneChange, forceCookie) => {
 		// set seed (L312)
-		Math_seedrandom(seed + '/' + spellsCastTotal);
+		Math_seedrandom(seed + "/" + spellsCastTotal);
 
 		// get fail chance (L307 > L289)
 		const failChance = (() => {
@@ -287,24 +287,24 @@ app.controller('myCtrl', function ($scope) {
 		// choose cookie effect
 		if (isWin) {
 			// choices of golden cookie (L52)
-			choices.push('Frenzy', 'Lucky');
-			if (!$scope.dragonflight) choices.push('Click Frenzy');
-			if (Math.random() < 0.1) choices.push('Cookie Storm', 'Cookie Storm', 'Blab');
-			if (Math.random() < 0.25) choices.push('Building Special');  // Game.BuildingsOwned>=10 is ignored
-			if (Math.random() < 0.15) choices = ['Cookie Storm Drop'];
-			if (Math.random() < 0.0001) choices.push('Free Sugar Lump');
+			choices.push("Frenzy", "Lucky");
+			if (!$scope.dragonflight) choices.push("Click Frenzy");
+			if (Math.random() < 0.1) choices.push("Cookie Storm", "Cookie Storm", "Blab");
+			if (Math.random() < 0.25) choices.push("Building Special");  // Game.BuildingsOwned>=10 is ignored
+			if (Math.random() < 0.15) choices = ["Cookie Storm Drop"];
+			if (Math.random() < 0.0001) choices.push("Free Sugar Lump");
 			fthofResult.name = choose(choices);
 
 			// There is an additional Math.random() in L62,
 			// but this doesn't affect the result because choice is done.
-			//if (fthofResult.name == 'Cookie Storm Drop') Math.random();
+			//if (fthofResult.name == "Cookie Storm Drop") Math.random();
 
 		} else {
 			// choices of red cookie (L70)
-			choices.push('Clot', 'Ruin');
-			if (Math.random() < 0.1) choices.push('Cursed Finger', 'Elder Frenzy');
-			if (Math.random() < 0.003) choices.push('Free Sugar Lump');
-			if (Math.random() < 0.1) choices = ['Blab'];
+			choices.push("Clot", "Ruin");
+			if (Math.random() < 0.1) choices.push("Cursed Finger", "Elder Frenzy");
+			if (Math.random() < 0.003) choices.push("Free Sugar Lump");
+			if (Math.random() < 0.1) choices = ["Blab"];
 			fthofResult.name = choose(choices);
 		}
 
@@ -318,8 +318,8 @@ app.controller('myCtrl', function ($scope) {
 
 		// add noteworthy info
 		fthofResult.noteworthy = false;
-		if (fthofResult.name == 'Building Special') fthofResult.noteworthy = true;
-		if (fthofResult.name == 'Elder Frenzy') fthofResult.noteworthy = true;
+		if (fthofResult.name == "Building Special") fthofResult.noteworthy = true;
+		if (fthofResult.name == "Elder Frenzy") fthofResult.noteworthy = true;
 
 		// return FtHoF cast result
 		return fthofResult;
@@ -517,7 +517,7 @@ app.controller('myCtrl', function ($scope) {
 	 */
 	const hasCookieBuff = (include_ef, ...cookies) => {
 		return cookies.some((cookie) => {
-			return cookie.name == 'Building Special' || (include_ef && cookie.name == 'Elder Frenzy');
+			return cookie.name == "Building Special" || (include_ef && cookie.name == "Elder Frenzy");
 		});
 	};
 
@@ -557,7 +557,7 @@ app.controller('myCtrl', function ($scope) {
 			const currentTotalSpell = spellsCastTotal + i;
 
 			// get first random number and push to array
-			Math_seedrandom(seed + '/' + currentTotalSpell);
+			Math_seedrandom(seed + "/" + currentTotalSpell);
 			const randomNumber = Math.random();
 			firstRandomNumbers.push(randomNumber);
 
@@ -583,9 +583,9 @@ app.controller('myCtrl', function ($scope) {
 
 			// determine whether GFD can be skipped
 			const isSkip = (
-				(skipRA && gambler.name == 'Resurrect Abomination')
-				|| (skipSE && gambler.name == 'Spontaneous Edifice' && gambler.isWin)
-				|| (skipST && gambler.name == 'Stretch Time')
+				(skipRA && gambler.name == "Resurrect Abomination")
+				|| (skipSE && gambler.name == "Spontaneous Edifice" && gambler.isWin)
+				|| (skipST && gambler.name == "Stretch Time")
 			);
 			if (isSkip) skipIndexes.push(i);
 
