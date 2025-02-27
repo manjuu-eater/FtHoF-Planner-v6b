@@ -504,20 +504,6 @@ app.controller("myCtrl", function ($scope) {
 
 
 	/**
-	 * determine whether passed cookies may trigger any buffs
-	 *
-	 * @param {boolean} include_ef whether include Elder Fever
-	 * @param  {...object} cookies cookie objects that may trigger buff
-	 * @returns {boolean} true if triggers buff
-	 */
-	const hasCookieBuff = (include_ef, ...cookies) => {
-		return cookies.some((cookie) => {
-			return cookie.name == "Building Special" || (include_ef && cookie.name == "Elder Frenzy");
-		});
-	};
-
-
-	/**
 	 * calculate future FtHoF que and display result
 	 */
 	const updateCookies = () => {
@@ -570,7 +556,10 @@ app.controller("myCtrl", function ($scope) {
 
 			// determine whether current cookies can be part of a combo
 			const isCombo = (
-				hasCookieBuff(includeEF, cookie0GC, cookie1GC, cookie0WC, cookie1WC)
+				[cookie0GC, cookie1GC, cookie0WC, cookie1WC].some((cookie) => (
+					cookie.name == "Building Special"
+					|| (includeEF && cookie.name == "Elder Frenzy")
+				))
 				|| gfd.hasBs
 				|| (includeEF && gfd.hasEf)
 			);
