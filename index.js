@@ -521,7 +521,6 @@ app.controller("myCtrl", function ($scope) {
 		const firstRandomNumbers = [];
 		const baseBackfireChance = getBaseFailChance();
 		const fthofBackfireChance = getFthofFailChance(baseBackfireChance);
-		const displayCookies = [];
 		const combos = {};
 		const sugarIndexes = [];
 
@@ -552,7 +551,6 @@ app.controller("myCtrl", function ($scope) {
 			const cookie1WC = castFtHoF(seed, currentTotalSpell, true, "WC");
 			const gfd = castGFD(seed, currentTotalSpell);
 			const cookie = [cookie0GC, cookie1GC, cookie0WC, cookie1WC, gfd];
-			const displayCookie = [];
 
 			// determine whether current cookies can be part of a combo
 			const isCombo = (
@@ -585,8 +583,6 @@ app.controller("myCtrl", function ($scope) {
 			let isOtherCookieNotable0 = false;
 			let isOtherCookieNotable1 = false;
 			if (isFthofWin) {
-				displayCookie.push(cookie0GC);
-				displayCookie.push(cookie1GC);
 				if (cookie0WC.name == "Elder Frenzy") {
 					cookie0GC.name += " (EF)";
 					cookie0GC.noteworthy = true;
@@ -600,8 +596,6 @@ app.controller("myCtrl", function ($scope) {
 				if (cookie0WC.name == "Free Sugar Lump") cookie0GC.name += " (Lump)";
 				if (cookie1WC.name == "Free Sugar Lump") cookie1GC.name += " (Lump)";
 			} else {
-				displayCookie.push(cookie0WC);
-				displayCookie.push(cookie1WC);
 				if (cookie0GC.name == "Building Special") {
 					cookie0WC.name += " (BS)";
 					cookie0WC.noteworthy = true;
@@ -616,12 +610,8 @@ app.controller("myCtrl", function ($scope) {
 				if (cookie1GC.name == "Free Sugar Lump") cookie1WC.name += " (Lump)";
 			}
 
-			// push GFD result to displayCookie
-			displayCookie.push(gfd);
-
 			// push to array
 			cookies.push(cookie);
-			displayCookies.push(displayCookie);
 
 			// set to object and push to array
 			const grimoireResult = {
@@ -633,7 +623,6 @@ app.controller("myCtrl", function ($scope) {
 				cookie1, cookie1GC, cookie1WC, isOtherCookieNotable1,
 
 				gfd,
-				displayCookie,
 				isCombo, isSkip, isSugar,
 			};
 			grimoireResults.push(grimoireResult);
@@ -658,7 +647,6 @@ app.controller("myCtrl", function ($scope) {
 		$scope.firstRandomNumbers  = firstRandomNumbers;
 		$scope.baseBackfireChance  = baseBackfireChance;
 		$scope.backfireChance      = fthofBackfireChance;
-		$scope.displayCookies      = displayCookies;
 		$scope.combos              = combos;
 		$scope.sugarIndexes        = sugarIndexes;
 		$scope.grimoireResults     = grimoireResults;
