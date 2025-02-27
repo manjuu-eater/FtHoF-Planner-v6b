@@ -198,6 +198,14 @@
 		<md-divider></md-divider>
 
 
+		<!-- Options: FtHoF Settings -->
+		<md-checkbox ng-model="singleSeason">
+			Can't Switch Seasons
+		</md-checkbox>
+
+		<md-divider></md-divider>
+
+
 		<!-- Buttons -->
 		<md-button class="md-raised md-primary" ng-click="updateCookies()">Apply Settings</md-button>
 		<md-button class="md-raised md-primary" ng-click="castSpell()">Cast Spell</md-button>
@@ -213,7 +221,7 @@
 				<col class="spell">
 				<col class="random">
 				<col class="fthof">
-				<col class="fthof">
+				<col class="fthof" ng-if="!singleSeason">
 				<col class="gfd">
 			</colgroup>
 			<thead>
@@ -221,7 +229,7 @@
 					<th>Spell #</th>
 					<th>Random <br>Number</th>
 					<th>No Change</th>
-					<th>One Change</th>
+					<th ng-if="!singleSeason">One Change</th>
 					<th>Gambler's Dream</th>
 				</tr>
 				<tr>
@@ -237,7 +245,7 @@
 						Season is <b>NOT</b><br>
 						Valentines or Easter.
 					</td>
-					<td>
+					<td ng-if="!singleSeason">
 						Season is<br>
 						Valentines or Easter.
 					</td>
@@ -282,7 +290,7 @@
 					</div></td>
 
 					<!-- One Change -->
-					<td><div>
+					<td ng-if="!singleSeason"><div>
 						<img ng-if= "result.isFthofWin" ng-src="img/goldCookie.png">
 						<img ng-if="!result.isFthofWin" ng-src="img/wrathCookie.png">
 						<div ng-class="{
