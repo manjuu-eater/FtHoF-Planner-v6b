@@ -98,20 +98,20 @@ const extractSaveData = (saveCode) => {
 
 const app = window.angular.module("myApp", ["ngMaterial"]);
 app.controller("myCtrl", function ($scope) {
-	$scope.seed = ""
-	$scope.ascensionMode = 0
-	$scope.spellsCastTotal = 0
-	$scope.spellsCast = 0
-	$scope.dragonflight = false
-	$scope.auraSI = false
-	$scope.buffDI = false
-	$scope.debuffDI = false
-	$scope.screenCookieCount = 0
-	$scope.minComboLength = 2
-	$scope.maxComboLength = 4
-	$scope.maxSpread = 2
-	$scope.saveString = ""
-	$scope.lookahead = 200
+	$scope.seed = "";
+	$scope.ascensionMode = 0;
+	$scope.spellsCastTotal = 0;
+	$scope.spellsCast = 0;
+	$scope.dragonflight = false;
+	$scope.auraSI = false;
+	$scope.buffDI = false;
+	$scope.debuffDI = false;
+	$scope.screenCookieCount = 0;
+	$scope.minComboLength = 2;
+	$scope.maxComboLength = 4;
+	$scope.maxSpread = 2;
+	$scope.saveString = "";
+	$scope.lookahead = 200;
 
 	// fill the save code input if previous save code exists in LocalStorage
 	const previousSaveCode = window.localStorage.getItem("fthof_save_code");
@@ -347,7 +347,7 @@ app.controller("myCtrl", function ($scope) {
 
 		// combo that appears first
 		let firstLength = 10000000;
-		let firstStartIndex = -1
+		let firstStartIndex = -1;
 
 		// find combos that can cast in comboIndexes
 		for (let i = 0; i + comboLength - 1 < comboIndexes.length; i++) {
@@ -517,7 +517,7 @@ app.controller("myCtrl", function ($scope) {
 		} = $scope;
 
 		// variables to set $scope.*
-		const cookies = []
+		const cookies = [];
 		const firstRandomNumbers = [];
 		const baseBackfireChance = getBaseFailChance();
 		const fthofBackfireChance = getFthofFailChance(baseBackfireChance);
