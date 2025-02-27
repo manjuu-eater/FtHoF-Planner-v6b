@@ -326,8 +326,6 @@ app.controller("myCtrl", function ($scope) {
 	};
 
 
-	//want to return shortest, and first sequence for a given combo_length
-	//if nothing that satisfies maxSpread, shortest will still be filled but first will be empty
 	/**
 	 * find comboes from indexes
 	 *
@@ -635,8 +633,8 @@ app.controller("myCtrl", function ($scope) {
 		console.timeLog("updateCookies");
 
 		// find combos
-		for (let combo_length = minComboLength; combo_length <= maxComboLength; combo_length++) {
-			combos[combo_length] = findCombos(combo_length, maxSpread, comboIndexes, skipIndexes);
+		for (let comboLength = minComboLength; comboLength <= maxComboLength; comboLength++) {
+			combos[comboLength] = findCombos(comboLength, maxSpread, comboIndexes, skipIndexes);
 		}
 
 		console.log("Combos:", combos);
