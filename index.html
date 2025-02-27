@@ -52,12 +52,12 @@
 
 		<!-- Description of FtHoF -->
 		<p><b>
-			Based on FtHoF planner v1, v2, v3, v4, v5 by RebelKeithy, Skeezy, Eminenti, Mylaaan and Joseph3079.
+			Based on FtHoF planner v1-v5 by RebelKeithy, Skeezy, Eminenti, Mylaaan and Joseph3079.
 			Huge thanks to them for creating such a helpful tool.<br>
 			◆ <a href="./version_history.html">full version history, credits & contacts</a>
 		</b></p>
 		<p><b>
-			The current version is compatible with cookie clicker 2.052, "often imitated, never duplicated".
+			Compatible Version: Cookie Clicker v2.052
 		</b></p>
 		<p>
 			RebelKeithy, Skeezy, Mylaaan, & Joseph3079 made a guide explaining the options/features we added.<br>
@@ -150,6 +150,7 @@
 
 		<br>
 
+		<!-- Options: Include EF or Skip Some GFD -->
 		<md-checkbox ng-checked="true" ng-model="includeEF">
 			Include Elder Frenzies
 		</md-checkbox>
@@ -197,6 +198,14 @@
 		<md-divider></md-divider>
 
 
+		<!-- Options: FtHoF Settings -->
+		<md-checkbox ng-model="isSingleSeason">
+			Can't Switch Seasons
+		</md-checkbox>
+
+		<md-divider></md-divider>
+
+
 		<!-- Buttons -->
 		<md-button class="md-raised md-primary" ng-click="updateCookies()">Apply Settings</md-button>
 		<md-button class="md-raised md-primary" ng-click="castSpell()">Cast Spell</md-button>
@@ -212,7 +221,7 @@
 				<col class="spell">
 				<col class="random">
 				<col class="fthof">
-				<col class="fthof">
+				<col class="fthof" ng-if="!isSingleSeason">
 				<col class="gfd">
 			</colgroup>
 			<thead>
@@ -220,7 +229,7 @@
 					<th>Spell #</th>
 					<th>Random <br>Number</th>
 					<th>No Change</th>
-					<th>One Change</th>
+					<th ng-if="!isSingleSeason">One Change</th>
 					<th>Gambler's Dream</th>
 				</tr>
 				<tr>
@@ -236,7 +245,7 @@
 						Season is <b>NOT</b><br>
 						Valentines or Easter.
 					</td>
-					<td>
+					<td ng-if="!isSingleSeason">
 						Season is<br>
 						Valentines or Easter.
 					</td>
@@ -276,33 +285,41 @@
 							'highlight combo': result.cookie0.noteworthy,
 							'highlight notable': result.isOtherCookieNotable0,
 						}">
-							{{result.cookie0.type}}
+							{{result.cookie0.name}}
 						</div>
 					</div></td>
 
 					<!-- One Change -->
-					<td><div>
+					<td ng-if="!isSingleSeason"><div>
 						<img ng-if= "result.isFthofWin" ng-src="img/goldCookie.png">
 						<img ng-if="!result.isFthofWin" ng-src="img/wrathCookie.png">
 						<div ng-class="{
 							'highlight combo': result.cookie1.noteworthy,
 							'highlight notable': result.isOtherCookieNotable1,
 						}">
-							{{result.cookie1.type}}
+							{{result.cookie1.name}}
 						</div>
 					</div></td>
 
 					<!-- Gambler's Dream -->
 					<td><div>
-						<img ng-src="{{result.gambler.imageUrl}}" ng-class="{
-							success: result.gambler.isWin,
-							backfire: !result.gambler.isWin,
+						<img ng-src="{{result.gfd.imageUrl}}" ng-class="{
+							success: result.gfd.isWin,
+							backfire: !result.gfd.isWin,
 						}" class="gfd">
 						<div ng-class="{
-							'highlight combo': result.gambler.canCombo,
-							'highlight skip':  result.gambler.canSkip,
-						}" title="{{result.gambler.cookie0.type + '; ' + result.gambler.cookie1.type}}">
-							{{result.gambler ? result.gambler.type : "Blank"}}
+							'highlight combo': result.gfd.canCombo,
+							'highlight skip':  result.gfd.canSkip,
+						}" ng-attr-title="{{
+							result.gfd.name == 'Force the Hand of Fate'
+							? result.gfd.cookie0.name + (
+								isSingleSeason
+								? ''
+								: '; ' + result.gfd.cookie1.name
+							)
+							: undefined
+						}}">
+							{{result.gfd.name}}
 						</div>
 					</div></td>
 				</tr>

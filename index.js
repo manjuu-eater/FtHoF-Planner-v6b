@@ -24,14 +24,14 @@ import {
  */
 /**
  * @typedef {object} FthofResult
- * @property {string} type
+ * @property {string} name
  * @property {boolean} wrath
  * @property {string} description
  * @property {boolean} noteworthy
  */
 /**
  * @typedef {object} GfdResult
- * @property {string} type
+ * @property {string} name
  * @property {string} imageUrl
  * @property {boolean} hasBs
  * @property {boolean} hasEf
@@ -39,11 +39,11 @@ import {
  * @property {boolean} canSkip
  * @property {boolean} isWin
  * @property {FthofResult=} cookie0
- * @property {FthofResult=} cookie0GC
- * @property {FthofResult=} cookie0WC
+ * @property {FthofResult=} gc0
+ * @property {FthofResult=} wc0
  * @property {FthofResult=} cookie1
- * @property {FthofResult=} cookie1GC
- * @property {FthofResult=} cookie1WC
+ * @property {FthofResult=} gc1
+ * @property {FthofResult=} wc1
  * @property {number=} spontaneousEdificeRandomNumber
  */
 
@@ -60,12 +60,12 @@ const extractSaveData = (saveCode) => {
 
 	// load save data
 	// detail: console.log(Game.WriteSave(3))
-	const decoded = Base64.decode(saveCode.split('!END!')[0]);
-	const pipeSplited = decoded.split('|');
+	const decoded = Base64.decode(saveCode.split("!END!")[0]);
+	const pipeSplited = decoded.split("|");
 
-	const runDetails = pipeSplited[2].split(';');
-	const miscGameData = pipeSplited[4].split(';');
-	const buildings = pipeSplited[5].split(';');
+	const runDetails = pipeSplited[2].split(";");
+	const miscGameData = pipeSplited[4].split(";");
+	const buildings = pipeSplited[5].split(";");
 
 	const seed = runDetails[4];
 	saveData.seed = seed;
@@ -85,33 +85,34 @@ const extractSaveData = (saveCode) => {
 
 	const spellsCast = parseInt(strSpellsCast) || 0;
 	saveData.spellsCast = spellsCast;
-	console.log('Spells cast this ascension: ' + spellsCast);
+	console.log("Spells cast this ascension: " + spellsCast);
 
 	const spellsCastTotal = parseInt(strSpellsCastTotal) || 0;
 	saveData.spellsCastTotal = spellsCastTotal;
-	console.log('Total spells cast: ' + spellsCastTotal);
+	console.log("Total spells cast: " + spellsCastTotal);
 
 	// return
 	return saveData;
 };
 
 
-const app = window.angular.module('myApp', ['ngMaterial']);
-app.controller('myCtrl', function ($scope) {
-	$scope.seed = ""
-	$scope.ascensionMode = 0
-	$scope.spellsCastTotal = 0
-	$scope.spellsCast = 0
-	$scope.dragonflight = false
-	$scope.auraSI = false
-	$scope.buffDI = false
-	$scope.debuffDI = false
-	$scope.screenCookieCount = 0
-	$scope.minComboLength = 2
-	$scope.maxComboLength = 4
-	$scope.maxSpread = 2
-	$scope.saveString = ""
-	$scope.lookahead = 200
+const app = window.angular.module("myApp", ["ngMaterial"]);
+app.controller("myCtrl", function ($scope) {
+	$scope.seed = "";
+	$scope.ascensionMode = 0;
+	$scope.spellsCastTotal = 0;
+	$scope.spellsCast = 0;
+	$scope.dragonflight = false;
+	$scope.auraSI = false;
+	$scope.buffDI = false;
+	$scope.debuffDI = false;
+	$scope.screenCookieCount = 0;
+	$scope.minComboLength = 2;
+	$scope.maxComboLength = 4;
+	$scope.maxSpread = 2;
+	$scope.saveString = "";
+	$scope.lookahead = 200;
+	$scope.isSingleSeason = false;
 
 	// fill the save code input if previous save code exists in LocalStorage
 	const previousSaveCode = window.localStorage.getItem("fthof_save_code");
@@ -239,7 +240,7 @@ app.controller('myCtrl', function ($scope) {
 	 */
 	const castFtHoF = (seed, spellsCastTotal, isOneChange, forceCookie) => {
 		// set seed (L312)
-		Math_seedrandom(seed + '/' + spellsCastTotal);
+		Math_seedrandom(seed + "/" + spellsCastTotal);
 
 		// get fail chance (L307 > L289)
 		const failChance = (() => {
@@ -281,56 +282,51 @@ app.controller('myCtrl', function ($scope) {
 		 */
 		let choices = [];
 
-		/** FtHoF cast result */
+		/** FtHoF cast result  @type {FthofResult} */
 		const fthofResult = {};
 
 		// choose cookie effect
 		if (isWin) {
 			// choices of golden cookie (L52)
-			choices.push('Frenzy', 'Lucky');
-			if (!$scope.dragonflight) choices.push('Click Frenzy');
-			if (Math.random() < 0.1) choices.push('Cookie Storm', 'Cookie Storm', 'Blab');
-			if (Math.random() < 0.25) choices.push('Building Special');  // Game.BuildingsOwned>=10 is ignored
-			if (Math.random() < 0.15) choices = ['Cookie Storm Drop'];
-			if (Math.random() < 0.0001) choices.push('Free Sugar Lump');
-			fthofResult.type = choose(choices);
+			choices.push("Frenzy", "Lucky");
+			if (!$scope.dragonflight) choices.push("Click Frenzy");
+			if (Math.random() < 0.1) choices.push("Cookie Storm", "Cookie Storm", "Blab");
+			if (Math.random() < 0.25) choices.push("Building Special");  // Game.BuildingsOwned>=10 is ignored
+			if (Math.random() < 0.15) choices = ["Cookie Storm Drop"];
+			if (Math.random() < 0.0001) choices.push("Free Sugar Lump");
+			fthofResult.name = choose(choices);
 
 			// There is an additional Math.random() in L62,
 			// but this doesn't affect the result because choice is done.
-			//if (cookie.type == 'Cookie Storm Drop') Math.random();
-
-			// cookie is GC
-			fthofResult.wrath = false;
+			//if (fthofResult.name == "Cookie Storm Drop") Math.random();
 
 		} else {
 			// choices of red cookie (L70)
-			choices.push('Clot', 'Ruin');
-			if (Math.random() < 0.1) choices.push('Cursed Finger', 'Elder Frenzy');
-			if (Math.random() < 0.003) choices.push('Free Sugar Lump');
-			if (Math.random() < 0.1) choices = ['Blab'];
-			fthofResult.type = choose(choices);
-
-			// cookie is WC
-			fthofResult.wrath = true;
+			choices.push("Clot", "Ruin");
+			if (Math.random() < 0.1) choices.push("Cursed Finger", "Elder Frenzy");
+			if (Math.random() < 0.003) choices.push("Free Sugar Lump");
+			if (Math.random() < 0.1) choices = ["Blab"];
+			fthofResult.name = choose(choices);
 		}
 
+		// set whether cookie is WC
+		fthofResult.wrath = !isWin;
+
 		// set description
-		const description = cookieEffectNameToDescription[fthofResult.type];
-		if (!description) console.error("No description in dictionary: " + fthofResult.type);
+		const description = cookieEffectNameToDescription[fthofResult.name];
+		if (!description) console.error("No description in dictionary: " + fthofResult.name);
 		fthofResult.description = description;
 
 		// add noteworthy info
 		fthofResult.noteworthy = false;
-		if (fthofResult.type == 'Building Special') fthofResult.noteworthy = true;
-		if (fthofResult.type == 'Elder Frenzy') fthofResult.noteworthy = true;
+		if (fthofResult.name == "Building Special") fthofResult.noteworthy = true;
+		if (fthofResult.name == "Elder Frenzy") fthofResult.noteworthy = true;
 
 		// return FtHoF cast result
 		return fthofResult;
 	};
 
 
-	//want to return shortest, and first sequence for a given combo_length
-	//if nothing that satisfies maxSpread, shortest will still be filled but first will be empty
 	/**
 	 * find comboes from indexes
 	 *
@@ -350,7 +346,7 @@ app.controller('myCtrl', function ($scope) {
 
 		// combo that appears first
 		let firstLength = 10000000;
-		let firstStartIndex = -1
+		let firstStartIndex = -1;
 
 		// find combos that can cast in comboIndexes
 		for (let i = 0; i + comboLength - 1 < comboIndexes.length; i++) {
@@ -395,6 +391,9 @@ app.controller('myCtrl', function ($scope) {
 	 * @returns {GfdResult} GFD cast result
 	 */
 	const castGFD = (seed, spellsCastTotal) => {
+		// single season option
+		const isSingleSeason = $scope.isSingleSeason;
+
 		// set seed for GFD spell selection (L312)
 		Math_seedrandom(seed + "/" + spellsCastTotal);
 
@@ -414,7 +413,7 @@ app.controller('myCtrl', function ($scope) {
 
 		/** return object  @type {GfdResult} */
 		const gfdResult = {};
-		gfdResult.type = castSpell.name;
+		gfdResult.name = castSpell.name;
 		gfdResult.imageUrl = spellNameToIconUrl[castSpell.name];
 		gfdResult.hasBs = false;
 		gfdResult.hasEf = false;
@@ -434,36 +433,31 @@ app.controller('myCtrl', function ($scope) {
 		// set the result of child spells called by GFD
 		if (castSpell.name == "Force the Hand of Fate") {
 			// cast FtHoF, set to return object
-			const cookie0GC = castFtHoF(seed, spellsCastTotal + 1, false, "GC");
-			const cookie1GC = castFtHoF(seed, spellsCastTotal + 1, true, "GC");
-			const cookie0WC = castFtHoF(seed, spellsCastTotal + 1, false, "WC");
-			const cookie1WC = castFtHoF(seed, spellsCastTotal + 1, true, "WC");
-			const cookie0 = isChildSpellWin ? cookie0GC : cookie0WC;
-			const cookie1 = isChildSpellWin ? cookie1GC : cookie1WC;
+			const gc0 = castFtHoF(seed, spellsCastTotal + 1, false, "GC");
+			const gc1 = castFtHoF(seed, spellsCastTotal + 1, true, "GC");
+			const wc0 = castFtHoF(seed, spellsCastTotal + 1, false, "WC");
+			const wc1 = castFtHoF(seed, spellsCastTotal + 1, true, "WC");
+			const cookie0 = isChildSpellWin ? gc0 : wc0;
+			const cookie1 = isChildSpellWin ? gc1 : wc1;
 
 			// set to return object
 			gfdResult.cookie0 = cookie0;
 			gfdResult.cookie1 = cookie1;
-			gfdResult.cookie0GC = cookie0GC;
-			gfdResult.cookie0WC = cookie0WC;
-			gfdResult.cookie1GC = cookie1GC;
-			gfdResult.cookie1WC = cookie1WC;
+			gfdResult.gc0 = gc0;
+			gfdResult.wc0 = wc0;
+			gfdResult.gc1 = gc1;
+			gfdResult.wc1 = wc1;
 
 			// determine child FtHoF result can be a part of combo
+			const availableCookies = [cookie0, ...(isSingleSeason ? [] : [cookie1])];
 			if (isChildSpellWin) {
-				const hasBs = (
-					gfdResult.cookie0.type == "Building Special"
-					|| gfdResult.cookie1.type == "Building Special"
-				);
+				const hasBs = hasCookieEffect(availableCookies, "Building Special");
 				if (hasBs) {
 					gfdResult.hasBs = true;
 					gfdResult.canCombo = true;
 				}
 			} else {
-				const hasEf = (
-					gfdResult.cookie0.type == "Elder Frenzy"
-					|| gfdResult.cookie1.type == "Elder Frenzy"
-				);
+				const hasEf = hasCookieEffect(availableCookies, "Elder Frenzy");
 				if (hasEf) {
 					gfdResult.hasEf = true;
 					gfdResult.canCombo = true;
@@ -483,7 +477,7 @@ app.controller('myCtrl', function ($scope) {
 		// determine child FtHoF result can be a part of combo
 		if (
 			castSpell.name == "Resurrect Abomination"
-			|| (castSpell.name == "Spontaneous Edifice" && gfdResult.isWin)
+			|| (castSpell.name == "Spontaneous Edifice" && isChildSpellWin)
 			|| (castSpell.name == "Stretch Time")
 		) {
 			gfdResult.canSkip = true;
@@ -495,16 +489,20 @@ app.controller('myCtrl', function ($scope) {
 
 
 	/**
-	 * determine whether passed cookies may trigger any buffs
+	 * determine whether passed FtHoF results have one of passed effects
 	 *
-	 * @param {boolean} include_ef whether include Elder Fever
-	 * @param  {...object} cookies cookie objects that may trigger buff
-	 * @returns {boolean} true if triggers buff
+	 * @param {FthofResult[]} cookies array of FthofResults to see
+	 * @param {string | string[]} effect effect name or names
+	 * @returns {boolean} true if have
 	 */
-	const hasCookieBuff = (include_ef, ...cookies) => {
-		return cookies.some((cookie) => {
-			return cookie.type == 'Building Special' || (include_ef && cookie.type == 'Elder Frenzy');
-		});
+	const hasCookieEffect = (cookies, effect) => {
+		const effectNames = (typeof effect == "string" ? [effect] : effect);
+		for (const cookie of cookies) {
+			for (const effectName of effectNames) {
+				if (cookie.name == effectName) return true;
+			}
+		}
+		return false;
 	};
 
 
@@ -517,16 +515,14 @@ app.controller('myCtrl', function ($scope) {
 			lookahead,
 			minComboLength, maxComboLength, maxSpread,
 			includeEF, skipRA, skipSE, skipST,
-			seed,
-			spellsCastTotal,
+			seed, spellsCastTotal,
+			isSingleSeason,
 		} = $scope;
 
 		// variables to set $scope.*
-		const cookies = []
 		const firstRandomNumbers = [];
 		const baseBackfireChance = getBaseFailChance();
 		const fthofBackfireChance = getFthofFailChance(baseBackfireChance);
-		const displayCookies = [];
 		const combos = {};
 		const sugarIndexes = [];
 
@@ -543,7 +539,7 @@ app.controller('myCtrl', function ($scope) {
 			const currentTotalSpell = spellsCastTotal + i;
 
 			// get first random number and push to array
-			Math_seedrandom(seed + '/' + currentTotalSpell);
+			Math_seedrandom(seed + "/" + currentTotalSpell);
 			const randomNumber = Math.random();
 			firstRandomNumbers.push(randomNumber);
 
@@ -551,79 +547,72 @@ app.controller('myCtrl', function ($scope) {
 			const isFthofWin = randomNumber < 1 - fthofBackfireChance;
 
 			// get FtHoF results (both success and backfire)
-			const cookie0GC = castFtHoF(seed, currentTotalSpell, false, "GC");
-			const cookie1GC = castFtHoF(seed, currentTotalSpell, true, "GC");
-			const cookie0WC = castFtHoF(seed, currentTotalSpell, false, "WC");
-			const cookie1WC = castFtHoF(seed, currentTotalSpell, true, "WC");
-			const gambler = castGFD(seed, currentTotalSpell);
-			const cookie = [cookie0GC, cookie1GC, cookie0WC, cookie1WC, gambler];
-			const displayCookie = [];
+			const gc0 = castFtHoF(seed, currentTotalSpell, false, "GC");
+			const gc1 = castFtHoF(seed, currentTotalSpell, true, "GC");
+			const wc0 = castFtHoF(seed, currentTotalSpell, false, "WC");
+			const wc1 = castFtHoF(seed, currentTotalSpell, true, "WC");
+			const gfd = castGFD(seed, currentTotalSpell);
+
+			// cookies that user can cast (reduce cookie1 for single season option)
+			const availableCookies = [gc0, wc0, ...(isSingleSeason ? [] : [gc1, wc1])];
 
 			// determine whether current cookies can be part of a combo
 			const isCombo = (
-				hasCookieBuff(includeEF, cookie0GC, cookie1GC, cookie0WC, cookie1WC)
-				|| gambler.hasBs
-				|| (includeEF && gambler.hasEf)
+				availableCookies.some((cookie) => (
+					cookie.name == "Building Special"
+					|| (includeEF && cookie.name == "Elder Frenzy")
+				))
+				|| gfd.hasBs
+				|| (includeEF && gfd.hasEf)
 			);
 			if (isCombo) comboIndexes.push(i);
 
 			// determine whether GFD can be skipped
 			const isSkip = (
-				(skipRA && gambler.type == 'Resurrect Abomination')
-				|| (skipSE && gambler.type == 'Spontaneous Edifice' && gambler.isWin)
-				|| (skipST && gambler.type == 'Stretch Time')
+				(skipRA && gfd.name == "Resurrect Abomination")
+				|| (skipSE && gfd.name == "Spontaneous Edifice" && gfd.isWin)
+				|| (skipST && gfd.name == "Stretch Time")
 			);
 			if (isSkip) skipIndexes.push(i);
 
 			// determine whether Sugar Lump can be get
-			const isSugar = [cookie0GC.type, cookie1GC.type, cookie0WC.type, cookie1WC.type].includes("Free Sugar Lump");
+			const isSugar = hasCookieEffect(availableCookies, "Free Sugar Lump");
 			if (isSugar) sugarIndexes.push(i);
 
 			// No Change, One Change cookie to display
-			const cookie0 = isFthofWin ? cookie0GC : cookie0WC;
-			const cookie1 = isFthofWin ? cookie1GC : cookie1WC;
+			const cookie0 = isFthofWin ? gc0 : wc0;
+			const cookie1 = isFthofWin ? gc1 : wc1;
 
 			// add good effect information about hidden GC/WC
 			let isOtherCookieNotable0 = false;
 			let isOtherCookieNotable1 = false;
 			if (isFthofWin) {
-				displayCookie.push(cookie0GC);
-				displayCookie.push(cookie1GC);
-				if (cookie0WC.type == "Elder Frenzy") {
-					cookie0GC.type += " (EF)";
-					cookie0GC.noteworthy = true;
+				if (wc0.name == "Elder Frenzy") {
+					gc0.name += " (EF)";
+					gc0.noteworthy = true;
 					isOtherCookieNotable0 = true;
 				}
-				if (cookie1WC.type == "Elder Frenzy") {
-					cookie1GC.type += " (EF)";
-					cookie1GC.noteworthy = true;
+				if (wc1.name == "Elder Frenzy") {
+					gc1.name += " (EF)";
+					gc1.noteworthy = true;
 					isOtherCookieNotable1 = true;
 				}
-				if (cookie0WC.type == "Free Sugar Lump") cookie0GC.type += " (Lump)";
-				if (cookie1WC.type == "Free Sugar Lump") cookie1GC.type += " (Lump)";
+				if (wc0.name == "Free Sugar Lump") gc0.name += " (Sugar)";
+				if (wc1.name == "Free Sugar Lump") gc1.name += " (Sugar)";
 			} else {
-				displayCookie.push(cookie0WC);
-				displayCookie.push(cookie1WC);
-				if (cookie0GC.type == "Building Special") {
-					cookie0WC.type += " (BS)";
-					cookie0WC.noteworthy = true;
+				if (gc0.name == "Building Special") {
+					wc0.name += " (BS)";
+					wc0.noteworthy = true;
 					isOtherCookieNotable0 = true;
 				}
-				if (cookie1GC.type == "Building Special") {
-					cookie1WC.type += " (BS)";
-					cookie1WC.noteworthy = true;
+				if (gc1.name == "Building Special") {
+					wc1.name += " (BS)";
+					wc1.noteworthy = true;
 					isOtherCookieNotable1 = true;
 				}
-				if (cookie0GC.type == "Free Sugar Lump") cookie0WC.type += " (Lump)";
-				if (cookie1GC.type == "Free Sugar Lump") cookie1WC.type += " (Lump)";
+				if (gc0.name == "Free Sugar Lump") wc0.name += " (Sugar)";
+				if (gc1.name == "Free Sugar Lump") wc1.name += " (Sugar)";
 			}
-
-			// push GFD result to displayCookie
-			displayCookie.push(gambler);
-
-			// push to array
-			cookies.push(cookie);
-			displayCookies.push(displayCookie);
 
 			// set to object and push to array
 			const grimoireResult = {
@@ -631,36 +620,33 @@ app.controller('myCtrl', function ($scope) {
 				firstRandomNumber: randomNumber,
 
 				isFthofWin,
-				cookie0, cookie0GC, cookie0WC, isOtherCookieNotable0,
-				cookie1, cookie1GC, cookie1WC, isOtherCookieNotable1,
+				cookie0, gc0, wc0, isOtherCookieNotable0,
+				cookie1, gc1, wc1, isOtherCookieNotable1,
 
-				gambler,
-				displayCookie,
+				gfd,
 				isCombo, isSkip, isSugar,
 			};
 			grimoireResults.push(grimoireResult);
 		}
 
 		// log
-		console.log("cookies:", cookies);
+		console.log("grimoireResults:", grimoireResults);
 		console.log("comboIndexes:", comboIndexes);
 		console.log("skipIndexes:", skipIndexes);
 		console.timeLog("updateCookies");
 
 		// find combos
-		for (let combo_length = minComboLength; combo_length <= maxComboLength; combo_length++) {
-			combos[combo_length] = findCombos(combo_length, maxSpread, comboIndexes, skipIndexes);
+		for (let comboLength = minComboLength; comboLength <= maxComboLength; comboLength++) {
+			combos[comboLength] = findCombos(comboLength, maxSpread, comboIndexes, skipIndexes);
 		}
 
 		console.log("Combos:", combos);
 		console.timeEnd("updateCookies");
 
 		// set to $scope
-		$scope.cookies             = cookies;
 		$scope.firstRandomNumbers  = firstRandomNumbers;
 		$scope.baseBackfireChance  = baseBackfireChance;
 		$scope.backfireChance      = fthofBackfireChance;
-		$scope.displayCookies      = displayCookies;
 		$scope.combos              = combos;
 		$scope.sugarIndexes        = sugarIndexes;
 		$scope.grimoireResults     = grimoireResults;
