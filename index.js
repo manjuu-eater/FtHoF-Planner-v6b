@@ -299,9 +299,6 @@ app.controller('myCtrl', function ($scope) {
 			// but this doesn't affect the result because choice is done.
 			//if (fthofResult.name == 'Cookie Storm Drop') Math.random();
 
-			// cookie is GC
-			fthofResult.wrath = false;
-
 		} else {
 			// choices of red cookie (L70)
 			choices.push('Clot', 'Ruin');
@@ -309,10 +306,10 @@ app.controller('myCtrl', function ($scope) {
 			if (Math.random() < 0.003) choices.push('Free Sugar Lump');
 			if (Math.random() < 0.1) choices = ['Blab'];
 			fthofResult.name = choose(choices);
-
-			// cookie is WC
-			fthofResult.wrath = true;
 		}
+
+		// set whether cookie is WC
+		fthofResult.wrath = !isWin;
 
 		// set description
 		const description = cookieEffectNameToDescription[fthofResult.name];
