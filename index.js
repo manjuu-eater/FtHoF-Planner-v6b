@@ -495,6 +495,23 @@ app.controller('myCtrl', function ($scope) {
 
 
 	/**
+	 * determine whether passed FtHoF results have one of passed effects
+	 *
+	 * @param {FthofResult[]} cookies array of FthofResults to see
+	 * @param {string[]} effectNames array of effect names
+	 * @returns {boolean} true if have
+	 */
+	const hasCookieEffect = (cookies, effectNames) => {
+		for (const cookie of cookies) {
+			for (const effectName of effectNames) {
+				if (cookie.type == effectName) return true;
+			}
+		}
+		return false;
+	};
+
+
+	/**
 	 * determine whether passed cookies may trigger any buffs
 	 *
 	 * @param {boolean} include_ef whether include Elder Fever
