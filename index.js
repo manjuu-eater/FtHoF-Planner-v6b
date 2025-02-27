@@ -515,7 +515,6 @@ app.controller("myCtrl", function ($scope) {
 		} = $scope;
 
 		// variables to set $scope.*
-		const cookies = [];
 		const firstRandomNumbers = [];
 		const baseBackfireChance = getBaseFailChance();
 		const fthofBackfireChance = getFthofFailChance(baseBackfireChance);
@@ -548,7 +547,6 @@ app.controller("myCtrl", function ($scope) {
 			const cookie0WC = castFtHoF(seed, currentTotalSpell, false, "WC");
 			const cookie1WC = castFtHoF(seed, currentTotalSpell, true, "WC");
 			const gfd = castGFD(seed, currentTotalSpell);
-			const cookie = [cookie0GC, cookie1GC, cookie0WC, cookie1WC, gfd];
 
 			// determine whether current cookies can be part of a combo
 			const isCombo = (
@@ -608,9 +606,6 @@ app.controller("myCtrl", function ($scope) {
 				if (cookie1GC.name == "Free Sugar Lump") cookie1WC.name += " (Lump)";
 			}
 
-			// push to array
-			cookies.push(cookie);
-
 			// set to object and push to array
 			const grimoireResult = {
 				num: i + 1,
@@ -627,7 +622,7 @@ app.controller("myCtrl", function ($scope) {
 		}
 
 		// log
-		console.log("cookies:", cookies);
+		console.log("grimoireResults:", grimoireResults);
 		console.log("comboIndexes:", comboIndexes);
 		console.log("skipIndexes:", skipIndexes);
 		console.timeLog("updateCookies");
@@ -641,7 +636,6 @@ app.controller("myCtrl", function ($scope) {
 		console.timeEnd("updateCookies");
 
 		// set to $scope
-		$scope.cookies             = cookies;
 		$scope.firstRandomNumbers  = firstRandomNumbers;
 		$scope.baseBackfireChance  = baseBackfireChance;
 		$scope.backfireChance      = fthofBackfireChance;
