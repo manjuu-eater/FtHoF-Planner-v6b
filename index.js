@@ -39,11 +39,11 @@ import {
  * @property {boolean} canSkip
  * @property {boolean} isWin
  * @property {FthofResult=} cookie0
- * @property {FthofResult=} cookie0GC
- * @property {FthofResult=} cookie0WC
+ * @property {FthofResult=} gc0
+ * @property {FthofResult=} wc0
  * @property {FthofResult=} cookie1
- * @property {FthofResult=} cookie1GC
- * @property {FthofResult=} cookie1WC
+ * @property {FthofResult=} gc1
+ * @property {FthofResult=} wc1
  * @property {number=} spontaneousEdificeRandomNumber
  */
 
@@ -433,20 +433,20 @@ app.controller("myCtrl", function ($scope) {
 		// set the result of child spells called by GFD
 		if (castSpell.name == "Force the Hand of Fate") {
 			// cast FtHoF, set to return object
-			const cookie0GC = castFtHoF(seed, spellsCastTotal + 1, false, "GC");
-			const cookie1GC = castFtHoF(seed, spellsCastTotal + 1, true, "GC");
-			const cookie0WC = castFtHoF(seed, spellsCastTotal + 1, false, "WC");
-			const cookie1WC = castFtHoF(seed, spellsCastTotal + 1, true, "WC");
-			const cookie0 = isChildSpellWin ? cookie0GC : cookie0WC;
-			const cookie1 = isChildSpellWin ? cookie1GC : cookie1WC;
+			const gc0 = castFtHoF(seed, spellsCastTotal + 1, false, "GC");
+			const gc1 = castFtHoF(seed, spellsCastTotal + 1, true, "GC");
+			const wc0 = castFtHoF(seed, spellsCastTotal + 1, false, "WC");
+			const wc1 = castFtHoF(seed, spellsCastTotal + 1, true, "WC");
+			const cookie0 = isChildSpellWin ? gc0 : wc0;
+			const cookie1 = isChildSpellWin ? gc1 : wc1;
 
 			// set to return object
 			gfdResult.cookie0 = cookie0;
 			gfdResult.cookie1 = cookie1;
-			gfdResult.cookie0GC = cookie0GC;
-			gfdResult.cookie0WC = cookie0WC;
-			gfdResult.cookie1GC = cookie1GC;
-			gfdResult.cookie1WC = cookie1WC;
+			gfdResult.gc0 = gc0;
+			gfdResult.wc0 = wc0;
+			gfdResult.gc1 = gc1;
+			gfdResult.wc1 = wc1;
 
 			// determine child FtHoF result can be a part of combo
 			const availableCookies = [cookie0, ...(isSingleSeason ? [] : [cookie1])];
@@ -547,17 +547,14 @@ app.controller("myCtrl", function ($scope) {
 			const isFthofWin = randomNumber < 1 - fthofBackfireChance;
 
 			// get FtHoF results (both success and backfire)
-			const cookie0GC = castFtHoF(seed, currentTotalSpell, false, "GC");
-			const cookie1GC = castFtHoF(seed, currentTotalSpell, true, "GC");
-			const cookie0WC = castFtHoF(seed, currentTotalSpell, false, "WC");
-			const cookie1WC = castFtHoF(seed, currentTotalSpell, true, "WC");
+			const gc0 = castFtHoF(seed, currentTotalSpell, false, "GC");
+			const gc1 = castFtHoF(seed, currentTotalSpell, true, "GC");
+			const wc0 = castFtHoF(seed, currentTotalSpell, false, "WC");
+			const wc1 = castFtHoF(seed, currentTotalSpell, true, "WC");
 			const gfd = castGFD(seed, currentTotalSpell);
 
 			// cookies that user can cast (reduce cookie1 for single season option)
-			const availableCookies = [
-				cookie0GC, cookie0WC,
-				...(isSingleSeason ? [] : [cookie1GC, cookie1WC]),
-			];
+			const availableCookies = [gc0, wc0, ...(isSingleSeason ? [] : [gc1, wc1])];
 
 			// determine whether current cookies can be part of a combo
 			const isCombo = (
@@ -583,38 +580,38 @@ app.controller("myCtrl", function ($scope) {
 			if (isSugar) sugarIndexes.push(i);
 
 			// No Change, One Change cookie to display
-			const cookie0 = isFthofWin ? cookie0GC : cookie0WC;
-			const cookie1 = isFthofWin ? cookie1GC : cookie1WC;
+			const cookie0 = isFthofWin ? gc0 : wc0;
+			const cookie1 = isFthofWin ? gc1 : wc1;
 
 			// add good effect information about hidden GC/WC
 			let isOtherCookieNotable0 = false;
 			let isOtherCookieNotable1 = false;
 			if (isFthofWin) {
-				if (cookie0WC.name == "Elder Frenzy") {
-					cookie0GC.name += " (EF)";
-					cookie0GC.noteworthy = true;
+				if (wc0.name == "Elder Frenzy") {
+					gc0.name += " (EF)";
+					gc0.noteworthy = true;
 					isOtherCookieNotable0 = true;
 				}
-				if (cookie1WC.name == "Elder Frenzy") {
-					cookie1GC.name += " (EF)";
-					cookie1GC.noteworthy = true;
+				if (wc1.name == "Elder Frenzy") {
+					gc1.name += " (EF)";
+					gc1.noteworthy = true;
 					isOtherCookieNotable1 = true;
 				}
-				if (cookie0WC.name == "Free Sugar Lump") cookie0GC.name += " (Sugar)";
-				if (cookie1WC.name == "Free Sugar Lump") cookie1GC.name += " (Sugar)";
+				if (wc0.name == "Free Sugar Lump") gc0.name += " (Sugar)";
+				if (wc1.name == "Free Sugar Lump") gc1.name += " (Sugar)";
 			} else {
-				if (cookie0GC.name == "Building Special") {
-					cookie0WC.name += " (BS)";
-					cookie0WC.noteworthy = true;
+				if (gc0.name == "Building Special") {
+					wc0.name += " (BS)";
+					wc0.noteworthy = true;
 					isOtherCookieNotable0 = true;
 				}
-				if (cookie1GC.name == "Building Special") {
-					cookie1WC.name += " (BS)";
-					cookie1WC.noteworthy = true;
+				if (gc1.name == "Building Special") {
+					wc1.name += " (BS)";
+					wc1.noteworthy = true;
 					isOtherCookieNotable1 = true;
 				}
-				if (cookie0GC.name == "Free Sugar Lump") cookie0WC.name += " (Sugar)";
-				if (cookie1GC.name == "Free Sugar Lump") cookie1WC.name += " (Sugar)";
+				if (gc0.name == "Free Sugar Lump") wc0.name += " (Sugar)";
+				if (gc1.name == "Free Sugar Lump") wc1.name += " (Sugar)";
 			}
 
 			// set to object and push to array
@@ -623,8 +620,8 @@ app.controller("myCtrl", function ($scope) {
 				firstRandomNumber: randomNumber,
 
 				isFthofWin,
-				cookie0, cookie0GC, cookie0WC, isOtherCookieNotable0,
-				cookie1, cookie1GC, cookie1WC, isOtherCookieNotable1,
+				cookie0, gc0, wc0, isOtherCookieNotable0,
+				cookie1, gc1, wc1, isOtherCookieNotable1,
 
 				gfd,
 				isCombo, isSkip, isSugar,
