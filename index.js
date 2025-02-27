@@ -102,7 +102,7 @@ app.controller("myCtrl", function ($scope) {
 	$scope.ascensionMode = 0;
 	$scope.spellsCastTotal = 0;
 	$scope.spellsCast = 0;
-	$scope.dragonflight = false;
+	$scope.buffDF = false;
 	$scope.auraSI = false;
 	$scope.buffDI = false;
 	$scope.debuffDI = false;
@@ -289,7 +289,7 @@ app.controller("myCtrl", function ($scope) {
 		if (isWin) {
 			// choices of golden cookie (L52)
 			choices.push("Frenzy", "Lucky");
-			if (!$scope.dragonflight) choices.push("Click Frenzy");
+			if (!$scope.buffDF) choices.push("Click Frenzy");
 			if (Math.random() < 0.1) choices.push("Cookie Storm", "Cookie Storm", "Blab");
 			if (Math.random() < 0.25) choices.push("Building Special");  // Game.BuildingsOwned>=10 is ignored
 			if (Math.random() < 0.15) choices = ["Cookie Storm Drop"];
