@@ -285,7 +285,7 @@
 							'highlight combo': result.cookie0.noteworthy,
 							'highlight notable': result.isOtherCookieNotable0,
 						}">
-							{{result.cookie0.type}}
+							{{result.cookie0.name}}
 						</div>
 					</div></td>
 
@@ -297,7 +297,7 @@
 							'highlight combo': result.cookie1.noteworthy,
 							'highlight notable': result.isOtherCookieNotable1,
 						}">
-							{{result.cookie1.type}}
+							{{result.cookie1.name}}
 						</div>
 					</div></td>
 
@@ -310,8 +310,8 @@
 						<div ng-class="{
 							'highlight combo': result.gambler.canCombo,
 							'highlight skip':  result.gambler.canSkip,
-						}" title="{{result.gambler.cookie0.type + '; ' + result.gambler.cookie1.type}}">
-							{{result.gambler ? result.gambler.type : "Blank"}}
+						}" title="{{result.gambler.cookie0.name + '; ' + result.gambler.cookie1.name}}">
+							{{result.gambler ? result.gambler.name : "Blank"}}
 						</div>
 					</div></td>
 				</tr>

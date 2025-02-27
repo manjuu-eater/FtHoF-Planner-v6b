@@ -24,14 +24,14 @@ import {
  */
 /**
  * @typedef {object} FthofResult
- * @property {string} type
+ * @property {string} name
  * @property {boolean} wrath
  * @property {string} description
  * @property {boolean} noteworthy
  */
 /**
  * @typedef {object} GfdResult
- * @property {string} type
+ * @property {string} name
  * @property {string} imageUrl
  * @property {boolean} hasBs
  * @property {boolean} hasEf
@@ -293,11 +293,11 @@ app.controller('myCtrl', function ($scope) {
 			if (Math.random() < 0.25) choices.push('Building Special');  // Game.BuildingsOwned>=10 is ignored
 			if (Math.random() < 0.15) choices = ['Cookie Storm Drop'];
 			if (Math.random() < 0.0001) choices.push('Free Sugar Lump');
-			fthofResult.type = choose(choices);
+			fthofResult.name = choose(choices);
 
 			// There is an additional Math.random() in L62,
 			// but this doesn't affect the result because choice is done.
-			//if (cookie.type == 'Cookie Storm Drop') Math.random();
+			//if (fthofResult.name == 'Cookie Storm Drop') Math.random();
 
 			// cookie is GC
 			fthofResult.wrath = false;
@@ -308,21 +308,21 @@ app.controller('myCtrl', function ($scope) {
 			if (Math.random() < 0.1) choices.push('Cursed Finger', 'Elder Frenzy');
 			if (Math.random() < 0.003) choices.push('Free Sugar Lump');
 			if (Math.random() < 0.1) choices = ['Blab'];
-			fthofResult.type = choose(choices);
+			fthofResult.name = choose(choices);
 
 			// cookie is WC
 			fthofResult.wrath = true;
 		}
 
 		// set description
-		const description = cookieEffectNameToDescription[fthofResult.type];
-		if (!description) console.error("No description in dictionary: " + fthofResult.type);
+		const description = cookieEffectNameToDescription[fthofResult.name];
+		if (!description) console.error("No description in dictionary: " + fthofResult.name);
 		fthofResult.description = description;
 
 		// add noteworthy info
 		fthofResult.noteworthy = false;
-		if (fthofResult.type == 'Building Special') fthofResult.noteworthy = true;
-		if (fthofResult.type == 'Elder Frenzy') fthofResult.noteworthy = true;
+		if (fthofResult.name == 'Building Special') fthofResult.noteworthy = true;
+		if (fthofResult.name == 'Elder Frenzy') fthofResult.noteworthy = true;
 
 		// return FtHoF cast result
 		return fthofResult;
@@ -414,7 +414,7 @@ app.controller('myCtrl', function ($scope) {
 
 		/** return object  @type {GfdResult} */
 		const gfdResult = {};
-		gfdResult.type = castSpell.name;
+		gfdResult.name = castSpell.name;
 		gfdResult.imageUrl = spellNameToIconUrl[castSpell.name];
 		gfdResult.hasBs = false;
 		gfdResult.hasEf = false;
@@ -452,8 +452,8 @@ app.controller('myCtrl', function ($scope) {
 			// determine child FtHoF result can be a part of combo
 			if (isChildSpellWin) {
 				const hasBs = (
-					gfdResult.cookie0.type == "Building Special"
-					|| gfdResult.cookie1.type == "Building Special"
+					gfdResult.cookie0.name == "Building Special"
+					|| gfdResult.cookie1.name == "Building Special"
 				);
 				if (hasBs) {
 					gfdResult.hasBs = true;
@@ -461,8 +461,8 @@ app.controller('myCtrl', function ($scope) {
 				}
 			} else {
 				const hasEf = (
-					gfdResult.cookie0.type == "Elder Frenzy"
-					|| gfdResult.cookie1.type == "Elder Frenzy"
+					gfdResult.cookie0.name == "Elder Frenzy"
+					|| gfdResult.cookie1.name == "Elder Frenzy"
 				);
 				if (hasEf) {
 					gfdResult.hasEf = true;
@@ -504,7 +504,7 @@ app.controller('myCtrl', function ($scope) {
 	const hasCookieEffect = (cookies, effectNames) => {
 		for (const cookie of cookies) {
 			for (const effectName of effectNames) {
-				if (cookie.type == effectName) return true;
+				if (cookie.name == effectName) return true;
 			}
 		}
 		return false;
@@ -520,7 +520,7 @@ app.controller('myCtrl', function ($scope) {
 	 */
 	const hasCookieBuff = (include_ef, ...cookies) => {
 		return cookies.some((cookie) => {
-			return cookie.type == 'Building Special' || (include_ef && cookie.type == 'Elder Frenzy');
+			return cookie.name == 'Building Special' || (include_ef && cookie.name == 'Elder Frenzy');
 		});
 	};
 
@@ -586,14 +586,14 @@ app.controller('myCtrl', function ($scope) {
 
 			// determine whether GFD can be skipped
 			const isSkip = (
-				(skipRA && gambler.type == 'Resurrect Abomination')
-				|| (skipSE && gambler.type == 'Spontaneous Edifice' && gambler.isWin)
-				|| (skipST && gambler.type == 'Stretch Time')
+				(skipRA && gambler.name == 'Resurrect Abomination')
+				|| (skipSE && gambler.name == 'Spontaneous Edifice' && gambler.isWin)
+				|| (skipST && gambler.name == 'Stretch Time')
 			);
 			if (isSkip) skipIndexes.push(i);
 
 			// determine whether Sugar Lump can be get
-			const isSugar = [cookie0GC.type, cookie1GC.type, cookie0WC.type, cookie1WC.type].includes("Free Sugar Lump");
+			const isSugar = [cookie0GC.name, cookie1GC.name, cookie0WC.name, cookie1WC.name].includes("Free Sugar Lump");
 			if (isSugar) sugarIndexes.push(i);
 
 			// No Change, One Change cookie to display
@@ -606,33 +606,33 @@ app.controller('myCtrl', function ($scope) {
 			if (isFthofWin) {
 				displayCookie.push(cookie0GC);
 				displayCookie.push(cookie1GC);
-				if (cookie0WC.type == "Elder Frenzy") {
-					cookie0GC.type += " (EF)";
+				if (cookie0WC.name == "Elder Frenzy") {
+					cookie0GC.name += " (EF)";
 					cookie0GC.noteworthy = true;
 					isOtherCookieNotable0 = true;
 				}
-				if (cookie1WC.type == "Elder Frenzy") {
-					cookie1GC.type += " (EF)";
+				if (cookie1WC.name == "Elder Frenzy") {
+					cookie1GC.name += " (EF)";
 					cookie1GC.noteworthy = true;
 					isOtherCookieNotable1 = true;
 				}
-				if (cookie0WC.type == "Free Sugar Lump") cookie0GC.type += " (Lump)";
-				if (cookie1WC.type == "Free Sugar Lump") cookie1GC.type += " (Lump)";
+				if (cookie0WC.name == "Free Sugar Lump") cookie0GC.name += " (Lump)";
+				if (cookie1WC.name == "Free Sugar Lump") cookie1GC.name += " (Lump)";
 			} else {
 				displayCookie.push(cookie0WC);
 				displayCookie.push(cookie1WC);
-				if (cookie0GC.type == "Building Special") {
-					cookie0WC.type += " (BS)";
+				if (cookie0GC.name == "Building Special") {
+					cookie0WC.name += " (BS)";
 					cookie0WC.noteworthy = true;
 					isOtherCookieNotable0 = true;
 				}
-				if (cookie1GC.type == "Building Special") {
-					cookie1WC.type += " (BS)";
+				if (cookie1GC.name == "Building Special") {
+					cookie1WC.name += " (BS)";
 					cookie1WC.noteworthy = true;
 					isOtherCookieNotable1 = true;
 				}
-				if (cookie0GC.type == "Free Sugar Lump") cookie0WC.type += " (Lump)";
-				if (cookie1GC.type == "Free Sugar Lump") cookie1WC.type += " (Lump)";
+				if (cookie0GC.name == "Free Sugar Lump") cookie0WC.name += " (Lump)";
+				if (cookie1GC.name == "Free Sugar Lump") cookie1WC.name += " (Lump)";
 			}
 
 			// push GFD result to displayCookie
