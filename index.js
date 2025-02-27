@@ -281,7 +281,7 @@ app.controller('myCtrl', function ($scope) {
 		 */
 		let choices = [];
 
-		/** FtHoF cast result */
+		/** FtHoF cast result  @type {FthofResult} */
 		const fthofResult = {};
 
 		// choose cookie effect
