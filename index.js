@@ -589,8 +589,8 @@ app.controller("myCtrl", function ($scope) {
 					cookie1GC.noteworthy = true;
 					isOtherCookieNotable1 = true;
 				}
-				if (cookie0WC.name == "Free Sugar Lump") cookie0GC.name += " (Lump)";
-				if (cookie1WC.name == "Free Sugar Lump") cookie1GC.name += " (Lump)";
+				if (cookie0WC.name == "Free Sugar Lump") cookie0GC.name += " (Sugar)";
+				if (cookie1WC.name == "Free Sugar Lump") cookie1GC.name += " (Sugar)";
 			} else {
 				if (cookie0GC.name == "Building Special") {
 					cookie0WC.name += " (BS)";
@@ -602,8 +602,8 @@ app.controller("myCtrl", function ($scope) {
 					cookie1WC.noteworthy = true;
 					isOtherCookieNotable1 = true;
 				}
-				if (cookie0GC.name == "Free Sugar Lump") cookie0WC.name += " (Lump)";
-				if (cookie1GC.name == "Free Sugar Lump") cookie1WC.name += " (Lump)";
+				if (cookie0GC.name == "Free Sugar Lump") cookie0WC.name += " (Sugar)";
+				if (cookie1GC.name == "Free Sugar Lump") cookie1WC.name += " (Sugar)";
 			}
 
 			// set to object and push to array
