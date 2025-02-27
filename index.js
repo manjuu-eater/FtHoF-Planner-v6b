@@ -448,19 +448,13 @@ app.controller("myCtrl", function ($scope) {
 
 			// determine child FtHoF result can be a part of combo
 			if (isChildSpellWin) {
-				const hasBs = (
-					gfdResult.cookie0.name == "Building Special"
-					|| gfdResult.cookie1.name == "Building Special"
-				);
+				const hasBs = hasCookieEffect([cookie0, cookie1], "Building Special");
 				if (hasBs) {
 					gfdResult.hasBs = true;
 					gfdResult.canCombo = true;
 				}
 			} else {
-				const hasEf = (
-					gfdResult.cookie0.name == "Elder Frenzy"
-					|| gfdResult.cookie1.name == "Elder Frenzy"
-				);
+				const hasEf = hasCookieEffect([cookie0, cookie1], "Elder Frenzy");
 				if (hasEf) {
 					gfdResult.hasEf = true;
 					gfdResult.canCombo = true;
@@ -591,7 +585,7 @@ app.controller("myCtrl", function ($scope) {
 			if (isSkip) skipIndexes.push(i);
 
 			// determine whether Sugar Lump can be get
-			const isSugar = [cookie0GC.name, cookie1GC.name, cookie0WC.name, cookie1WC.name].includes("Free Sugar Lump");
+			const isSugar = hasCookieEffect([cookie0GC, cookie1GC, cookie0WC, cookie1WC], "Free Sugar Lump");
 			if (isSugar) sugarIndexes.push(i);
 
 			// No Change, One Change cookie to display
