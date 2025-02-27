@@ -112,6 +112,7 @@ app.controller("myCtrl", function ($scope) {
 	$scope.maxSpread = 2;
 	$scope.saveString = "";
 	$scope.lookahead = 200;
+	$scope.isSingleSeason = false;
 
 	// fill the save code input if previous save code exists in LocalStorage
 	const previousSaveCode = window.localStorage.getItem("fthof_save_code");
@@ -390,6 +391,9 @@ app.controller("myCtrl", function ($scope) {
 	 * @returns {GfdResult} GFD cast result
 	 */
 	const castGFD = (seed, spellsCastTotal) => {
+		// single season option
+		const isSingleSeason = $scope.isSingleSeason;
+
 		// set seed for GFD spell selection (L312)
 		Math_seedrandom(seed + "/" + spellsCastTotal);
 
@@ -445,14 +449,15 @@ app.controller("myCtrl", function ($scope) {
 			gfdResult.cookie1WC = cookie1WC;
 
 			// determine child FtHoF result can be a part of combo
+			const availableCookies = [cookie0, ...(isSingleSeason ? [] : [cookie1])];
 			if (isChildSpellWin) {
-				const hasBs = hasCookieEffect([cookie0, cookie1], "Building Special");
+				const hasBs = hasCookieEffect(availableCookies, "Building Special");
 				if (hasBs) {
 					gfdResult.hasBs = true;
 					gfdResult.canCombo = true;
 				}
 			} else {
-				const hasEf = hasCookieEffect([cookie0, cookie1], "Elder Frenzy");
+				const hasEf = hasCookieEffect(availableCookies, "Elder Frenzy");
 				if (hasEf) {
 					gfdResult.hasEf = true;
 					gfdResult.canCombo = true;
@@ -510,8 +515,8 @@ app.controller("myCtrl", function ($scope) {
 			lookahead,
 			minComboLength, maxComboLength, maxSpread,
 			includeEF, skipRA, skipSE, skipST,
-			seed,
-			spellsCastTotal,
+			seed, spellsCastTotal,
+			isSingleSeason,
 		} = $scope;
 
 		// variables to set $scope.*
@@ -548,9 +553,15 @@ app.controller("myCtrl", function ($scope) {
 			const cookie1WC = castFtHoF(seed, currentTotalSpell, true, "WC");
 			const gfd = castGFD(seed, currentTotalSpell);
 
+			// cookies that user can cast (reduce cookie1 for single season option)
+			const availableCookies = [
+				cookie0GC, cookie0WC,
+				...(isSingleSeason ? [] : [cookie1GC, cookie1WC]),
+			];
+
 			// determine whether current cookies can be part of a combo
 			const isCombo = (
-				[cookie0GC, cookie1GC, cookie0WC, cookie1WC].some((cookie) => (
+				availableCookies.some((cookie) => (
 					cookie.name == "Building Special"
 					|| (includeEF && cookie.name == "Elder Frenzy")
 				))
@@ -568,7 +579,7 @@ app.controller("myCtrl", function ($scope) {
 			if (isSkip) skipIndexes.push(i);
 
 			// determine whether Sugar Lump can be get
-			const isSugar = hasCookieEffect([cookie0GC, cookie1GC, cookie0WC, cookie1WC], "Free Sugar Lump");
+			const isSugar = hasCookieEffect(availableCookies, "Free Sugar Lump");
 			if (isSugar) sugarIndexes.push(i);
 
 			// No Change, One Change cookie to display
