@@ -199,7 +199,7 @@
 
 
 		<!-- Options: FtHoF Settings -->
-		<md-checkbox ng-model="singleSeason">
+		<md-checkbox ng-model="isSingleSeason">
 			Can't Switch Seasons
 		</md-checkbox>
 
@@ -221,7 +221,7 @@
 				<col class="spell">
 				<col class="random">
 				<col class="fthof">
-				<col class="fthof" ng-if="!singleSeason">
+				<col class="fthof" ng-if="!isSingleSeason">
 				<col class="gfd">
 			</colgroup>
 			<thead>
@@ -229,7 +229,7 @@
 					<th>Spell #</th>
 					<th>Random <br>Number</th>
 					<th>No Change</th>
-					<th ng-if="!singleSeason">One Change</th>
+					<th ng-if="!isSingleSeason">One Change</th>
 					<th>Gambler's Dream</th>
 				</tr>
 				<tr>
@@ -245,7 +245,7 @@
 						Season is <b>NOT</b><br>
 						Valentines or Easter.
 					</td>
-					<td ng-if="!singleSeason">
+					<td ng-if="!isSingleSeason">
 						Season is<br>
 						Valentines or Easter.
 					</td>
@@ -290,7 +290,7 @@
 					</div></td>
 
 					<!-- One Change -->
-					<td ng-if="!singleSeason"><div>
+					<td ng-if="!isSingleSeason"><div>
 						<img ng-if= "result.isFthofWin" ng-src="img/goldCookie.png">
 						<img ng-if="!result.isFthofWin" ng-src="img/wrathCookie.png">
 						<div ng-class="{
