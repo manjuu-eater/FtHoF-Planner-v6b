@@ -276,6 +276,12 @@ app.controller("myCtrl", function ($scope) {
 
 		// initializing GC/WC finished, back to spell.win() or spell.fail()
 
+		// results of Math.random()
+		const random1 = Math.random();
+		const random2 = Math.random();
+		const random3 = Math.random();
+		const random4 = Math.random();
+
 		/**
 		 * choices of GC/WC effect name
 		 * @type {string[]}
@@ -290,10 +296,10 @@ app.controller("myCtrl", function ($scope) {
 			// choices of golden cookie (L52)
 			choices.push("Frenzy", "Lucky");
 			if (!$scope.buffDF) choices.push("Click Frenzy");
-			if (Math.random() < 0.1) choices.push("Cookie Storm", "Cookie Storm", "Blab");
-			if (Math.random() < 0.25) choices.push("Building Special");  // Game.BuildingsOwned>=10 is ignored
-			if (Math.random() < 0.15) choices = ["Cookie Storm Drop"];
-			if (Math.random() < 0.0001) choices.push("Free Sugar Lump");
+			if (random1 < 0.1) choices.push("Cookie Storm", "Cookie Storm", "Blab");
+			if (random2 < 0.25) choices.push("Building Special");  // Game.BuildingsOwned>=10 is ignored
+			if (random3 < 0.15) choices = ["Cookie Storm Drop"];
+			if (random4 < 0.0001) choices.push("Free Sugar Lump");
 			fthofResult.name = choose(choices);
 
 			// There is an additional Math.random() in L62,
@@ -303,9 +309,9 @@ app.controller("myCtrl", function ($scope) {
 		} else {
 			// choices of red cookie (L70)
 			choices.push("Clot", "Ruin");
-			if (Math.random() < 0.1) choices.push("Cursed Finger", "Elder Frenzy");
-			if (Math.random() < 0.003) choices.push("Free Sugar Lump");
-			if (Math.random() < 0.1) choices = ["Blab"];
+			if (random1 < 0.1) choices.push("Cursed Finger", "Elder Frenzy");
+			if (random2 < 0.003) choices.push("Free Sugar Lump");
+			if (random3 < 0.1) choices = ["Blab"];
 			fthofResult.name = choose(choices);
 		}
 
