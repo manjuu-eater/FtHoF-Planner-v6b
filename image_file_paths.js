@@ -5,10 +5,10 @@
 
 
 /** image url of GC */
-export const gcImageUrl = "img/goldCookie.png";
+export const gcImageUrl = "./img/goldCookie.png";
 
 /** image url of GC */
-export const wcImageUrl = "img/wrathCookie.png";
+export const wcImageUrl = "./img/wrathCookie.png";
 
 
 /**
@@ -18,7 +18,7 @@ export const wcImageUrl = "img/wrathCookie.png";
  * @returns image url
  */
 export const heartImageUrl = (index) => {
-    return `img/hearts/${index}.png`;
+    return `./img/hearts/${index}.png`;
 };
 
 
@@ -31,7 +31,7 @@ export const heartImageUrl = (index) => {
  */
 export const bunnyImageUrl = (isWrath, index) => {
     const isWrathNum = isWrath ? "1" : "0";
-    return `img/bunnies/${isWrathNum}${index}.png`;
+    return `./img/bunnies/${isWrathNum}${index}.png`;
 };
 
 
