@@ -10,8 +10,11 @@
 import {
 	Math_seedrandom, choose, M_spells,
 	cookieEffectNameToDescription,
-	spellNameToIconUrl,
 } from "./game_related_data.js";
+
+import {
+	spellNameToIconUrl,
+} from "./image_file_paths.js";
 
 
 // type definition
