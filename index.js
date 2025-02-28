@@ -1,7 +1,7 @@
 /// <reference path="./lib/base64.js" />
 // @ts-check
 /**
- * FtHoF Planner v6
+ * FtHoF Planner v6b
  * index.js
  */
 

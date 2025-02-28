@@ -1,4 +1,4 @@
-# FtHoF-Planner-v6
+# FtHoF-Planner-v6b
 
 FtHoF Planner for Cookie Clicker by Orteil
 
