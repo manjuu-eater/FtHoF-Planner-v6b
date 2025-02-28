@@ -81,15 +81,16 @@ div.highlight {
 
 /* GFD image */
 img.gfd {
-    border: solid 4px transparent;
+    border: solid 1px transparent;
     border-radius: 4px;
+    padding: 4px;
 }
 img.gfd.success {
     border-color: gold;
-    background-color: gold;
+    background-color: khaki;
 }
 img.gfd.backfire {
-    border-color: orangered;
+    border-color: chocolate;
     background-color: orangered;
 }
 
