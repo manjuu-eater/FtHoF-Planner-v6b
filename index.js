@@ -10,6 +10,7 @@
 import {
 	Math_seedrandom, choose, M_spells,
 	cookieEffectNameToDescription,
+	chooseWith,
 } from "./game_related_data.js";
 
 import {
@@ -304,6 +305,23 @@ app.controller("myCtrl", function ($scope) {
 			if (random3 < 0.15) choices = ["Cookie Storm Drop"];
 			if (random4 < 0.0001) choices.push("Free Sugar Lump");
 			fthofResult.name = choose(choices);
+
+			// do something if there is a chance to win Free Sugar Lump
+			if (random3 < 0.0001 && random4 >= 0.5) {
+				let choicesIf = [];
+				choicesIf.push("Frenzy", "Lucky");
+				if (!$scope.buffDF) choicesIf.push("Click Frenzy");
+				if (random1 < 0.1) choicesIf.push("Cookie Storm", "Cookie Storm", "Blab");
+				//if (random2 < 0.25) choicesIf.push("Building Special");  // can omit with few buildings
+				if (random2 < 0.15) choicesIf = ["Cookie Storm Drop"];
+				if (random3 < 0.0001) choicesIf.push("Free Sugar Lump");
+				const chosen = chooseWith(choicesIf, random4);
+				if (chosen == "Free Sugar Lump") {
+					// only logging for now
+					console.log("Free Sugar Lump with few building!!");
+					console.log("seedrandom: " + (seed + "/" + spellsCastTotal));
+				}
+			}
 
 			// There is an additional Math.random() in L62,
 			// but this doesn't affect the result because choice is done.
