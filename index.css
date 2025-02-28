@@ -2,7 +2,7 @@ html, body {
     background-color: white;
 }
 
-input {
+input, md-radio-group {
     margin: 8px 0;
 }
 input.w2 {
