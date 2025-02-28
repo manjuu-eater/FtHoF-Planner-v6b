@@ -118,7 +118,7 @@ app.controller("myCtrl", function ($scope) {
 	$scope.maxSpread = 2;
 	$scope.saveString = "";
 	$scope.lookahead = 200;
-	$scope.season = "normal";
+	$scope.season = "cookie";
 
 	// fill the save code input if previous save code exists in LocalStorage
 	const previousSaveCode = window.localStorage.getItem("fthof_save_code");
