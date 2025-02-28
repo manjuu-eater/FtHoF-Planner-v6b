@@ -195,6 +195,15 @@ export const spellNames = Object.values(M_spells).map(spell => spell.name);
 
 
 /**
+ * Spell names that can be cast with GFD.
+ * (omitted GFD itself)
+ *
+ * @type {string[]}
+ */
+export const gfdSpellNames = spellNames.filter(name => name != "Gambler's Fever Dream");
+
+
+/**
  * cookie effect description dictionary
  *
  * @type { { [key: string]: string } }
