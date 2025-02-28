@@ -41,6 +41,17 @@ export const choose = (arr) => arr[Math.floor(Math.random() * arr.length)];
 
 
 /**
+ * function choose() that can specify Math.random() result manually
+ *
+ * @template T
+ * @param {T[]} arr
+ * @param {number} Math_random random number of Math.random()
+ * @returns {T} chosen item
+ */
+export const chooseWith = (arr, Math_random) => arr[Math.floor(Math_random * arr.length)];
+
+
+/**
  * M.spells from minigameGrimoire.js
  * (not same as v2.052)
  *
