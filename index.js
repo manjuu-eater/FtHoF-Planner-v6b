@@ -10,8 +10,14 @@
 import {
 	Math_seedrandom, choose, M_spells,
 	cookieEffectNameToDescription,
-	spellNameToIconUrl,
+	chooseWith,
 } from "./game_related_data.js";
+
+import {
+	gcImageUrl, wcImageUrl,
+	heartImageUrl, bunnyImageUrl,
+	spellNameToIconUrl,
+} from "./image_file_paths.js";
 
 
 // type definition
@@ -28,6 +34,7 @@ import {
  * @property {boolean} wrath
  * @property {string} description
  * @property {boolean} noteworthy
+ * @property {string} image
  */
 /**
  * @typedef {object} GfdResult
@@ -102,7 +109,7 @@ app.controller("myCtrl", function ($scope) {
 	$scope.ascensionMode = 0;
 	$scope.spellsCastTotal = 0;
 	$scope.spellsCast = 0;
-	$scope.dragonflight = false;
+	$scope.buffDF = false;
 	$scope.auraSI = false;
 	$scope.buffDI = false;
 	$scope.debuffDI = false;
@@ -112,7 +119,7 @@ app.controller("myCtrl", function ($scope) {
 	$scope.maxSpread = 2;
 	$scope.saveString = "";
 	$scope.lookahead = 200;
-	$scope.isSingleSeason = false;
+	$scope.season = "cookie";
 
 	// fill the save code input if previous save code exists in LocalStorage
 	const previousSaveCode = window.localStorage.getItem("fthof_save_code");
@@ -267,14 +274,34 @@ app.controller("myCtrl", function ($scope) {
 		// this call is no longer active: L885
 		//if (chime && $scope.ascensionMode != 1) Math.random();
 
-		// season is valentines or easter (main.js L5343, main.js L5353)
-		if (isOneChange) Math.random();
+		// determine cookie image (L5329)
+		// if season is valentines or easter, Math.random() is called (main.js L5343, main.js L5353)
+		let imageUrl = isWin ? gcImageUrl : wcImageUrl;
+		if (isOneChange) {
+			const random = Math.random();
+
+			// determine cookie image
+			const season = $scope.season;
+			if (season == "valentines") {
+				const imageIndex = Math.floor(random * 8);
+				imageUrl = heartImageUrl(imageIndex);
+			} else if (season == "easter") {
+				const imageIndex = Math.floor(random * 4);
+				imageUrl = bunnyImageUrl(!isWin, imageIndex);
+			}
+		}
 
 		// determine X and Y position to spawn (main.js L5358, main.js L5359)
 		Math.random();
 		Math.random();
 
 		// initializing GC/WC finished, back to spell.win() or spell.fail()
+
+		// results of Math.random()
+		const random1 = Math.random();
+		const random2 = Math.random();
+		const random3 = Math.random();
+		const random4 = Math.random();
 
 		/**
 		 * choices of GC/WC effect name
@@ -289,12 +316,29 @@ app.controller("myCtrl", function ($scope) {
 		if (isWin) {
 			// choices of golden cookie (L52)
 			choices.push("Frenzy", "Lucky");
-			if (!$scope.dragonflight) choices.push("Click Frenzy");
-			if (Math.random() < 0.1) choices.push("Cookie Storm", "Cookie Storm", "Blab");
-			if (Math.random() < 0.25) choices.push("Building Special");  // Game.BuildingsOwned>=10 is ignored
-			if (Math.random() < 0.15) choices = ["Cookie Storm Drop"];
-			if (Math.random() < 0.0001) choices.push("Free Sugar Lump");
+			if (!$scope.buffDF) choices.push("Click Frenzy");
+			if (random1 < 0.1) choices.push("Cookie Storm", "Cookie Storm", "Blab");
+			if (random2 < 0.25) choices.push("Building Special");  // Game.BuildingsOwned>=10 is ignored
+			if (random3 < 0.15) choices = ["Cookie Storm Drop"];
+			if (random4 < 0.0001) choices.push("Free Sugar Lump");
 			fthofResult.name = choose(choices);
+
+			// do something if there is a chance to win Free Sugar Lump
+			if (random3 < 0.0001 && random4 >= 0.5) {
+				let choicesIf = [];
+				choicesIf.push("Frenzy", "Lucky");
+				if (!$scope.buffDF) choicesIf.push("Click Frenzy");
+				if (random1 < 0.1) choicesIf.push("Cookie Storm", "Cookie Storm", "Blab");
+				//if (random2 < 0.25) choicesIf.push("Building Special");  // can omit with few buildings
+				if (random2 < 0.15) choicesIf = ["Cookie Storm Drop"];
+				if (random3 < 0.0001) choicesIf.push("Free Sugar Lump");
+				const chosen = chooseWith(choicesIf, random4);
+				if (chosen == "Free Sugar Lump") {
+					// only logging for now
+					console.log("Free Sugar Lump with few building!!");
+					console.log("seedrandom: " + (seed + "/" + spellsCastTotal));
+				}
+			}
 
 			// There is an additional Math.random() in L62,
 			// but this doesn't affect the result because choice is done.
@@ -303,9 +347,9 @@ app.controller("myCtrl", function ($scope) {
 		} else {
 			// choices of red cookie (L70)
 			choices.push("Clot", "Ruin");
-			if (Math.random() < 0.1) choices.push("Cursed Finger", "Elder Frenzy");
-			if (Math.random() < 0.003) choices.push("Free Sugar Lump");
-			if (Math.random() < 0.1) choices = ["Blab"];
+			if (random1 < 0.1) choices.push("Cursed Finger", "Elder Frenzy");
+			if (random2 < 0.003) choices.push("Free Sugar Lump");
+			if (random3 < 0.1) choices = ["Blab"];
 			fthofResult.name = choose(choices);
 		}
 
@@ -321,6 +365,9 @@ app.controller("myCtrl", function ($scope) {
 		fthofResult.noteworthy = false;
 		if (fthofResult.name == "Building Special") fthofResult.noteworthy = true;
 		if (fthofResult.name == "Elder Frenzy") fthofResult.noteworthy = true;
+
+		// set image url of cookie
+		fthofResult.image = imageUrl;
 
 		// return FtHoF cast result
 		return fthofResult;
@@ -392,7 +439,7 @@ app.controller("myCtrl", function ($scope) {
 	 */
 	const castGFD = (seed, spellsCastTotal) => {
 		// single season option
-		const isSingleSeason = $scope.isSingleSeason;
+		const isSingleSeason = ($scope.season == "noswitch");
 
 		// set seed for GFD spell selection (L312)
 		Math_seedrandom(seed + "/" + spellsCastTotal);
@@ -516,7 +563,7 @@ app.controller("myCtrl", function ($scope) {
 			minComboLength, maxComboLength, maxSpread,
 			includeEF, skipRA, skipSE, skipST,
 			seed, spellsCastTotal,
-			isSingleSeason,
+			season,
 		} = $scope;
 
 		// variables to set $scope.*
@@ -554,7 +601,7 @@ app.controller("myCtrl", function ($scope) {
 			const gfd = castGFD(seed, currentTotalSpell);
 
 			// cookies that user can cast (reduce cookie1 for single season option)
-			const availableCookies = [gc0, wc0, ...(isSingleSeason ? [] : [gc1, wc1])];
+			const availableCookies = [gc0, wc0, ...(season == "noswitch" ? [] : [gc1, wc1])];
 
 			// determine whether current cookies can be part of a combo
 			const isCombo = (

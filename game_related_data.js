@@ -41,6 +41,17 @@ export const choose = (arr) => arr[Math.floor(Math.random() * arr.length)];
 
 
 /**
+ * function choose() that can specify Math.random() result manually
+ *
+ * @template T
+ * @param {T[]} arr
+ * @param {number} Math_random random number of Math.random()
+ * @returns {T} chosen item
+ */
+export const chooseWith = (arr, Math_random) => arr[Math.floor(Math_random * arr.length)];
+
+
+/**
  * M.spells from minigameGrimoire.js
  * (not same as v2.052)
  *
@@ -184,6 +195,15 @@ export const spellNames = Object.values(M_spells).map(spell => spell.name);
 
 
 /**
+ * Spell names that can be cast with GFD.
+ * (omitted GFD itself)
+ *
+ * @type {string[]}
+ */
+export const gfdSpellNames = spellNames.filter(name => name != "Gambler's Fever Dream");
+
+
+/**
  * cookie effect description dictionary
  *
  * @type { { [key: string]: string } }
@@ -215,22 +235,4 @@ export const cookieEffectNameToDescription = {
 		"Does nothing but has a funny message.",
 	"Free Sugar Lump":
 		"Add a free sugar lump to the pool",
-};
-
-
-/**
- * dictionary of spell icon image file url
- *
- * @type { { [key: string]: string } }
- */
-export const spellNameToIconUrl = {
-	"Conjure Baked Goods":    "./img/spells/0.png",
-	"Force the Hand of Fate": "./img/spells/1.png",
-	"Stretch Time":           "./img/spells/2.png",
-	"Spontaneous Edifice":    "./img/spells/3.png",
-	"Haggler's Charm":        "./img/spells/4.png",
-	"Summon Crafty Pixies":   "./img/spells/5.png",
-	"Gambler's Fever Dream":  "./img/spells/6.png",
-	"Resurrect Abomination":  "./img/spells/7.png",
-	"Diminish Ineptitude":    "./img/spells/8.png",
 };
