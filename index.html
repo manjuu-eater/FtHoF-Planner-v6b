@@ -199,12 +199,9 @@
 
 
 		<!-- Options: FtHoF Settings -->
-		<md-checkbox ng-model="isSingleSeason">
-			Can't Switch Seasons
-		</md-checkbox>
-
 		<md-radio-group ng-model="season" layout="row">
 			"One Change" Season:&nbsp;
+			<md-radio-button value="noswitch">No Use</md-radio-button>
 			<md-radio-button value="normal">Normal</md-radio-button>
 			<md-radio-button value="valentines">Valentines</md-radio-button>
 			<md-radio-button value="easter">Easter</md-radio-button>
@@ -228,7 +225,7 @@
 				<col class="spell">
 				<col class="random">
 				<col class="fthof">
-				<col class="fthof" ng-if="!isSingleSeason">
+				<col class="fthof" ng-if="season != 'noswitch'">
 				<col class="gfd">
 			</colgroup>
 			<thead>
@@ -236,7 +233,7 @@
 					<th>Spell #</th>
 					<th>Random <br>Number</th>
 					<th>No Change</th>
-					<th ng-if="!isSingleSeason">One Change</th>
+					<th ng-if="season != 'noswitch'">One Change</th>
 					<th>Gambler's Dream</th>
 				</tr>
 				<tr>
@@ -252,7 +249,7 @@
 						Season is <b>NOT</b><br>
 						Valentines or Easter.
 					</td>
-					<td ng-if="!isSingleSeason">
+					<td ng-if="season != 'noswitch'">
 						Season is<br>
 						Valentines or Easter.
 					</td>
@@ -296,7 +293,7 @@
 					</div></td>
 
 					<!-- One Change -->
-					<td ng-if="!isSingleSeason"><div>
+					<td ng-if="season != 'noswitch'"><div>
 						<img ng-src="{{result.cookie1.image}}">
 						<div ng-class="{
 							'highlight combo': result.cookie1.noteworthy,
@@ -318,9 +315,9 @@
 						}" ng-attr-title="{{
 							result.gfd.name == 'Force the Hand of Fate'
 							? result.gfd.cookie0.name + (
-								isSingleSeason
-								? ''
-								: '; ' + result.gfd.cookie1.name
+								season != 'noswitch'
+								? '; ' + result.gfd.cookie1.name
+								: ''
 							)
 							: undefined
 						}}">

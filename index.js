@@ -118,7 +118,6 @@ app.controller("myCtrl", function ($scope) {
 	$scope.maxSpread = 2;
 	$scope.saveString = "";
 	$scope.lookahead = 200;
-	$scope.isSingleSeason = false;
 	$scope.season = "normal";
 
 	// fill the save code input if previous save code exists in LocalStorage
@@ -439,7 +438,7 @@ app.controller("myCtrl", function ($scope) {
 	 */
 	const castGFD = (seed, spellsCastTotal) => {
 		// single season option
-		const isSingleSeason = $scope.isSingleSeason;
+		const isSingleSeason = ($scope.season == "noswitch");
 
 		// set seed for GFD spell selection (L312)
 		Math_seedrandom(seed + "/" + spellsCastTotal);
@@ -563,7 +562,7 @@ app.controller("myCtrl", function ($scope) {
 			minComboLength, maxComboLength, maxSpread,
 			includeEF, skipRA, skipSE, skipST,
 			seed, spellsCastTotal,
-			isSingleSeason,
+			season,
 		} = $scope;
 
 		// variables to set $scope.*
@@ -601,7 +600,7 @@ app.controller("myCtrl", function ($scope) {
 			const gfd = castGFD(seed, currentTotalSpell);
 
 			// cookies that user can cast (reduce cookie1 for single season option)
-			const availableCookies = [gc0, wc0, ...(isSingleSeason ? [] : [gc1, wc1])];
+			const availableCookies = [gc0, wc0, ...(season == "noswitch" ? [] : [gc1, wc1])];
 
 			// determine whether current cookies can be part of a combo
 			const isCombo = (
