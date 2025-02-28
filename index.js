@@ -14,6 +14,7 @@ import {
 } from "./game_related_data.js";
 
 import {
+	gcImageUrl, wcImageUrl,
 	heartImageUrl, bunnyImageUrl,
 	spellNameToIconUrl,
 } from "./image_file_paths.js";
@@ -275,7 +276,7 @@ app.controller("myCtrl", function ($scope) {
 
 		// determine cookie image (L5329)
 		// if season is valentines or easter, Math.random() is called (main.js L5343, main.js L5353)
-		let imageUrl = isWin ? "img/goldCookie.png" : "img/wrathCookie.png";
+		let imageUrl = isWin ? gcImageUrl : wcImageUrl;
 		if (isOneChange) {
 			const random = Math.random();
 

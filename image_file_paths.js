@@ -4,6 +4,13 @@
  */
 
 
+/** image url of GC */
+export const gcImageUrl = "img/goldCookie.png";
+
+/** image url of GC */
+export const wcImageUrl = "img/wrathCookie.png";
+
+
 /**
  * make heart image url from image index
  *
