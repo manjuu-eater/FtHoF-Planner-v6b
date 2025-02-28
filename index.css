@@ -1,154 +1,154 @@
 html, body {
-    background-color: white;
+	background-color: white;
 }
 
 input, md-radio-group {
-    margin: 8px 0;
+	margin: 8px 0;
 }
 input.w2 {
-    width: 2em;
+	width: 2em;
 }
 input.w3 {
-    width: 3em;
+	width: 3em;
 }
 input.w4 {
-    width: 4em;
+	width: 4em;
 }
 input.w5 {
-    width: 5em;
+	width: 5em;
 }
 
 .content {
-    max-width: 1440px;
-    margin: auto;
+	max-width: 1440px;
+	margin: auto;
 }
 
 
 /* error line below md-input */
 md-input-container .md-errors-spacer {
-    min-height: 0px !important;
+	min-height: 0px !important;
 }
 
 /* link */
 a {
-    cursor: pointer;
-    color: blue;
+	cursor: pointer;
+	color: blue;
 }
 a:hover, a.hover {
-    text-decoration: underline;
+	text-decoration: underline;
 }
 
 /* inline image */
 img.mini {
-    height: .9em;
+	height: .9em;
 }
 
 
 /* save code */
 input#save_code {
-    color: gray;
+	color: gray;
 }
 
 /* .content > ul.combos > li.combo-listitem */
 .combo-listitem {
-    height: 3.5em;
+	height: 3.5em;
 }
 
 /* checkbox that hide One Change column */
 .hide-column {
-    align-self: flex-end;
-    font-size: 0.7em;
+	align-self: flex-end;
+	font-size: 0.7em;
 }
 .hide-column > input {
-    width: 13px;
-    accent-color: rgb(255,89,145);
+	width: 13px;
+	accent-color: rgb(255,89,145);
 }
 
 /* highlighting noteworty or skippable cookie */
 div.highlight {
-    width: 100%;
+	width: 100%;
 }
 .highlight.combo {
-    background-color: yellow;
+	background-color: yellow;
 }
 .highlight.skip {
-    background-color: lightblue;
+	background-color: lightblue;
 }
 .highlight.notable {
-    border: dashed 3px orange;
-    /* border-radius: 3px; */
+	border: dashed 3px orange;
+	/* border-radius: 3px; */
 }
 
 /* GFD image */
 img.gfd {
-    border: solid 1px transparent;
-    border-radius: 4px;
-    padding: 4px;
+	border: solid 1px transparent;
+	border-radius: 4px;
+	padding: 4px;
 }
 img.gfd.success {
-    border-color: gold;
-    background-color: khaki;
+	border-color: gold;
+	background-color: khaki;
 }
 img.gfd.backfire {
-    border-color: chocolate;
-    background-color: orangered;
+	border-color: chocolate;
+	background-color: orangered;
 }
 
 
 /* CSS to make <table> look like the Angular Material theme */
 table {
-    table-layout: fixed;
-    border-collapse: collapse;
-    max-width: 100%;
-    width: 100%;
-    border: solid 1px lightgray;
+	table-layout: fixed;
+	border-collapse: collapse;
+	max-width: 100%;
+	width: 100%;
+	border: solid 1px lightgray;
 }
 
 th {
-    height: 3em;
+	height: 3em;
 }
 th, td {
-    padding: .3em .5em;
-    border-style: none solid;
-    border-width: 1px;
-    border-color: lightgray;
+	padding: .3em .5em;
+	border-style: none solid;
+	border-width: 1px;
+	border-color: lightgray;
 }
 col.spell {
-    width: 10em;
+	width: 10em;
 }
 col.random {
-    width: 9em;
+	width: 9em;
 }
 
 thead th {
-    background-color: rgb(140, 158, 255);
-    color: rgba(0, 0, 0, 0.87);
-    font-size: 20px;
-    font-weight: 500;
+	background-color: rgb(140, 158, 255);
+	color: rgba(0, 0, 0, 0.87);
+	font-size: 20px;
+	font-weight: 500;
 }
 thead td {
-    background-color: rgb(250, 250, 250);
-    color: rgba(0, 0, 0, 0.54);
+	background-color: rgb(250, 250, 250);
+	color: rgba(0, 0, 0, 0.54);
 
-    font-size: 12px;
-    font-weight: 500;
-    letter-spacing: .01em;
-    line-height: 1.2em;
+	font-size: 12px;
+	font-weight: 500;
+	letter-spacing: .01em;
+	line-height: 1.2em;
 }
 
 tbody tr {
-    height: 2em;
+	height: 2em;
 }
 tbody tr:nth-of-type(odd) {
-    background-color: lavender;
+	background-color: lavender;
 }
 tbody td > div {
-    display: flex;
-    align-items: center;
-    gap: .5em;
+	display: flex;
+	align-items: center;
+	gap: .5em;
 }
 
 tbody td img {
-    width: 2em;
-    height: 2em;
+	width: 2em;
+	height: 2em;
 }
