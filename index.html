@@ -203,6 +203,13 @@
 			Can't Switch Seasons
 		</md-checkbox>
 
+		<md-radio-group ng-model="season" layout="row">
+			"One Change" Season:&nbsp;
+			<md-radio-button value="normal">Normal</md-radio-button>
+			<md-radio-button value="valentines">Valentines</md-radio-button>
+			<md-radio-button value="easter">Easter</md-radio-button>
+		</md-radio-group>
+
 		<md-divider></md-divider>
 
 
@@ -291,8 +298,7 @@
 
 					<!-- One Change -->
 					<td ng-if="!isSingleSeason"><div>
-						<img ng-if= "result.isFthofWin" ng-src="img/goldCookie.png">
-						<img ng-if="!result.isFthofWin" ng-src="img/wrathCookie.png">
+						<img ng-src="{{result.cookie1.cookieImage1}}">
 						<div ng-class="{
 							'highlight combo': result.cookie1.noteworthy,
 							'highlight notable': result.isOtherCookieNotable1,

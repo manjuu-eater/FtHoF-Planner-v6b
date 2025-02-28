@@ -14,6 +14,7 @@ import {
 } from "./game_related_data.js";
 
 import {
+	heartImageUrl, bunnyImageUrl,
 	spellNameToIconUrl,
 } from "./image_file_paths.js";
 
@@ -32,6 +33,7 @@ import {
  * @property {boolean} wrath
  * @property {string} description
  * @property {boolean} noteworthy
+ * @property {string=} cookieImage1 only for One Change
  */
 /**
  * @typedef {object} GfdResult
@@ -117,6 +119,7 @@ app.controller("myCtrl", function ($scope) {
 	$scope.saveString = "";
 	$scope.lookahead = 200;
 	$scope.isSingleSeason = false;
+	$scope.season = "normal";
 
 	// fill the save code input if previous save code exists in LocalStorage
 	const previousSaveCode = window.localStorage.getItem("fthof_save_code");
@@ -272,7 +275,24 @@ app.controller("myCtrl", function ($scope) {
 		//if (chime && $scope.ascensionMode != 1) Math.random();
 
 		// season is valentines or easter (main.js L5343, main.js L5353)
-		if (isOneChange) Math.random();
+		let cookieImage1 = undefined;
+		if (isOneChange) {
+			const random = Math.random();
+
+			// determine cookie image
+			const season = $scope.season;
+			if (season == "valentines") {
+				const imageIndex = Math.floor(random * 8);
+				const imageUrl = heartImageUrl(imageIndex);
+				cookieImage1 = imageUrl;
+			} else if (season == "easter") {
+				const imageIndex = Math.floor(random * 4);
+				const imageUrl = bunnyImageUrl(!isWin, imageIndex);
+				cookieImage1 = imageUrl;
+			} else {
+				cookieImage1 = isWin ? "img/goldCookie.png" : "img/wrathCookie.png";
+			}
+		}
 
 		// determine X and Y position to spawn (main.js L5358, main.js L5359)
 		Math.random();
@@ -348,6 +368,9 @@ app.controller("myCtrl", function ($scope) {
 		fthofResult.noteworthy = false;
 		if (fthofResult.name == "Building Special") fthofResult.noteworthy = true;
 		if (fthofResult.name == "Elder Frenzy") fthofResult.noteworthy = true;
+
+		// set image url of One Change cookie
+		fthofResult.cookieImage1 = cookieImage1;
 
 		// return FtHoF cast result
 		return fthofResult;
