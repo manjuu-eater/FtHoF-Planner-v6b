@@ -1,7 +1,31 @@
 // @ts-check
 /**
- * image file path dictionaries
+ * image file paths
  */
+
+
+/**
+ * make heart image url from image index
+ *
+ * @param {number} index index of image
+ * @returns image url
+ */
+export const heartImageUrl = (index) => {
+    return `img/hearts/${index}.png`;
+};
+
+
+/**
+ * make bunny image url from image index
+ *
+ * @param {boolean} isWrath true if wrath cookie
+ * @param {number} index index of image
+ * @returns image url
+ */
+export const bunnyImageUrl = (isWrath, index) => {
+    const isWrathNum = isWrath ? "1" : "0";
+    return `img/bunnies/${isWrathNum}${index}.png`;
+};
 
 
 /**
