@@ -33,7 +33,7 @@ import {
  * @property {boolean} wrath
  * @property {string} description
  * @property {boolean} noteworthy
- * @property {string=} cookieImage1 only for One Change
+ * @property {string} image
  */
 /**
  * @typedef {object} GfdResult
@@ -274,8 +274,9 @@ app.controller("myCtrl", function ($scope) {
 		// this call is no longer active: L885
 		//if (chime && $scope.ascensionMode != 1) Math.random();
 
-		// season is valentines or easter (main.js L5343, main.js L5353)
-		let cookieImage1 = undefined;
+		// determine cookie image (L5329)
+		// if season is valentines or easter, Math.random() is called (main.js L5343, main.js L5353)
+		let imageUrl = isWin ? "img/goldCookie.png" : "img/wrathCookie.png";
 		if (isOneChange) {
 			const random = Math.random();
 
@@ -283,14 +284,10 @@ app.controller("myCtrl", function ($scope) {
 			const season = $scope.season;
 			if (season == "valentines") {
 				const imageIndex = Math.floor(random * 8);
-				const imageUrl = heartImageUrl(imageIndex);
-				cookieImage1 = imageUrl;
+				imageUrl = heartImageUrl(imageIndex);
 			} else if (season == "easter") {
 				const imageIndex = Math.floor(random * 4);
-				const imageUrl = bunnyImageUrl(!isWin, imageIndex);
-				cookieImage1 = imageUrl;
-			} else {
-				cookieImage1 = isWin ? "img/goldCookie.png" : "img/wrathCookie.png";
+				imageUrl = bunnyImageUrl(!isWin, imageIndex);
 			}
 		}
 
@@ -369,8 +366,8 @@ app.controller("myCtrl", function ($scope) {
 		if (fthofResult.name == "Building Special") fthofResult.noteworthy = true;
 		if (fthofResult.name == "Elder Frenzy") fthofResult.noteworthy = true;
 
-		// set image url of One Change cookie
-		fthofResult.cookieImage1 = cookieImage1;
+		// set image url of cookie
+		fthofResult.image = imageUrl;
 
 		// return FtHoF cast result
 		return fthofResult;
