@@ -30,7 +30,7 @@ type GameSaveData = {
 };
 type FthofResult = {
 	name: string;
-	wrath: boolean;
+	isWin: boolean;
 	image: string;
 
 	description: string;
@@ -39,7 +39,7 @@ type FthofResult = {
 type GfdResult = {
 	name: string;
 	isWin: boolean;
-	imageUrl: string;
+	image: string;
 
 	hasBs: boolean;
 	hasEf: boolean;
@@ -52,6 +52,26 @@ type GfdResult = {
 	gc1?: FthofResult;
 	wc1?: FthofResult;
 	spontaneousEdificeRandomNumber?: number;
+};
+type GrimoireResult = {
+	num: number;
+	firstRandomNumber: number;
+
+	isFthofWin: boolean;
+	cookie0: FthofResult;
+	gc0: FthofResult;
+	wc0: FthofResult;
+	isOtherCookieNotable0: boolean;
+	cookie1: FthofResult;
+	gc1: FthofResult;
+	wc1: FthofResult;
+	isOtherCookieNotable1: boolean;
+
+	gfd: GfdResult;
+
+	isCombo: boolean;
+	isSkip: boolean;
+	isSugar: boolean;
 };
 
 /** result of findCombo() */
@@ -328,7 +348,7 @@ app.controller("myCtrl", function ($scope) {
 
 			// do something if there is a chance to win Free Sugar Lump
 			if (random3 < 0.0001 && random4 >= 0.5) {
-				let choicesIf = [];
+				let choicesIf: EffectName[] = [];
 				choicesIf.push("Frenzy", "Lucky");
 				if (!$scope.buffDF) choicesIf.push("Click Frenzy");
 				if (random1 < 0.1) choicesIf.push("Cookie Storm", "Cookie Storm", "Blab");
@@ -368,7 +388,7 @@ app.controller("myCtrl", function ($scope) {
 		// return FtHoF cast result
 		const fthofResult: FthofResult = {
 			name: effectName,
-			wrath: !isWin,
+			isWin,
 			image: imageUrl,
 
 			description: description,
@@ -461,6 +481,7 @@ app.controller("myCtrl", function ($scope) {
 
 		// choose a spell to be cast (L202)
 		const castSpell = choose(spells);
+		const castSpellName = castSpell.name;
 
 		// chance of GFD backfire (L206 > L299 > L311)
 		// note1: **code behavior differs from description!!**
@@ -476,9 +497,9 @@ app.controller("myCtrl", function ($scope) {
 
 		// return object
 		const gfdResult: GfdResult = {
-			name: castSpell.name,
+			name: castSpellName,
 			isWin: isChildSpellWin,
-			imageUrl: spellNameToIconUrl[castSpell.name],
+			image: spellNameToIconUrl[castSpellName],
 
 			hasBs: false,
 			hasEf: false,
@@ -487,7 +508,7 @@ app.controller("myCtrl", function ($scope) {
 		};
 
 		// set the result of child spells called by GFD
-		if (castSpell.name == "Force the Hand of Fate") {
+		if (castSpellName == "Force the Hand of Fate") {
 			// cast FtHoF, set to return object
 			const gc0 = castFtHoF(seed, spellsCastTotal + 1, false, "GC");
 			const gc1 = castFtHoF(seed, spellsCastTotal + 1, true, "GC");
@@ -520,7 +541,7 @@ app.controller("myCtrl", function ($scope) {
 				}
 			}
 
-		} else if (castSpell.name == "Spontaneous Edifice") {
+		} else if (castSpellName == "Spontaneous Edifice") {
 			// add result of SE
 
 			// get random number when choosing building (L134, L144)
@@ -532,9 +553,9 @@ app.controller("myCtrl", function ($scope) {
 
 		// determine child FtHoF result can be a part of combo
 		if (
-			castSpell.name == "Resurrect Abomination"
-			|| (castSpell.name == "Spontaneous Edifice" && isChildSpellWin)
-			|| (castSpell.name == "Stretch Time")
+			castSpellName == "Resurrect Abomination"
+			|| (castSpellName == "Spontaneous Edifice" && isChildSpellWin)
+			|| (castSpellName == "Stretch Time")
 		) {
 			gfdResult.canSkip = true;
 		}
@@ -576,20 +597,20 @@ app.controller("myCtrl", function ($scope) {
 		} = $scope;
 
 		// variables to set $scope.*
-		const firstRandomNumbers = [];
+		const firstRandomNumbers: number[] = [];
 		const baseBackfireChance = getBaseFailChance();
 		const fthofBackfireChance = getFthofFailChance(baseBackfireChance);
 		const combos: { [key: number]: ComboResults } = {};
-		const sugarIndexes = [];
+		const sugarIndexes: number[] = [];
 
 		// object that contain FtHoF and GFD result, combo / skip indexes, etc.
-		const grimoireResults = [];
+		const grimoireResults: GrimoireResult[] = [];
 
 		// srart timer
 		console.time("updateCookies");
 
-		const comboIndexes = [];
-		const skipIndexes = [];
+		const comboIndexes: number[] = [];
+		const skipIndexes: number[] = [];
 		for (let i = 0; i < lookahead; i++) {
 			// total spell cast count before this cast
 			const currentTotalSpell = spellsCastTotal + i;
@@ -671,7 +692,7 @@ app.controller("myCtrl", function ($scope) {
 			}
 
 			// set to object and push to array
-			const grimoireResult = {
+			const grimoireResult: GrimoireResult = {
 				num: i + 1,
 				firstRandomNumber: randomNumber,
 
