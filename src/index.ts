@@ -328,7 +328,7 @@ app.controller("myCtrl", function ($scope) {
 
 			// do something if there is a chance to win Free Sugar Lump
 			if (random3 < 0.0001 && random4 >= 0.5) {
-				let choicesIf = [];
+				let choicesIf: EffectName[] = [];
 				choicesIf.push("Frenzy", "Lucky");
 				if (!$scope.buffDF) choicesIf.push("Click Frenzy");
 				if (random1 < 0.1) choicesIf.push("Cookie Storm", "Cookie Storm", "Blab");
@@ -577,11 +577,11 @@ app.controller("myCtrl", function ($scope) {
 		} = $scope;
 
 		// variables to set $scope.*
-		const firstRandomNumbers = [];
+		const firstRandomNumbers: number[] = [];
 		const baseBackfireChance = getBaseFailChance();
 		const fthofBackfireChance = getFthofFailChance(baseBackfireChance);
 		const combos: { [key: number]: ComboResults } = {};
-		const sugarIndexes = [];
+		const sugarIndexes: number[] = [];
 
 		// object that contain FtHoF and GFD result, combo / skip indexes, etc.
 		const grimoireResults = [];
@@ -589,8 +589,8 @@ app.controller("myCtrl", function ($scope) {
 		// srart timer
 		console.time("updateCookies");
 
-		const comboIndexes = [];
-		const skipIndexes = [];
+		const comboIndexes: number[] = [];
+		const skipIndexes: number[] = [];
 		for (let i = 0; i < lookahead; i++) {
 			// total spell cast count before this cast
 			const currentTotalSpell = spellsCastTotal + i;
