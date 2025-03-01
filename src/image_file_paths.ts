@@ -3,6 +3,8 @@
  * image file paths
  */
 
+import { SpellName } from "./game_related_data";
+
 
 /** image url of GC */
 export const gcImageUrl = "./img/goldCookie.png";
@@ -38,7 +40,7 @@ export const bunnyImageUrl = (isWrath: boolean, index: number) => {
 /**
  * dictionary of spell icon image file url
  */
-export const spellNameToIconUrl = {
+export const spellNameToIconUrl: { [key in SpellName]: string } = {
 	"Conjure Baked Goods":    "./img/spells/0.png",
 	"Force the Hand of Fate": "./img/spells/1.png",
 	"Stretch Time":           "./img/spells/2.png",
