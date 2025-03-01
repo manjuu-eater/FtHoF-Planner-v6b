@@ -1,2 +1,7 @@
 # Dependency directories
 /node_modules/
+
+
+# TypeScript compiled files
+/dist/*.js
+/dist/*.map
