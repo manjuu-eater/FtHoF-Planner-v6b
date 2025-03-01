@@ -247,7 +247,7 @@ export const gfdSpellNames = spellNames.filter(name => name != "Gambler's Fever 
 /**
  * cookie effect description dictionary
  */
-export const cookieEffectNameToDescription = {
+export const cookieEffectNameToDescription: { [key in EffectName]: string } = {
 	"Frenzy":
 		"Gives x7 cookie production for 77 seconds.",
 	"Lucky":

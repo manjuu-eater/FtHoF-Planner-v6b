@@ -8,6 +8,7 @@
 
 // import game related objects and functions
 import {
+	EffectName,
 	Math_seedrandom, choose, M_spells,
 	cookieEffectNameToDescription,
 	chooseWith,
@@ -307,10 +308,10 @@ app.controller("myCtrl", function ($scope) {
 		const random4 = Math.random();
 
 		// choices of GC/WC effect name
-		let choices: string[] = [];
+		let choices: EffectName[] = [];
 
 		// choose cookie effect
-		let effectName = "";
+		let effectName: EffectName;
 		if (isWin) {
 			// choices of golden cookie (L52)
 			choices.push("Frenzy", "Lucky");
