@@ -7,7 +7,36 @@
 
 // type definition
 
-/** spell name: M.spells[*].name  from minigameGrimoire.js */
+/**
+ * name of the GC / WC effect that will be caused by FtHoF
+ *
+ * simmilar to list of Game.goldenCookieChoices in main.js (L5874),
+ * but there is some differences:
+ *   - Dragon Harvest, Dragonflight is omitted
+ *   - changed to Title Case
+ *   - Cookie Storm Drop is add
+ */
+export type EffectName = (
+	| "Frenzy"
+	| "Lucky"
+	| "Click Frenzy"
+	| "Cookie Storm"
+	| "Cookie Storm Drop"
+	| "Building Special"
+
+	| "Clot"
+	| "Ruin"
+	| "Cursed Finger"
+	| "Elder Frenzy"
+
+	| "Blab"
+	| "Free Sugar Lump"
+);
+
+/**
+ * spell name: M.spells[*].name
+ * from minigameGrimoire.js
+ */
 export type SpellName = (
 	| "Conjure Baked Goods"
 	| "Force the Hand of Fate"
