@@ -5,6 +5,6 @@
   },
   "scripts": {
     "build": "ls -1 && npx tsc",
-    "test": "md dist && exit 0"
+    "test": "mkdir dist && exit 0"
   }
 }
