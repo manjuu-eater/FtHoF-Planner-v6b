@@ -6,58 +6,55 @@
 
 
 // type definition
-/**
- * @typedef {object} M_Spell
- * @property {string} name
- * @property {string} desc
- * @property {string=} failDesc
- * @property {[number, number]} icon
- * @property {number} costMin
- * @property {number} costPercent
- * @property {Function=} failFunc
- * @property {Function} win
- * @property {Function=} fail
- */
+type M_Spell = {
+	name: string;
+	desc: string;
+	failDesc?: string;
+	icon: [number, number];
+	costMin: number;
+	costPercent: number;
+	failFunc?: Function;
+	win: Function;
+	fail?: Function;
+};
 
 
 /**
  * wrapper of Math.seedrandom(seed)
  *
- * @param {string} seed seed string
- * @returns {string} Math.seedrandom(seed)
+ * @param seed seed string
+ * @returns Math.seedrandom(seed)
  */
-export const Math_seedrandom = (seed) => Math["seedrandom"](seed);
+export const Math_seedrandom = (seed: string): string => Math["seedrandom"](seed);
 
 
 /**
  * function choose() from Cookie Clicker main.js (L17)
  * choose one randomly from arr
  *
- * @template T
- * @param {T[]} arr
- * @returns {T} chosen item
+ * @param arr
+ * @returns chosen item
  */
-export const choose = (arr) => arr[Math.floor(Math.random() * arr.length)];
+export const choose = <T>(arr: T[]): T => arr[Math.floor(Math.random() * arr.length)];
 
 
 /**
  * function choose() that can specify Math.random() result manually
  *
- * @template T
- * @param {T[]} arr
- * @param {number} Math_random random number of Math.random()
- * @returns {T} chosen item
+ * @param arr
+ * @param Math_random random number of Math.random()
+ * @returns chosen item
  */
-export const chooseWith = (arr, Math_random) => arr[Math.floor(Math_random * arr.length)];
+export const chooseWith = <T>(arr: T[], Math_random: number): T => {
+	return arr[Math.floor(Math_random * arr.length)];
+};
 
 
 /**
  * M.spells from minigameGrimoire.js
  * (not same as v2.052)
- *
- * @type { {[key: string]: M_Spell} }
  */
-export const M_spells = {
+export const M_spells: {[key: string]: M_Spell} = {
 	'conjure baked goods': {
 		name: 'Conjure Baked Goods',
 		desc: 'Summon half an hour worth of your CpS, capped at 15% of your cookies owned.',
@@ -188,8 +185,6 @@ export const M_spells = {
 
 /**
  * Spell names that can be cast in the minigame.
- *
- * @type {string[]}
  */
 export const spellNames = Object.values(M_spells).map(spell => spell.name);
 
@@ -197,16 +192,12 @@ export const spellNames = Object.values(M_spells).map(spell => spell.name);
 /**
  * Spell names that can be cast with GFD.
  * (omitted GFD itself)
- *
- * @type {string[]}
  */
 export const gfdSpellNames = spellNames.filter(name => name != "Gambler's Fever Dream");
 
 
 /**
  * cookie effect description dictionary
- *
- * @type { { [key: string]: string } }
  */
 export const cookieEffectNameToDescription = {
 	"Frenzy":
