@@ -19,7 +19,7 @@ export const wcImageUrl = "./img/wrathCookie.png";
  * @param index index of image
  * @returns image url
  */
-export const heartImageUrl = (index: number) => {
+export const heartImageUrl = (index: number): string => {
     return `./img/hearts/${index}.png`;
 };
 
@@ -31,7 +31,7 @@ export const heartImageUrl = (index: number) => {
  * @param index index of image
  * @returns image url
  */
-export const bunnyImageUrl = (isWrath: boolean, index: number) => {
+export const bunnyImageUrl = (isWrath: boolean, index: number): string => {
     const isWrathNum = isWrath ? "1" : "0";
     return `./img/bunnies/${isWrathNum}${index}.png`;
 };
