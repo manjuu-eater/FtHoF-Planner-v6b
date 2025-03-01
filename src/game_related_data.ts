@@ -123,6 +123,7 @@ export const M_spells: {[key: string]: M_Spell} = {
 		icon: [22, 11],
 		costMin: 10,
 		costPercent: 0.6,
+		// @ts-expect-error  ts(7006)
 		failFunc: function (fail) {
 			// removed (not used in this file)
 		},
