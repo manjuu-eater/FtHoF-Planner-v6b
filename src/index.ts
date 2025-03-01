@@ -59,9 +59,6 @@ type GfdResult = {
  * @returns extracted save data
  */
 const extractSaveData = (saveCode: string): GameSaveData => {
-	// return object
-	const saveData: GameSaveData = {};
-
 	// load save data
 	// detail: console.log(Game.WriteSave(3))
 	const decoded = Base64.decode(saveCode.split("!END!")[0]);
@@ -72,11 +69,9 @@ const extractSaveData = (saveCode: string): GameSaveData => {
 	const buildings = pipeSplited[5].split(";");
 
 	const seed = runDetails[4];
-	saveData.seed = seed;
 	console.log(seed);
 
 	const ascensionMode = parseInt(miscGameData[29]);
-	saveData.ascensionMode = ascensionMode;
 	console.log(ascensionMode);
 
 	const wizardTower = buildings[7];
@@ -88,14 +83,18 @@ const extractSaveData = (saveCode: string): GameSaveData => {
 	const [strMagic, strSpellsCast, strSpellsCastTotal, strOn] = wizMinigameData;
 
 	const spellsCast = parseInt(strSpellsCast) || 0;
-	saveData.spellsCast = spellsCast;
 	console.log("Spells cast this ascension: " + spellsCast);
 
 	const spellsCastTotal = parseInt(strSpellsCastTotal) || 0;
-	saveData.spellsCastTotal = spellsCastTotal;
 	console.log("Total spells cast: " + spellsCastTotal);
 
 	// return
+	const saveData: GameSaveData = {
+		seed: seed,
+		ascensionMode: ascensionMode,
+		spellsCast: spellsCast,
+		spellsCastTotal: spellsCastTotal,
+	};
 	return saveData;
 };
 
@@ -308,10 +307,8 @@ app.controller("myCtrl", function ($scope) {
 		// choices of GC/WC effect name
 		let choices: string[] = [];
 
-		// FtHoF cast result
-		const fthofResult: FthofResult = {};
-
 		// choose cookie effect
+		let effectName = "";
 		if (isWin) {
 			// choices of golden cookie (L52)
 			choices.push("Frenzy", "Lucky");
@@ -320,7 +317,7 @@ app.controller("myCtrl", function ($scope) {
 			if (random2 < 0.25) choices.push("Building Special");  // Game.BuildingsOwned>=10 is ignored
 			if (random3 < 0.15) choices = ["Cookie Storm Drop"];
 			if (random4 < 0.0001) choices.push("Free Sugar Lump");
-			fthofResult.name = choose(choices);
+			effectName = choose(choices);
 
 			// do something if there is a chance to win Free Sugar Lump
 			if (random3 < 0.0001 && random4 >= 0.5) {
@@ -341,7 +338,7 @@ app.controller("myCtrl", function ($scope) {
 
 			// There is an additional Math.random() in L62,
 			// but this doesn't affect the result because choice is done.
-			//if (fthofResult.name == "Cookie Storm Drop") Math.random();
+			//if (effectName == "Cookie Storm Drop") Math.random();
 
 		} else {
 			// choices of red cookie (L70)
@@ -349,26 +346,26 @@ app.controller("myCtrl", function ($scope) {
 			if (random1 < 0.1) choices.push("Cursed Finger", "Elder Frenzy");
 			if (random2 < 0.003) choices.push("Free Sugar Lump");
 			if (random3 < 0.1) choices = ["Blab"];
-			fthofResult.name = chooseWith(choices, random4);
+			effectName = chooseWith(choices, random4);
 		}
 
-		// set whether cookie is WC
-		fthofResult.wrath = !isWin;
-
 		// set description
-		const description = cookieEffectNameToDescription[fthofResult.name];
-		if (!description) console.error("No description in dictionary: " + fthofResult.name);
-		fthofResult.description = description;
+		const description = cookieEffectNameToDescription[effectName];
+		if (!description) console.error("No description in dictionary: " + effectName);
 
 		// add noteworthy info
-		fthofResult.noteworthy = false;
-		if (fthofResult.name == "Building Special") fthofResult.noteworthy = true;
-		if (fthofResult.name == "Elder Frenzy") fthofResult.noteworthy = true;
-
-		// set image url of cookie
-		fthofResult.image = imageUrl;
+		let noteworthy = false;
+		if (effectName == "Building Special") noteworthy = true;
+		if (effectName == "Elder Frenzy") noteworthy = true;
 
 		// return FtHoF cast result
+		const fthofResult: FthofResult = {
+			name: effectName,
+			wrath: !isWin,
+			description: description,
+			noteworthy: noteworthy,
+			image: imageUrl,
+		};
 		return fthofResult;
 	};
 
@@ -462,15 +459,6 @@ app.controller("myCtrl", function ($scope) {
 		// note2: increases above 0.5 only if DI debuff is active
 		const gfdBackfire = Math.max(getBaseFailChance(), 0.5);
 
-		// return object
-		const gfdResult: GfdResult = {};
-		gfdResult.name = castSpell.name;
-		gfdResult.imageUrl = spellNameToIconUrl[castSpell.name];
-		gfdResult.hasBs = false;
-		gfdResult.hasEf = false;
-		gfdResult.canCombo = false;
-		gfdResult.canSkip = false;
-
 		// set seed for child spell that is cast by GFD (L312)
 		// note: this seed may change with continuous GFD casts (spellsCastTotal increases)
 		Math_seedrandom(seed + "/" + (spellsCastTotal + 1));
@@ -478,8 +466,17 @@ app.controller("myCtrl", function ($scope) {
 		// roll for casting result (L313)
 		const isChildSpellWin = Math.random() < (1 - gfdBackfire);
 
-		// set success / backfire result
-		gfdResult.isWin = isChildSpellWin;
+		// return object
+		const gfdResult: GfdResult = {
+			name: castSpell.name,
+			imageUrl: spellNameToIconUrl[castSpell.name],
+
+			hasBs: false,
+			hasEf: false,
+			canCombo: false,
+			canSkip: false,
+			isWin: isChildSpellWin,
+		};
 
 		// set the result of child spells called by GFD
 		if (castSpell.name == "Force the Hand of Fate") {
