@@ -1,4 +1,3 @@
-/// <reference path="../lib/base64.js" />
 // @ts-check
 /**
  * FtHoF Planner v6b
@@ -88,7 +87,10 @@ type ComboResults = { shortest: ComboResult, first: ComboResult };
 const extractSaveData = (saveCode: string): GameSaveData => {
 	// load save data
 	// detail: console.log(Game.WriteSave(3))
-	const decoded = Base64.decode(saveCode.split("!END!")[0]);
+
+	// @ts-expect-error  ts(2304)
+	const base64Lib = Base64;
+	const decoded = base64Lib.decode(saveCode.split("!END!")[0]);
 	const pipeSplited = decoded.split("|");
 
 	const runDetails = pipeSplited[2].split(";");
