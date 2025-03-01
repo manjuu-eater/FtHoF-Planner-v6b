@@ -39,7 +39,7 @@ type FthofResult = {
 type GfdResult = {
 	name: string;
 	isWin: boolean;
-	imageUrl: string;
+	image: string;
 
 	hasBs: boolean;
 	hasEf: boolean;
@@ -499,7 +499,7 @@ app.controller("myCtrl", function ($scope) {
 		const gfdResult: GfdResult = {
 			name: castSpellName,
 			isWin: isChildSpellWin,
-			imageUrl: spellNameToIconUrl[castSpellName],
+			image: spellNameToIconUrl[castSpellName],
 
 			hasBs: false,
 			hasEf: false,
