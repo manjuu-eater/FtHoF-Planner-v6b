@@ -461,6 +461,7 @@ app.controller("myCtrl", function ($scope) {
 
 		// choose a spell to be cast (L202)
 		const castSpell = choose(spells);
+		const castSpellName = castSpell.name;
 
 		// chance of GFD backfire (L206 > L299 > L311)
 		// note1: **code behavior differs from description!!**
@@ -476,9 +477,9 @@ app.controller("myCtrl", function ($scope) {
 
 		// return object
 		const gfdResult: GfdResult = {
-			name: castSpell.name,
+			name: castSpellName,
 			isWin: isChildSpellWin,
-			imageUrl: spellNameToIconUrl[castSpell.name],
+			imageUrl: spellNameToIconUrl[castSpellName],
 
 			hasBs: false,
 			hasEf: false,
@@ -487,7 +488,7 @@ app.controller("myCtrl", function ($scope) {
 		};
 
 		// set the result of child spells called by GFD
-		if (castSpell.name == "Force the Hand of Fate") {
+		if (castSpellName == "Force the Hand of Fate") {
 			// cast FtHoF, set to return object
 			const gc0 = castFtHoF(seed, spellsCastTotal + 1, false, "GC");
 			const gc1 = castFtHoF(seed, spellsCastTotal + 1, true, "GC");
@@ -520,7 +521,7 @@ app.controller("myCtrl", function ($scope) {
 				}
 			}
 
-		} else if (castSpell.name == "Spontaneous Edifice") {
+		} else if (castSpellName == "Spontaneous Edifice") {
 			// add result of SE
 
 			// get random number when choosing building (L134, L144)
@@ -532,9 +533,9 @@ app.controller("myCtrl", function ($scope) {
 
 		// determine child FtHoF result can be a part of combo
 		if (
-			castSpell.name == "Resurrect Abomination"
-			|| (castSpell.name == "Spontaneous Edifice" && isChildSpellWin)
-			|| (castSpell.name == "Stretch Time")
+			castSpellName == "Resurrect Abomination"
+			|| (castSpellName == "Spontaneous Edifice" && isChildSpellWin)
+			|| (castSpellName == "Stretch Time")
 		) {
 			gfdResult.canSkip = true;
 		}
