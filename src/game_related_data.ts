@@ -1,4 +1,4 @@
-/// <reference path="./lib/seedrandom.js" />
+/// <reference path="../lib/seedrandom.js" />
 // @ts-check
 /**
  * objects or functions that related to the Cookie Clicker game JavaScript file
@@ -6,58 +6,102 @@
 
 
 // type definition
+
 /**
- * @typedef {object} M_Spell
- * @property {string} name
- * @property {string} desc
- * @property {string=} failDesc
- * @property {[number, number]} icon
- * @property {number} costMin
- * @property {number} costPercent
- * @property {Function=} failFunc
- * @property {Function} win
- * @property {Function=} fail
+ * name of the GC / WC effect that will be caused by FtHoF
+ *
+ * simmilar to list of Game.goldenCookieChoices in main.js (L5874),
+ * but there is some differences:
+ *   - Dragon Harvest, Dragonflight is omitted
+ *   - changed to Title Case
+ *   - Cookie Storm Drop is add
  */
+export type EffectName = (
+	| "Frenzy"
+	| "Lucky"
+	| "Click Frenzy"
+	| "Cookie Storm"
+	| "Cookie Storm Drop"
+	| "Building Special"
+
+	| "Clot"
+	| "Ruin"
+	| "Cursed Finger"
+	| "Elder Frenzy"
+
+	| "Blab"
+	| "Free Sugar Lump"
+);
+
+/**
+ * spell name: M.spells[*].name
+ * from minigameGrimoire.js
+ */
+export type SpellName = (
+	| "Conjure Baked Goods"
+	| "Force the Hand of Fate"
+	| "Stretch Time"
+	| "Spontaneous Edifice"
+	| "Haggler's Charm"
+	| "Summon Crafty Pixies"
+	| "Gambler's Fever Dream"
+	| "Resurrect Abomination"
+	| "Diminish Ineptitude"
+);
+
+/** M.spells[*]  from minigameGrimoire.js */
+type M_Spell = {
+	name: SpellName;
+	desc: string;
+	failDesc?: string;
+	icon: [number, number];
+	costMin: number;
+	costPercent: number;
+	failFunc?: Function;
+	win: Function;
+	fail?: Function;
+};
 
 
 /**
  * wrapper of Math.seedrandom(seed)
  *
- * @param {string} seed seed string
- * @returns {string} Math.seedrandom(seed)
+ * @param seed seed string
+ * @returns Math.seedrandom(seed)
  */
-export const Math_seedrandom = (seed) => Math["seedrandom"](seed);
+export const Math_seedrandom = (seed: string): string => {
+	// @ts-expect-error  ts(2339)
+	return Math.seedrandom(seed);
+}
 
 
 /**
  * function choose() from Cookie Clicker main.js (L17)
  * choose one randomly from arr
  *
- * @template T
- * @param {T[]} arr
- * @returns {T} chosen item
+ * @param arr
+ * @returns chosen item
  */
-export const choose = (arr) => arr[Math.floor(Math.random() * arr.length)];
+export const choose = <T>(arr: T[]): T => arr[Math.floor(Math.random() * arr.length)];
 
 
 /**
  * function choose() that can specify Math.random() result manually
  *
- * @template T
- * @param {T[]} arr
- * @param {number} Math_random random number of Math.random()
- * @returns {T} chosen item
+ * @param arr
+ * @param Math_random random number of Math.random()
+ * @returns chosen item
  */
-export const chooseWith = (arr, Math_random) => arr[Math.floor(Math_random * arr.length)];
+export const chooseWith = <T>(arr: T[], Math_random: number): T => {
+	return arr[Math.floor(Math_random * arr.length)];
+};
 
 
 /**
  * M.spells from minigameGrimoire.js
  * (not same as v2.052)
- *
- * @type { {[key: string]: M_Spell} }
  */
-export const M_spells = {
+export const M_spells: {[key: string]: M_Spell} = {
 	'conjure baked goods': {
 		name: 'Conjure Baked Goods',
 		desc: 'Summon half an hour worth of your CpS, capped at 15% of your cookies owned.',
@@ -79,6 +123,7 @@ export const M_spells = {
 		icon: [22, 11],
 		costMin: 10,
 		costPercent: 0.6,
+		// @ts-expect-error  ts(7006)
 		failFunc: function (fail) {
 			// removed (not used in this file)
 		},
@@ -188,27 +233,21 @@ export const M_spells = {
 
 /**
  * Spell names that can be cast in the minigame.
- *
- * @type {string[]}
  */
-export const spellNames = Object.values(M_spells).map(spell => spell.name);
+export const spellNames: SpellName[] = Object.values(M_spells).map(spell => spell.name);
 
 
 /**
  * Spell names that can be cast with GFD.
  * (omitted GFD itself)
- *
- * @type {string[]}
  */
 export const gfdSpellNames = spellNames.filter(name => name != "Gambler's Fever Dream");
 
 
 /**
  * cookie effect description dictionary
- *
- * @type { { [key: string]: string } }
  */
-export const cookieEffectNameToDescription = {
+export const cookieEffectNameToDescription: { [key in EffectName]: string } = {
 	"Frenzy":
 		"Gives x7 cookie production for 77 seconds.",
 	"Lucky":
