@@ -40,7 +40,10 @@ type M_Spell = {
  * @param seed seed string
  * @returns Math.seedrandom(seed)
  */
-export const Math_seedrandom = (seed: string): string => Math["seedrandom"](seed);
+export const Math_seedrandom = (seed: string): string => {
+	// @ts-expect-error  ts(2339)
+	return Math.seedrandom(seed);
+}
 
 
 /**
