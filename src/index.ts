@@ -1,4 +1,4 @@
-/// <reference path="./lib/base64.js" />
+/// <reference path="../lib/base64.js" />
 // @ts-check
 /**
  * FtHoF Planner v6b

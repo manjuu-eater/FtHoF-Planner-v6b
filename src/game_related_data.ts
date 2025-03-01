@@ -1,4 +1,4 @@
-/// <reference path="./lib/seedrandom.js" />
+/// <reference path="../lib/seedrandom.js" />
 // @ts-check
 /**
  * objects or functions that related to the Cookie Clicker game JavaScript file
