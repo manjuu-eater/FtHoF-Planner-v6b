@@ -30,9 +30,10 @@ type GameSaveData = {
 type FthofResult = {
 	name: string;
 	wrath: boolean;
+	image: string;
+
 	description: string;
 	noteworthy: boolean;
-	image: string;
 };
 type GfdResult = {
 	name: string;
@@ -363,9 +364,10 @@ app.controller("myCtrl", function ($scope) {
 		const fthofResult: FthofResult = {
 			name: effectName,
 			wrath: !isWin,
+			image: imageUrl,
+
 			description: description,
 			noteworthy: noteworthy,
-			image: imageUrl,
 		};
 		return fthofResult;
 	};
