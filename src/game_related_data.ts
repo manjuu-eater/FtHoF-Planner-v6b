@@ -6,8 +6,23 @@
 
 
 // type definition
+
+/** spell name: M.spells[*].name  from minigameGrimoire.js */
+export type SpellName = (
+	| "Conjure Baked Goods"
+	| "Force the Hand of Fate"
+	| "Stretch Time"
+	| "Spontaneous Edifice"
+	| "Haggler's Charm"
+	| "Summon Crafty Pixies"
+	| "Gambler's Fever Dream"
+	| "Resurrect Abomination"
+	| "Diminish Ineptitude"
+);
+
+/** M.spells[*]  from minigameGrimoire.js */
 type M_Spell = {
-	name: string;
+	name: SpellName;
 	desc: string;
 	failDesc?: string;
 	icon: [number, number];
@@ -186,7 +201,7 @@ export const M_spells: {[key: string]: M_Spell} = {
 /**
  * Spell names that can be cast in the minigame.
  */
-export const spellNames = Object.values(M_spells).map(spell => spell.name);
+export const spellNames: SpellName[] = Object.values(M_spells).map(spell => spell.name);
 
 
 /**
