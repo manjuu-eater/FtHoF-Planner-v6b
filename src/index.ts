@@ -21,49 +21,46 @@ import {
 
 
 // type definition
-/**
- * @typedef {object} GameSaveData
- * @property {string} seed
- * @property {number} ascensionMode
- * @property {number} spellsCast
- * @property {number} spellsCastTotal
- */
-/**
- * @typedef {object} FthofResult
- * @property {string} name
- * @property {boolean} wrath
- * @property {string} description
- * @property {boolean} noteworthy
- * @property {string} image
- */
-/**
- * @typedef {object} GfdResult
- * @property {string} name
- * @property {string} imageUrl
- * @property {boolean} hasBs
- * @property {boolean} hasEf
- * @property {boolean} canCombo
- * @property {boolean} canSkip
- * @property {boolean} isWin
- * @property {FthofResult=} cookie0
- * @property {FthofResult=} gc0
- * @property {FthofResult=} wc0
- * @property {FthofResult=} cookie1
- * @property {FthofResult=} gc1
- * @property {FthofResult=} wc1
- * @property {number=} spontaneousEdificeRandomNumber
- */
+type GameSaveData = {
+	seed: string;
+	ascensionMode: number;
+	spellsCast: number;
+	spellsCastTotal: number;
+};
+type FthofResult = {
+	name: string;
+	wrath: boolean;
+	description: string;
+	noteworthy: boolean;
+	image: string;
+};
+type GfdResult = {
+	name: string;
+	imageUrl: string;
+	hasBs: boolean;
+	hasEf: boolean;
+	canCombo: boolean;
+	canSkip: boolean;
+	isWin: boolean;
+	cookie0?: FthofResult;
+	gc0?: FthofResult;
+	wc0?: FthofResult;
+	cookie1?: FthofResult;
+	gc1?: FthofResult;
+	wc1?: FthofResult;
+	spontaneousEdificeRandomNumber?: number;
+};
 
 
 /**
  * Extract save data about Magic tower minigame from exported save code.
  *
- * @param {string} saveCode exported save code
- * @returns {GameSaveData} extracted save data
+ * @param saveCode exported save code
+ * @returns extracted save data
  */
-const extractSaveData = (saveCode) => {
+const extractSaveData = (saveCode: string): GameSaveData => {
 	// return object
-	const saveData = {};
+	const saveData: GameSaveData = {};
 
 	// load save data
 	// detail: console.log(Game.WriteSave(3))
@@ -129,9 +126,9 @@ app.controller("myCtrl", function ($scope) {
 	/**
 	 * toggle interface button
 	 *
-	 * @param {number} contentId number of "content-*"
+	 * @param contentId number of "content-*"
 	 */
-	const collapseInterface = (contentId) => {
+	const collapseInterface = (contentId: number): void => {
 		console.log("content-" + contentId);
 		if (contentId) {
 			const content = document.getElementById("content-" + contentId);
@@ -148,7 +145,7 @@ app.controller("myCtrl", function ($scope) {
 	/**
 	 * log $scope (debug function)
 	 */
-	const printScope = () => {
+	const printScope = (): void => {
 		console.log($scope);
 	};
 
@@ -156,9 +153,9 @@ app.controller("myCtrl", function ($scope) {
 	/**
 	 * load save code
 	 *
-	 * @param {string=} saveCode save code (if omitted, read from html)
+	 * @param saveCode save code (if omitted, read from html)
 	 */
-	const loadSaveCode = (saveCode) => {
+	const loadSaveCode = (saveCode?: string): void => {
 		// read from html
 		const saveStr = saveCode ? saveCode : String($scope.saveString);
 
@@ -202,9 +199,9 @@ app.controller("myCtrl", function ($scope) {
 	 * simulating: minigameGrimoire.js v2.052
 	 *             > M.getFailChance (L289)
 	 *
-	 * @returns {number} fail chance of FtHoF
+	 * @returns fail chance of FtHoF
 	 */
-	const getBaseFailChance = () => {
+	const getBaseFailChance = (): number => {
 		let failChance = 0.15;
 		if ($scope.buffDI) failChance *= 0.1;  // Diminish Ineptitude Buff
 		if ($scope.debuffDI) failChance *= 5;  // Diminish Ineptitude Debuff
@@ -220,10 +217,10 @@ app.controller("myCtrl", function ($scope) {
 	 *             > M.getFailChance (L289)
 	 *             > M.spells['hand of fate'].failFunc() (L295 > L46)
 	 *
-	 * @param {number=} baseFailChance
-	 * @returns {number} fail chance of FtHoF
+	 * @param baseFailChance
+	 * @returns fail chance of FtHoF
 	 */
-	const getFthofFailChance = (baseFailChance) => {
+	const getFthofFailChance = (baseFailChance?: number): number => {
 		const failChance = (
 			(baseFailChance || getBaseFailChance())
 			+ 0.15 * $scope.screenCookieCount  // (L295 > L46)
@@ -239,13 +236,18 @@ app.controller("myCtrl", function ($scope) {
 	 *             > M.castSpell (L299)
 	 *             > spell.win(), spell.fail() (L313 > L48, 66)
 	 *
-	 * @param {string} seed five-letter string like "abcde" used as a seed in game
-	 * @param {number} spellsCastTotal total spell cast count before this cast
-	 * @param {boolean} isOneChange true if one change
-	 * @param {("GC" | "WC")=} forceCookie "GC": force GC, "WC": force WC, default: roll with Math.random()
-	 * @returns {FthofResult} FtHoF cast result
+	 * @param seed five-letter string like "abcde" used as a seed in game
+	 * @param spellsCastTotal total spell cast count before this cast
+	 * @param isOneChange true if one change
+	 * @param forceCookie "GC": force GC, "WC": force WC, default: roll with Math.random()
+	 * @returns FtHoF cast result
 	 */
-	const castFtHoF = (seed, spellsCastTotal, isOneChange, forceCookie) => {
+	const castFtHoF = (
+		seed: string,
+		spellsCastTotal: number,
+		isOneChange: boolean,
+		forceCookie?: "GC" | "WC",
+	): FthofResult => {
 		// set seed (L312)
 		Math_seedrandom(seed + "/" + spellsCastTotal);
 
@@ -303,14 +305,11 @@ app.controller("myCtrl", function ($scope) {
 		const random3 = Math.random();
 		const random4 = Math.random();
 
-		/**
-		 * choices of GC/WC effect name
-		 * @type {string[]}
-		 */
-		let choices = [];
+		// choices of GC/WC effect name
+		let choices: string[] = [];
 
-		/** FtHoF cast result  @type {FthofResult} */
-		const fthofResult = {};
+		// FtHoF cast result
+		const fthofResult: FthofResult = {};
 
 		// choose cookie effect
 		if (isWin) {
@@ -377,13 +376,18 @@ app.controller("myCtrl", function ($scope) {
 	/**
 	 * find comboes from indexes
 	 *
-	 * @param {number} comboLength target length of combo
-	 * @param {number} maxSpread number of max spread (padding; neither BS nor skip)
-	 * @param {number[]} comboIndexes indexes of buff (Building Special etc.)
-	 * @param {number[]} skipIndexes indexes of skippable GFD (Resurrect Abomination etc.)
-	 * @returns {object} found result
+	 * @param comboLength target length of combo
+	 * @param maxSpread number of max spread (padding; neither BS nor skip)
+	 * @param comboIndexes indexes of buff (Building Special etc.)
+	 * @param skipIndexes indexes of skippable GFD (Resurrect Abomination etc.)
+	 * @returns found result
 	 */
-	const findCombos = (comboLength, maxSpread, comboIndexes, skipIndexes) => {
+	const findCombos = (
+		comboLength: number,
+		maxSpread: number,
+		comboIndexes: number[],
+		skipIndexes: number[],
+	) => {
 		// whether to output combos exceeding maxSpread
 		const outputOverflowedCombo = false;
 
@@ -433,11 +437,11 @@ app.controller("myCtrl", function ($scope) {
 	 *             > spell.win() (L313 > L195)  note: GFD itself always win
 	 *             > setTimeout(... M.castSpell ...) (L206 > L299)
 	 *
-	 * @param {string} seed five-letter string like "abcde" used as a seed in game
-	 * @param {number} spellsCastTotal total spell cast count before this cast
-	 * @returns {GfdResult} GFD cast result
+	 * @param seed five-letter string like "abcde" used as a seed in game
+	 * @param spellsCastTotal total spell cast count before this cast
+	 * @returns GFD cast result
 	 */
-	const castGFD = (seed, spellsCastTotal) => {
+	const castGFD = (seed: string, spellsCastTotal: number): GfdResult => {
 		// single season option
 		const isSingleSeason = ($scope.season == "noswitch");
 
@@ -458,8 +462,8 @@ app.controller("myCtrl", function ($scope) {
 		// note2: increases above 0.5 only if DI debuff is active
 		const gfdBackfire = Math.max(getBaseFailChance(), 0.5);
 
-		/** return object  @type {GfdResult} */
-		const gfdResult = {};
+		// return object
+		const gfdResult: GfdResult = {};
 		gfdResult.name = castSpell.name;
 		gfdResult.imageUrl = spellNameToIconUrl[castSpell.name];
 		gfdResult.hasBs = false;
@@ -538,11 +542,11 @@ app.controller("myCtrl", function ($scope) {
 	/**
 	 * determine whether passed FtHoF results have one of passed effects
 	 *
-	 * @param {FthofResult[]} cookies array of FthofResults to see
-	 * @param {string | string[]} effect effect name or names
-	 * @returns {boolean} true if have
+	 * @param cookies array of FthofResults to see
+	 * @param effect effect name or names
+	 * @returns true if have
 	 */
-	const hasCookieEffect = (cookies, effect) => {
+	const hasCookieEffect = (cookies: FthofResult[], effect: string | string[]): boolean => {
 		const effectNames = (typeof effect == "string" ? [effect] : effect);
 		for (const cookie of cookies) {
 			for (const effectName of effectNames) {
@@ -556,7 +560,7 @@ app.controller("myCtrl", function ($scope) {
 	/**
 	 * calculate future FtHoF que and display result
 	 */
-	const updateCookies = () => {
+	const updateCookies = (): void => {
 		// read $scope variables
 		const {
 			lookahead,
@@ -703,9 +707,9 @@ app.controller("myCtrl", function ($scope) {
 	/**
 	 * pop and push items to FtHoF list
 	 *
-	 * @param {number=} count cast count (default: 1)
+	 * @param count cast count (default: 1)
 	 */
-	const castSpell = (count = 1) => {
+	const castSpell = (count = 1): void => {
 		const callCount = count;
 		$scope.spellsCast += callCount;
 		$scope.spellsCastTotal += callCount;
@@ -716,9 +720,9 @@ app.controller("myCtrl", function ($scope) {
 	/**
 	 * push more items to FtHoF list
 	 *
-	 * @param {number=} count load row count (default: 50)
+	 * @param count load row count (default: 50)
 	 */
-	const loadMore = (count = 50) => {
+	const loadMore = (count = 50): void => {
 		$scope.lookahead += count;
 		updateCookies();
 	};
@@ -737,9 +741,9 @@ app.controller("myCtrl", function ($scope) {
 /**
  * Select the save code input for easy pasting.
  *
- * @param {MouseEvent} event event fired with input left or right click
+ * @param event event fired with input left or right click
  */
-const selectSaveCodeInput = (event) => {
+const selectSaveCodeInput = (event: MouseEvent): void => {
 	if (!(event.target instanceof HTMLInputElement)) return;
     event.target.select();
 };
