@@ -53,6 +53,26 @@ type GfdResult = {
 	wc1?: FthofResult;
 	spontaneousEdificeRandomNumber?: number;
 };
+type GrimoireResult = {
+	num: number;
+	firstRandomNumber: number;
+
+	isFthofWin: boolean;
+	cookie0: FthofResult;
+	gc0: FthofResult;
+	wc0: FthofResult;
+	isOtherCookieNotable0: boolean;
+	cookie1: FthofResult;
+	gc1: FthofResult;
+	wc1: FthofResult;
+	isOtherCookieNotable1: boolean;
+
+	gfd: GfdResult;
+
+	isCombo: boolean;
+	isSkip: boolean;
+	isSugar: boolean;
+};
 
 /** result of findCombo() */
 type ComboResult = { idx: number, length: number };
@@ -584,7 +604,7 @@ app.controller("myCtrl", function ($scope) {
 		const sugarIndexes: number[] = [];
 
 		// object that contain FtHoF and GFD result, combo / skip indexes, etc.
-		const grimoireResults = [];
+		const grimoireResults: GrimoireResult[] = [];
 
 		// srart timer
 		console.time("updateCookies");
@@ -672,7 +692,7 @@ app.controller("myCtrl", function ($scope) {
 			}
 
 			// set to object and push to array
-			const grimoireResult = {
+			const grimoireResult: GrimoireResult = {
 				num: i + 1,
 				firstRandomNumber: randomNumber,
 
