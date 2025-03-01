@@ -54,6 +54,10 @@ type GfdResult = {
 	spontaneousEdificeRandomNumber?: number;
 };
 
+/** result of findCombo() */
+type ComboResult = { idx: number, length: number };
+type ComboResults = { shortest: ComboResult, first: ComboResult };
+
 
 /**
  * Extract save data about Magic tower minigame from exported save code.
@@ -388,7 +392,7 @@ app.controller("myCtrl", function ($scope) {
 		maxSpread: number,
 		comboIndexes: number[],
 		skipIndexes: number[],
-	) => {
+	): ComboResults => {
 		// whether to output combos exceeding maxSpread
 		const outputOverflowedCombo = false;
 
@@ -575,7 +579,7 @@ app.controller("myCtrl", function ($scope) {
 		const firstRandomNumbers = [];
 		const baseBackfireChance = getBaseFailChance();
 		const fthofBackfireChance = getFthofFailChance(baseBackfireChance);
-		const combos = {};
+		const combos: { [key: number]: ComboResults } = {};
 		const sugarIndexes = [];
 
 		// object that contain FtHoF and GFD result, combo / skip indexes, etc.
