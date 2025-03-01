@@ -30,7 +30,7 @@ type GameSaveData = {
 };
 type FthofResult = {
 	name: string;
-	wrath: boolean;
+	isWin: boolean;
 	image: string;
 
 	description: string;
@@ -388,7 +388,7 @@ app.controller("myCtrl", function ($scope) {
 		// return FtHoF cast result
 		const fthofResult: FthofResult = {
 			name: effectName,
-			wrath: !isWin,
+			isWin,
 			image: imageUrl,
 
 			description: description,
