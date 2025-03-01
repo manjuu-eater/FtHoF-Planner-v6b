@@ -4,7 +4,7 @@
     "typescript": "^5.8.2"
   },
   "scripts": {
-    "build": "ls -1 && npx tsc",
-    "test": "mkdir dist && exit 0"
+    "build": "mkdir -p dist && npx tsc",
+    "test": "ls -1 dist && exit 0"
   }
 }
