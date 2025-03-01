@@ -4,7 +4,7 @@
     "typescript": "^5.8.2"
   },
   "scripts": {
-    "build": "npx tsc",
+    "build": "ls -1 && npx tsc",
     "test": "exit 0"
   }
 }
