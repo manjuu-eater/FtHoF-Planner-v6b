@@ -350,7 +350,7 @@ app.controller("myCtrl", function ($scope) {
 			if (random1 < 0.1) choices.push("Cursed Finger", "Elder Frenzy");
 			if (random2 < 0.003) choices.push("Free Sugar Lump");
 			if (random3 < 0.1) choices = ["Blab"];
-			fthofResult.name = choose(choices);
+			fthofResult.name = chooseWith(choices, random4);
 		}
 
 		// set whether cookie is WC
