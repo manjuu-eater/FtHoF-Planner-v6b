@@ -36,12 +36,13 @@ type FthofResult = {
 };
 type GfdResult = {
 	name: string;
+	isWin: boolean;
 	imageUrl: string;
+
 	hasBs: boolean;
 	hasEf: boolean;
 	canCombo: boolean;
 	canSkip: boolean;
-	isWin: boolean;
 	cookie0?: FthofResult;
 	gc0?: FthofResult;
 	wc0?: FthofResult;
@@ -469,13 +470,13 @@ app.controller("myCtrl", function ($scope) {
 		// return object
 		const gfdResult: GfdResult = {
 			name: castSpell.name,
+			isWin: isChildSpellWin,
 			imageUrl: spellNameToIconUrl[castSpell.name],
 
 			hasBs: false,
 			hasEf: false,
 			canCombo: false,
 			canSkip: false,
-			isWin: isChildSpellWin,
 		};
 
 		// set the result of child spells called by GFD
