@@ -54,16 +54,6 @@ input#save_code {
 	height: 3.5em;
 }
 
-/* checkbox that hide One Change column */
-.hide-column {
-	align-self: flex-end;
-	font-size: 0.7em;
-}
-.hide-column > input {
-	width: 13px;
-	accent-color: rgb(255,89,145);
-}
-
 /* highlighting noteworty or skippable cookie */
 div.highlight {
 	width: 100%;
