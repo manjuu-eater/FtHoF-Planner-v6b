@@ -69,6 +69,18 @@ app.controller("myCtrl", function ($scope) {
     if (previousSaveCode)
         $scope.saveString = previousSaveCode;
     /**
+     * Select the save code input for easy pasting.
+     *
+     * @param event event fired with input left or right click
+     */
+    const selectSaveCodeInput = (event) => {
+        if (!(event.target instanceof HTMLInputElement))
+            return;
+        event.target.select();
+    };
+    // add event listener for right click
+    document.addEventListener("contextmenu", selectSaveCodeInput);
+    /**
      * toggle interface button
      *
      * @param contentId number of "content-*"
@@ -592,6 +604,7 @@ app.controller("myCtrl", function ($scope) {
         updateCookies();
     };
     // set functions to $scope that called from index.html
+    $scope.selectSaveCodeInput = selectSaveCodeInput;
     $scope.collapseInterface = collapseInterface;
     $scope.printScope = printScope;
     $scope.loadSaveCode = loadSaveCode;
@@ -601,17 +614,4 @@ app.controller("myCtrl", function ($scope) {
     // remove loading text and show main area
     $scope.ready = true;
 });
-/**
- * Select the save code input for easy pasting.
- *
- * @param event event fired with input left or right click
- */
-const selectSaveCodeInput = (event) => {
-    if (!(event.target instanceof HTMLInputElement))
-        return;
-    event.target.select();
-};
-// add event listener for left and right clicks
-document.addEventListener("click", selectSaveCodeInput);
-document.addEventListener("contextmenu", selectSaveCodeInput);
 //# sourceMappingURL=index.js.map
