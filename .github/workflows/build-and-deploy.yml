@@ -64,12 +64,12 @@ jobs:
   deploy:
     # This job requires job "build" to be completed
     needs: build
-    
+
     runs-on: ubuntu-latest
-    
+
     steps:
       - uses: actions/checkout@v4
-  
+
       # Download built files from temporary directory
       - name: Download built files
         uses: actions/download-artifact@v4
