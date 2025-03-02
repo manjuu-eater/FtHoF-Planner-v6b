@@ -67,7 +67,7 @@ type GfdResult = {
  */
 type GrimoireResult = {
 	num: number;
-	firstRandomNumber: number;
+	firstRandomNum: number;
 	wcThreshold: number;
 
 	isFthofWin: boolean;
@@ -736,7 +736,7 @@ app.controller("myCtrl", function ($scope) {
 			// set to object and push to array
 			const grimoireResult: GrimoireResult = {
 				num: i + 1,
-				firstRandomNumber: randomNumber,
+				firstRandomNum: randomNumber,
 				wcThreshold,
 
 				isFthofWin,
