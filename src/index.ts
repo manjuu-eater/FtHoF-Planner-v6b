@@ -179,6 +179,14 @@ app.controller("myCtrl", function ($scope) {
 	// Options: FtHoF Settings
 	$scope.season = "cookie";
 
+	// names of ng-model (use at end of controller function)
+	const optionModelNames = [
+		"lookahead", "minComboLength", "maxComboLength", "maxSpread",
+		"includeEF", "skipRA", "skipSE", "skipST",
+		"screenCookieCount", "buffDF", "auraSI", "buffDI", "debuffDI",
+		"season",
+	];
+
 
 	// ready state flag
 	$scope.ready = false;
@@ -823,6 +831,21 @@ app.controller("myCtrl", function ($scope) {
 	$scope.updateCookies     = updateCookies;
 	$scope.castSpell         = castSpell;
 	$scope.loadMore          = loadMore;
+
+
+	/**
+	 * call $scope.updateCookies() when specified $scope value is changed
+	 *
+	 * @param after value after change
+	 * @param before value before change
+	 */
+	const updateCookiesIfChanged = <T>(after: T, before: T): void => {
+		if (after !== before) $scope.updateCookies();
+	};
+
+	// start monitoring $scope changes
+	optionModelNames.forEach(modelName => $scope.$watch(modelName, updateCookiesIfChanged));
+
 
 	// remove loading text and show main area
 	$scope.ready = true;
