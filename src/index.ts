@@ -657,7 +657,7 @@ app.controller("myCtrl", function ($scope) {
 
 			// minimum count of GC/WC on screen that GC changes to WC
 			const wcThreshold = (
-				randomNumber + baseBackfireChance > 1
+				randomNumber + baseBackfireChance >= 1
 				? 0
 				: Math.ceil((1 - randomNumber - baseBackfireChance) / 0.15)
 			);
