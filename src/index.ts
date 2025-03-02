@@ -146,6 +146,9 @@ app.controller("myCtrl", function ($scope) {
 	$scope.lookahead = 200;
 	$scope.season = "cookie";
 
+	// ready state flag
+	$scope.ready = false;
+
 	// fill the save code input if previous save code exists in LocalStorage
 	const previousSaveCode = window.localStorage.getItem("fthof_save_code");
 	if (previousSaveCode) $scope.saveString = previousSaveCode;
@@ -763,6 +766,9 @@ app.controller("myCtrl", function ($scope) {
 	$scope.updateCookies     = updateCookies;
 	$scope.castSpell         = castSpell;
 	$scope.loadMore          = loadMore;
+
+	// remove loading text and show main area
+	$scope.ready = true;
 });
 
 
