@@ -22,12 +22,16 @@ import {
 
 
 // type definition
+
+/** part of Cookie Clicker's saved data that extracted from save code */
 type GameSaveData = {
 	seed: string;
 	ascensionMode: number;
 	spellsCast: number;
 	spellsCastTotal: number;
 };
+
+/** result of FtHoF */
 type FthofResult = {
 	name: EffectName;
 	isWin: boolean;
@@ -36,6 +40,8 @@ type FthofResult = {
 	description: string;
 	noteworthy: boolean;
 };
+
+/** result of GFD */
 type GfdResult = {
 	name: SpellName;
 	isWin: boolean;
@@ -53,6 +59,12 @@ type GfdResult = {
 	wc1?: FthofResult;
 	spontaneousEdificeRandomNumber?: number;
 };
+
+/**
+ * set of grimoire spell cast result
+ *
+ * All values in this set are uniquely derived from the seed and total spell cast count.
+ */
 type GrimoireResult = {
 	num: number;
 	firstRandomNumber: number;
@@ -74,8 +86,10 @@ type GrimoireResult = {
 	isSugar: boolean;
 };
 
-/** result of findCombo() */
+/** one of findCombo() results */
 type ComboResult = { idx: number, length: number };
+
+/** findCombo() results to return */
 type ComboResults = { shortest: ComboResult, first: ComboResult };
 
 
