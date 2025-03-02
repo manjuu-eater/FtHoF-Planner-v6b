@@ -657,9 +657,9 @@ app.controller("myCtrl", function ($scope) {
 
 			// minimum count of GC/WC on screen that GC changes to WC
 			const wcThreshold = (
-				randomNumber + baseBackfireChance >= 1
-				? 0
-				: Math.ceil((1 - randomNumber - baseBackfireChance) / 0.15)
+				randomNumber < 1 - baseBackfireChance  // if false, 100% WC with no GC/WC on screen
+				? Math.ceil((1 - randomNumber - baseBackfireChance) / 0.15)
+				: 0
 			);
 
 			// FtHoF success or backfire (L313)
