@@ -146,21 +146,39 @@ const extractSaveData = (saveCode: string): GameSaveData => {
 
 const app = window.angular.module("myApp", ["ngMaterial"]);
 app.controller("myCtrl", function ($scope) {
+	// set initial value to $scope variable
+
+	// Save Data
+	$scope.saveString = "";
 	$scope.seed = "";
 	$scope.ascensionMode = 0;
-	$scope.spellsCastTotal = 0;
 	$scope.spellsCast = 0;
+	$scope.spellsCastTotal = 0;
+
+	// Options: Lookahead Length
+	$scope.lookahead = 200;
+
+	// Options: Combos
+	$scope.minComboLength = 2;
+	$scope.maxComboLength = 4;
+	$scope.maxSpread = 2;
+
+	// Options: Include EF or Skip Some GFD
+	$scope.includeEF = false;
+	$scope.skipRA = false;
+	$scope.skipSE = false;
+	$scope.skipST = false;
+
+	// Options: Buffs / Debuffs that affect fail chance
+	$scope.screenCookieCount = 0;
 	$scope.buffDF = false;
 	$scope.auraSI = false;
 	$scope.buffDI = false;
 	$scope.debuffDI = false;
-	$scope.screenCookieCount = 0;
-	$scope.minComboLength = 2;
-	$scope.maxComboLength = 4;
-	$scope.maxSpread = 2;
-	$scope.saveString = "";
-	$scope.lookahead = 200;
+
+	// Options: FtHoF Settings
 	$scope.season = "cookie";
+
 
 	// ready state flag
 	$scope.ready = false;
