@@ -656,10 +656,10 @@ app.controller("myCtrl", function ($scope) {
 			firstRandomNumbers.push(randomNumber);
 
 			// minimum count of GC/WC on screen that GC changes to WC
-			const wcThreshold = Number(
+			const wcThreshold = (
 				randomNumber + baseBackfireChance > 1
 				? 0
-				: ((1.075 - randomNumber - baseBackfireChance) / 0.15).toFixed(0)
+				: Math.ceil((1 - randomNumber - baseBackfireChance) / 0.15)
 			);
 
 			// FtHoF success or backfire (L313)
