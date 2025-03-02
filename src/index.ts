@@ -68,6 +68,7 @@ type GfdResult = {
 type GrimoireResult = {
 	num: number;
 	firstRandomNumber: number;
+	wcThreshold: number;
 
 	isFthofWin: boolean;
 	cookie0: FthofResult;
@@ -654,6 +655,13 @@ app.controller("myCtrl", function ($scope) {
 			const randomNumber = Math.random();
 			firstRandomNumbers.push(randomNumber);
 
+			// minimum count of GC/WC on screen that GC changes to WC
+			const wcThreshold = Number(
+				randomNumber + baseBackfireChance > 1
+				? 0
+				: ((1.075 - randomNumber - baseBackfireChance) / 0.15).toFixed(0)
+			);
+
 			// FtHoF success or backfire (L313)
 			const isFthofWin = randomNumber < 1 - fthofBackfireChance;
 
@@ -729,6 +737,7 @@ app.controller("myCtrl", function ($scope) {
 			const grimoireResult: GrimoireResult = {
 				num: i + 1,
 				firstRandomNumber: randomNumber,
+				wcThreshold,
 
 				isFthofWin,
 				cookie0, gc0, wc0, isOtherCookieNotable0,

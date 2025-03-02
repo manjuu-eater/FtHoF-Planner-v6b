@@ -124,11 +124,7 @@
 						<li>
 							found in
 							<a href="#{{sugarIndex + 1}}">#{{sugarIndex + 1}}</a>
-							with {{
-								firstRandomNumbers[sugarIndex] + baseBackfireChance > 1
-								? 0
-								: ((1.075-firstRandomNumbers[sugarIndex] - baseBackfireChance) / 0.15).toFixed(0)
-							}} screen GC
+							with {{grimoireResults[sugarIndex].wcThreshold}} screen GC
 						</li>
 					</ul>
 				</li>
@@ -283,12 +279,7 @@
 
 						<!-- Random Number -->
 						<td><div>
-							{{result.firstRandomNumber.toFixed(4)}}
-							({{
-								result.firstRandomNumber + baseBackfireChance > 1
-								? 0
-								: ((1.075-result.firstRandomNumber - baseBackfireChance) / 0.15).toFixed(0)
-							}} GC)
+							{{result.firstRandomNumber.toFixed(4)}} ({{result.wcThreshold}} GC)
 						</div></td>
 
 						<!-- No Change -->
