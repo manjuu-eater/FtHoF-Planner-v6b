@@ -5,3 +5,6 @@
 # TypeScript compiled files
 /dist/*.js
 /dist/*.map
+
+# Cancel ignoring TypeScript files for deployment
+!/dist/*
