@@ -28,7 +28,7 @@ type GameSaveData = {
 	spellsCastTotal: number;
 };
 type FthofResult = {
-	name: string;
+	name: EffectName;
 	isWin: boolean;
 	image: string;
 
