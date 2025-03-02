@@ -147,3 +147,31 @@ tbody td img {
 	width: 2em;
 	height: 2em;
 }
+
+
+/* loading animation */
+@keyframes fadeIn {
+	from { opacity: 0; }
+	to { opacity: 1; }
+}
+.loading {
+	opacity: 0;
+	animation: fadeIn 3s ease-in-out 1s forwards;
+}
+.loading .description {
+	opacity: 0;
+	animation: fadeIn 3s ease-in-out 3s forwards;
+}
+
+@keyframes spin {
+	from { transform: rotate(0deg); }
+	to { transform: rotate(360deg); }
+}
+.inner {
+	display: inline-block;
+	animation: spin 2s linear infinite;
+	animation-delay: .5s;
+}
+.inner.reverse {
+	animation-direction: reverse;
+}
