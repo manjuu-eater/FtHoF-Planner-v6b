@@ -1,10 +1,12 @@
 # Forkflow YAML file for GitHub Action: build, deploy
 #
-# Actions settings need to be changed to deploy:
-#   Repository Settings
-#   > Actions > General
-#   > Workflow permissions
-#       set to "Read and write permissions" and Save
+# - Actions settings need to be changed to deploy:
+#     Repository Settings
+#     > Actions > General
+#     > Workflow permissions
+#         set to "Read and write permissions" and Save
+#
+# - Output of generated files requires "gh-pages" branch
 #
 # syntax: https://docs.github.com/en/actions/writing-workflows/workflow-syntax-for-github-actions
 # explanation comment: forkflow template "Simple workflow"
