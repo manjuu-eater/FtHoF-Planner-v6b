@@ -11,6 +11,7 @@ import {
 	Math_seedrandom, choose, M_spells,
 	cookieEffectNameToDescription,
 	chooseWith,
+	SpellName,
 } from "./game_related_data.js";
 
 import {
@@ -21,22 +22,28 @@ import {
 
 
 // type definition
+
+/** part of Cookie Clicker's saved data that extracted from save code */
 type GameSaveData = {
 	seed: string;
 	ascensionMode: number;
 	spellsCast: number;
 	spellsCastTotal: number;
 };
+
+/** result of FtHoF */
 type FthofResult = {
-	name: string;
+	name: EffectName;
 	isWin: boolean;
 	image: string;
 
 	description: string;
 	noteworthy: boolean;
 };
+
+/** result of GFD */
 type GfdResult = {
-	name: string;
+	name: SpellName;
 	isWin: boolean;
 	image: string;
 
@@ -52,9 +59,16 @@ type GfdResult = {
 	wc1?: FthofResult;
 	spontaneousEdificeRandomNumber?: number;
 };
+
+/**
+ * set of grimoire spell cast result
+ *
+ * All values in this set are uniquely derived from the seed and total spell cast count.
+ */
 type GrimoireResult = {
 	num: number;
-	firstRandomNumber: number;
+	firstRandomNum: number;
+	wcThreshold: number;
 
 	isFthofWin: boolean;
 	cookie0: FthofResult;
@@ -73,8 +87,10 @@ type GrimoireResult = {
 	isSugar: boolean;
 };
 
-/** result of findCombo() */
+/** one of findCombo() results */
 type ComboResult = { idx: number, length: number };
+
+/** findCombo() results to return */
 type ComboResults = { shortest: ComboResult, first: ComboResult };
 
 
@@ -130,21 +146,47 @@ const extractSaveData = (saveCode: string): GameSaveData => {
 
 const app = window.angular.module("myApp", ["ngMaterial"]);
 app.controller("myCtrl", function ($scope) {
+	// set initial value to $scope variable
+
+	// Save Data
+	$scope.saveString = "";
 	$scope.seed = "";
 	$scope.ascensionMode = 0;
-	$scope.spellsCastTotal = 0;
 	$scope.spellsCast = 0;
+	$scope.spellsCastTotal = 0;
+
+	// Options: Lookahead Length
+	$scope.lookahead = 200;
+
+	// Options: Combos
+	$scope.minComboLength = 2;
+	$scope.maxComboLength = 4;
+	$scope.maxSpread = 2;
+
+	// Options: Include EF or Skip Some GFD
+	$scope.includeEF = false;
+	$scope.skipRA = false;
+	$scope.skipSE = false;
+	$scope.skipST = false;
+
+	// Options: Buffs / Debuffs that affect fail chance
+	$scope.screenCookieCount = 0;
 	$scope.buffDF = false;
 	$scope.auraSI = false;
 	$scope.buffDI = false;
 	$scope.debuffDI = false;
-	$scope.screenCookieCount = 0;
-	$scope.minComboLength = 2;
-	$scope.maxComboLength = 4;
-	$scope.maxSpread = 2;
-	$scope.saveString = "";
-	$scope.lookahead = 200;
+
+	// Options: FtHoF Settings
 	$scope.season = "cookie";
+
+	// names of ng-model (use at end of controller function)
+	const optionModelNames = [
+		"lookahead", "minComboLength", "maxComboLength", "maxSpread",
+		"includeEF", "skipRA", "skipSE", "skipST",
+		"screenCookieCount", "buffDF", "auraSI", "buffDI", "debuffDI",
+		"season",
+	];
+
 
 	// ready state flag
 	$scope.ready = false;
@@ -639,6 +681,13 @@ app.controller("myCtrl", function ($scope) {
 			const randomNumber = Math.random();
 			firstRandomNumbers.push(randomNumber);
 
+			// minimum count of GC/WC on screen that GC changes to WC
+			const wcThreshold = (
+				randomNumber < 1 - baseBackfireChance  // if false, 100% WC with no GC/WC on screen
+				? Math.ceil((1 - randomNumber - baseBackfireChance) / 0.15)
+				: 0
+			);
+
 			// FtHoF success or backfire (L313)
 			const isFthofWin = randomNumber < 1 - fthofBackfireChance;
 
@@ -713,7 +762,8 @@ app.controller("myCtrl", function ($scope) {
 			// set to object and push to array
 			const grimoireResult: GrimoireResult = {
 				num: i + 1,
-				firstRandomNumber: randomNumber,
+				firstRandomNum: randomNumber,
+				wcThreshold,
 
 				isFthofWin,
 				cookie0, gc0, wc0, isOtherCookieNotable0,
@@ -781,6 +831,21 @@ app.controller("myCtrl", function ($scope) {
 	$scope.updateCookies     = updateCookies;
 	$scope.castSpell         = castSpell;
 	$scope.loadMore          = loadMore;
+
+
+	/**
+	 * call $scope.updateCookies() when specified $scope value is changed
+	 *
+	 * @param after value after change
+	 * @param before value before change
+	 */
+	const updateCookiesIfChanged = <T>(after: T, before: T): void => {
+		if (after !== before) $scope.updateCookies();
+	};
+
+	// start monitoring $scope changes
+	optionModelNames.forEach(modelName => $scope.$watch(modelName, updateCookiesIfChanged));
+
 
 	// remove loading text and show main area
 	$scope.ready = true;

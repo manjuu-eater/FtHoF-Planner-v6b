@@ -10,7 +10,7 @@
  * name of the GC / WC effect that will be caused by FtHoF
  *
  * simmilar to list of Game.goldenCookieChoices in main.js (L5874),
- * but there is some differences:
+ * but there are some differences:
  *   - Dragon Harvest, Dragonflight is omitted
  *   - changed to Title Case
  *   - Cookie Storm Drop is add

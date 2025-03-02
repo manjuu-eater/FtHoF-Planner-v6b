@@ -47,21 +47,39 @@ const extractSaveData = (saveCode) => {
 };
 const app = window.angular.module("myApp", ["ngMaterial"]);
 app.controller("myCtrl", function ($scope) {
+    // set initial value to $scope variable
+    // Save Data
+    $scope.saveString = "";
     $scope.seed = "";
     $scope.ascensionMode = 0;
-    $scope.spellsCastTotal = 0;
     $scope.spellsCast = 0;
+    $scope.spellsCastTotal = 0;
+    // Options: Lookahead Length
+    $scope.lookahead = 200;
+    // Options: Combos
+    $scope.minComboLength = 2;
+    $scope.maxComboLength = 4;
+    $scope.maxSpread = 2;
+    // Options: Include EF or Skip Some GFD
+    $scope.includeEF = false;
+    $scope.skipRA = false;
+    $scope.skipSE = false;
+    $scope.skipST = false;
+    // Options: Buffs / Debuffs that affect fail chance
+    $scope.screenCookieCount = 0;
     $scope.buffDF = false;
     $scope.auraSI = false;
     $scope.buffDI = false;
     $scope.debuffDI = false;
-    $scope.screenCookieCount = 0;
-    $scope.minComboLength = 2;
-    $scope.maxComboLength = 4;
-    $scope.maxSpread = 2;
-    $scope.saveString = "";
-    $scope.lookahead = 200;
+    // Options: FtHoF Settings
     $scope.season = "cookie";
+    // names of ng-model (use at end of controller function)
+    const optionModelNames = [
+        "lookahead", "minComboLength", "maxComboLength", "maxSpread",
+        "includeEF", "skipRA", "skipSE", "skipST",
+        "screenCookieCount", "buffDF", "auraSI", "buffDI", "debuffDI",
+        "season",
+    ];
     // ready state flag
     $scope.ready = false;
     // fill the save code input if previous save code exists in LocalStorage
@@ -487,6 +505,10 @@ app.controller("myCtrl", function ($scope) {
             Math_seedrandom(seed + "/" + currentTotalSpell);
             const randomNumber = Math.random();
             firstRandomNumbers.push(randomNumber);
+            // minimum count of GC/WC on screen that GC changes to WC
+            const wcThreshold = (randomNumber < 1 - baseBackfireChance // if false, 100% WC with no GC/WC on screen
+                ? Math.ceil((1 - randomNumber - baseBackfireChance) / 0.15)
+                : 0);
             // FtHoF success or backfire (L313)
             const isFthofWin = randomNumber < 1 - fthofBackfireChance;
             // get FtHoF results (both success and backfire)
@@ -555,7 +577,8 @@ app.controller("myCtrl", function ($scope) {
             // set to object and push to array
             const grimoireResult = {
                 num: i + 1,
-                firstRandomNumber: randomNumber,
+                firstRandomNum: randomNumber,
+                wcThreshold,
                 isFthofWin,
                 cookie0, gc0, wc0, isOtherCookieNotable0,
                 cookie1, gc1, wc1, isOtherCookieNotable1,
@@ -611,6 +634,18 @@ app.controller("myCtrl", function ($scope) {
     $scope.updateCookies = updateCookies;
     $scope.castSpell = castSpell;
     $scope.loadMore = loadMore;
+    /**
+     * call $scope.updateCookies() when specified $scope value is changed
+     *
+     * @param after value after change
+     * @param before value before change
+     */
+    const updateCookiesIfChanged = (after, before) => {
+        if (after !== before)
+            $scope.updateCookies();
+    };
+    // start monitoring $scope changes
+    optionModelNames.forEach(modelName => $scope.$watch(modelName, updateCookiesIfChanged));
     // remove loading text and show main area
     $scope.ready = true;
 });
