@@ -11,6 +11,7 @@ import {
 	Math_seedrandom, choose, M_spells,
 	cookieEffectNameToDescription,
 	chooseWith,
+	SpellName,
 } from "./game_related_data.js";
 
 import {
@@ -36,7 +37,7 @@ type FthofResult = {
 	noteworthy: boolean;
 };
 type GfdResult = {
-	name: string;
+	name: SpellName;
 	isWin: boolean;
 	image: string;
 
