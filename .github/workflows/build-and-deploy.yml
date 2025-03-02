@@ -1,0 +1,94 @@
+# Forkflow YAML file for GitHub Action: build, deploy
+#
+# Actions settings need to be changed to deploy:
+#   Repository Settings
+#   > Actions > General
+#   > Workflow permissions
+#       set to "Read and write permissions" and Save
+#
+# syntax: https://docs.github.com/en/actions/writing-workflows/workflow-syntax-for-github-actions
+# explanation comment: forkflow template "Simple workflow"
+# Node.js build help: https://docs.github.com/en/actions/use-cases-and-examples/building-and-testing/building-and-testing-nodejs
+
+name: TypeScript CI
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the "main" branch
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  # Build and test TypeScript files
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Run this build job multiple times with multiple Node.js versions for test
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x, 22.x]
+        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v4
+
+      # Build TypeScript with package.json scripts (with multiple Node.js versions for test)
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+      - run: npm ci
+      - run: npm run build --if-present
+      - run: npm test
+
+      # Upload built files to temporary directory only once
+      - name: Upload artifact for deployment
+        if: matrix.node-version == '18.x'
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist-files  # temporary directory
+          path: ./dist/     # upload directory
+
+  # Deploy to GitHub Pages
+  deploy:
+    # This job requires job "build" to be completed
+    needs: build
+    
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v4
+  
+      # Download built files from temporary directory
+      - name: Download built files
+        uses: actions/download-artifact@v4
+        with:
+          name: dist-files  # directory specified at upload
+          path: ./dist/     # download directory
+
+      # Ensure /dist/* is handled by Git
+      - name: Add .gitignore rules
+        run: |
+          echo '' >> .gitignore
+          echo '# Cancel ignoring TypeScript files for deployment' >> .gitignore
+          echo '!/dist/*' >> .gitignore
+
+      # Deploy repository files to GitHub Pages
+      # references: https://github.com/marketplace/actions/github-pages-action
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v4
+        if: ${{ github.ref == 'refs/heads/main' }}
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./   # deploy source directory
