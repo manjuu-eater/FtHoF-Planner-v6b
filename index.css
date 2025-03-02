@@ -54,6 +54,11 @@ input#save_code {
 	height: 3.5em;
 }
 
+/* loading title */
+.loading {
+	text-align: center;
+}
+
 /* highlighting noteworty or skippable cookie */
 div.highlight {
 	width: 100%;

@@ -69,269 +69,279 @@
 		<md-divider></md-divider>
 
 
-		<!-- Comobs Result -->
-		<ul ng-if="combos">
-			<li class="combo-listitem" ng-repeat="combo in combos">
-				<b>{{$index + minComboLength}}x Combo</b>
-				<ul ng-if="combo.shortest.idx == -1">
-					<li>No combo of this length</li>
-				</ul>
-				<ul ng-if="combo.shortest.idx != -1">
-					<li ng-if="combo.first.idx != -1">
-						<a href="#{{combo.first.idx + 1}}">Earliest:</a>
-						Length {{combo.first.length}};
-						spread {{combo.first.length - ($index + minComboLength)}};
-						starting at
-						<a href="#{{combo.first.idx + 1}}">spell #{{combo.first.idx+1}}</a>
-					</li>
-					<li ng-if="combo.first.idx == -1">
-						No combo of this length with spread &lt;= {{maxSpread}}
-					</li>
-					<li>
-						<a href="#{{combo.shortest.idx + 1}}">Shortest:</a>
-						Length {{combo.shortest.length}};
-						spread {{combo.shortest.length - ($index + minComboLength)}};
-						starting at
-						<a href="#{{combo.shortest.idx + 1}}">spell #{{combo.shortest.idx+1}}</a>
-					</li>
-				</ul>
-			</li>
-		</ul>
+		<!-- Loading Text -->
+		<div class="loading" ng-if="!ready">
+			<h2>Loading</h2>
+			(If this text remains on the screen, there may be something wrong with the process...)
+		</div>
 
-		<!-- Sugar Lumps -->
-		<ul ng-if="sugarIndexes">
-			<li>
-				<b>Sugar Lumps</b>
-				<ul ng-if="sugarIndexes.length == 0">
-					<li>No Sugar Lumps is found...</li>
-				</ul>
-				<ul ng-repeat="sugarIndex in sugarIndexes">
-					<li>
-						found in
-						<a href="#{{sugarIndex + 1}}">#{{sugarIndex + 1}}</a>
-						with {{
-							(
-								firstRandomNumbers[sugarIndex] + baseBackfireChance > 1
-								? 0
-								: ((1.075-firstRandomNumbers[sugarIndex] - baseBackfireChance) / 0.15).toFixed(0)
-							)
-							+ " screen GC"
-						}}
-					</li>
-				</ul>
-			</li>
-		</ul>
+		<!-- Main Contents that conains AngularJS brackets -->
+		<div ng-show="ready">
 
-		<md-divider></md-divider>
+			<!-- Comobs Result -->
+			<ul ng-if="combos">
+				<li class="combo-listitem" ng-repeat="combo in combos">
+					<b>{{$index + minComboLength}}x Combo</b>
+					<ul ng-if="combo.shortest.idx == -1">
+						<li>No combo of this length</li>
+					</ul>
+					<ul ng-if="combo.shortest.idx != -1">
+						<li ng-if="combo.first.idx != -1">
+							<a href="#{{combo.first.idx + 1}}">Earliest:</a>
+							Length {{combo.first.length}};
+							spread {{combo.first.length - ($index + minComboLength)}};
+							starting at
+							<a href="#{{combo.first.idx + 1}}">spell #{{combo.first.idx+1}}</a>
+						</li>
+						<li ng-if="combo.first.idx == -1">
+							No combo of this length with spread &lt;= {{maxSpread}}
+						</li>
+						<li>
+							<a href="#{{combo.shortest.idx + 1}}">Shortest:</a>
+							Length {{combo.shortest.length}};
+							spread {{combo.shortest.length - ($index + minComboLength)}};
+							starting at
+							<a href="#{{combo.shortest.idx + 1}}">spell #{{combo.shortest.idx+1}}</a>
+						</li>
+					</ul>
+				</li>
+			</ul>
 
+			<!-- Sugar Lumps -->
+			<ul ng-if="sugarIndexes">
+				<li>
+					<b>Sugar Lumps</b>
+					<ul ng-if="sugarIndexes.length == 0">
+						<li>No Sugar Lumps is found...</li>
+					</ul>
+					<ul ng-repeat="sugarIndex in sugarIndexes">
+						<li>
+							found in
+							<a href="#{{sugarIndex + 1}}">#{{sugarIndex + 1}}</a>
+							with {{
+								(
+									firstRandomNumbers[sugarIndex] + baseBackfireChance > 1
+									? 0
+									: ((1.075-firstRandomNumbers[sugarIndex] - baseBackfireChance) / 0.15).toFixed(0)
+								)
+								+ " screen GC"
+							}}
+						</li>
+					</ul>
+				</li>
+			</ul>
 
-		<!-- Options: Lookahead Length -->
-		<label>
-			Lookahead length
-			<input type="number" class="w4" min="10" max="1000" step="10" ng-model="lookahead">
-		</label>
-
-		<md-divider></md-divider>
-
-
-		<!-- Options: Combos -->
-		<label>
-			Min Combo
-			<input type="number" class="w3" min="1" max="20" ng-model="minComboLength">
-		</label>
-
-		<label>
-			Max Combo
-			<input type="number" class="w3" min="1" max="20" ng-model="maxComboLength">
-		</label>
-
-		<label>
-			Max Spread
-			<input type="number" class="w3" min="0" max="99" ng-model="maxSpread">
-		</label>
-
-		<br>
-
-		<!-- Options: Include EF or Skip Some GFD -->
-		<md-checkbox ng-checked="true" ng-model="includeEF">
-			Include Elder Frenzies
-		</md-checkbox>
-
-		<md-checkbox ng-checked="true" ng-model="skipRA">
-			Skip Abominations
-		</md-checkbox>
-
-		<md-checkbox ng-checked="true" ng-model="skipSE">
-			Skip Spontaneous Edifices
-		</md-checkbox>
-
-		<md-checkbox ng-checked="false" ng-model="skipST">
-			Skip Stretch Time
-		</md-checkbox>
-
-		<md-divider></md-divider>
+			<md-divider></md-divider>
 
 
-		<!-- Options: Buffs / Debuffs that affect fail chance -->
-		<label>
-			Cookies<img src="img/goldCookie.png" class="mini"><!--
-			--><img src="img/wrathCookie.png" class="mini"> on screen
-			<input type="number" class="w3" min="0" max="10" ng-model="screenCookieCount">
-		</label>
+			<!-- Options: Lookahead Length -->
+			<label>
+				Lookahead length
+				<input type="number" class="w4" min="10" max="1000" step="10" ng-model="lookahead">
+			</label>
 
-		<br>
-
-		<md-checkbox ng-model="buffDF">
-			Dragonflight Buff Active
-		</md-checkbox>
-
-		<md-checkbox ng-model="auraSI">
-			Supreme Intellect Aura Active
-		</md-checkbox>
-
-		<md-checkbox ng-model="buffDI">
-			Diminish Ineptitude Buff Active
-		</md-checkbox>
-
-		<md-checkbox ng-model="debuffDI">
-			Diminish Ineptitude Debuff Active
-		</md-checkbox>
-
-		<md-divider></md-divider>
+			<md-divider></md-divider>
 
 
-		<!-- Options: FtHoF Settings -->
-		<md-radio-group ng-model="season" layout="row">
-			"One Change" Season:&nbsp;
-			<md-radio-button value="noswitch">No Use</md-radio-button>
-			<md-radio-button value="cookie">GC/WC</md-radio-button>
-			<md-radio-button value="valentines">Valentines</md-radio-button>
-			<md-radio-button value="easter">Easter</md-radio-button>
-		</md-radio-group>
+			<!-- Options: Combos -->
+			<label>
+				Min Combo
+				<input type="number" class="w3" min="1" max="20" ng-model="minComboLength">
+			</label>
 
-		<md-divider></md-divider>
+			<label>
+				Max Combo
+				<input type="number" class="w3" min="1" max="20" ng-model="maxComboLength">
+			</label>
+
+			<label>
+				Max Spread
+				<input type="number" class="w3" min="0" max="99" ng-model="maxSpread">
+			</label>
+
+			<br>
+
+			<!-- Options: Include EF or Skip Some GFD -->
+			<md-checkbox ng-checked="true" ng-model="includeEF">
+				Include Elder Frenzies
+			</md-checkbox>
+
+			<md-checkbox ng-checked="true" ng-model="skipRA">
+				Skip Abominations
+			</md-checkbox>
+
+			<md-checkbox ng-checked="true" ng-model="skipSE">
+				Skip Spontaneous Edifices
+			</md-checkbox>
+
+			<md-checkbox ng-checked="false" ng-model="skipST">
+				Skip Stretch Time
+			</md-checkbox>
+
+			<md-divider></md-divider>
 
 
-		<!-- Buttons -->
-		<md-button class="md-raised md-primary" ng-click="updateCookies()">Apply Settings</md-button>
-		<md-button class="md-raised md-primary" ng-click="castSpell()">Cast Spell</md-button>
-		<md-button class="md-raised md-primary" ng-click="castSpell(5)">x5</md-button>
-		<md-button class="md-raised md-primary" ng-click="castSpell(10)">x10</md-button>
-		<!-- <md-button class="md-raised md-primary" ng-click="printScope()">Print Scope</md-button> -->
+			<!-- Options: Buffs / Debuffs that affect fail chance -->
+			<label>
+				Cookies<img src="img/goldCookie.png" class="mini"><!--
+				--><img src="img/wrathCookie.png" class="mini"> on screen
+				<input type="number" class="w3" min="0" max="10" ng-model="screenCookieCount">
+			</label>
 
-		<md-divider></md-divider>
+			<br>
 
-		<!-- FtHoF Planner Main Result Area -->
-		<table>
-			<colgroup>
-				<col class="spell">
-				<col class="random">
-				<col class="fthof">
-				<col class="fthof" ng-if="season != 'noswitch'">
-				<col class="gfd">
-			</colgroup>
-			<thead>
-				<tr>
-					<th>Spell #</th>
-					<th>Random <br>Number</th>
-					<th>No Change</th>
-					<th ng-if="season != 'noswitch'">One Change</th>
-					<th>Gambler's Dream</th>
-				</tr>
-				<tr>
-					<td>
-						Cast count: #from now<br>
-						(In this ascension | Total)
-					</td>
-					<td>
-						Used to determine<br>
-						backfire and GFD spell.
-					</td>
-					<td>
-						Season is <b>NOT</b><br>
-						Valentines or Easter.
-					</td>
-					<td ng-if="season != 'noswitch'">
-						Season is<br>
-						Valentines or Easter.
-					</td>
-					<td>
-						Result of<br>
-						Gambler's Fever Dream.
-					</td>
-				</tr>
-			</thead>
-			<tbody>
-				<tr ng-repeat="result in grimoireResults" id="{{result.num}}">
-					<!-- Spell # -->
-					<td><div>
-						#{{result.num}}
-						({{spellsCast + result.num}} | {{spellsCastTotal + result.num}})
-					</div></td>
+			<md-checkbox ng-model="buffDF">
+				Dragonflight Buff Active
+			</md-checkbox>
 
-					<!-- Random Number -->
-					<td><div>
-						{{
-							firstRandomNumbers[$index].toFixed(4)
-							+ " ("
-							+ (
-								firstRandomNumbers[$index] + baseBackfireChance > 1
-								? 0
-								: ((1.075-firstRandomNumbers[$index] - baseBackfireChance) / 0.15).toFixed(0)
-							)
-							+ " GC)"
-						}}
-					</div></td>
+			<md-checkbox ng-model="auraSI">
+				Supreme Intellect Aura Active
+			</md-checkbox>
 
-					<!-- No Change -->
-					<td><div>
-						<img ng-src="{{result.cookie0.image}}">
-						<div ng-class="{
-							'highlight combo': result.cookie0.noteworthy,
-							'highlight notable': result.isOtherCookieNotable0,
-						}">
-							{{result.cookie0.name}}
-						</div>
-					</div></td>
+			<md-checkbox ng-model="buffDI">
+				Diminish Ineptitude Buff Active
+			</md-checkbox>
 
-					<!-- One Change -->
-					<td ng-if="season != 'noswitch'"><div>
-						<img ng-src="{{result.cookie1.image}}">
-						<div ng-class="{
-							'highlight combo': result.cookie1.noteworthy,
-							'highlight notable': result.isOtherCookieNotable1,
-						}">
-							{{result.cookie1.name}}
-						</div>
-					</div></td>
+			<md-checkbox ng-model="debuffDI">
+				Diminish Ineptitude Debuff Active
+			</md-checkbox>
 
-					<!-- Gambler's Dream -->
-					<td><div>
-						<img ng-src="{{result.gfd.image}}" ng-class="{
-							success: result.gfd.isWin,
-							backfire: !result.gfd.isWin,
-						}" class="gfd">
-						<div ng-class="{
-							'highlight combo': result.gfd.canCombo,
-							'highlight skip':  result.gfd.canSkip,
-						}" ng-attr-title="{{
-							result.gfd.name == 'Force the Hand of Fate'
-							? result.gfd.cookie0.name + (
-								season != 'noswitch'
-								? '; ' + result.gfd.cookie1.name
-								: ''
-							)
-							: undefined
-						}}">
-							{{result.gfd.name}}
-						</div>
-					</div></td>
-				</tr>
-			</tbody>
-		</table>
+			<md-divider></md-divider>
 
-		<!-- Load More Button -->
-		<md-button class="md-raised md-primary" ng-click="loadMore()">Load More</md-button>
+
+			<!-- Options: FtHoF Settings -->
+			<md-radio-group ng-model="season" layout="row">
+				"One Change" Season:&nbsp;
+				<md-radio-button value="noswitch">No Use</md-radio-button>
+				<md-radio-button value="cookie">GC/WC</md-radio-button>
+				<md-radio-button value="valentines">Valentines</md-radio-button>
+				<md-radio-button value="easter">Easter</md-radio-button>
+			</md-radio-group>
+
+			<md-divider></md-divider>
+
+
+			<!-- Buttons -->
+			<md-button class="md-raised md-primary" ng-click="updateCookies()">Apply Settings</md-button>
+			<md-button class="md-raised md-primary" ng-click="castSpell()">Cast Spell</md-button>
+			<md-button class="md-raised md-primary" ng-click="castSpell(5)">x5</md-button>
+			<md-button class="md-raised md-primary" ng-click="castSpell(10)">x10</md-button>
+			<!-- <md-button class="md-raised md-primary" ng-click="printScope()">Print Scope</md-button> -->
+
+			<md-divider></md-divider>
+
+			<!-- FtHoF Planner Main Result Area -->
+			<table>
+				<colgroup>
+					<col class="spell">
+					<col class="random">
+					<col class="fthof">
+					<col class="fthof" ng-if="season != 'noswitch'">
+					<col class="gfd">
+				</colgroup>
+				<thead>
+					<tr>
+						<th>Spell #</th>
+						<th>Random <br>Number</th>
+						<th>No Change</th>
+						<th ng-if="season != 'noswitch'">One Change</th>
+						<th>Gambler's Dream</th>
+					</tr>
+					<tr>
+						<td>
+							Cast count: #from now<br>
+							(In this ascension | Total)
+						</td>
+						<td>
+							Used to determine<br>
+							backfire and GFD spell.
+						</td>
+						<td>
+							Season is <b>NOT</b><br>
+							Valentines or Easter.
+						</td>
+						<td ng-if="season != 'noswitch'">
+							Season is<br>
+							Valentines or Easter.
+						</td>
+						<td>
+							Result of<br>
+							Gambler's Fever Dream.
+						</td>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="result in grimoireResults" id="{{result.num}}">
+						<!-- Spell # -->
+						<td><div>
+							#{{result.num}}
+							({{spellsCast + result.num}} | {{spellsCastTotal + result.num}})
+						</div></td>
+
+						<!-- Random Number -->
+						<td><div>
+							{{
+								firstRandomNumbers[$index].toFixed(4)
+								+ " ("
+								+ (
+									firstRandomNumbers[$index] + baseBackfireChance > 1
+									? 0
+									: ((1.075-firstRandomNumbers[$index] - baseBackfireChance) / 0.15).toFixed(0)
+								)
+								+ " GC)"
+							}}
+						</div></td>
+
+						<!-- No Change -->
+						<td><div>
+							<img ng-src="{{result.cookie0.image}}">
+							<div ng-class="{
+								'highlight combo': result.cookie0.noteworthy,
+								'highlight notable': result.isOtherCookieNotable0,
+							}">
+								{{result.cookie0.name}}
+							</div>
+						</div></td>
+
+						<!-- One Change -->
+						<td ng-if="season != 'noswitch'"><div>
+							<img ng-src="{{result.cookie1.image}}">
+							<div ng-class="{
+								'highlight combo': result.cookie1.noteworthy,
+								'highlight notable': result.isOtherCookieNotable1,
+							}">
+								{{result.cookie1.name}}
+							</div>
+						</div></td>
+
+						<!-- Gambler's Dream -->
+						<td><div>
+							<img ng-src="{{result.gfd.image}}" ng-class="{
+								success: result.gfd.isWin,
+								backfire: !result.gfd.isWin,
+							}" class="gfd">
+							<div ng-class="{
+								'highlight combo': result.gfd.canCombo,
+								'highlight skip':  result.gfd.canSkip,
+							}" ng-attr-title="{{
+								result.gfd.name == 'Force the Hand of Fate'
+								? result.gfd.cookie0.name + (
+									season != 'noswitch'
+									? '; ' + result.gfd.cookie1.name
+									: ''
+								)
+								: undefined
+							}}">
+								{{result.gfd.name}}
+							</div>
+						</div></td>
+					</tr>
+				</tbody>
+			</table>
+
+			<!-- Load More Button -->
+			<md-button class="md-raised md-primary" ng-click="loadMore()">Load More</md-button>
+		</div>
 	</div>
 </div>
 
