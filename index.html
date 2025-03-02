@@ -44,7 +44,7 @@
 		<div layout="row">
 			<md-input-container flex>
 				<label>Save Code</label>
-				<input id="save_code" ng-model="saveString">
+				<input id="save_code" ng-model="saveString" ng-click="selectSaveCodeInput($event)">
 			</md-input-container>
 			<md-button class="md-raised md-primary" ng-click="loadSaveCode(); updateCookies()">
 				Import Save
