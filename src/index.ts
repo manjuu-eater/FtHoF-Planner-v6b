@@ -155,32 +155,32 @@ app.controller("myCtrl", function ($scope) {
 	$scope.spellsCast = 0;
 	$scope.spellsCastTotal = 0;
 
-	// Options: Lookahead Length
+	// Settings: Lookahead Length
 	$scope.lookahead = 200;
 
-	// Options: Combos
+	// Settings: Combos
 	$scope.minComboLength = 2;
 	$scope.maxComboLength = 4;
 	$scope.maxSpread = 2;
 
-	// Options: Include EF or Skip Some GFD
+	// Settings: Include EF or Skip Some GFD
 	$scope.includeEF = false;
 	$scope.skipRA = false;
 	$scope.skipSE = false;
 	$scope.skipST = false;
 
-	// Options: Buffs / Debuffs that affect fail chance
+	// Settings: Buffs / Debuffs that affect fail chance
 	$scope.screenCookieCount = 0;
 	$scope.buffDF = false;
 	$scope.auraSI = false;
 	$scope.buffDI = false;
 	$scope.debuffDI = false;
 
-	// Options: FtHoF Settings
+	// Settings: FtHoF Settings
 	$scope.season = "cookie";
 
 	// names of ng-model (use at end of controller function)
-	const optionModelNames = [
+	const settingsModelNames = [
 		"lookahead", "minComboLength", "maxComboLength", "maxSpread",
 		"includeEF", "skipRA", "skipSE", "skipST",
 		"screenCookieCount", "buffDF", "auraSI", "buffDI", "debuffDI",
@@ -823,13 +823,13 @@ app.controller("myCtrl", function ($scope) {
 	 * @param after value after change
 	 * @param before value before change
 	 */
-	const whenOptionChanged = <T>(after: T, before: T): void => {
+	const whenSettingsChanged = <T>(after: T, before: T): void => {
 		// call $scope.updateCookies()
 		if (after !== before) $scope.updateCookies();
 	};
 
 	// start monitoring $scope changes
-	optionModelNames.forEach(modelName => $scope.$watch(modelName, whenOptionChanged));
+	settingsModelNames.forEach(modelName => $scope.$watch(modelName, whenSettingsChanged));
 
 
 	// remove loading text and show main area
