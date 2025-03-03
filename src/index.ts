@@ -844,6 +844,9 @@ app.controller("myCtrl", function ($scope) {
 	// start monitoring $scope changes
 	settingsModelNames.forEach(modelName => $scope.$watch(modelName, whenSettingsChanged));
 
+	// call $scope.updateCookies() for first time
+	if ($scope.saveString && !$scope.grimoireResults) updateCookies();
+
 
 	// remove loading text
 	$scope.ready = true;
