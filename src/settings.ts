@@ -25,6 +25,10 @@ export type Settings = {
 };
 
 
+/** LocalStorage key for saving settings data */
+const localStorageKey = "fthof_settings";
+
+
 /**
  * get all FtHoF settings from $scope
  *
@@ -77,7 +81,7 @@ export const saveSettings = ($scope: any): void => {
 	const settings = getSettings($scope);
 	const jsonSettings = JSON.stringify(settings);
 	try {
-		window.localStorage.setItem("fthof_settings", jsonSettings);
+		window.localStorage.setItem(localStorageKey, jsonSettings);
 	} catch (error) {
 		console.error("LocalStorage is full", error);
 	}
@@ -90,7 +94,7 @@ export const saveSettings = ($scope: any): void => {
  * @param $scope AngularJS $scope
  */
 export const loadSettings = ($scope: any): void => {
-	const jsonSettings = window.localStorage.getItem("fthof_settings");
+	const jsonSettings = window.localStorage.getItem(localStorageKey);
 	if (!jsonSettings) return;
 	try {
 		const objSettings = JSON.parse(jsonSettings) as Settings;
