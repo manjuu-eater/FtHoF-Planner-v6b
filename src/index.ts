@@ -20,6 +20,10 @@ import {
 	spellNameToIconUrl,
 } from "./image_file_paths.js";
 
+import {
+	saveSettings, loadSettings,
+} from "./settings.js";
+
 
 // type definition
 
@@ -194,6 +198,9 @@ app.controller("myCtrl", function ($scope) {
 	// fill the save code input if previous save code exists in LocalStorage
 	const previousSaveCode = window.localStorage.getItem("fthof_save_code");
 	if (previousSaveCode) $scope.saveString = previousSaveCode;
+
+	// load settings if previous settings are saved in LocalStorage
+	loadSettings($scope);
 
 
 	/**
@@ -824,8 +831,14 @@ app.controller("myCtrl", function ($scope) {
 	 * @param before value before change
 	 */
 	const whenSettingsChanged = <T>(after: T, before: T): void => {
+		// do nothing if no change
+		if (after === before) return;
+
 		// call $scope.updateCookies()
-		if (after !== before) $scope.updateCookies();
+		$scope.updateCookies();
+
+		// save settings to LocalStorage
+		saveSettings($scope);
 	};
 
 	// start monitoring $scope changes
