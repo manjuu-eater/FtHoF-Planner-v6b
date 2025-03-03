@@ -153,7 +153,7 @@ app.controller("myCtrl", function ($scope) {
 	// set initial value to $scope variable
 
 	// Save Data
-	$scope.saveString = "";
+	$scope.saveCode = "";
 	$scope.seed = "";
 	$scope.ascensionMode = 0;
 	$scope.spellsCast = 0;
@@ -197,7 +197,7 @@ app.controller("myCtrl", function ($scope) {
 
 	// fill the save code input if previous save code exists in LocalStorage
 	const previousSaveCode = window.localStorage.getItem("fthof_save_code");
-	if (previousSaveCode) $scope.saveString = previousSaveCode;
+	if (previousSaveCode) $scope.saveCode = previousSaveCode;
 
 	// load settings if previous settings are saved in LocalStorage
 	loadSettings($scope);
@@ -232,7 +232,7 @@ app.controller("myCtrl", function ($scope) {
 	 */
 	const loadSaveCode = (saveCode?: string): void => {
 		// read from html
-		const saveStr = saveCode ? saveCode : String($scope.saveString);
+		const saveStr = saveCode ? saveCode : String($scope.saveCode);
 
 		// if blank, reset LocalStorage and quit
 		if (saveStr === "") {
@@ -252,7 +252,7 @@ app.controller("myCtrl", function ($scope) {
 		// save code was invalid
 		if (!saveData) {
 			console.error("invalid save code");
-			$scope.saveString = "invalid save code";
+			$scope.saveCode = "invalid save code";
 			return;
 		}
 
@@ -845,7 +845,7 @@ app.controller("myCtrl", function ($scope) {
 	settingsModelNames.forEach(modelName => $scope.$watch(modelName, whenSettingsChanged));
 
 	// call $scope.updateCookies() for first time
-	if ($scope.saveString && !$scope.grimoireResults) updateCookies();
+	if ($scope.saveCode && !$scope.grimoireResults) updateCookies();
 
 
 	// remove loading text
