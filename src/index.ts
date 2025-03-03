@@ -652,6 +652,9 @@ app.controller("myCtrl", function ($scope) {
 		// object that contain FtHoF and GFD result, combo / skip indexes, etc.
 		const grimoireResults: GrimoireResult[] = [];
 
+		// do nothing if seed is empty
+		if (seed === "") return;
+
 		// srart timer
 		console.time("updateCookies");
 
