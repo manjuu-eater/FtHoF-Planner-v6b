@@ -822,7 +822,10 @@ app.controller("myCtrl", function ($scope) {
 
 	// fill the save code input if previous save code exists in LocalStorage
 	const previousSaveCode = window.localStorage.getItem("fthof_save_code");
-	if (previousSaveCode) $scope.saveCode = previousSaveCode;
+	if (previousSaveCode) {
+		$scope.saveCode = previousSaveCode;
+		loadSaveCode(previousSaveCode);
+	}
 
 	// load settings if previous settings are saved in LocalStorage
 	loadSettings($scope);
