@@ -845,6 +845,6 @@ app.controller("myCtrl", function ($scope) {
 	settingsModelNames.forEach(modelName => $scope.$watch(modelName, whenSettingsChanged));
 
 
-	// remove loading text and show main area
+	// remove loading text
 	$scope.ready = true;
 });
