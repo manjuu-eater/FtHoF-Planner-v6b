@@ -229,7 +229,7 @@ app.controller("myCtrl", function ($scope) {
 
 		// if blank, reset LocalStorage and quit
 		if (saveStr === "") {
-			window.localStorage.setItem("fthof_save_code", saveStr);
+			window.localStorage.removeItem("fthof_save_code");
 			return;
 		}
 
