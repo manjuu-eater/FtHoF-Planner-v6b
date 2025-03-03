@@ -211,25 +211,6 @@ app.controller("myCtrl", function ($scope) {
 
 
 	/**
-	 * toggle interface button
-	 *
-	 * @param contentId number of "content-*"
-	 */
-	const collapseInterface = (contentId: number): void => {
-		console.log("content-" + contentId);
-		if (contentId) {
-			const content = document.getElementById("content-" + contentId);
-			if (content === null) throw Error("not found: #content-" + contentId);
-			if (content.style.display === "block") {
-				content.style.display = "none";
-			} else {
-				content.style.display = "block";
-			}
-		}
-	};
-
-
-	/**
 	 * log $scope (debug function)
 	 */
 	const printScope = (): void => {
@@ -825,7 +806,6 @@ app.controller("myCtrl", function ($scope) {
 
 	// set functions to $scope that called from index.html
 	$scope.selectSaveCodeInput = selectSaveCodeInput;
-	$scope.collapseInterface = collapseInterface;
 	$scope.printScope        = printScope;
 	$scope.loadSaveCode      = loadSaveCode;
 	$scope.updateCookies     = updateCookies;
