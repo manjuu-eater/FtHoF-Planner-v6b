@@ -834,17 +834,18 @@ app.controller("myCtrl", function ($scope) {
 
 
 	/**
-	 * call $scope.updateCookies() when specified $scope value is changed
+	 * function that is called when specified $scope value changes
 	 *
 	 * @param after value after change
 	 * @param before value before change
 	 */
-	const updateCookiesIfChanged = <T>(after: T, before: T): void => {
+	const whenOptionChanged = <T>(after: T, before: T): void => {
+		// call $scope.updateCookies()
 		if (after !== before) $scope.updateCookies();
 	};
 
 	// start monitoring $scope changes
-	optionModelNames.forEach(modelName => $scope.$watch(modelName, updateCookiesIfChanged));
+	optionModelNames.forEach(modelName => $scope.$watch(modelName, whenOptionChanged));
 
 
 	// remove loading text and show main area
