@@ -250,7 +250,11 @@ app.controller("myCtrl", function ($scope) {
 		}
 
 		// save valid save code to LocalStorage
-		window.localStorage.setItem("fthof_save_code", saveStr);
+		try {
+			window.localStorage.setItem("fthof_save_code", saveStr);
+		} catch (error) {
+			console.error("LocalStorage is full", error);
+		}
 
 		// set to $scope
 		$scope.seed            = saveData.seed;
