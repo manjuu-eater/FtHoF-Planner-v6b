@@ -6,6 +6,7 @@
 // import game related objects and functions
 import { Math_seedrandom, choose, M_spells, cookieEffectNameToDescription, chooseWith, } from "./game_related_data.js";
 import { gcImageUrl, wcImageUrl, heartImageUrl, bunnyImageUrl, spellNameToIconUrl, } from "./image_file_paths.js";
+import { saveSettings, loadSettings, } from "./settings.js";
 /**
  * Extract save data about Magic tower minigame from exported save code.
  *
@@ -49,32 +50,32 @@ const app = window.angular.module("myApp", ["ngMaterial"]);
 app.controller("myCtrl", function ($scope) {
     // set initial value to $scope variable
     // Save Data
-    $scope.saveString = "";
+    $scope.saveCode = "";
     $scope.seed = "";
     $scope.ascensionMode = 0;
     $scope.spellsCast = 0;
     $scope.spellsCastTotal = 0;
-    // Options: Lookahead Length
+    // Settings: Lookahead Length
     $scope.lookahead = 200;
-    // Options: Combos
+    // Settings: Combos
     $scope.minComboLength = 2;
     $scope.maxComboLength = 4;
     $scope.maxSpread = 2;
-    // Options: Include EF or Skip Some GFD
-    $scope.includeEF = false;
-    $scope.skipRA = false;
-    $scope.skipSE = false;
+    // Settings: Include EF or Skip Some GFD
+    $scope.includeEF = true;
+    $scope.skipRA = true;
+    $scope.skipSE = true;
     $scope.skipST = false;
-    // Options: Buffs / Debuffs that affect fail chance
+    // Settings: Buffs / Debuffs that affect fail chance
     $scope.screenCookieCount = 0;
     $scope.buffDF = false;
     $scope.auraSI = false;
     $scope.buffDI = false;
     $scope.debuffDI = false;
-    // Options: FtHoF Settings
+    // Settings: FtHoF Settings
     $scope.season = "cookie";
     // names of ng-model (use at end of controller function)
-    const optionModelNames = [
+    const settingsModelNames = [
         "lookahead", "minComboLength", "maxComboLength", "maxSpread",
         "includeEF", "skipRA", "skipSE", "skipST",
         "screenCookieCount", "buffDF", "auraSI", "buffDI", "debuffDI",
@@ -82,10 +83,6 @@ app.controller("myCtrl", function ($scope) {
     ];
     // ready state flag
     $scope.ready = false;
-    // fill the save code input if previous save code exists in LocalStorage
-    const previousSaveCode = window.localStorage.getItem("fthof_save_code");
-    if (previousSaveCode)
-        $scope.saveString = previousSaveCode;
     /**
      * Select the save code input for easy pasting.
      *
@@ -99,25 +96,6 @@ app.controller("myCtrl", function ($scope) {
     // add event listener for right click
     document.addEventListener("contextmenu", selectSaveCodeInput);
     /**
-     * toggle interface button
-     *
-     * @param contentId number of "content-*"
-     */
-    const collapseInterface = (contentId) => {
-        console.log("content-" + contentId);
-        if (contentId) {
-            const content = document.getElementById("content-" + contentId);
-            if (content === null)
-                throw Error("not found: #content-" + contentId);
-            if (content.style.display === "block") {
-                content.style.display = "none";
-            }
-            else {
-                content.style.display = "block";
-            }
-        }
-    };
-    /**
      * log $scope (debug function)
      */
     const printScope = () => {
@@ -130,10 +108,10 @@ app.controller("myCtrl", function ($scope) {
      */
     const loadSaveCode = (saveCode) => {
         // read from html
-        const saveStr = saveCode ? saveCode : String($scope.saveString);
+        const saveStr = saveCode ? saveCode : String($scope.saveCode);
         // if blank, reset LocalStorage and quit
         if (saveStr === "") {
-            window.localStorage.setItem("fthof_save_code", saveStr);
+            window.localStorage.removeItem("fthof_save_code");
             return;
         }
         // extract save data
@@ -148,11 +126,16 @@ app.controller("myCtrl", function ($scope) {
         // save code was invalid
         if (!saveData) {
             console.error("invalid save code");
-            $scope.saveString = "invalid save code";
+            $scope.saveCode = "invalid save code";
             return;
         }
         // save valid save code to LocalStorage
-        window.localStorage.setItem("fthof_save_code", saveStr);
+        try {
+            window.localStorage.setItem("fthof_save_code", saveStr);
+        }
+        catch (error) {
+            console.error("LocalStorage is full", error);
+        }
         // set to $scope
         $scope.seed = saveData.seed;
         $scope.ascensionMode = saveData.ascensionMode;
@@ -494,6 +477,9 @@ app.controller("myCtrl", function ($scope) {
         const sugarIndexes = [];
         // object that contain FtHoF and GFD result, combo / skip indexes, etc.
         const grimoireResults = [];
+        // do nothing if seed is empty
+        if (seed === "")
+            return;
         // srart timer
         console.time("updateCookies");
         const comboIndexes = [];
@@ -628,25 +614,40 @@ app.controller("myCtrl", function ($scope) {
     };
     // set functions to $scope that called from index.html
     $scope.selectSaveCodeInput = selectSaveCodeInput;
-    $scope.collapseInterface = collapseInterface;
     $scope.printScope = printScope;
     $scope.loadSaveCode = loadSaveCode;
     $scope.updateCookies = updateCookies;
     $scope.castSpell = castSpell;
     $scope.loadMore = loadMore;
+    // fill the save code input if previous save code exists in LocalStorage
+    const previousSaveCode = window.localStorage.getItem("fthof_save_code");
+    if (previousSaveCode) {
+        $scope.saveCode = previousSaveCode;
+        loadSaveCode(previousSaveCode);
+    }
+    // load settings if previous settings are saved in LocalStorage
+    loadSettings($scope);
+    // call $scope.updateCookies() for first time
+    if ($scope.saveCode && !$scope.grimoireResults)
+        updateCookies();
     /**
-     * call $scope.updateCookies() when specified $scope value is changed
+     * function that is called when specified $scope value changes
      *
      * @param after value after change
      * @param before value before change
      */
-    const updateCookiesIfChanged = (after, before) => {
-        if (after !== before)
-            $scope.updateCookies();
+    const whenSettingsChanged = (after, before) => {
+        // do nothing if no change
+        if (after === before)
+            return;
+        // call $scope.updateCookies()
+        $scope.updateCookies();
+        // save settings to LocalStorage
+        saveSettings($scope);
     };
     // start monitoring $scope changes
-    optionModelNames.forEach(modelName => $scope.$watch(modelName, updateCookiesIfChanged));
-    // remove loading text and show main area
+    settingsModelNames.forEach(modelName => $scope.$watch(modelName, whenSettingsChanged));
+    // remove loading text
     $scope.ready = true;
 });
 //# sourceMappingURL=index.js.map

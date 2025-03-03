@@ -44,7 +44,7 @@
 		<div layout="row">
 			<md-input-container flex>
 				<label>Save Code</label>
-				<input id="save_code" ng-model="saveString" ng-click="selectSaveCodeInput($event)">
+				<input id="save_code" ng-model="saveCode" ng-click="selectSaveCodeInput($event)">
 			</md-input-container>
 			<md-button class="md-raised md-primary" ng-click="loadSaveCode(); updateCookies()">
 				Import Save
@@ -82,7 +82,7 @@
 		</div>
 
 		<!-- Main Contents that conains AngularJS brackets -->
-		<div ng-show="ready">
+		<div ng-cloak>
 
 			<!-- Comobs Result -->
 			<ul ng-if="combos">
@@ -133,7 +133,7 @@
 			<md-divider></md-divider>
 
 
-			<!-- Options: Lookahead Length -->
+			<!-- Settings: Lookahead Length -->
 			<label>
 				Lookahead length
 				<input type="number" class="w4" min="10" max="1000" step="10" ng-model="lookahead">
@@ -142,7 +142,7 @@
 			<md-divider></md-divider>
 
 
-			<!-- Options: Combos -->
+			<!-- Settings: Combos -->
 			<label>
 				Min Combo
 				<input type="number" class="w3" min="1" max="20" ng-model="minComboLength">
@@ -160,7 +160,7 @@
 
 			<br>
 
-			<!-- Options: Include EF or Skip Some GFD -->
+			<!-- Settings: Include EF or Skip Some GFD -->
 			<md-checkbox ng-checked="true" ng-model="includeEF">
 				Include Elder Frenzies
 			</md-checkbox>
@@ -180,7 +180,7 @@
 			<md-divider></md-divider>
 
 
-			<!-- Options: Buffs / Debuffs that affect fail chance -->
+			<!-- Settings: Buffs / Debuffs that affect fail chance -->
 			<label>
 				Cookies<img src="img/goldCookie.png" class="mini"><!--
 				--><img src="img/wrathCookie.png" class="mini"> on screen
@@ -208,12 +208,12 @@
 			<md-divider></md-divider>
 
 
-			<!-- Options: FtHoF Settings -->
+			<!-- Settings: FtHoF Settings -->
 			<md-radio-group ng-model="season" layout="row">
 				"One Change" Season:&nbsp;
 				<md-radio-button value="noswitch">No Use</md-radio-button>
 				<md-radio-button value="cookie">GC/WC</md-radio-button>
-				<md-radio-button value="valentines">Valentines</md-radio-button>
+				<md-radio-button value="valentines">Valentine's day</md-radio-button>
 				<md-radio-button value="easter">Easter</md-radio-button>
 			</md-radio-group>
 
