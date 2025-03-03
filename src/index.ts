@@ -195,13 +195,6 @@ app.controller("myCtrl", function ($scope) {
 	// ready state flag
 	$scope.ready = false;
 
-	// fill the save code input if previous save code exists in LocalStorage
-	const previousSaveCode = window.localStorage.getItem("fthof_save_code");
-	if (previousSaveCode) $scope.saveCode = previousSaveCode;
-
-	// load settings if previous settings are saved in LocalStorage
-	loadSettings($scope);
-
 
 	/**
 	 * Select the save code input for easy pasting.
@@ -822,6 +815,14 @@ app.controller("myCtrl", function ($scope) {
 	$scope.updateCookies     = updateCookies;
 	$scope.castSpell         = castSpell;
 	$scope.loadMore          = loadMore;
+
+
+	// fill the save code input if previous save code exists in LocalStorage
+	const previousSaveCode = window.localStorage.getItem("fthof_save_code");
+	if (previousSaveCode) $scope.saveCode = previousSaveCode;
+
+	// load settings if previous settings are saved in LocalStorage
+	loadSettings($scope);
 
 
 	/**
