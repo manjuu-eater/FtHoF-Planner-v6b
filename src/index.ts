@@ -830,6 +830,9 @@ app.controller("myCtrl", function ($scope) {
 	// load settings if previous settings are saved in LocalStorage
 	loadSettings($scope);
 
+	// call $scope.updateCookies() for first time
+	if ($scope.saveCode && !$scope.grimoireResults) updateCookies();
+
 
 	/**
 	 * function that is called when specified $scope value changes
@@ -850,9 +853,6 @@ app.controller("myCtrl", function ($scope) {
 
 	// start monitoring $scope changes
 	settingsModelNames.forEach(modelName => $scope.$watch(modelName, whenSettingsChanged));
-
-	// call $scope.updateCookies() for first time
-	if ($scope.saveCode && !$scope.grimoireResults) updateCookies();
 
 
 	// remove loading text
