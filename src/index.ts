@@ -164,9 +164,9 @@ app.controller("myCtrl", function ($scope) {
 	$scope.maxSpread = 2;
 
 	// Settings: Include EF or Skip Some GFD
-	$scope.includeEF = false;
-	$scope.skipRA = false;
-	$scope.skipSE = false;
+	$scope.includeEF = true;
+	$scope.skipRA = true;
+	$scope.skipSE = true;
 	$scope.skipST = false;
 
 	// Settings: Buffs / Debuffs that affect fail chance
