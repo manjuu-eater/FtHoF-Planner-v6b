@@ -841,6 +841,9 @@ app.controller("myCtrl", ($scope): void => {
 		try {
 			saveData = extractSaveData(droppedText);
 		} catch (error) {
+			// save code was invalid
+			console.error("invalid save code");
+			$scope.saveCode = "invalid save code";
 			return;
 		}
 
