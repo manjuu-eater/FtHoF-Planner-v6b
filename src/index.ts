@@ -26,7 +26,7 @@ import {
 
 // type definition
 
-/** part of Cookie Clicker's saved data that extracted from save code */
+/** part of Cookie Clicker save data that extracted from save code */
 type GameSaveData = {
 	seed: string;
 	ascensionMode: number;
@@ -66,7 +66,7 @@ type GfdResult = {
 /**
  * set of grimoire spell cast result
  *
- * All values in this set are uniquely derived from the seed and total spell cast count.
+ * All values in this set are uniquely derived from seed and total spell cast count.
  */
 type GrimoireResult = {
 	num: number;
