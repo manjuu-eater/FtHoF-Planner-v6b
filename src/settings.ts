@@ -103,3 +103,35 @@ export const loadSettings = ($scope: any): void => {
 		console.error("LocalStorage value is invalid", error);
 	}
 };
+
+
+/**
+ * initialize $scope value about FtHoF settings
+ *
+ * @param $scope AngularJS $scope
+ */
+export const initSettings = ($scope: any): void => {
+	// Settings: Lookahead Length
+	$scope.lookahead = 200;
+
+	// Settings: Combos
+	$scope.minComboLength = 2;
+	$scope.maxComboLength = 4;
+	$scope.maxSpread = 2;
+
+	// Settings: Include EF or Skip Some GFD
+	$scope.includeEF = true;
+	$scope.skipRA = true;
+	$scope.skipSE = true;
+	$scope.skipST = false;
+
+	// Settings: Buffs / Debuffs that affect fail chance
+	$scope.screenCookieCount = 0;
+	$scope.buffDF = false;
+	$scope.auraSI = false;
+	$scope.buffDI = false;
+	$scope.debuffDI = false;
+
+	// Settings: FtHoF Settings
+	$scope.season = "cookie";
+};

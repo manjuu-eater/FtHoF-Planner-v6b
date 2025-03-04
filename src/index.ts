@@ -20,7 +20,7 @@ import {
 } from "./image_file_paths.js";
 
 import {
-	saveSettings, loadSettings,
+	saveSettings, loadSettings, initSettings,
 } from "./settings.js";
 
 
@@ -162,29 +162,8 @@ app.controller("myCtrl", function ($scope) {
 	$scope.spellsCast = 0;
 	$scope.spellsCastTotal = 0;
 
-	// Settings: Lookahead Length
-	$scope.lookahead = 200;
-
-	// Settings: Combos
-	$scope.minComboLength = 2;
-	$scope.maxComboLength = 4;
-	$scope.maxSpread = 2;
-
-	// Settings: Include EF or Skip Some GFD
-	$scope.includeEF = true;
-	$scope.skipRA = true;
-	$scope.skipSE = true;
-	$scope.skipST = false;
-
-	// Settings: Buffs / Debuffs that affect fail chance
-	$scope.screenCookieCount = 0;
-	$scope.buffDF = false;
-	$scope.auraSI = false;
-	$scope.buffDI = false;
-	$scope.debuffDI = false;
-
-	// Settings: FtHoF Settings
-	$scope.season = "cookie";
+	// initialize FtHoF settings
+	initSettings($scope);
 
 	// names of ng-model (use at end of controller function)
 	const settingsModelNames = [
