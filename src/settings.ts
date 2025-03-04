@@ -29,6 +29,15 @@ export type Settings = {
 const localStorageKey = "fthof_settings";
 
 
+/** names of ng-model */
+export const settingsModelNames: (keyof Settings)[] = [
+	"lookahead", "minComboLength", "maxComboLength", "maxSpread",
+	"includeEF", "skipRA", "skipSE", "skipST",
+	"screenCookieCount", "buffDF", "auraSI", "buffDI", "debuffDI",
+	"season",
+];
+
+
 /**
  * get all FtHoF settings from $scope
  *

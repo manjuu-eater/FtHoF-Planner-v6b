@@ -20,6 +20,7 @@ import {
 } from "./image_file_paths.js";
 
 import {
+	settingsModelNames,
 	saveSettings, loadSettings, initSettings,
 } from "./settings.js";
 
@@ -171,14 +172,6 @@ app.controller("myCtrl", ($scope): void => {
 
 	// initialize FtHoF settings
 	initSettings($scope);
-
-	// names of ng-model (use at end of controller function)
-	const settingsModelNames = [
-		"lookahead", "minComboLength", "maxComboLength", "maxSpread",
-		"includeEF", "skipRA", "skipSE", "skipST",
-		"screenCookieCount", "buffDF", "auraSI", "buffDI", "debuffDI",
-		"season",
-	];
 
 
 	// ready state flag
