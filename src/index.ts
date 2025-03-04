@@ -810,7 +810,7 @@ app.controller("myCtrl", ($scope): void => {
 	loadSettings($scope);
 
 	// call $scope.updateCookies() for first time
-	if ($scope.saveCode && !$scope.grimoireResults) updateCookies();
+	if ($scope.saveCode && !$scope.grimoireResults?.length) updateCookies();
 
 
 	/**
