@@ -117,27 +117,28 @@ const extractSaveData = (saveCode: string): GameSaveData => {
 	const base64 = unescaped.split("!END!")[0];  // remove "!END!" (L2944)
 	const decoded = b64_to_utf8(base64);         // decode Base64 string (L2945)
 
-	// extract save data
+	// extract save data: split in multiple stages
 	const pipeSplited = decoded.split("|");  // (L2951)
-
-	const runDetails = pipeSplited[2].split(";");    // (L2973)
+	const runDetails   = pipeSplited[2].split(";");  // (L2973)
 	const miscGameData = pipeSplited[4].split(";");  // (L3012)
-	const buildings = pipeSplited[5].split(";");     // (L3069)
+	const buildings    = pipeSplited[5].split(";");  // (L3069)
 
+	// seed, ascensionMode
 	const seed = runDetails[4];                        // (L2978)
 	const ascensionMode = parseInt(miscGameData[29]);  // (L3041)
 
 	// load Wizard tower minigame data
-	// detail: v2.052 minigameGrimoire.js L463
-	const wizardTower = buildings[7];                              // (L3069)
-	const wizMinigameData = wizardTower.split(",")[4].split(" ");  // (L3078, L463 > L469)
+	const wizardTower = buildings[7];              // (L3069)
+	const wizDataStr = wizardTower.split(",")[4];  // (L3078)
+	const wizData = wizDataStr.split(" ");         // (L3080 > minigameGrimoire.js L463 > L469)
 
-	const [strMagic, strSpellsCast, strSpellsCastTotal, strOn] = wizMinigameData;
+	// spellsCast, spellsCastTotal
+	const [strMagic, strSpellsCast, strSpellsCastTotal, strOn] = wizData;  // (L471-L474)
 	const spellsCast = parseInt(strSpellsCast) || 0;
 	const spellsCastTotal = parseInt(strSpellsCastTotal) || 0;
 
 	// log
-	console.table({ seed, wizardTower, spellsCast, spellsCastTotal, });
+	console.table({ seed, wizardTower, spellsCast, spellsCastTotal });
 
 	// return
 	const saveData: GameSaveData = {
