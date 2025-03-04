@@ -102,6 +102,24 @@ export const chooseWith = <T>(arr: T[], Math_random: number): T => {
 
 
 /**
+ * convert Base64 string to UTF-8 string
+ *
+ * function b64_to_utf8(str)
+ * from main.js (L584)
+ *
+ * @param str Base64 string
+ * @returns UTF-8 string
+ */
+export const b64_to_utf8 = (str: string): string => {
+	try{return decodeURIComponent(Array.prototype.map.call(atob(str), function(c) {
+		return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)
+	}).join(''));}
+	catch(err)
+	{return '';}
+}
+
+
+/**
  * M.spells
  * from minigameGrimoire.js (L12)
  * (not same as v2.052)
