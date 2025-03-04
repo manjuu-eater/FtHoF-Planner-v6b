@@ -5,7 +5,7 @@ All files placed here are not part of FtHoF Planner.
     - `v*.***/`
         - `main.js`
         - `minigameGrimoire.js`
-- (Other files, if any)
+    - (Other files except readme.md, if any)
 
 These files are part of Cookie Clicker game.
 All copyright of these files belongs to Orteil.
