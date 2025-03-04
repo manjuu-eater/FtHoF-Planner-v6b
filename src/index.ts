@@ -155,14 +155,14 @@ const app = window.angular.module("myApp", ["ngMaterial"]);
 app.controller("myCtrl", ($scope): void => {
 	// set initial value to $scope variable
 
-	// Save Data
+	// Game Save Data
 	$scope.saveCode = "";
 	$scope.seed = "";
 	$scope.ascensionMode = 0;
 	$scope.spellsCast = 0;
 	$scope.spellsCastTotal = 0;
 
-	// scope variables
+	// FtHoF Scope Variables
 	$scope.baseBackfireChance = undefined;
 	$scope.backfireChance = undefined;
 	$scope.combos = [];
