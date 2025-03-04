@@ -812,8 +812,13 @@ app.controller("myCtrl", ($scope): void => {
 	if ($scope.saveCode && !$scope.grimoireResults?.length) updateCookies();
 
 
-	// support drag & drop save code input
-	document.addEventListener("drop", async (event): Promise<void> => {
+	/**
+	 * function that is called when something is dropped to window
+
+	 * @param event drag event object
+	 * @returns Promise<void>
+	 */
+	const whenItemDropped = async (event: DragEvent): Promise<void> => {
 		// cancel default dropping
 		event.preventDefault();
 
@@ -851,7 +856,10 @@ app.controller("myCtrl", ($scope): void => {
 
 		// manually trigger AngularJS digest cycle because this event is not tracked by AngularJS
 		$scope.$apply();
-	});
+	};
+
+	// support drag & drop save code input
+	document.addEventListener("drop", whenItemDropped);
 
 
 	/**
