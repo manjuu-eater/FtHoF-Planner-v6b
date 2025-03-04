@@ -123,13 +123,8 @@ const extractSaveData = (saveCode: string): GameSaveData => {
 	const buildings = pipeSplited[5].split(";");
 
 	const seed = runDetails[4];
-	console.log(seed);
-
 	const ascensionMode = parseInt(miscGameData[29]);
-	console.log(ascensionMode);
-
 	const wizardTower = buildings[7];
-	console.log(wizardTower);
 
 	// load Wizard tower minigame data
 	// detail: v2.052 minigameGrimoire.js L463
@@ -137,10 +132,10 @@ const extractSaveData = (saveCode: string): GameSaveData => {
 	const [strMagic, strSpellsCast, strSpellsCastTotal, strOn] = wizMinigameData;
 
 	const spellsCast = parseInt(strSpellsCast) || 0;
-	console.log("Spells cast this ascension: " + spellsCast);
-
 	const spellsCastTotal = parseInt(strSpellsCastTotal) || 0;
-	console.log("Total spells cast: " + spellsCastTotal);
+
+	// log
+	console.table({ seed, wizardTower, spellsCast, spellsCastTotal, });
 
 	// return
 	const saveData: GameSaveData = {
