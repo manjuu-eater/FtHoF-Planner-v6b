@@ -216,16 +216,11 @@ app.controller("myCtrl", ($scope): void => {
 		}
 
 		// extract save data
-		const saveData = (() => {
-			try {
-				return extractSaveData(saveStr);
-			} catch {
-				return undefined;
-			}
-		})();
-
-		// save code was invalid
-		if (!saveData) {
+		let saveData;
+		try {
+			saveData = extractSaveData(saveStr);
+		} catch {
+			// save code was invalid
 			console.error("invalid save code");
 			$scope.saveCode = "invalid save code";
 			return;
