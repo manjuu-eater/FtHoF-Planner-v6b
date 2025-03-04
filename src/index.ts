@@ -813,6 +813,44 @@ app.controller("myCtrl", ($scope): void => {
 	if ($scope.saveCode && !$scope.grimoireResults?.length) updateCookies();
 
 
+	// support drag & drop save code input
+	document.addEventListener("drop", async (event): Promise<void> => {
+		// cancel default dropping
+		event.preventDefault();
+
+		// get dropped data
+		const droppedText = event.dataTransfer?.getData("text") || "";
+		if (!droppedText) return;
+
+		// try extracting dropped text
+		let saveData;
+		try {
+			saveData = extractSaveData(droppedText);
+		} catch (error) {
+			return;
+		}
+
+		// save valid save code to LocalStorage
+		try {
+			window.localStorage.setItem("fthof_save_code", droppedText);
+		} catch (error) {
+			console.error("LocalStorage is full", error);
+		}
+
+		// set save data to $scope
+		$scope.seed            = saveData.seed;
+		$scope.ascensionMode   = saveData.ascensionMode;
+		$scope.spellsCast      = saveData.spellsCast;
+		$scope.spellsCastTotal = saveData.spellsCastTotal;
+
+		// update list
+		updateCookies();
+
+		// manually trigger AngularJS digest cycle because this event is not tracked by AngularJS
+		$scope.$apply();
+	});
+
+
 	/**
 	 * function that is called when specified $scope value changes
 	 *
@@ -837,3 +875,7 @@ app.controller("myCtrl", ($scope): void => {
 	// remove loading text
 	$scope.ready = true;
 });
+
+
+// to allow drag & drop save codes, disable browser to receive dropped objects
+document.addEventListener("dragover", (event) => event.preventDefault());
