@@ -163,7 +163,6 @@ app.controller("myCtrl", function ($scope) {
 	$scope.spellsCastTotal = 0;
 
 	// scope variables
-	$scope.firstRandomNumbers = [];
 	$scope.baseBackfireChance = undefined;
 	$scope.backfireChance = undefined;
 	$scope.combos = [];
@@ -633,7 +632,6 @@ app.controller("myCtrl", function ($scope) {
 		} = $scope;
 
 		// variables to set $scope.*
-		const firstRandomNumbers: number[] = [];
 		const baseBackfireChance = getBaseFailChance();
 		const fthofBackfireChance = getFthofFailChance(baseBackfireChance);
 		const combos: { [key: number]: ComboResults } = {};
@@ -657,7 +655,6 @@ app.controller("myCtrl", function ($scope) {
 			// get first random number and push to array
 			Math_seedrandom(seed + "/" + currentTotalSpell);
 			const randomNumber = Math.random();
-			firstRandomNumbers.push(randomNumber);
 
 			// minimum count of GC/WC on screen that GC changes to WC
 			const wcThreshold = (
@@ -768,7 +765,6 @@ app.controller("myCtrl", function ($scope) {
 		console.timeEnd("updateCookies");
 
 		// set to $scope
-		$scope.firstRandomNumbers  = firstRandomNumbers;
 		$scope.baseBackfireChance  = baseBackfireChance;
 		$scope.backfireChance      = fthofBackfireChance;
 		$scope.combos              = combos;
