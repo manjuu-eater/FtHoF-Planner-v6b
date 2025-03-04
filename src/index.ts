@@ -100,12 +100,14 @@ type ComboResults = { shortest: ComboResult, first: ComboResult };
 /**
  * Extract save data about Magic tower minigame from exported save code.
  *
+ * causes TypeError if invalid save code
+ *
  * @param saveCode exported save code
  * @returns extracted save data
  */
 const extractSaveData = (saveCode: string): GameSaveData => {
 	// load save data
-	// detail: console.log(Game.WriteSave(3))
+	// to see detail: console.log(Game.WriteSave(3))
 
 	// decode save code
 	// simulating: main.js v2.052
@@ -116,21 +118,21 @@ const extractSaveData = (saveCode: string): GameSaveData => {
 	const decoded = b64_to_utf8(base64);         // decode Base64 string (L2945)
 
 	// extract save data
-	const pipeSplited = decoded.split("|");
+	const pipeSplited = decoded.split("|");  // (L2951)
 
-	const runDetails = pipeSplited[2].split(";");
-	const miscGameData = pipeSplited[4].split(";");
-	const buildings = pipeSplited[5].split(";");
+	const runDetails = pipeSplited[2].split(";");    // (L2973)
+	const miscGameData = pipeSplited[4].split(";");  // (L3012)
+	const buildings = pipeSplited[5].split(";");     // (L3069)
 
-	const seed = runDetails[4];
-	const ascensionMode = parseInt(miscGameData[29]);
-	const wizardTower = buildings[7];
+	const seed = runDetails[4];                        // (L2978)
+	const ascensionMode = parseInt(miscGameData[29]);  // (L3041)
 
 	// load Wizard tower minigame data
 	// detail: v2.052 minigameGrimoire.js L463
-	const wizMinigameData = wizardTower.split(",")[4].split(" ");
-	const [strMagic, strSpellsCast, strSpellsCastTotal, strOn] = wizMinigameData;
+	const wizardTower = buildings[7];                              // (L3069)
+	const wizMinigameData = wizardTower.split(",")[4].split(" ");  // (L3078, L463 > L469)
 
+	const [strMagic, strSpellsCast, strSpellsCastTotal, strOn] = wizMinigameData;
 	const spellsCast = parseInt(strSpellsCast) || 0;
 	const spellsCastTotal = parseInt(strSpellsCastTotal) || 0;
 
