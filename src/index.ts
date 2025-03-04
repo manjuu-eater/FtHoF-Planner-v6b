@@ -206,14 +206,14 @@ app.controller("myCtrl", ($scope): void => {
 	 * @param saveCode save code (if omitted, read from html)
 	 * @param noRemoveLocalStorage true: no remove LocalStorage item when saveCode == ""
 	 */
-	const loadSaveCode = (saveCode?: string, noRemoveLocalStorage = false): void => {
+	const loadSaveCode = (saveCode?: string, noRemoveLocalStorage = false): boolean => {
 		// read from html
 		const saveStr = saveCode ? saveCode : String($scope.saveCode);
 
 		// if blank, reset LocalStorage and quit
 		if (saveStr === "") {
 			if (!noRemoveLocalStorage) window.localStorage.removeItem("fthof_save_code");
-			return;
+			return false;
 		}
 
 		// extract save data
@@ -224,7 +224,7 @@ app.controller("myCtrl", ($scope): void => {
 			// save code was invalid
 			console.error("invalid save code");
 			$scope.saveCode = "invalid save code";
-			return;
+			return false;
 		}
 
 		// save valid save code to LocalStorage
@@ -239,6 +239,9 @@ app.controller("myCtrl", ($scope): void => {
 		$scope.ascensionMode   = saveData.ascensionMode;
 		$scope.spellsCast      = saveData.spellsCast;
 		$scope.spellsCastTotal = saveData.spellsCastTotal;
+
+		// return success result
+		return true;
 	};
 
 
