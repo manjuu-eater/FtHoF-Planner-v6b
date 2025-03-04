@@ -844,6 +844,9 @@ app.controller("myCtrl", ($scope): void => {
 			return;
 		}
 
+		// set valid save code to Save Code input area
+		$scope.saveCode = droppedText;
+
 		// save valid save code to LocalStorage
 		try {
 			window.localStorage.setItem("fthof_save_code", droppedText);
