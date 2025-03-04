@@ -69,3 +69,34 @@ export const extractSaveData = (saveCode: string): GameSaveData => {
 	};
 	return saveData;
 };
+
+
+/**
+ * save Cookie Clicker save code to LocalStorage
+ *
+ * @param saveCode Cookie Clicker save code
+ */
+export const saveSaveCodeToLS = (saveCode: string): void => {
+	try {
+		window.localStorage.setItem("fthof_save_code", saveCode);
+	} catch (error) {
+		console.error("LocalStorage is full", error);
+	}
+};
+
+
+/**
+ * load Cookie Clicker save code from LocalStorage
+ */
+export const loadSaveCodeFromLS = (): string | null => {
+	const saveCode = window.localStorage.getItem("fthof_save_code");
+	return saveCode;
+};
+
+
+/**
+ * remove Cookie Clicker save code from LocalStorage
+ */
+export const removeSaveCodeFromLS = (): void => {
+	window.localStorage.removeItem("fthof_save_code");
+};

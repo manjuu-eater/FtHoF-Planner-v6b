@@ -26,6 +26,7 @@ import {
 
 import {
 	extractSaveData,
+	saveSaveCodeToLS, loadSaveCodeFromLS, removeSaveCodeFromLS,
 } from "./save_code.js";
 
 
@@ -154,7 +155,7 @@ app.controller("myCtrl", ($scope): void => {
 
 		// if blank, reset LocalStorage and quit
 		if (saveStr === "") {
-			if (!noRemoveLocalStorage) window.localStorage.removeItem("fthof_save_code");
+			if (!noRemoveLocalStorage) removeSaveCodeFromLS();
 			return false;
 		}
 
@@ -170,11 +171,7 @@ app.controller("myCtrl", ($scope): void => {
 		}
 
 		// save valid save code to LocalStorage
-		try {
-			window.localStorage.setItem("fthof_save_code", saveStr);
-		} catch (error) {
-			console.error("LocalStorage is full", error);
-		}
+		saveSaveCodeToLS(saveStr);
 
 		// set to $scope
 		$scope.seed            = saveData.seed;
@@ -741,7 +738,7 @@ app.controller("myCtrl", ($scope): void => {
 
 
 	// fill the save code input if previous save code exists in LocalStorage
-	const previousSaveCode = window.localStorage.getItem("fthof_save_code");
+	const previousSaveCode = loadSaveCodeFromLS();
 	if (previousSaveCode) {
 		$scope.saveCode = previousSaveCode;
 		loadSaveCode(previousSaveCode);
