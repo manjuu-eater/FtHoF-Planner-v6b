@@ -7,11 +7,9 @@
 
 // import game related objects and functions
 import {
-	EffectName,
-	Math_seedrandom, choose, M_spells,
+	EffectName, SpellName,
+	Math_seedrandom, choose, chooseWith, b64_to_utf8, M_spells,
 	cookieEffectNameToDescription,
-	chooseWith,
-	SpellName,
 } from "./game_related_data.js";
 
 import {
@@ -108,9 +106,15 @@ const extractSaveData = (saveCode: string): GameSaveData => {
 	// load save data
 	// detail: console.log(Game.WriteSave(3))
 
-	// @ts-expect-error  ts(2304)
-	const base64Lib = Base64;
-	const decoded = base64Lib.decode(saveCode.split("!END!")[0]);
+	// decode save code
+	// simulating: main.js v2.052
+	//             > Game.ImportSaveCode (L2625)
+	//             > Game.LoadSave (L2628 > L2903)
+	const unescaped = unescape(saveCode);        // decode escaped string (L2906)
+	const base64 = unescaped.split("!END!")[0];  // remove "!END!" (L2944)
+	const decoded = b64_to_utf8(base64);         // decode Base64 string (L2945)
+
+	// extract save data
 	const pipeSplited = decoded.split("|");
 
 	const runDetails = pipeSplited[2].split(";");
