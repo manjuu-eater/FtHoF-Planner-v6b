@@ -1,4 +1,3 @@
-// @ts-check
 /**
  * image file paths
  */

@@ -1,6 +1,8 @@
 <!DOCTYPE html>
-<html lang="en-US" xmlns="http://www.w3.org/1999/html">
+<html lang="en">
 <head>
+	<meta charset="UTF-8">
+
 	<!-- AngularJS Libraries -->
 	<!-- (Angular Material requires these files) -->
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
@@ -13,7 +15,6 @@
 
 	<!-- FtHoF Library Files -->
 	<script src="./lib/seedrandom.min.js"></script>
-	<script src="./lib/base64.js"></script>
 
 	<!-- FtHoF JavaScript File (source file: ./src/index.ts) -->
 	<script type="module" src="./dist/index.js"></script>
@@ -161,22 +162,10 @@
 			<br>
 
 			<!-- Settings: Include EF or Skip Some GFD -->
-			<md-checkbox ng-checked="true" ng-model="includeEF">
-				Include Elder Frenzies
-			</md-checkbox>
-
-			<md-checkbox ng-checked="true" ng-model="skipRA">
-				Skip Abominations
-			</md-checkbox>
-
-			<md-checkbox ng-checked="true" ng-model="skipSE">
-				Skip Spontaneous Edifices
-			</md-checkbox>
-
-			<md-checkbox ng-checked="false" ng-model="skipST">
-				Skip Stretch Time
-			</md-checkbox>
-
+			<md-checkbox ng-model="includeEF">Include Elder Frenzies</md-checkbox>
+			<md-checkbox ng-model="skipRA">Skip Abominations</md-checkbox>
+			<md-checkbox ng-model="skipSE">Skip Spontaneous Edifices</md-checkbox>
+			<md-checkbox ng-model="skipST">Skip Stretch Time</md-checkbox>
 			<md-divider></md-divider>
 
 

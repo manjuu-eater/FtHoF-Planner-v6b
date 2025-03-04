@@ -1,4 +1,3 @@
-// @ts-check
 /**
  * objects or functions that related to the Cookie Clicker game JavaScript file
  */
@@ -13,10 +12,12 @@ export const Math_seedrandom = (seed) => {
     return Math.seedrandom(seed);
 };
 /**
- * function choose() from Cookie Clicker main.js (L17)
- * choose one randomly from arr
+ * choose one randomly from arr with using Math.random()
  *
- * @param arr
+ * function choose()
+ * from main.js (L17)
+ *
+ * @param arr list to be randomly chosen
  * @returns chosen item
  */
 export const choose = (arr) => arr[Math.floor(Math.random() * arr.length)];
@@ -31,7 +32,27 @@ export const chooseWith = (arr, Math_random) => {
     return arr[Math.floor(Math_random * arr.length)];
 };
 /**
- * M.spells from minigameGrimoire.js
+ * convert Base64 string to UTF-8 string
+ *
+ * function b64_to_utf8(str)
+ * from main.js (L584)
+ *
+ * @param str Base64 string
+ * @returns UTF-8 string
+ */
+export const b64_to_utf8 = (str) => {
+    try {
+        return decodeURIComponent(Array.prototype.map.call(atob(str), function (c) {
+            return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+        }).join(''));
+    }
+    catch (err) {
+        return '';
+    }
+};
+/**
+ * M.spells
+ * from minigameGrimoire.js (L12)
  * (not same as v2.052)
  */
 export const M_spells = {
@@ -163,11 +184,11 @@ export const M_spells = {
     },
 };
 /**
- * Spell names that can be cast in the minigame.
+ * spell names that can be cast in the minigame
  */
 export const spellNames = Object.values(M_spells).map(spell => spell.name);
 /**
- * Spell names that can be cast with GFD.
+ * spell names that can be cast with GFD
  * (omitted GFD itself)
  */
 export const gfdSpellNames = spellNames.filter(name => name != "Gambler's Fever Dream");

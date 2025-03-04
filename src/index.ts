@@ -1,17 +1,16 @@
-// @ts-check
 /**
  * FtHoF Planner v6b
  * index.js
+ *
+ * FtHoF main script file
  */
 
 
 // import game related objects and functions
 import {
-	EffectName,
-	Math_seedrandom, choose, M_spells,
+	EffectName, SpellName,
+	Math_seedrandom, choose, chooseWith, M_spells,
 	cookieEffectNameToDescription,
-	chooseWith,
-	SpellName,
 } from "./game_related_data.js";
 
 import {
@@ -21,19 +20,17 @@ import {
 } from "./image_file_paths.js";
 
 import {
-	saveSettings, loadSettings,
+	settingsModelNames,
+	saveSettings, loadSettings, initSettings,
 } from "./settings.js";
+
+import {
+	extractSaveData,
+	saveSaveCodeToLS, loadSaveCodeFromLS, removeSaveCodeFromLS,
+} from "./save_code.js";
 
 
 // type definition
-
-/** part of Cookie Clicker's saved data that extracted from save code */
-type GameSaveData = {
-	seed: string;
-	ascensionMode: number;
-	spellsCast: number;
-	spellsCastTotal: number;
-};
 
 /** result of FtHoF */
 type FthofResult = {
@@ -67,7 +64,7 @@ type GfdResult = {
 /**
  * set of grimoire spell cast result
  *
- * All values in this set are uniquely derived from the seed and total spell cast count.
+ * All values in this set are uniquely derived from seed and total spell cast count.
  */
 type GrimoireResult = {
 	num: number;
@@ -98,98 +95,26 @@ type ComboResult = { idx: number, length: number };
 type ComboResults = { shortest: ComboResult, first: ComboResult };
 
 
-/**
- * Extract save data about Magic tower minigame from exported save code.
- *
- * @param saveCode exported save code
- * @returns extracted save data
- */
-const extractSaveData = (saveCode: string): GameSaveData => {
-	// load save data
-	// detail: console.log(Game.WriteSave(3))
-
-	// @ts-expect-error  ts(2304)
-	const base64Lib = Base64;
-	const decoded = base64Lib.decode(saveCode.split("!END!")[0]);
-	const pipeSplited = decoded.split("|");
-
-	const runDetails = pipeSplited[2].split(";");
-	const miscGameData = pipeSplited[4].split(";");
-	const buildings = pipeSplited[5].split(";");
-
-	const seed = runDetails[4];
-	console.log(seed);
-
-	const ascensionMode = parseInt(miscGameData[29]);
-	console.log(ascensionMode);
-
-	const wizardTower = buildings[7];
-	console.log(wizardTower);
-
-	// load Wizard tower minigame data
-	// detail: v2.052 minigameGrimoire.js L463
-	const wizMinigameData = wizardTower.split(",")[4].split(" ");
-	const [strMagic, strSpellsCast, strSpellsCastTotal, strOn] = wizMinigameData;
-
-	const spellsCast = parseInt(strSpellsCast) || 0;
-	console.log("Spells cast this ascension: " + spellsCast);
-
-	const spellsCastTotal = parseInt(strSpellsCastTotal) || 0;
-	console.log("Total spells cast: " + spellsCastTotal);
-
-	// return
-	const saveData: GameSaveData = {
-		seed: seed,
-		ascensionMode: ascensionMode,
-		spellsCast: spellsCast,
-		spellsCastTotal: spellsCastTotal,
-	};
-	return saveData;
-};
-
-
 const app = window.angular.module("myApp", ["ngMaterial"]);
-app.controller("myCtrl", function ($scope) {
+app.controller("myCtrl", ($scope): void => {
 	// set initial value to $scope variable
 
-	// Save Data
+	// Game Save Data
 	$scope.saveCode = "";
 	$scope.seed = "";
 	$scope.ascensionMode = 0;
 	$scope.spellsCast = 0;
 	$scope.spellsCastTotal = 0;
 
-	// Settings: Lookahead Length
-	$scope.lookahead = 200;
+	// FtHoF Scope Variables
+	$scope.baseBackfireChance = undefined;
+	$scope.backfireChance = undefined;
+	$scope.combos = [];
+	$scope.sugarIndexes = [];
+	$scope.grimoireResults = [];
 
-	// Settings: Combos
-	$scope.minComboLength = 2;
-	$scope.maxComboLength = 4;
-	$scope.maxSpread = 2;
-
-	// Settings: Include EF or Skip Some GFD
-	$scope.includeEF = true;
-	$scope.skipRA = true;
-	$scope.skipSE = true;
-	$scope.skipST = false;
-
-	// Settings: Buffs / Debuffs that affect fail chance
-	$scope.screenCookieCount = 0;
-	$scope.buffDF = false;
-	$scope.auraSI = false;
-	$scope.buffDI = false;
-	$scope.debuffDI = false;
-
-	// Settings: FtHoF Settings
-	$scope.season = "cookie";
-
-	// names of ng-model (use at end of controller function)
-	const settingsModelNames = [
-		"lookahead", "minComboLength", "maxComboLength", "maxSpread",
-		"includeEF", "skipRA", "skipSE", "skipST",
-		"screenCookieCount", "buffDF", "auraSI", "buffDI", "debuffDI",
-		"season",
-	];
+	// initialize FtHoF settings
+	initSettings($scope);
 
 
 	// ready state flag
@@ -222,45 +147,40 @@ app.controller("myCtrl", function ($scope) {
 	 * load save code
 	 *
 	 * @param saveCode save code (if omitted, read from html)
+	 * @param noRemoveLocalStorage true: no remove LocalStorage item when saveCode == ""
 	 */
-	const loadSaveCode = (saveCode?: string): void => {
+	const loadSaveCode = (saveCode?: string, noRemoveLocalStorage = false): boolean => {
 		// read from html
 		const saveStr = saveCode ? saveCode : String($scope.saveCode);
 
 		// if blank, reset LocalStorage and quit
 		if (saveStr === "") {
-			window.localStorage.removeItem("fthof_save_code");
-			return;
+			if (!noRemoveLocalStorage) removeSaveCodeFromLS();
+			return false;
 		}
 
 		// extract save data
-		const saveData = (() => {
-			try {
-				return extractSaveData(saveStr);
-			} catch {
-				return undefined;
-			}
-		})();
-
-		// save code was invalid
-		if (!saveData) {
+		let saveData;
+		try {
+			saveData = extractSaveData(saveStr);
+		} catch {
+			// save code was invalid
 			console.error("invalid save code");
 			$scope.saveCode = "invalid save code";
-			return;
+			return false;
 		}
 
 		// save valid save code to LocalStorage
-		try {
-			window.localStorage.setItem("fthof_save_code", saveStr);
-		} catch (error) {
-			console.error("LocalStorage is full", error);
-		}
+		saveSaveCodeToLS(saveStr);
 
 		// set to $scope
 		$scope.seed            = saveData.seed;
 		$scope.ascensionMode   = saveData.ascensionMode;
 		$scope.spellsCast      = saveData.spellsCast;
 		$scope.spellsCastTotal = saveData.spellsCastTotal;
+
+		// return success result
+		return true;
 	};
 
 
@@ -643,7 +563,6 @@ app.controller("myCtrl", function ($scope) {
 		} = $scope;
 
 		// variables to set $scope.*
-		const firstRandomNumbers: number[] = [];
 		const baseBackfireChance = getBaseFailChance();
 		const fthofBackfireChance = getFthofFailChance(baseBackfireChance);
 		const combos: { [key: number]: ComboResults } = {};
@@ -667,7 +586,6 @@ app.controller("myCtrl", function ($scope) {
 			// get first random number and push to array
 			Math_seedrandom(seed + "/" + currentTotalSpell);
 			const randomNumber = Math.random();
-			firstRandomNumbers.push(randomNumber);
 
 			// minimum count of GC/WC on screen that GC changes to WC
 			const wcThreshold = (
@@ -778,7 +696,6 @@ app.controller("myCtrl", function ($scope) {
 		console.timeEnd("updateCookies");
 
 		// set to $scope
-		$scope.firstRandomNumbers  = firstRandomNumbers;
 		$scope.baseBackfireChance  = baseBackfireChance;
 		$scope.backfireChance      = fthofBackfireChance;
 		$scope.combos              = combos;
@@ -821,7 +738,7 @@ app.controller("myCtrl", function ($scope) {
 
 
 	// fill the save code input if previous save code exists in LocalStorage
-	const previousSaveCode = window.localStorage.getItem("fthof_save_code");
+	const previousSaveCode = loadSaveCodeFromLS();
 	if (previousSaveCode) {
 		$scope.saveCode = previousSaveCode;
 		loadSaveCode(previousSaveCode);
@@ -831,7 +748,57 @@ app.controller("myCtrl", function ($scope) {
 	loadSettings($scope);
 
 	// call $scope.updateCookies() for first time
-	if ($scope.saveCode && !$scope.grimoireResults) updateCookies();
+	if ($scope.saveCode && !$scope.grimoireResults?.length) updateCookies();
+
+
+	/**
+	 * function that is called when something is dropped to window
+
+	 * @param event drag event object
+	 * @returns Promise<void>
+	 */
+	const whenItemDropped = async (event: DragEvent): Promise<void> => {
+		// cancel default dropping
+		event.preventDefault();
+
+		// get DataTransfer object
+		const { dataTransfer } = event;
+		if (!dataTransfer) return;
+
+		// get dropped text
+		const droppedText: string = await (async (): Promise<string> => {
+			// dropped simple text
+			const simpleText = dataTransfer.getData("text");
+			if (simpleText) return simpleText;
+
+			// search save file from dropped items (max: 100 files)
+			for (let i = 0; i < 100; i++) {
+				const item = dataTransfer.items[i];
+				if (item.kind != "file" || item.type != "text/plain") continue;
+				const fileText = await item.getAsFile()?.text()
+				if (fileText?.includes("END")) return fileText;
+			}
+			return "";
+		})();
+
+		// save code text or file is not dropped
+		if (!droppedText) return;
+
+		// try loading save data with dropped save code
+		const isLoadSuccess = loadSaveCode(droppedText, true);
+
+		// if valid, set save code to Save Code input area, and update list
+		if (isLoadSuccess) {
+			$scope.saveCode = droppedText;
+			updateCookies();
+		}
+
+		// manually trigger AngularJS digest cycle because this event is not tracked by AngularJS
+		$scope.$apply();
+	};
+
+	// support drag & drop save code input
+	document.addEventListener("drop", whenItemDropped);
 
 
 	/**
@@ -858,3 +825,7 @@ app.controller("myCtrl", function ($scope) {
 	// remove loading text
 	$scope.ready = true;
 });
+
+
+// to allow drag & drop save codes, disable browser to receive dropped objects
+document.addEventListener("dragover", (event) => event.preventDefault());
