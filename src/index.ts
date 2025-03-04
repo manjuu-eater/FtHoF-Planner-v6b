@@ -1,6 +1,8 @@
 /**
  * FtHoF Planner v6b
  * index.js
+ *
+ * FtHoF main script file
  */
 
 
