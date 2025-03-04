@@ -204,14 +204,15 @@ app.controller("myCtrl", ($scope): void => {
 	 * load save code
 	 *
 	 * @param saveCode save code (if omitted, read from html)
+	 * @param noRemoveLocalStorage true: no remove LocalStorage item when saveCode == ""
 	 */
-	const loadSaveCode = (saveCode?: string): void => {
+	const loadSaveCode = (saveCode?: string, noRemoveLocalStorage = false): void => {
 		// read from html
 		const saveStr = saveCode ? saveCode : String($scope.saveCode);
 
 		// if blank, reset LocalStorage and quit
 		if (saveStr === "") {
-			window.localStorage.removeItem("fthof_save_code");
+			if (!noRemoveLocalStorage) window.localStorage.removeItem("fthof_save_code");
 			return;
 		}
 
