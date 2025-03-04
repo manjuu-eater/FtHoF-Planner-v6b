@@ -818,8 +818,27 @@ app.controller("myCtrl", ($scope): void => {
 		// cancel default dropping
 		event.preventDefault();
 
-		// get dropped data
-		const droppedText = event.dataTransfer?.getData("text") || "";
+		// get DataTransfer object
+		const { dataTransfer } = event;
+		if (!dataTransfer) return;
+
+		// get dropped text
+		const droppedText: string = await (async (): Promise<string> => {
+			// dropped simple text
+			const simpleText = dataTransfer.getData("text");
+			if (simpleText) return simpleText;
+
+			// search save file from dropped items (max: 100 files)
+			for (let i = 0; i < 100; i++) {
+				const item = dataTransfer.items[i];
+				if (item.kind != "file" || item.type != "text/plain") continue;
+				const fileText = await item.getAsFile()?.text()
+				if (fileText?.includes("END")) return fileText;
+			}
+			return "";
+		})();
+
+		// save file is not dropped
 		if (!droppedText) return;
 
 		// try extracting dropped text
