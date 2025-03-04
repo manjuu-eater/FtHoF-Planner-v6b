@@ -162,6 +162,14 @@ app.controller("myCtrl", function ($scope) {
 	$scope.spellsCast = 0;
 	$scope.spellsCastTotal = 0;
 
+	// scope variables
+	$scope.firstRandomNumbers = [];
+	$scope.baseBackfireChance = undefined;
+	$scope.backfireChance = undefined;
+	$scope.combos = [];
+	$scope.sugarIndexes = [];
+	$scope.grimoireResults = [];
+
 	// initialize FtHoF settings
 	initSettings($scope);
 
