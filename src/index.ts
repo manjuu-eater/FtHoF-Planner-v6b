@@ -837,38 +837,17 @@ app.controller("myCtrl", ($scope): void => {
 			return "";
 		})();
 
-		// save file is not dropped
+		// save code text or file is not dropped
 		if (!droppedText) return;
 
-		// try extracting dropped text
-		let saveData;
-		try {
-			saveData = extractSaveData(droppedText);
-		} catch (error) {
-			// save code was invalid
-			console.error("invalid save code");
-			$scope.saveCode = "invalid save code";
-			return;
+		// try loading save data with dropped save code
+		const isLoadSuccess = loadSaveCode(droppedText, true);
+
+		// if valid, set save code to Save Code input area, and update list
+		if (isLoadSuccess) {
+			$scope.saveCode = droppedText;
+			updateCookies();
 		}
-
-		// set valid save code to Save Code input area
-		$scope.saveCode = droppedText;
-
-		// save valid save code to LocalStorage
-		try {
-			window.localStorage.setItem("fthof_save_code", droppedText);
-		} catch (error) {
-			console.error("LocalStorage is full", error);
-		}
-
-		// set save data to $scope
-		$scope.seed            = saveData.seed;
-		$scope.ascensionMode   = saveData.ascensionMode;
-		$scope.spellsCast      = saveData.spellsCast;
-		$scope.spellsCastTotal = saveData.spellsCastTotal;
-
-		// update list
-		updateCookies();
 
 		// manually trigger AngularJS digest cycle because this event is not tracked by AngularJS
 		$scope.$apply();
