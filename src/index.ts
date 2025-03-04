@@ -152,7 +152,7 @@ const extractSaveData = (saveCode: string): GameSaveData => {
 
 
 const app = window.angular.module("myApp", ["ngMaterial"]);
-app.controller("myCtrl", function ($scope) {
+app.controller("myCtrl", ($scope): void => {
 	// set initial value to $scope variable
 
 	// Save Data
