@@ -17,6 +17,10 @@ export type GameSaveData = {
 };
 
 
+/** LocalStorage key for saving save code */
+const localStorageKey = "fthof_save_code";
+
+
 /**
  * Extract save data about Magic tower minigame from exported save code.
  *
@@ -78,7 +82,7 @@ export const extractSaveData = (saveCode: string): GameSaveData => {
  */
 export const saveSaveCodeToLS = (saveCode: string): void => {
 	try {
-		window.localStorage.setItem("fthof_save_code", saveCode);
+		window.localStorage.setItem(localStorageKey, saveCode);
 	} catch (error) {
 		console.error("LocalStorage is full", error);
 	}
@@ -89,7 +93,7 @@ export const saveSaveCodeToLS = (saveCode: string): void => {
  * load Cookie Clicker save code from LocalStorage
  */
 export const loadSaveCodeFromLS = (): string | null => {
-	const saveCode = window.localStorage.getItem("fthof_save_code");
+	const saveCode = window.localStorage.getItem(localStorageKey);
 	return saveCode;
 };
 
@@ -98,5 +102,5 @@ export const loadSaveCodeFromLS = (): string | null => {
  * remove Cookie Clicker save code from LocalStorage
  */
 export const removeSaveCodeFromLS = (): void => {
-	window.localStorage.removeItem("fthof_save_code");
+	window.localStorage.removeItem(localStorageKey);
 };
