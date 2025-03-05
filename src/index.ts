@@ -21,6 +21,7 @@ import {
 
 import {
 	settingsModelNames,
+	getSettings,
 	saveSettings, loadSettings, initSettings,
 } from "./settings.js";
 
@@ -30,6 +31,7 @@ import {
 } from "./save_code.js";
 
 import {
+	getSaveData,
 	initSaveData,
 } from "./save_data.js";
 
@@ -524,12 +526,14 @@ app.controller("myCtrl", ($scope): void => {
 	const updateCookies = (): void => {
 		// read $scope variables
 		const {
+			seed, spellsCastTotal,
+		} = getSaveData($scope);
+		const {
 			lookahead,
 			minComboLength, maxComboLength, maxSpread,
 			includeEF, skipRA, skipSE, skipST,
-			seed, spellsCastTotal,
 			season,
-		} = $scope;
+		} = getSettings($scope);
 
 		// variables to set $scope.*
 		const baseBackfireChance = getBaseFailChance();
