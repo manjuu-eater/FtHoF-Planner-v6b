@@ -87,8 +87,8 @@
 
 			<!-- Comobs Result -->
 			<ul ng-if="combos">
-				<li class="combo-listitem" ng-repeat="combo in combos">
-					<b>{{$index + minComboLength}}x Combo</b>
+				<li class="combo-listitem" ng-repeat="(comboLength, combo) in combos">
+					<b>{{comboLength}}x Combo</b>
 					<ul ng-if="combo.shortest.idx == -1">
 						<li>No combo of this length</li>
 					</ul>
@@ -96,7 +96,7 @@
 						<li ng-if="combo.first.idx != -1">
 							<a href="#{{combo.first.idx + 1}}">Earliest:</a>
 							Length {{combo.first.length}};
-							spread {{combo.first.length - ($index + minComboLength)}};
+							spread {{combo.first.length - comboLength}};
 							starting at
 							<a href="#{{combo.first.idx + 1}}">spell #{{combo.first.idx+1}}</a>
 						</li>
@@ -106,7 +106,7 @@
 						<li>
 							<a href="#{{combo.shortest.idx + 1}}">Shortest:</a>
 							Length {{combo.shortest.length}};
-							spread {{combo.shortest.length - ($index + minComboLength)}};
+							spread {{combo.shortest.length - comboLength}};
 							starting at
 							<a href="#{{combo.shortest.idx + 1}}">spell #{{combo.shortest.idx+1}}</a>
 						</li>
