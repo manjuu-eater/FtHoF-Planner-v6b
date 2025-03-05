@@ -107,13 +107,13 @@ export const parseSaveCode = (saveCode: string): GameSaveData => {
 
 
 /**
- * load save code
+ * read save data from save code
  *
  * @param $scope AngularJS $scope
  * @param saveCode save code (if omitted, read from html)
  * @param noRemoveLocalStorage true: no remove LocalStorage item when saveCode == ""
  */
-export const loadSaveCode = (
+export const readSaveDataFromSaveCode = (
 	$scope: any,
 	saveCode?: string,
 	noRemoveLocalStorage = false,
