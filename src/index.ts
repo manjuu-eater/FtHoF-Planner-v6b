@@ -25,8 +25,8 @@ import {
 } from "./settings.js";
 
 import {
-	parseSaveCode,
-	saveSaveCodeToLS, loadSaveCodeFromLS, removeSaveCodeFromLS,
+	loadSaveCodeFromLS,
+	loadSaveCode,
 } from "./save_code.js";
 
 
@@ -144,51 +144,10 @@ app.controller("myCtrl", ($scope): void => {
 
 
 	/**
-	 * load save code
-	 *
-	 * @param saveCode save code (if omitted, read from html)
-	 * @param noRemoveLocalStorage true: no remove LocalStorage item when saveCode == ""
-	 */
-	const loadSaveCode = (saveCode?: string, noRemoveLocalStorage = false): boolean => {
-		// read from html
-		const saveStr = saveCode ? saveCode : String($scope.saveCode);
-
-		// if blank, reset LocalStorage and quit
-		if (saveStr === "") {
-			if (!noRemoveLocalStorage) removeSaveCodeFromLS();
-			return false;
-		}
-
-		// extract save data
-		let saveData;
-		try {
-			saveData = parseSaveCode(saveStr);
-		} catch {
-			// save code was invalid
-			console.error("invalid save code");
-			$scope.saveCode = "invalid save code";
-			return false;
-		}
-
-		// save valid save code to LocalStorage
-		saveSaveCodeToLS(saveStr);
-
-		// set to $scope
-		$scope.seed            = saveData.seed;
-		$scope.ascensionMode   = saveData.ascensionMode;
-		$scope.spellsCast      = saveData.spellsCast;
-		$scope.spellsCastTotal = saveData.spellsCastTotal;
-
-		// return success result
-		return true;
-	};
-
-
-	/**
 	 * import save data from save code and update Grimoire result list
 	 */
 	const importSave = (): void => {
-		loadSaveCode();
+		loadSaveCode($scope);
 		updateCookies();
 	};
 
@@ -750,7 +709,7 @@ app.controller("myCtrl", ($scope): void => {
 	const previousSaveCode = loadSaveCodeFromLS();
 	if (previousSaveCode) {
 		$scope.saveCode = previousSaveCode;
-		loadSaveCode(previousSaveCode);
+		loadSaveCode($scope, previousSaveCode);
 	}
 
 	// load settings if previous settings are saved in LocalStorage
@@ -794,7 +753,7 @@ app.controller("myCtrl", ($scope): void => {
 		if (!droppedText) return;
 
 		// try loading save data with dropped save code
-		const isLoadSuccess = loadSaveCode(droppedText, true);
+		const isLoadSuccess = loadSaveCode($scope, droppedText, true);
 
 		// if valid, set save code to Save Code input area, and update list
 		if (isLoadSuccess) {

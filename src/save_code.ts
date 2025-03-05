@@ -104,3 +104,49 @@ export const loadSaveCodeFromLS = (): string | null => {
 export const removeSaveCodeFromLS = (): void => {
 	window.localStorage.removeItem(localStorageKey);
 };
+
+
+/**
+ * load save code
+ *
+ * @param $scope AngularJS $scope
+ * @param saveCode save code (if omitted, read from html)
+ * @param noRemoveLocalStorage true: no remove LocalStorage item when saveCode == ""
+ */
+export const loadSaveCode = (
+	$scope: any,
+	saveCode?: string,
+	noRemoveLocalStorage = false,
+): boolean => {
+	// read from html
+	const saveStr = saveCode ? saveCode : String($scope.saveCode);
+
+	// if blank, reset LocalStorage and quit
+	if (saveStr === "") {
+		if (!noRemoveLocalStorage) removeSaveCodeFromLS();
+		return false;
+	}
+
+	// extract save data
+	let saveData;
+	try {
+		saveData = parseSaveCode(saveStr);
+	} catch {
+		// save code was invalid
+		console.error("invalid save code");
+		$scope.saveCode = "invalid save code";
+		return false;
+	}
+
+	// save valid save code to LocalStorage
+	saveSaveCodeToLS(saveStr);
+
+	// set to $scope
+	$scope.seed            = saveData.seed;
+	$scope.ascensionMode   = saveData.ascensionMode;
+	$scope.spellsCast      = saveData.spellsCast;
+	$scope.spellsCastTotal = saveData.spellsCastTotal;
+
+	// return success result
+	return true;
+};
