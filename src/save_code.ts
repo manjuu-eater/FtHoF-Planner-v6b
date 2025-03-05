@@ -29,7 +29,7 @@ const localStorageKey = "fthof_save_code";
  * @param saveCode exported save code
  * @returns extracted save data
  */
-export const extractSaveData = (saveCode: string): GameSaveData => {
+export const parseSaveCode = (saveCode: string): GameSaveData => {
 	// load save data
 	// to see detail: console.log(Game.WriteSave(3))
 

@@ -25,7 +25,7 @@ import {
 } from "./settings.js";
 
 import {
-	extractSaveData,
+	parseSaveCode,
 	saveSaveCodeToLS, loadSaveCodeFromLS, removeSaveCodeFromLS,
 } from "./save_code.js";
 
@@ -162,7 +162,7 @@ app.controller("myCtrl", ($scope): void => {
 		// extract save data
 		let saveData;
 		try {
-			saveData = extractSaveData(saveStr);
+			saveData = parseSaveCode(saveStr);
 		} catch {
 			// save code was invalid
 			console.error("invalid save code");
