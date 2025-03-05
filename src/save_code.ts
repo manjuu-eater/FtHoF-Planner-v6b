@@ -7,14 +7,8 @@
 
 import { b64_to_utf8 } from "./game_related_data.js";
 
-
 /** part of Cookie Clicker save data that extracted from save code */
-export type GameSaveData = {
-	seed: string;
-	ascensionMode: number;
-	spellsCast: number;
-	spellsCastTotal: number;
-};
+import { SaveData } from "./save_data.js";
 
 
 /** LocalStorage key for saving save code */
@@ -60,7 +54,7 @@ export const removeSaveCodeFromLS = (): void => {
  * @param saveCode exported save code
  * @returns extracted save data
  */
-export const parseSaveCode = (saveCode: string): GameSaveData => {
+export const parseSaveCode = (saveCode: string): SaveData => {
 	// load save data
 	// to see detail: console.log(Game.WriteSave(3))
 
@@ -96,7 +90,7 @@ export const parseSaveCode = (saveCode: string): GameSaveData => {
 	console.table({ seed, wizardTower, spellsCast, spellsCastTotal });
 
 	// return
-	const saveData: GameSaveData = {
+	const saveData: SaveData = {
 		seed: seed,
 		ascensionMode: ascensionMode,
 		spellsCast: spellsCast,
