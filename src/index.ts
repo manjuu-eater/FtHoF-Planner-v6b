@@ -740,7 +740,6 @@ app.controller("myCtrl", ($scope): void => {
 	// set functions to $scope that called from index.html
 	$scope.selectSaveCodeInput = selectSaveCodeInput;
 	$scope.printScope        = printScope;
-	$scope.loadSaveCode      = loadSaveCode;
 	$scope.importSave        = importSave;
 	$scope.updateCookies     = updateCookies;
 	$scope.castSpell         = castSpell;
