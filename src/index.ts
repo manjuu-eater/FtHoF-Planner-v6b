@@ -32,7 +32,7 @@ import {
 
 import {
 	getSaveData,
-	saveSaveData, initSaveData,
+	saveSaveData, loadSaveData, initSaveData,
 } from "./save_data.js";
 
 
@@ -720,7 +720,8 @@ app.controller("myCtrl", ($scope): void => {
 		readSaveDataFromSaveCode($scope, previousSaveCode);
 	}
 
-	// load settings if previous settings are saved in LocalStorage
+	// load previous state if saved in LocalStorage
+	loadSaveData($scope);
 	loadSettings($scope);
 
 	// call $scope.updateCookies() for first time
