@@ -32,7 +32,7 @@ import {
 
 import {
 	getSaveData,
-	initSaveData,
+	saveSaveData, initSaveData,
 } from "./save_data.js";
 
 
@@ -687,6 +687,9 @@ app.controller("myCtrl", ($scope): void => {
 		$scope.spellsCast += callCount;
 		$scope.spellsCastTotal += callCount;
 		updateCookies();
+
+		// save $scope.spellsCast, $scope.spellsCastTotal
+		saveSaveData($scope);
 	};
 
 
