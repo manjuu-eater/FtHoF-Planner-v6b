@@ -185,6 +185,15 @@ app.controller("myCtrl", ($scope): void => {
 
 
 	/**
+	 * import save data from save code and update Grimoire result list
+	 */
+	const importSave = (): void => {
+		loadSaveCode();
+		updateCookies();
+	};
+
+
+	/**
 	 * calculate base fail chance of FtHoF
 	 * (without considering count of GCs on screen)
 	 *
@@ -732,6 +741,7 @@ app.controller("myCtrl", ($scope): void => {
 	$scope.selectSaveCodeInput = selectSaveCodeInput;
 	$scope.printScope        = printScope;
 	$scope.loadSaveCode      = loadSaveCode;
+	$scope.importSave        = importSave;
 	$scope.updateCookies     = updateCookies;
 	$scope.castSpell         = castSpell;
 	$scope.loadMore          = loadMore;
