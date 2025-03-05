@@ -86,7 +86,7 @@
 		<div ng-cloak>
 
 			<!-- Combos Result -->
-			<ul ng-if="combos">
+			<ul ng-if="grimoireResults.length > 0">
 				<li class="combo-listitem" ng-repeat="(comboLength, combo) in combos">
 					<b>{{comboLength}}x Combo</b>
 					<ul ng-if="combo.shortest.idx == -1">
@@ -115,7 +115,7 @@
 			</ul>
 
 			<!-- Sugar Lumps -->
-			<ul ng-if="sugarIndexes">
+			<ul ng-if="grimoireResults.length > 0">
 				<li>
 					<b>Sugar Lumps</b>
 					<ul ng-if="sugarIndexes.length == 0">
