@@ -710,13 +710,11 @@ app.controller("myCtrl", ($scope): void => {
 	if (previousSaveCode) {
 		$scope.saveCode = previousSaveCode;
 		loadSaveCode($scope, previousSaveCode);
+		updateCookies();
 	}
 
 	// load settings if previous settings are saved in LocalStorage
 	loadSettings($scope);
-
-	// call $scope.updateCookies() for first time
-	if ($scope.saveCode && !$scope.grimoireResults?.length) updateCookies();
 
 
 	/**
