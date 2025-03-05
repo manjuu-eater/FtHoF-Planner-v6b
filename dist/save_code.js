@@ -8,6 +8,32 @@ import { b64_to_utf8 } from "./game_related_data.js";
 /** LocalStorage key for saving save code */
 const localStorageKey = "fthof_save_code";
 /**
+ * save Cookie Clicker save code to LocalStorage
+ *
+ * @param saveCode Cookie Clicker save code
+ */
+export const saveSaveCodeToLS = (saveCode) => {
+    try {
+        window.localStorage.setItem(localStorageKey, saveCode);
+    }
+    catch (error) {
+        console.error("LocalStorage is full", error);
+    }
+};
+/**
+ * load Cookie Clicker save code from LocalStorage
+ */
+export const loadSaveCodeFromLS = () => {
+    const saveCode = window.localStorage.getItem(localStorageKey);
+    return saveCode;
+};
+/**
+ * remove Cookie Clicker save code from LocalStorage
+ */
+export const removeSaveCodeFromLS = () => {
+    window.localStorage.removeItem(localStorageKey);
+};
+/**
  * Extract save data about Magic tower minigame from exported save code.
  *
  * causes TypeError if invalid save code
@@ -15,7 +41,7 @@ const localStorageKey = "fthof_save_code";
  * @param saveCode exported save code
  * @returns extracted save data
  */
-export const extractSaveData = (saveCode) => {
+export const parseSaveCode = (saveCode) => {
     // load save data
     // to see detail: console.log(Game.WriteSave(3))
     // decode save code
@@ -53,29 +79,40 @@ export const extractSaveData = (saveCode) => {
     return saveData;
 };
 /**
- * save Cookie Clicker save code to LocalStorage
+ * read save data from save code
  *
- * @param saveCode Cookie Clicker save code
+ * @param $scope AngularJS $scope
+ * @param saveCode save code (if omitted, read from html)
+ * @param noRemoveLocalStorage true: no remove LocalStorage item when saveCode == ""
  */
-export const saveSaveCodeToLS = (saveCode) => {
+export const readSaveDataFromSaveCode = ($scope, saveCode, noRemoveLocalStorage = false) => {
+    // read from html
+    const saveStr = saveCode ? saveCode : String($scope.saveCode);
+    // if blank, reset LocalStorage and quit
+    if (saveStr === "") {
+        if (!noRemoveLocalStorage)
+            removeSaveCodeFromLS();
+        return false;
+    }
+    // extract save data
+    let saveData;
     try {
-        window.localStorage.setItem(localStorageKey, saveCode);
+        saveData = parseSaveCode(saveStr);
     }
-    catch (error) {
-        console.error("LocalStorage is full", error);
+    catch (_a) {
+        // save code was invalid
+        console.error("invalid save code");
+        $scope.saveCode = "invalid save code";
+        return false;
     }
-};
-/**
- * load Cookie Clicker save code from LocalStorage
- */
-export const loadSaveCodeFromLS = () => {
-    const saveCode = window.localStorage.getItem(localStorageKey);
-    return saveCode;
-};
-/**
- * remove Cookie Clicker save code from LocalStorage
- */
-export const removeSaveCodeFromLS = () => {
-    window.localStorage.removeItem(localStorageKey);
+    // save valid save code to LocalStorage
+    saveSaveCodeToLS(saveStr);
+    // set to $scope
+    $scope.seed = saveData.seed;
+    $scope.ascensionMode = saveData.ascensionMode;
+    $scope.spellsCast = saveData.spellsCast;
+    $scope.spellsCastTotal = saveData.spellsCastTotal;
+    // return success result
+    return true;
 };
 //# sourceMappingURL=save_code.js.map

@@ -7,18 +7,43 @@
 
 import { b64_to_utf8 } from "./game_related_data.js";
 
-
 /** part of Cookie Clicker save data that extracted from save code */
-export type GameSaveData = {
-	seed: string;
-	ascensionMode: number;
-	spellsCast: number;
-	spellsCastTotal: number;
-};
+import { SaveData } from "./save_data.js";
 
 
 /** LocalStorage key for saving save code */
 const localStorageKey = "fthof_save_code";
+
+
+/**
+ * save Cookie Clicker save code to LocalStorage
+ *
+ * @param saveCode Cookie Clicker save code
+ */
+export const saveSaveCodeToLS = (saveCode: string): void => {
+	try {
+		window.localStorage.setItem(localStorageKey, saveCode);
+	} catch (error) {
+		console.error("LocalStorage is full", error);
+	}
+};
+
+
+/**
+ * load Cookie Clicker save code from LocalStorage
+ */
+export const loadSaveCodeFromLS = (): string | null => {
+	const saveCode = window.localStorage.getItem(localStorageKey);
+	return saveCode;
+};
+
+
+/**
+ * remove Cookie Clicker save code from LocalStorage
+ */
+export const removeSaveCodeFromLS = (): void => {
+	window.localStorage.removeItem(localStorageKey);
+};
 
 
 /**
@@ -29,7 +54,7 @@ const localStorageKey = "fthof_save_code";
  * @param saveCode exported save code
  * @returns extracted save data
  */
-export const extractSaveData = (saveCode: string): GameSaveData => {
+export const parseSaveCode = (saveCode: string): SaveData => {
 	// load save data
 	// to see detail: console.log(Game.WriteSave(3))
 
@@ -65,7 +90,7 @@ export const extractSaveData = (saveCode: string): GameSaveData => {
 	console.table({ seed, wizardTower, spellsCast, spellsCastTotal });
 
 	// return
-	const saveData: GameSaveData = {
+	const saveData: SaveData = {
 		seed: seed,
 		ascensionMode: ascensionMode,
 		spellsCast: spellsCast,
@@ -76,31 +101,46 @@ export const extractSaveData = (saveCode: string): GameSaveData => {
 
 
 /**
- * save Cookie Clicker save code to LocalStorage
+ * read save data from save code
  *
- * @param saveCode Cookie Clicker save code
+ * @param $scope AngularJS $scope
+ * @param saveCode save code (if omitted, read from html)
+ * @param noRemoveLocalStorage true: no remove LocalStorage item when saveCode == ""
  */
-export const saveSaveCodeToLS = (saveCode: string): void => {
-	try {
-		window.localStorage.setItem(localStorageKey, saveCode);
-	} catch (error) {
-		console.error("LocalStorage is full", error);
+export const readSaveDataFromSaveCode = (
+	$scope: any,
+	saveCode?: string,
+	noRemoveLocalStorage = false,
+): boolean => {
+	// read from html
+	const saveStr = saveCode ? saveCode : String($scope.saveCode);
+
+	// if blank, reset LocalStorage and quit
+	if (saveStr === "") {
+		if (!noRemoveLocalStorage) removeSaveCodeFromLS();
+		return false;
 	}
-};
 
+	// extract save data
+	let saveData;
+	try {
+		saveData = parseSaveCode(saveStr);
+	} catch {
+		// save code was invalid
+		console.error("invalid save code");
+		$scope.saveCode = "invalid save code";
+		return false;
+	}
 
-/**
- * load Cookie Clicker save code from LocalStorage
- */
-export const loadSaveCodeFromLS = (): string | null => {
-	const saveCode = window.localStorage.getItem(localStorageKey);
-	return saveCode;
-};
+	// save valid save code to LocalStorage
+	saveSaveCodeToLS(saveStr);
 
+	// set to $scope
+	$scope.seed            = saveData.seed;
+	$scope.ascensionMode   = saveData.ascensionMode;
+	$scope.spellsCast      = saveData.spellsCast;
+	$scope.spellsCastTotal = saveData.spellsCastTotal;
 
-/**
- * remove Cookie Clicker save code from LocalStorage
- */
-export const removeSaveCodeFromLS = (): void => {
-	window.localStorage.removeItem(localStorageKey);
+	// return success result
+	return true;
 };

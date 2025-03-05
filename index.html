@@ -47,7 +47,7 @@
 				<label>Save Code</label>
 				<input id="save_code" ng-model="saveCode" ng-click="selectSaveCodeInput($event)">
 			</md-input-container>
-			<md-button class="md-raised md-primary" ng-click="loadSaveCode(); updateCookies()">
+			<md-button class="md-raised md-primary" ng-click="importSave()">
 				Import Save
 			</md-button>
 		</div>
@@ -82,13 +82,13 @@
 			</div>
 		</div>
 
-		<!-- Main Contents that conains AngularJS brackets -->
+		<!-- Main Contents that conains AngularJS braces -->
 		<div ng-cloak>
 
-			<!-- Comobs Result -->
-			<ul ng-if="combos">
-				<li class="combo-listitem" ng-repeat="combo in combos">
-					<b>{{$index + minComboLength}}x Combo</b>
+			<!-- Combos Result -->
+			<ul ng-if="grimoireResults.length > 0">
+				<li class="combo-listitem" ng-repeat="(comboLength, combo) in combos">
+					<b>{{comboLength}}x Combo</b>
 					<ul ng-if="combo.shortest.idx == -1">
 						<li>No combo of this length</li>
 					</ul>
@@ -96,9 +96,9 @@
 						<li ng-if="combo.first.idx != -1">
 							<a href="#{{combo.first.idx + 1}}">Earliest:</a>
 							Length {{combo.first.length}};
-							spread {{combo.first.length - ($index + minComboLength)}};
+							spread {{combo.first.length - comboLength}};
 							starting at
-							<a href="#{{combo.first.idx + 1}}">spell #{{combo.first.idx+1}}</a>
+							<a href="#{{combo.first.idx + 1}}">spell #{{combo.first.idx + 1}}</a>
 						</li>
 						<li ng-if="combo.first.idx == -1">
 							No combo of this length with spread &lt;= {{maxSpread}}
@@ -106,16 +106,16 @@
 						<li>
 							<a href="#{{combo.shortest.idx + 1}}">Shortest:</a>
 							Length {{combo.shortest.length}};
-							spread {{combo.shortest.length - ($index + minComboLength)}};
+							spread {{combo.shortest.length - comboLength}};
 							starting at
-							<a href="#{{combo.shortest.idx + 1}}">spell #{{combo.shortest.idx+1}}</a>
+							<a href="#{{combo.shortest.idx + 1}}">spell #{{combo.shortest.idx + 1}}</a>
 						</li>
 					</ul>
 				</li>
 			</ul>
 
 			<!-- Sugar Lumps -->
-			<ul ng-if="sugarIndexes">
+			<ul ng-if="grimoireResults.length > 0">
 				<li>
 					<b>Sugar Lumps</b>
 					<ul ng-if="sugarIndexes.length == 0">

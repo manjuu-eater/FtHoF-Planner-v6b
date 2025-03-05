@@ -2,7 +2,7 @@
  * FtHoF Planner v6b
  * index.js
  *
- * FtHoF main script file
+ * FtHoF Planner main script file
  */
 
 
@@ -21,13 +21,19 @@ import {
 
 import {
 	settingsModelNames,
+	getSettings,
 	saveSettings, loadSettings, initSettings,
 } from "./settings.js";
 
 import {
-	extractSaveData,
-	saveSaveCodeToLS, loadSaveCodeFromLS, removeSaveCodeFromLS,
+	loadSaveCodeFromLS,
+	readSaveDataFromSaveCode,
 } from "./save_code.js";
+
+import {
+	getSaveData,
+	saveSaveData, loadSaveData, initSaveData,
+} from "./save_data.js";
 
 
 // type definition
@@ -97,16 +103,13 @@ type ComboResults = { shortest: ComboResult, first: ComboResult };
 
 const app = window.angular.module("myApp", ["ngMaterial"]);
 app.controller("myCtrl", ($scope): void => {
-	// set initial value to $scope variable
-
-	// Game Save Data
+	// initialize Save Code
 	$scope.saveCode = "";
-	$scope.seed = "";
-	$scope.ascensionMode = 0;
-	$scope.spellsCast = 0;
-	$scope.spellsCastTotal = 0;
+	
+	// initialize FtHoF save data
+	initSaveData($scope);
 
-	// FtHoF Scope Variables
+	// initialize FtHoF Scope Variables
 	$scope.baseBackfireChance = undefined;
 	$scope.backfireChance = undefined;
 	$scope.combos = [];
@@ -144,43 +147,11 @@ app.controller("myCtrl", ($scope): void => {
 
 
 	/**
-	 * load save code
-	 *
-	 * @param saveCode save code (if omitted, read from html)
-	 * @param noRemoveLocalStorage true: no remove LocalStorage item when saveCode == ""
+	 * import save data from save code and update Grimoire result list
 	 */
-	const loadSaveCode = (saveCode?: string, noRemoveLocalStorage = false): boolean => {
-		// read from html
-		const saveStr = saveCode ? saveCode : String($scope.saveCode);
-
-		// if blank, reset LocalStorage and quit
-		if (saveStr === "") {
-			if (!noRemoveLocalStorage) removeSaveCodeFromLS();
-			return false;
-		}
-
-		// extract save data
-		let saveData;
-		try {
-			saveData = extractSaveData(saveStr);
-		} catch {
-			// save code was invalid
-			console.error("invalid save code");
-			$scope.saveCode = "invalid save code";
-			return false;
-		}
-
-		// save valid save code to LocalStorage
-		saveSaveCodeToLS(saveStr);
-
-		// set to $scope
-		$scope.seed            = saveData.seed;
-		$scope.ascensionMode   = saveData.ascensionMode;
-		$scope.spellsCast      = saveData.spellsCast;
-		$scope.spellsCastTotal = saveData.spellsCastTotal;
-
-		// return success result
-		return true;
+	const importSave = (): void => {
+		readSaveDataFromSaveCode($scope);
+		updateCookies();
 	};
 
 
@@ -555,12 +526,14 @@ app.controller("myCtrl", ($scope): void => {
 	const updateCookies = (): void => {
 		// read $scope variables
 		const {
+			seed, spellsCastTotal,
+		} = getSaveData($scope);
+		const {
 			lookahead,
 			minComboLength, maxComboLength, maxSpread,
 			includeEF, skipRA, skipSE, skipST,
-			seed, spellsCastTotal,
 			season,
-		} = $scope;
+		} = getSettings($scope);
 
 		// variables to set $scope.*
 		const baseBackfireChance = getBaseFailChance();
@@ -714,6 +687,9 @@ app.controller("myCtrl", ($scope): void => {
 		$scope.spellsCast += callCount;
 		$scope.spellsCastTotal += callCount;
 		updateCookies();
+
+		// save $scope.spellsCast, $scope.spellsCastTotal
+		saveSaveData($scope);
 	};
 
 
@@ -731,7 +707,7 @@ app.controller("myCtrl", ($scope): void => {
 	// set functions to $scope that called from index.html
 	$scope.selectSaveCodeInput = selectSaveCodeInput;
 	$scope.printScope        = printScope;
-	$scope.loadSaveCode      = loadSaveCode;
+	$scope.importSave        = importSave;
 	$scope.updateCookies     = updateCookies;
 	$scope.castSpell         = castSpell;
 	$scope.loadMore          = loadMore;
@@ -741,10 +717,11 @@ app.controller("myCtrl", ($scope): void => {
 	const previousSaveCode = loadSaveCodeFromLS();
 	if (previousSaveCode) {
 		$scope.saveCode = previousSaveCode;
-		loadSaveCode(previousSaveCode);
+		readSaveDataFromSaveCode($scope, previousSaveCode);
 	}
 
-	// load settings if previous settings are saved in LocalStorage
+	// load previous state if saved in LocalStorage
+	loadSaveData($scope);
 	loadSettings($scope);
 
 	// call $scope.updateCookies() for first time
@@ -785,7 +762,7 @@ app.controller("myCtrl", ($scope): void => {
 		if (!droppedText) return;
 
 		// try loading save data with dropped save code
-		const isLoadSuccess = loadSaveCode(droppedText, true);
+		const isLoadSuccess = readSaveDataFromSaveCode($scope, droppedText, true);
 
 		// if valid, set save code to Save Code input area, and update list
 		if (isLoadSuccess) {
