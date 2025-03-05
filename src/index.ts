@@ -29,6 +29,10 @@ import {
 	readSaveDataFromSaveCode,
 } from "./save_code.js";
 
+import {
+	initSaveData,
+} from "./save_data.js";
+
 
 // type definition
 
@@ -97,16 +101,13 @@ type ComboResults = { shortest: ComboResult, first: ComboResult };
 
 const app = window.angular.module("myApp", ["ngMaterial"]);
 app.controller("myCtrl", ($scope): void => {
-	// set initial value to $scope variable
-
-	// Game Save Data
+	// initialize Save Code
 	$scope.saveCode = "";
-	$scope.seed = "";
-	$scope.ascensionMode = 0;
-	$scope.spellsCast = 0;
-	$scope.spellsCastTotal = 0;
+	
+	// initialize FtHoF save data
+	initSaveData($scope);
 
-	// FtHoF Scope Variables
+	// initialize FtHoF Scope Variables
 	$scope.baseBackfireChance = undefined;
 	$scope.backfireChance = undefined;
 	$scope.combos = [];
