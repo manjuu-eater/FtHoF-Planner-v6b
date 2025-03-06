@@ -755,7 +755,7 @@ app.controller("myCtrl", ($scope): void => {
 	 * @param event drag event object
 	 * @returns Promise<void>
 	 */
-	const whenItemDropped = async (event: DragEvent): Promise<void> => {
+	const onItemDropped = async (event: DragEvent): Promise<void> => {
 		// cancel default dropping
 		event.preventDefault();
 
@@ -796,7 +796,7 @@ app.controller("myCtrl", ($scope): void => {
 	};
 
 	// support drag & drop save code input
-	document.addEventListener("drop", whenItemDropped);
+	document.addEventListener("drop", onItemDropped);
 
 
 	/**
@@ -805,7 +805,7 @@ app.controller("myCtrl", ($scope): void => {
 	 * @param after value after change
 	 * @param before value before change
 	 */
-	const whenSettingsChanged = <T>(after: T, before: T): void => {
+	const onSettingsChanged = <T>(after: T, before: T): void => {
 		// do nothing if no change
 		if (after === before) return;
 
@@ -817,7 +817,7 @@ app.controller("myCtrl", ($scope): void => {
 	};
 
 	// start monitoring $scope changes
-	settingsModelNames.forEach(modelName => $scope.$watch(modelName, whenSettingsChanged));
+	settingsModelNames.forEach(modelName => $scope.$watch(modelName, onSettingsChanged));
 
 
 	// remove loading text
