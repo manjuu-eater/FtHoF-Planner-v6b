@@ -795,9 +795,6 @@ app.controller("myCtrl", ($scope): void => {
 		$scope.$apply();
 	};
 
-	// support drag & drop save code input
-	document.addEventListener("drop", onItemDropped);
-
 
 	/**
 	 * function that is called when specified $scope value changes
@@ -816,8 +813,20 @@ app.controller("myCtrl", ($scope): void => {
 		saveSettings($scope);
 	};
 
-	// start monitoring $scope changes
-	settingsModelNames.forEach(modelName => $scope.$watch(modelName, onSettingsChanged));
+
+	/**
+	 * start watching events related to FtHoF Planner UI
+	 */
+	const initUIEventListeners = () => {
+		// support drag & drop save code input
+		document.addEventListener("drop", onItemDropped);
+
+		// start monitoring $scope changes
+		settingsModelNames.forEach(modelName => $scope.$watch(modelName, onSettingsChanged));
+	};
+
+	// start watching events related to UI
+	initUIEventListeners();
 
 
 	// remove loading text
