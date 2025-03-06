@@ -1,4 +1,7 @@
 /**
+ * FtHoF Planner v6b
+ * image_file_paths.ts
+ * 
  * image file paths
  */
 
