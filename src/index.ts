@@ -813,8 +813,8 @@ app.controller("myCtrl", ($scope): void => {
 		// do nothing if no change
 		if (after === before) return;
 
-		// call $scope.updateCookies()
-		$scope.updateCookies();
+		// call updateCookies()
+		updateCookies();
 
 		// save settings to LocalStorage
 		saveSettings($scope);
