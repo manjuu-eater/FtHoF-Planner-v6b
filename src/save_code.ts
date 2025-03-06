@@ -8,7 +8,7 @@
 import { b64_to_utf8 } from "./game_related_data.js";
 
 /** part of Cookie Clicker save data that extracted from save code */
-import { SaveData } from "./save_data.js";
+import { SaveData, setSaveData } from "./save_data.js";
 
 
 /** LocalStorage key for saving save code */
@@ -122,10 +122,7 @@ export const readSaveDataFromSaveCode = ($scope: any, saveCode: string): boolean
 	saveSaveCodeToLS(saveCode);
 
 	// set to $scope
-	$scope.seed            = saveData.seed;
-	$scope.ascensionMode   = saveData.ascensionMode;
-	$scope.spellsCast      = saveData.spellsCast;
-	$scope.spellsCastTotal = saveData.spellsCastTotal;
+	setSaveData($scope, saveData);
 
 	// return success result
 	return true;
