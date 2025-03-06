@@ -316,11 +316,10 @@
 								'highlight combo': result.gfd.canCombo,
 								'highlight skip':  result.gfd.canSkip,
 							}" ng-attr-title="{{
-								result.gfd.name == 'Force the Hand of Fate'
-								? '#' + (result.num + 1) + ': ' + result.gfd.cookie0.name + (
-									season != 'noswitch'
-									? ' / ' + result.gfd.cookie1.name
-									: ''
+								result.gfd.tooltip
+								? (
+									'#' + (result.num + 1)
+									+ ': ' + result.gfd.tooltip
 								)
 								: undefined
 							}}">

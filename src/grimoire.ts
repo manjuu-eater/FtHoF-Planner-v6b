@@ -38,17 +38,20 @@ export type GfdResult = {
 	name: SpellName;
 	isWin: boolean;
 	image: string;
+	tooltip: string | undefined;
 
 	hasBs: boolean;
 	hasEf: boolean;
 	canCombo: boolean;
 	canSkip: boolean;
+
 	cookie0?: FthofResult;
 	gc0?: FthofResult;
 	wc0?: FthofResult;
 	cookie1?: FthofResult;
 	gc1?: FthofResult;
 	wc1?: FthofResult;
+
 	spontaneousEdificeRandomNumber?: number;
 };
 
@@ -300,6 +303,26 @@ export const hasCookieEffect = (cookies: FthofResult[], effect: string | string[
 
 
 /**
+ * make a string for tooltip of GFD
+ * (e.g. "Lucky / Ruin")
+ *
+ * @param gfdResult result object of GFD
+ */
+const makeGfdTooltip = (gfdResult: GfdResult): string | undefined => {
+	const tooltip = (
+		gfdResult.name == "Force the Hand of Fate"
+		? gfdResult.cookie0?.name + (
+			settings.season != "noswitch"
+			? " / " + gfdResult.cookie1?.name
+			: ""
+		)
+		: undefined
+	);
+	return tooltip;
+};
+
+
+/**
  * get cast result object of Gambler's Fever Dream
  *
  * simulating: minigameGrimoire.js v2.052
@@ -345,6 +368,7 @@ export const castGFD = (seed: string, spellsCastTotal: number): GfdResult => {
 		name: castSpellName,
 		isWin: isChildSpellWin,
 		image: spellNameToIconUrl[castSpellName],
+		tooltip: undefined,
 
 		hasBs: false,
 		hasEf: false,
@@ -385,6 +409,10 @@ export const castGFD = (seed: string, spellsCastTotal: number): GfdResult => {
 				gfdResult.canCombo = true;
 			}
 		}
+
+		// make a tooltip string
+		const tooltip = makeGfdTooltip(gfdResult);
+		gfdResult.tooltip = tooltip;
 
 	} else if (castSpellName == "Spontaneous Edifice") {
 		// add result of SE
