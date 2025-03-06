@@ -105,13 +105,8 @@ export const parseSaveCode = (saveCode: string): SaveData => {
  *
  * @param $scope AngularJS $scope
  * @param saveCode save code
- * @param noRemoveLocalStorage true: no remove LocalStorage item when saveCode == ""
  */
-export const readSaveDataFromSaveCode = (
-	$scope: any,
-	saveCode: string,
-	noRemoveLocalStorage = false,
-): boolean => {
+export const readSaveDataFromSaveCode = ($scope: any, saveCode: string): boolean => {
 	// extract save data
 	let saveData;
 	try {

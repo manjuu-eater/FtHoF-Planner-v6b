@@ -769,7 +769,7 @@ app.controller("myCtrl", ($scope): void => {
 		if (!droppedText) return;
 
 		// try loading save data with dropped save code
-		const isLoadSuccess = readSaveDataFromSaveCode($scope, droppedText, true);
+		const isLoadSuccess = readSaveDataFromSaveCode($scope, droppedText);
 
 		// if valid, set save code to Save Code input area, and update list
 		if (isLoadSuccess) {
