@@ -309,16 +309,18 @@ export const hasCookieEffect = (cookies: FthofResult[], effect: string | string[
  * @param gfdResult result object of GFD
  */
 const makeGfdTooltip = (gfdResult: GfdResult): string | undefined => {
-	const tooltip = (
-		gfdResult.name == "Force the Hand of Fate"
-		? gfdResult.cookie0?.name + (
-			settings.season != "noswitch"
-			? " / " + gfdResult.cookie1?.name
-			: ""
-		)
-		: undefined
-	);
-	return tooltip;
+	// return undefined for AngularJS to show nothing
+	if (gfdResult.name != "Force the Hand of Fate") return undefined;
+
+	//const numStr = "#" + (num + 1);
+	const cookie0Str = gfdResult.cookie0?.name || "";
+	const cookie1Str = gfdResult.cookie1?.name || "";
+	//const halfTitle = numStr + ": " + cookie0Str;
+	const halfTitle = cookie0Str;
+	if (settings.season == "noswitch") return halfTitle;
+
+	const fullTitle = halfTitle + " / " + cookie1Str;
+	return fullTitle;
 };
 
 
