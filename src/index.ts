@@ -26,7 +26,7 @@ import {
 } from "./settings.js";
 
 import {
-	loadSaveCodeFromLS,
+	loadSaveCodeFromLS, removeSaveCodeFromLS,
 	readSaveDataFromSaveCode,
 } from "./save_code.js";
 
@@ -150,6 +150,13 @@ app.controller("myCtrl", ($scope): void => {
 	 * import save data from save code and update Grimoire result list
 	 */
 	const importSave = (): void => {
+		// if save code is blank, reset LocalStorage and quit
+		if ($scope.saveCode === "") {
+			removeSaveCodeFromLS();
+			return;
+		}
+
+		// import save data, update list
 		readSaveDataFromSaveCode($scope, $scope.saveCode);
 		updateCookies();
 	};

@@ -112,12 +112,6 @@ export const readSaveDataFromSaveCode = (
 	saveCode: string,
 	noRemoveLocalStorage = false,
 ): boolean => {
-	// if blank, reset LocalStorage and quit
-	if (saveCode === "") {
-		if (!noRemoveLocalStorage) removeSaveCodeFromLS();
-		return false;
-	}
-
 	// extract save data
 	let saveData;
 	try {
