@@ -222,7 +222,7 @@ app.controller("myCtrl", ($scope): void => {
 			Math_seedrandom(seed + "/" + currentTotalSpell);
 			const randomNumber = Math.random();
 
-			// minimum count of GC/WC on screen that GC changes to WC
+			// minimum count of GC/WC on screen that changes GC to WC
 			const wcThreshold = (
 				randomNumber < 1 - baseBackfireChance  // if false, 100% WC with no GC/WC on screen
 				? Math.ceil((1 - randomNumber - baseBackfireChance) / 0.15)
