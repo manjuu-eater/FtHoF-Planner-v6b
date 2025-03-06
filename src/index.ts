@@ -125,11 +125,11 @@ app.controller("myCtrl", ($scope): void => {
 
 
 	/**
-	 * Select the save code input for easy pasting.
+	 * Select input element for easy pasting.
 	 *
 	 * @param event event fired with input left or right click
 	 */
-	const selectSaveCodeInput = (event: MouseEvent): void => {
+	const selectInput = (event: MouseEvent): void => {
 		// event target element
 		const eTarget = event.target;
 
@@ -726,12 +726,12 @@ app.controller("myCtrl", ($scope): void => {
 
 
 	// set functions to $scope that called from index.html
-	$scope.selectSaveCodeInput = selectSaveCodeInput;
-	$scope.printScope        = printScope;
-	$scope.importSave        = importSave;
-	$scope.updateCookies     = updateCookies;
-	$scope.castSpell         = castSpell;
-	$scope.loadMore          = loadMore;
+	$scope.selectInput   = selectInput;
+	$scope.printScope    = printScope;
+	$scope.importSave    = importSave;
+	$scope.updateCookies = updateCookies;
+	$scope.castSpell     = castSpell;
+	$scope.loadMore      = loadMore;
 
 
 	// fill the save code input if previous save code exists in LocalStorage
