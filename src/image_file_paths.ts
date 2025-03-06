@@ -19,7 +19,7 @@ export const wcImageUrl = "./img/wrathCookie.png";
  * @returns image url
  */
 export const heartImageUrl = (index: number): string => {
-    return `./img/hearts/${index}.png`;
+	return `./img/hearts/${index}.png`;
 };
 
 
@@ -31,8 +31,8 @@ export const heartImageUrl = (index: number): string => {
  * @returns image url
  */
 export const bunnyImageUrl = (isWrath: boolean, index: number): string => {
-    const isWrathNum = isWrath ? "1" : "0";
-    return `./img/bunnies/${isWrathNum}${index}.png`;
+	const isWrathNum = isWrath ? "1" : "0";
+	return `./img/bunnies/${isWrathNum}${index}.png`;
 };
 
 
