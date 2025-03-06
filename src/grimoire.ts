@@ -310,7 +310,16 @@ export const hasCookieEffect = (cookies: FthofResult[], effect: string | string[
  */
 const makeGfdTooltip = (gfdResult: GfdResult): string | undefined => {
 	// return undefined for AngularJS to show nothing
-	if (gfdResult.name != "Force the Hand of Fate") return undefined;
+	if (gfdResult.name != "Force the Hand of Fate") {
+		if (gfdResult.name != "Spontaneous Edifice") return undefined;
+
+		// make tooltip for SE
+		const seTooltip = (
+			"random number for SE is "
+			+ gfdResult.spontaneousEdificeRandomNumber?.toFixed(4)
+		);
+		return seTooltip;
+	}
 
 	//const numStr = "#" + (num + 1);
 	const cookie0Str = gfdResult.cookie0?.name || "";
@@ -412,10 +421,6 @@ export const castGFD = (seed: string, spellsCastTotal: number): GfdResult => {
 			}
 		}
 
-		// make a tooltip string
-		const tooltip = makeGfdTooltip(gfdResult);
-		gfdResult.tooltip = tooltip;
-
 	} else if (castSpellName == "Spontaneous Edifice") {
 		// add result of SE
 
@@ -434,6 +439,10 @@ export const castGFD = (seed: string, spellsCastTotal: number): GfdResult => {
 	) {
 		gfdResult.canSkip = true;
 	}
+
+	// make a tooltip string
+	const tooltip = makeGfdTooltip(gfdResult);
+	gfdResult.tooltip = tooltip;
 
 	// return GFD result object
 	return gfdResult;
