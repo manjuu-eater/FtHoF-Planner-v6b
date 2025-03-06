@@ -186,10 +186,17 @@ app.controller("myCtrl", ($scope): void => {
 	 * @returns fail chance of FtHoF
 	 */
 	const getBaseFailChance = (): number => {
+		// calc auraSI effect in advance
+		// Game.auraMult('Supreme Intellect') (L294 > main.js L14877)
+		let auraSIMult = 0;
+		if ($scope.auraSI) auraSIMult = 1;
+		if ($scope.auraRB) auraSIMult += 0.1;
+
+		// calc fail chance with zero screen GC
 		let failChance = 0.15;
 		if ($scope.buffDI) failChance *= 0.1;  // Diminish Ineptitude Buff
 		if ($scope.debuffDI) failChance *= 5;  // Diminish Ineptitude Debuff
-		failChance *= 1 + 0.1 * $scope.auraSI;  // TODO: Reality Bending x1.1
+		failChance *= 1 + 0.1 * auraSIMult;    // Supreme Intellect Aura
 		return failChance;
 	};
 
