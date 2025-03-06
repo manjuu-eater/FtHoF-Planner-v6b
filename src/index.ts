@@ -105,7 +105,7 @@ const app = window.angular.module("myApp", ["ngMaterial"]);
 app.controller("myCtrl", ($scope): void => {
 	// initialize Save Code
 	$scope.saveCode = "";
-	
+
 	// initialize FtHoF save data
 	initSaveData($scope);
 
