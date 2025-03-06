@@ -95,10 +95,11 @@
 
 			<!-- Combos Result -->
 			<ul ng-if="grimoireResults.length > 0">
-				<li class="combo-listitem" ng-repeat="(comboLength, combo) in combos">
+				<li ng-repeat="(comboLength, combo) in combos">
 					<b>{{comboLength}}x Combo</b>
 					<ul ng-if="combo.shortest.idx == -1">
 						<li>No combo of this length</li>
+						<li class="hidden"></li><!-- spacer -->
 					</ul>
 					<ul ng-if="combo.shortest.idx != -1">
 						<li ng-if="combo.first.idx != -1">

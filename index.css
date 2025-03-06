@@ -43,6 +43,11 @@ img.mini {
 	height: .9em;
 }
 
+/* hide elements without collapsing */
+.hidden {
+	visibility: hidden;
+}
+
 
 /* save code */
 input#save_code {
