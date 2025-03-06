@@ -42,15 +42,23 @@
 <div ng-app="myApp" ng-controller="myCtrl">
 	<div class="content">
 		<!-- Save Code -->
-		<div layout="row">
-			<md-input-container flex>
-				<label>Save Code</label>
-				<input id="save_code" ng-model="saveCode" ng-click="selectSaveCodeInput($event)">
-			</md-input-container>
-			<md-button class="md-raised md-primary" ng-click="importSave()">
-				Import Save
-			</md-button>
-		</div>
+		<form ng-submit="importSave()">
+			<div layout="row">
+				<md-input-container flex>
+					<label>Save Code</label>
+					<input
+						id="save_code"
+						ng-model="saveCode"
+						ng-click="selectInput($event)"
+						ng-mousedown="selectInput($event)"
+						ng-mouseup="selectInput($event)"
+					>
+				</md-input-container>
+				<md-button type="submit" class="md-raised md-primary">
+					Import Save
+				</md-button>
+			</div>
+		</form>
 
 
 		<!-- Description of FtHoF -->
@@ -87,10 +95,11 @@
 
 			<!-- Combos Result -->
 			<ul ng-if="grimoireResults.length > 0">
-				<li class="combo-listitem" ng-repeat="(comboLength, combo) in combos">
+				<li ng-repeat="(comboLength, combo) in combos">
 					<b>{{comboLength}}x Combo</b>
 					<ul ng-if="combo.shortest.idx == -1">
 						<li>No combo of this length</li>
+						<li class="hidden"></li><!-- spacer -->
 					</ul>
 					<ul ng-if="combo.shortest.idx != -1">
 						<li ng-if="combo.first.idx != -1">
@@ -185,6 +194,11 @@
 			<md-checkbox ng-model="auraSI">
 				Supreme Intellect Aura Active
 			</md-checkbox>
+
+			<md-checkbox ng-model="auraRB">
+				Reality Bending Aura Active
+			</md-checkbox>
+			<br>
 
 			<md-checkbox ng-model="buffDI">
 				Diminish Ineptitude Buff Active
@@ -302,15 +316,7 @@
 							<div ng-class="{
 								'highlight combo': result.gfd.canCombo,
 								'highlight skip':  result.gfd.canSkip,
-							}" ng-attr-title="{{
-								result.gfd.name == 'Force the Hand of Fate'
-								? result.gfd.cookie0.name + (
-									season != 'noswitch'
-									? '; ' + result.gfd.cookie1.name
-									: ''
-								)
-								: undefined
-							}}">
+							}" ng-attr-title="{{result.gfd.tooltip}}">
 								{{result.gfd.name}}
 							</div>
 						</div></td>

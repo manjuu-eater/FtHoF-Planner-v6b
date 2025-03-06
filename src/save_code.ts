@@ -8,7 +8,7 @@
 import { b64_to_utf8 } from "./game_related_data.js";
 
 /** part of Cookie Clicker save data that extracted from save code */
-import { SaveData } from "./save_data.js";
+import { SaveData, setSaveData } from "./save_data.js";
 
 
 /** LocalStorage key for saving save code */
@@ -104,27 +104,13 @@ export const parseSaveCode = (saveCode: string): SaveData => {
  * read save data from save code
  *
  * @param $scope AngularJS $scope
- * @param saveCode save code (if omitted, read from html)
- * @param noRemoveLocalStorage true: no remove LocalStorage item when saveCode == ""
+ * @param saveCode save code
  */
-export const readSaveDataFromSaveCode = (
-	$scope: any,
-	saveCode?: string,
-	noRemoveLocalStorage = false,
-): boolean => {
-	// read from html
-	const saveStr = saveCode ? saveCode : String($scope.saveCode);
-
-	// if blank, reset LocalStorage and quit
-	if (saveStr === "") {
-		if (!noRemoveLocalStorage) removeSaveCodeFromLS();
-		return false;
-	}
-
+export const readSaveDataFromSaveCode = ($scope: any, saveCode: string): boolean => {
 	// extract save data
 	let saveData;
 	try {
-		saveData = parseSaveCode(saveStr);
+		saveData = parseSaveCode(saveCode);
 	} catch {
 		// save code was invalid
 		console.error("invalid save code");
@@ -133,13 +119,10 @@ export const readSaveDataFromSaveCode = (
 	}
 
 	// save valid save code to LocalStorage
-	saveSaveCodeToLS(saveStr);
+	saveSaveCodeToLS(saveCode);
 
 	// set to $scope
-	$scope.seed            = saveData.seed;
-	$scope.ascensionMode   = saveData.ascensionMode;
-	$scope.spellsCast      = saveData.spellsCast;
-	$scope.spellsCastTotal = saveData.spellsCastTotal;
+	setSaveData($scope, saveData);
 
 	// return success result
 	return true;

@@ -1,4 +1,7 @@
 /**
+ * FtHoF Planner v6b
+ * game_related_data.ts
+ *
  * objects or functions that related to the Cookie Clicker game JavaScript file
  */
 /**

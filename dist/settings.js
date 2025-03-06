@@ -10,7 +10,7 @@ const localStorageKey = "fthof_settings";
 export const settingsModelNames = [
     "lookahead", "minComboLength", "maxComboLength", "maxSpread",
     "includeEF", "skipRA", "skipSE", "skipST",
-    "screenCookieCount", "buffDF", "auraSI", "buffDI", "debuffDI",
+    "screenCookieCount", "buffDF", "auraSI", "auraRB", "buffDI", "debuffDI",
     "season",
 ];
 /**
@@ -32,6 +32,7 @@ export const getSettings = ($scope) => {
         screenCookieCount: $scope.screenCookieCount,
         buffDF: $scope.buffDF,
         auraSI: $scope.auraSI,
+        auraRB: $scope.auraRB,
         buffDI: $scope.buffDI,
         debuffDI: $scope.debuffDI,
         season: $scope.season,
@@ -105,6 +106,7 @@ export const initSettings = ($scope) => {
     $scope.screenCookieCount = 0;
     $scope.buffDF = false;
     $scope.auraSI = false;
+    $scope.auraRB = false;
     $scope.buffDI = false;
     $scope.debuffDI = false;
     // Settings: FtHoF Settings
