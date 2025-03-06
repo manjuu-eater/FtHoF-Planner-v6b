@@ -157,8 +157,8 @@ app.controller("myCtrl", ($scope): void => {
 		}
 
 		// import save data, update list
-		readSaveDataFromSaveCode($scope, $scope.saveCode);
-		updateCookies();
+		const isLoaded = readSaveDataFromSaveCode($scope, $scope.saveCode);
+		if (isLoaded) updateCookies();
 	};
 
 
