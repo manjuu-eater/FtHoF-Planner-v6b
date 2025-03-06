@@ -49,11 +49,6 @@ input#save_code {
 	color: gray;
 }
 
-/* .content > ul.combos > li.combo-listitem */
-.combo-listitem {
-	height: 3.5em;
-}
-
 /* loading title */
 .loading {
 	text-align: center;
