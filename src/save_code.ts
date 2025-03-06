@@ -104,19 +104,16 @@ export const parseSaveCode = (saveCode: string): SaveData => {
  * read save data from save code
  *
  * @param $scope AngularJS $scope
- * @param saveCode save code (if omitted, read from html)
+ * @param saveCode save code
  * @param noRemoveLocalStorage true: no remove LocalStorage item when saveCode == ""
  */
 export const readSaveDataFromSaveCode = (
 	$scope: any,
-	saveCode?: string,
+	saveCode: string,
 	noRemoveLocalStorage = false,
 ): boolean => {
-	// read from html
-	const saveStr = saveCode ? saveCode : String($scope.saveCode);
-
 	// if blank, reset LocalStorage and quit
-	if (saveStr === "") {
+	if (saveCode === "") {
 		if (!noRemoveLocalStorage) removeSaveCodeFromLS();
 		return false;
 	}
@@ -124,7 +121,7 @@ export const readSaveDataFromSaveCode = (
 	// extract save data
 	let saveData;
 	try {
-		saveData = parseSaveCode(saveStr);
+		saveData = parseSaveCode(saveCode);
 	} catch {
 		// save code was invalid
 		console.error("invalid save code");
@@ -133,7 +130,7 @@ export const readSaveDataFromSaveCode = (
 	}
 
 	// save valid save code to LocalStorage
-	saveSaveCodeToLS(saveStr);
+	saveSaveCodeToLS(saveCode);
 
 	// set to $scope
 	$scope.seed            = saveData.seed;

@@ -150,7 +150,7 @@ app.controller("myCtrl", ($scope): void => {
 	 * import save data from save code and update Grimoire result list
 	 */
 	const importSave = (): void => {
-		readSaveDataFromSaveCode($scope);
+		readSaveDataFromSaveCode($scope, $scope.saveCode);
 		updateCookies();
 	};
 
