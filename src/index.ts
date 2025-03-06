@@ -130,12 +130,26 @@ app.controller("myCtrl", ($scope): void => {
 	 * @param event event fired with input left or right click
 	 */
 	const selectSaveCodeInput = (event: MouseEvent): void => {
-		if (!(event.target instanceof HTMLInputElement)) return;
-		event.target.select();
-	};
+		// event target element
+		const eTarget = event.target;
 
-	// add event listener for right click
-	document.addEventListener("contextmenu", selectSaveCodeInput);
+		// only for <input>
+		if (!(eTarget instanceof HTMLInputElement)) return;
+
+		// if right button down / up event
+		if (event.button == 2) {
+			if (event.type == "mousedown") {
+				eTarget.dataset.isRightButtonDowned = "1";
+				return;
+			} else if (event.type == "mouseup") {
+				if (!eTarget.dataset.isRightButtonDowned) return;
+				eTarget.dataset.isRightButtonDowned = "";
+			};
+		}
+
+		// select save code input
+		eTarget.select();
+	};
 
 
 	/**

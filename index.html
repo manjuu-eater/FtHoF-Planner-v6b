@@ -46,7 +46,13 @@
 			<div layout="row">
 				<md-input-container flex>
 					<label>Save Code</label>
-					<input id="save_code" ng-model="saveCode" ng-click="selectSaveCodeInput($event)">
+					<input
+						id="save_code"
+						ng-model="saveCode"
+						ng-click="selectSaveCodeInput($event)"
+						ng-mousedown="selectSaveCodeInput($event)"
+						ng-mouseup="selectSaveCodeInput($event)"
+					>
 				</md-input-container>
 				<md-button type="submit" class="md-raised md-primary">
 					Import Save
