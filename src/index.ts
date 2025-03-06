@@ -125,9 +125,9 @@ app.controller("myCtrl", ($scope): void => {
 
 
 	/**
-	 * Select input element for easy pasting.
+	 * Select input field for easy copying when clicked or right-clicked.
 	 *
-	 * @param event event fired with input left or right click
+	 * @param event event triggered by interacting with input element
 	 */
 	const selectInput = (event: MouseEvent): void => {
 		// event target element
