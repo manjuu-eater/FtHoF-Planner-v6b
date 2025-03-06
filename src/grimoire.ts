@@ -150,6 +150,7 @@ export const getFthofFailChance = (baseFailChance?: number): number => {
  *
  * @param seed five-letter string like "abcde" used as a seed in game
  * @param spellsCastTotal total spell cast count before this cast
+ * @param offset additional spell count from base spellsCastTotal
  * @param isOneChange true if one change
  * @param forceCookie "GC": force GC, "WC": force WC, default: roll with Math.random()
  * @returns FtHoF cast result
@@ -157,11 +158,12 @@ export const getFthofFailChance = (baseFailChance?: number): number => {
 export const castFtHoF = (
 	seed: string,
 	spellsCastTotal: number,
+	offset: number,
 	isOneChange: boolean,
 	forceCookie?: "GC" | "WC",
 ): FthofResult => {
 	// set seed (L312)
-	Math_seedrandom(seed + "/" + spellsCastTotal);
+	Math_seedrandom(seed + "/" + (spellsCastTotal + offset));
 
 	// get fail chance (L307 > L289)
 	const failChance = (() => {
@@ -245,7 +247,7 @@ export const castFtHoF = (
 			if (chosen == "Free Sugar Lump") {
 				// only logging for now
 				console.log("Free Sugar Lump with few building!!");
-				console.log("seedrandom: " + (seed + "/" + spellsCastTotal));
+				console.log("seedrandom: " + (seed + "/" + (spellsCastTotal + offset)));
 			}
 		}
 
@@ -343,14 +345,19 @@ const makeGfdTooltip = (gfdResult: GfdResult): string | undefined => {
  *
  * @param seed five-letter string like "abcde" used as a seed in game
  * @param spellsCastTotal total spell cast count before this cast
+ * @param offset additional spell count from base spellsCastTotal
  * @returns GFD cast result
  */
-export const castGFD = (seed: string, spellsCastTotal: number): GfdResult => {
+export const castGFD = (
+	seed: string,
+	spellsCastTotal: number,
+	offset: number,
+): GfdResult => {
 	// single season option
 	const isSingleSeason = (settings.season == "noswitch");
 
 	// set seed for GFD spell selection (L312)
-	Math_seedrandom(seed + "/" + spellsCastTotal);
+	Math_seedrandom(seed + "/" + (spellsCastTotal + offset));
 
 	// make spells list that GFD can cast with max MP (L199)
 	const spells = [];
@@ -369,7 +376,7 @@ export const castGFD = (seed: string, spellsCastTotal: number): GfdResult => {
 
 	// set seed for child spell that is cast by GFD (L312)
 	// note: this seed may change with continuous GFD casts (spellsCastTotal increases)
-	Math_seedrandom(seed + "/" + (spellsCastTotal + 1));
+	Math_seedrandom(seed + "/" + (spellsCastTotal + offset + 1));
 
 	// roll for casting result (L313)
 	const isChildSpellWin = Math.random() < (1 - gfdBackfire);
@@ -390,10 +397,10 @@ export const castGFD = (seed: string, spellsCastTotal: number): GfdResult => {
 	// set the result of child spells called by GFD
 	if (castSpellName == "Force the Hand of Fate") {
 		// cast FtHoF, set to return object
-		const gc0 = castFtHoF(seed, spellsCastTotal + 1, false, "GC");
-		const gc1 = castFtHoF(seed, spellsCastTotal + 1, true, "GC");
-		const wc0 = castFtHoF(seed, spellsCastTotal + 1, false, "WC");
-		const wc1 = castFtHoF(seed, spellsCastTotal + 1, true, "WC");
+		const gc0 = castFtHoF(seed, spellsCastTotal, offset + 1, false, "GC");
+		const gc1 = castFtHoF(seed, spellsCastTotal, offset + 1, true, "GC");
+		const wc0 = castFtHoF(seed, spellsCastTotal, offset + 1, false, "WC");
+		const wc1 = castFtHoF(seed, spellsCastTotal, offset + 1, true, "WC");
 		const cookie0 = isChildSpellWin ? gc0 : wc0;
 		const cookie1 = isChildSpellWin ? gc1 : wc1;
 

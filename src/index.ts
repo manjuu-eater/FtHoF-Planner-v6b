@@ -215,11 +215,8 @@ app.controller("myCtrl", ($scope): void => {
 		const comboIndexes: number[] = [];
 		const skipIndexes: number[] = [];
 		for (let i = 0; i < lookahead; i++) {
-			// total spell cast count before this cast
-			const currentTotalSpell = spellsCastTotal + i;
-
 			// get first random number and push to array
-			Math_seedrandom(seed + "/" + currentTotalSpell);
+			Math_seedrandom(seed + "/" + (spellsCastTotal + i));
 			const randomNumber = Math.random();
 
 			// minimum count of GC/WC on screen that changes GC to WC
@@ -233,11 +230,11 @@ app.controller("myCtrl", ($scope): void => {
 			const isFthofWin = randomNumber < 1 - fthofBackfireChance;
 
 			// get FtHoF results (both success and backfire)
-			const gc0 = castFtHoF(seed, currentTotalSpell, false, "GC");
-			const gc1 = castFtHoF(seed, currentTotalSpell, true, "GC");
-			const wc0 = castFtHoF(seed, currentTotalSpell, false, "WC");
-			const wc1 = castFtHoF(seed, currentTotalSpell, true, "WC");
-			const gfd = castGFD(seed, currentTotalSpell);
+			const gc0 = castFtHoF(seed, spellsCastTotal, i, false, "GC");
+			const gc1 = castFtHoF(seed, spellsCastTotal, i, true, "GC");
+			const wc0 = castFtHoF(seed, spellsCastTotal, i, false, "WC");
+			const wc1 = castFtHoF(seed, spellsCastTotal, i, true, "WC");
+			const gfd = castGFD(seed, spellsCastTotal, i);
 
 			// cookies that user can cast (reduce cookie1 for single season option)
 			const availableCookies = [gc0, wc0, ...(season == "noswitch" ? [] : [gc1, wc1])];
