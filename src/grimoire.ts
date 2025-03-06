@@ -309,8 +309,9 @@ export const hasCookieEffect = (cookies: FthofResult[], effect: string | string[
  * (e.g. "Lucky / Ruin")
  *
  * @param gfdResult result object of GFD
+ * @param offset distance of target child spell from base spellsCastTotal
  */
-const makeGfdTooltip = (gfdResult: GfdResult): string | undefined => {
+const makeGfdTooltip = (gfdResult: GfdResult, offset: number): string | undefined => {
 	// return undefined for AngularJS to show nothing
 	if (gfdResult.name != "Force the Hand of Fate") {
 		if (gfdResult.name != "Spontaneous Edifice") return undefined;
@@ -323,11 +324,10 @@ const makeGfdTooltip = (gfdResult: GfdResult): string | undefined => {
 		return seTooltip;
 	}
 
-	//const numStr = "#" + (num + 1);
+	const numStr = "#" + (offset + 1);  // convert to natural number
 	const cookie0Str = gfdResult.cookie0?.name || "";
 	const cookie1Str = gfdResult.cookie1?.name || "";
-	//const halfTitle = numStr + ": " + cookie0Str;
-	const halfTitle = cookie0Str;
+	const halfTitle = numStr + ": " + cookie0Str;
 	if (settings.season == "noswitch") return halfTitle;
 
 	const fullTitle = halfTitle + " / " + cookie1Str;
@@ -448,7 +448,7 @@ export const castGFD = (
 	}
 
 	// make a tooltip string
-	const tooltip = makeGfdTooltip(gfdResult);
+	const tooltip = makeGfdTooltip(gfdResult, offset + 1);
 	gfdResult.tooltip = tooltip;
 
 	// return GFD result object

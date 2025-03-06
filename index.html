@@ -315,14 +315,7 @@
 							<div ng-class="{
 								'highlight combo': result.gfd.canCombo,
 								'highlight skip':  result.gfd.canSkip,
-							}" ng-attr-title="{{
-								result.gfd.tooltip
-								? (
-									'#' + (result.num + 1)
-									+ ': ' + result.gfd.tooltip
-								)
-								: undefined
-							}}">
+							}" ng-attr-title="{{result.gfd.tooltip}}">
 								{{result.gfd.name}}
 							</div>
 						</div></td>
