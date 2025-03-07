@@ -244,10 +244,7 @@ app.controller("myCtrl", ($rootScope, $scope): void => {
 
 			// determine whether current cookies can be part of a combo
 			const isCombo = (
-				availableCookies.some((cookie) => (
-					cookie.name == "Building Special"
-					|| (includeEF && cookie.name == "Elder Frenzy")
-				))
+				availableCookies.some((cookie) => cookie.isCombo)
 				|| gfd.hasBs
 				|| (includeEF && gfd.hasEf)
 			);
