@@ -29,8 +29,8 @@ export type FthofResult = {
 	displayName: string;
 	isWin: boolean;
 	image: string;
+	tooltip: string | undefined;
 
-	description: string;
 	noteworthy: boolean;
 };
 
@@ -281,8 +281,8 @@ export const castFtHoF = (
 		displayName: effectName,
 		isWin,
 		image: imageUrl,
+		tooltip: description,
 
-		description: description,
 		noteworthy: noteworthy,
 	};
 	return fthofResult;
