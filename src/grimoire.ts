@@ -448,15 +448,17 @@ export const castGFD = (
 			if (hasBs) {
 				gfdResult.hasBs = true;
 				gfdResult.noteworthy = true;
-				gfdResult.canCombo = true;
 			}
+			const isCombo = canCombo(availableCookies.map(fthof => fthof.name));
+			gfdResult.canCombo = isCombo;
 		} else {
 			const hasEf = hasCookieEffect(availableCookies, "Elder Frenzy");
 			if (hasEf) {
 				gfdResult.hasEf = true;
 				gfdResult.noteworthy = true;
-				gfdResult.canCombo = true;
 			}
+			const isCombo = canCombo(availableCookies.map(fthof => fthof.name));
+			gfdResult.canCombo = isCombo;
 		}
 
 	} else if (castSpellName == "Spontaneous Edifice") {
