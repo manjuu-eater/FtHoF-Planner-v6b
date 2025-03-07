@@ -30,13 +30,12 @@ type SpellCastResult = {
 	isWin: boolean;
 	image: string;
 	tooltip: string | undefined;
+	noteworthy: boolean;  // is this cast results noteworthy FtHoF effect
 };
 
 /** result of FtHoF */
 export type FthofResult = SpellCastResult & {
 	name: EffectName;
-
-	noteworthy: boolean;
 };
 
 /** result of GFD */
@@ -283,7 +282,6 @@ export const castFtHoF = (
 		isWin,
 		image: imageUrl,
 		tooltip: description,
-
 		noteworthy: noteworthy,
 	};
 	return fthofResult;
@@ -395,6 +393,7 @@ export const castGFD = (
 		isWin: isChildSpellWin,
 		image: spellNameToIconUrl[castSpellName],
 		tooltip: undefined,
+		noteworthy: false,
 
 		hasBs: false,
 		hasEf: false,
@@ -426,12 +425,14 @@ export const castGFD = (
 			const hasBs = hasCookieEffect(availableCookies, "Building Special");
 			if (hasBs) {
 				gfdResult.hasBs = true;
+				gfdResult.noteworthy = true;
 				gfdResult.canCombo = true;
 			}
 		} else {
 			const hasEf = hasCookieEffect(availableCookies, "Elder Frenzy");
 			if (hasEf) {
 				gfdResult.hasEf = true;
+				gfdResult.noteworthy = true;
 				gfdResult.canCombo = true;
 			}
 		}
