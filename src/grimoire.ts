@@ -36,6 +36,8 @@ type SpellCastResult = {
 /** result of FtHoF */
 export type FthofResult = SpellCastResult & {
 	name: EffectName;
+
+	isCombo: boolean;
 };
 
 /** result of GFD */
@@ -290,6 +292,9 @@ export const castFtHoF = (
 	if (effectName == "Building Special") noteworthy = true;
 	if (effectName == "Elder Frenzy") noteworthy = true;
 
+	// determine whether can be part of combo
+	const isCombo = canCombo(effectName);
+
 	// return FtHoF cast result
 	const fthofResult: FthofResult = {
 		name: effectName,
@@ -298,6 +303,8 @@ export const castFtHoF = (
 		image: imageUrl,
 		tooltip: description,
 		noteworthy,
+
+		isCombo,
 	};
 	return fthofResult;
 };
