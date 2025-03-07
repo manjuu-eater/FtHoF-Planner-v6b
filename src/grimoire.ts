@@ -144,6 +144,21 @@ export const getFthofFailChance = (baseFailChance?: number): number => {
 
 
 /**
+ * determine whether FtHoF can be part of a combo
+ *
+ * @param results FtHoF result or results
+ */
+const canCombo = (results: FthofResult | FthofResult[]): boolean => {
+	const fthofResults = Array.isArray(results) ? results : [results];
+	const can = fthofResults.some((cookie) => (
+		cookie.name == "Building Special"
+		|| (settings.includeEF && cookie.name == "Elder Frenzy")
+	));
+	return can;
+};
+
+
+/**
  * get cast result object of FtHoF
  *
  * simulating: minigameGrimoire.js v2.052
