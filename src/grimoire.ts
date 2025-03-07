@@ -23,24 +23,25 @@ import { Settings } from "./settings";
 
 // type definition
 
-/** result of FtHoF */
-export type FthofResult = {
-	name: EffectName;
+/** result of spell cast */
+type SpellCastResult = {
+	name: EffectName | SpellName;
 	displayName: string;
 	isWin: boolean;
 	image: string;
 	tooltip: string | undefined;
+};
+
+/** result of FtHoF */
+export type FthofResult = SpellCastResult & {
+	name: EffectName;
 
 	noteworthy: boolean;
 };
 
 /** result of GFD */
-export type GfdResult = {
+export type GfdResult = SpellCastResult & {
 	name: SpellName;
-	displayName: string;
-	isWin: boolean;
-	image: string;
-	tooltip: string | undefined;
 
 	hasBs: boolean;
 	hasEf: boolean;
