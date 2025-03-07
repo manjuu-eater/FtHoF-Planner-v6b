@@ -47,7 +47,7 @@ type ComboResults = { shortest: ComboResult, first: ComboResult };
 
 
 const app = window.angular.module("myApp", ["ngMaterial"]);
-app.controller("myCtrl", ($scope): void => {
+app.controller("myCtrl", ($rootScope, $scope): void => {
 	// initialize Save Code
 	$scope.saveCode = "";
 
@@ -469,6 +469,19 @@ app.controller("myCtrl", ($scope): void => {
 	// start watching events related to UI
 	initUIEventListeners();
 
+	// override $scope.$apply to measure AngularJS rendering time
+	// $scope.$apply: can't measure first write but more accurate
+	// $rootScope.$digest: can measure first write but a little short time
+	(() => {
+		const originalApply = $scope.$apply;  // can be $rootScope.$digest
+		$scope.$apply = function () {
+			const start = performance.now();
+			const result = originalApply.apply(this, arguments);
+			const end = performance.now();
+			console.log("AngularJS rendering time: ", end - start, "ms");
+			return result;
+		};
+	})();
 
 	// remove loading text
 	$scope.ready = true;
