@@ -243,10 +243,7 @@ app.controller("myCtrl", ($rootScope, $scope): void => {
 			const allGcWcs = [gc0, wc0, ...(season == "noswitch" ? [] : [gc1, wc1])];
 
 			// determine whether current cookies can be part of a combo
-			const canCombo = (
-				allGcWcs.some((cookie) => cookie.canCombo)
-				|| gfd.canCombo
-			);
+			const canCombo = ([...allGcWcs, gfd].some(cookie => cookie.canCombo));
 			if (canCombo) comboIndexes.push(i);
 
 			// count skippable GFD
