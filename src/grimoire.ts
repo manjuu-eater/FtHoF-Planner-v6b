@@ -51,6 +51,9 @@ type SpellCastResult = {
 export type FthofResult = SpellCastResult & {
 	/** name of FtHoF effect */
 	name: EffectName;
+
+	/** whether there is a chance of GC Sugar with very few buildings */
+	canGcSugarWithFewBuildings: boolean;
 };
 
 /** result of GFD */
@@ -298,6 +301,7 @@ export const castFtHoF = (
 
 	// choose cookie effect
 	let effectName: EffectName;
+	let canGcSugarWithFewBuildings = false;
 	if (isWin) {
 		// choices of golden cookie (L52)
 		choices.push("Frenzy", "Lucky");
@@ -319,9 +323,9 @@ export const castFtHoF = (
 			if (random3 < 0.0001) choicesIf.push("Free Sugar Lump");
 			const chosen = chooseWith(choicesIf, random4);
 			if (chosen == "Free Sugar Lump") {
-				// only logging for now
 				console.log("Free Sugar Lump with few building!!");
 				console.log("seedrandom: " + (seed + "/" + (spellsCastTotal + offset)));
+				canGcSugarWithFewBuildings = true;
 			}
 		}
 
@@ -359,6 +363,8 @@ export const castFtHoF = (
 		tooltip: description,
 		noteworthy,
 		canCombo,
+
+		canGcSugarWithFewBuildings,
 	};
 	return fthofResult;
 };
