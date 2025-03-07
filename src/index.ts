@@ -316,16 +316,15 @@ app.controller("myCtrl", ($rootScope, $scope): void => {
 			grimoireResults.push(grimoireResult);
 		}
 
-		// log
-		console.log("grimoireResults:", grimoireResults);
-		console.log("comboIndexes:", comboIndexes);
-		console.log("skipIndexes:", skipIndexes);
-
 		// find combos
 		for (let comboLength = minComboLength; comboLength <= maxComboLength; comboLength++) {
 			combos[comboLength] = findCombos(comboLength, maxSpread, comboIndexes, skipIndexes);
 		}
 
+		// log
+		console.log("grimoireResults:", grimoireResults);
+		console.log("comboIndexes:", comboIndexes);
+		console.log("skipIndexes:", skipIndexes);
 		console.log("Combos:", combos);
 
 		// log performance time
