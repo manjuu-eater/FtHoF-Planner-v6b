@@ -208,7 +208,7 @@ export const getFthofFailChance = (baseFailChance?: number): number => {
  *
  * @param effect effect name or names
  */
-const canCombo = (effect: EffectName | EffectName[]): boolean => {
+const canBePartOfCombo = (effect: EffectName | EffectName[]): boolean => {
 	const effectNames = Array.isArray(effect) ? effect : [effect];
 	const can = effectNames.some((effectName) => (
 		effectName == "Building Special"
@@ -351,7 +351,7 @@ export const castFtHoF = (
 	if (effectName == "Elder Frenzy") noteworthy = true;
 
 	// determine whether can be part of combo
-	const isCombo = canCombo(effectName);
+	const isCombo = canBePartOfCombo(effectName);
 
 	// return FtHoF cast result
 	const fthofResult: FthofResult = {
@@ -505,7 +505,7 @@ export const castGFD = (
 		if (hasGoodEffect) gfdResult.noteworthy = true;
 
 		// determine child FtHoF result can be a part of combo
-		const isCombo = canCombo(availableCookies.map(fthof => fthof.name));
+		const isCombo = canBePartOfCombo(availableCookies.map(fthof => fthof.name));
 		gfdResult.isCombo = isCombo;
 
 	} else if (castSpellName == "Spontaneous Edifice") {
