@@ -138,7 +138,7 @@ export type GrimoireResult = {
 	canCombo: boolean;
 
 	/** whether Sugar Lump can be get */
-	isSugar: boolean;
+	canSugar: boolean;
 };
 
 

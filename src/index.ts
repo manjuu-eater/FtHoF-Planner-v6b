@@ -253,8 +253,8 @@ app.controller("myCtrl", ($rootScope, $scope): void => {
 			if (gfd.canSkip) skipIndexes.push(i);
 
 			// determine whether Sugar Lump can be get
-			const isSugar = hasCookieEffect(availableCookies, "Free Sugar Lump");
-			if (isSugar) sugarIndexes.push(i);
+			const canSugar = hasCookieEffect(availableCookies, "Free Sugar Lump");
+			if (canSugar) sugarIndexes.push(i);
 
 			// No Change, One Change cookie to display
 			const cookie0 = isFthofWin ? gc0 : wc0;
@@ -302,7 +302,7 @@ app.controller("myCtrl", ($rootScope, $scope): void => {
 				cookie1, gc1, wc1, isOtherCookieNotable1,
 
 				gfd,
-				canCombo, isSugar,
+				canCombo, canSugar,
 			};
 			grimoireResults.push(grimoireResult);
 		}
