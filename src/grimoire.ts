@@ -149,7 +149,7 @@ let settings: Settings;
 /**
  * update settings data used in grimoire
  *
- * @param $grimoireSettings Settings data used in grimoire
+ * @param grimoireSettings Settings data used in grimoire
  */
 export const updateGrimoreSettings = (grimoireSettings: Settings) => {
 	settings = grimoireSettings;
