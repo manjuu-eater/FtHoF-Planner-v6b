@@ -26,6 +26,7 @@ import { Settings } from "./settings";
 /** result of FtHoF */
 export type FthofResult = {
 	name: EffectName;
+	displayName: string;
 	isWin: boolean;
 	image: string;
 
@@ -36,6 +37,7 @@ export type FthofResult = {
 /** result of GFD */
 export type GfdResult = {
 	name: SpellName;
+	displayName: string;
 	isWin: boolean;
 	image: string;
 	tooltip: string | undefined;
@@ -276,6 +278,7 @@ export const castFtHoF = (
 	// return FtHoF cast result
 	const fthofResult: FthofResult = {
 		name: effectName,
+		displayName: effectName,
 		isWin,
 		image: imageUrl,
 
@@ -384,6 +387,7 @@ export const castGFD = (
 	// return object
 	const gfdResult: GfdResult = {
 		name: castSpellName,
+		displayName: castSpellName,
 		isWin: isChildSpellWin,
 		image: spellNameToIconUrl[castSpellName],
 		tooltip: undefined,
