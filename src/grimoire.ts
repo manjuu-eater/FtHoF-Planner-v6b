@@ -44,7 +44,7 @@ type SpellCastResult = {
 	noteworthy: boolean;
 
 	/** whether this cast results can be part of a combo */
-	isCombo: boolean;
+	canCombo: boolean;
 };
 
 /** result of FtHoF */
@@ -351,7 +351,7 @@ export const castFtHoF = (
 	if (effectName == "Elder Frenzy") noteworthy = true;
 
 	// determine whether can be part of combo
-	const isCombo = canBePartOfCombo(effectName);
+	const canCombo = canBePartOfCombo(effectName);
 
 	// return FtHoF cast result
 	const fthofResult: FthofResult = {
@@ -361,7 +361,7 @@ export const castFtHoF = (
 		image: imageUrl,
 		tooltip: description,
 		noteworthy,
-		isCombo,
+		canCombo,
 	};
 	return fthofResult;
 };
@@ -473,7 +473,7 @@ export const castGFD = (
 		image: spellNameToIconUrl[castSpellName],
 		tooltip: undefined,
 		noteworthy: false,
-		isCombo: false,
+		canCombo: false,
 
 		canSkip: false,
 	};
@@ -505,8 +505,8 @@ export const castGFD = (
 		if (hasGoodEffect) gfdResult.noteworthy = true;
 
 		// determine child FtHoF result can be a part of combo
-		const isCombo = canBePartOfCombo(availableCookies.map(fthof => fthof.name));
-		gfdResult.isCombo = isCombo;
+		const canCombo = canBePartOfCombo(availableCookies.map(fthof => fthof.name));
+		gfdResult.canCombo = canCombo;
 
 	} else if (castSpellName == "Spontaneous Edifice") {
 		// add result of SE

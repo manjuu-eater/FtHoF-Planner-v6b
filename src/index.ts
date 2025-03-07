@@ -243,11 +243,11 @@ app.controller("myCtrl", ($rootScope, $scope): void => {
 			const availableCookies = [gc0, wc0, ...(season == "noswitch" ? [] : [gc1, wc1])];
 
 			// determine whether current cookies can be part of a combo
-			const isCombo = (
-				availableCookies.some((cookie) => cookie.isCombo)
-				|| gfd.isCombo
+			const canCombo = (
+				availableCookies.some((cookie) => cookie.canCombo)
+				|| gfd.canCombo
 			);
-			if (isCombo) comboIndexes.push(i);
+			if (canCombo) comboIndexes.push(i);
 
 			// determine whether GFD can be skipped
 			const isSkip = gfd.canSkip;
@@ -303,7 +303,7 @@ app.controller("myCtrl", ($rootScope, $scope): void => {
 				cookie1, gc1, wc1, isOtherCookieNotable1,
 
 				gfd,
-				isCombo, isSkip, isSugar,
+				isCombo: canCombo, isSkip, isSugar,
 			};
 			grimoireResults.push(grimoireResult);
 		}
