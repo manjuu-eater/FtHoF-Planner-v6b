@@ -144,15 +144,15 @@ export const getFthofFailChance = (baseFailChance?: number): number => {
 
 
 /**
- * determine whether FtHoF can be part of a combo
+ * determine whether effect can be part of a combo
  *
- * @param results FtHoF result or results
+ * @param effect effect name or names
  */
-const canCombo = (results: FthofResult | FthofResult[]): boolean => {
-	const fthofResults = Array.isArray(results) ? results : [results];
-	const can = fthofResults.some((cookie) => (
-		cookie.name == "Building Special"
-		|| (settings.includeEF && cookie.name == "Elder Frenzy")
+const canCombo = (effect: EffectName | EffectName[]): boolean => {
+	const effectNames = Array.isArray(effect) ? effect : [effect];
+	const can = effectNames.some((effectName) => (
+		effectName == "Building Special"
+		|| (settings.includeEF && effectName == "Elder Frenzy")
 	));
 	return can;
 };
