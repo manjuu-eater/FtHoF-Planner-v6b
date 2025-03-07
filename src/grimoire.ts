@@ -519,10 +519,11 @@ export const castGFD = (
 	}
 
 	// determine child FtHoF result can be a part of combo
+	const { skipRA, skipSE, skipST } = settings;
 	if (
-		castSpellName == "Resurrect Abomination"
-		|| (castSpellName == "Spontaneous Edifice" && isChildSpellWin)
-		|| (castSpellName == "Stretch Time")
+		skipRA && castSpellName == "Resurrect Abomination"
+		|| (skipSE && castSpellName == "Spontaneous Edifice" && isChildSpellWin)
+		|| (skipST && castSpellName == "Stretch Time")
 	) {
 		gfdResult.canSkip = true;
 	}
