@@ -137,9 +137,6 @@ export type GrimoireResult = {
 	/** whether FtHoF / GFD can be part of a combo */
 	canCombo: boolean;
 
-	/** whether GFD can be skipped */
-	isSkip: boolean;
-
 	/** whether Sugar Lump can be get */
 	isSugar: boolean;
 };

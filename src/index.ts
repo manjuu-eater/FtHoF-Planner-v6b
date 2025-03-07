@@ -249,9 +249,8 @@ app.controller("myCtrl", ($rootScope, $scope): void => {
 			);
 			if (canCombo) comboIndexes.push(i);
 
-			// determine whether GFD can be skipped
-			const isSkip = gfd.canSkip;
-			if (isSkip) skipIndexes.push(i);
+			// count skippable GFD
+			if (gfd.canSkip) skipIndexes.push(i);
 
 			// determine whether Sugar Lump can be get
 			const isSugar = hasCookieEffect(availableCookies, "Free Sugar Lump");
@@ -303,7 +302,7 @@ app.controller("myCtrl", ($rootScope, $scope): void => {
 				cookie1, gc1, wc1, isOtherCookieNotable1,
 
 				gfd,
-				canCombo, isSkip, isSugar,
+				canCombo, isSugar,
 			};
 			grimoireResults.push(grimoireResult);
 		}
