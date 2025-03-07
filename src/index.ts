@@ -250,7 +250,9 @@ app.controller("myCtrl", ($rootScope, $scope): void => {
 			if (gfd.canSkip) skipIndexes.push(i);
 
 			// determine whether Sugar Lump can be get
-			const canSugar = hasCookieEffect(allGcWcs, "Free Sugar Lump");
+			const gfdCookies = [gfd.cookie0, gfd.cookie1].filter(e => !!e);
+			const allGcWcGfdCookies = [...allGcWcs, ...gfdCookies];
+			const canSugar = hasCookieEffect(allGcWcGfdCookies, "Free Sugar Lump");
 			if (canSugar) sugarIndexes.push(i);
 
 			// No Change, One Change cookie to display
