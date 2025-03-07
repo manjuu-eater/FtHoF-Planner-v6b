@@ -59,12 +59,6 @@ export type GfdResult = SpellCastResult & {
 	name: SpellName;
 
 
-	/** whether this GFD has BS */
-	hasBs: boolean;
-
-	/** whether this GFD has EF */
-	hasEf: boolean;
-
 	/** whether this GFD can be skipped */
 	canSkip: boolean;
 
@@ -481,8 +475,6 @@ export const castGFD = (
 		noteworthy: false,
 		isCombo: false,
 
-		hasBs: false,
-		hasEf: false,
 		canSkip: false,
 	};
 
@@ -508,18 +500,12 @@ export const castGFD = (
 		const availableCookies = [cookie0, ...(isSingleSeason ? [] : [cookie1])];
 		if (isChildSpellWin) {
 			const hasBs = hasCookieEffect(availableCookies, "Building Special");
-			if (hasBs) {
-				gfdResult.hasBs = true;
-				gfdResult.noteworthy = true;
-			}
+			if (hasBs) gfdResult.noteworthy = true;
 			const isCombo = canCombo(availableCookies.map(fthof => fthof.name));
 			gfdResult.isCombo = isCombo;
 		} else {
 			const hasEf = hasCookieEffect(availableCookies, "Elder Frenzy");
-			if (hasEf) {
-				gfdResult.hasEf = true;
-				gfdResult.noteworthy = true;
-			}
+			if (hasEf) gfdResult.noteworthy = true;
 			const isCombo = canCombo(availableCookies.map(fthof => fthof.name));
 			gfdResult.isCombo = isCombo;
 		}
