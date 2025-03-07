@@ -274,30 +274,30 @@ app.controller("myCtrl", ($scope): void => {
 			let isOtherCookieNotable1 = false;
 			if (isFthofWin) {
 				if (wc0.name == "Elder Frenzy") {
-					gc0.name += " (EF)";
+					gc0.displayName += " (EF)";
 					gc0.noteworthy = true;
 					isOtherCookieNotable0 = true;
 				}
 				if (wc1.name == "Elder Frenzy") {
-					gc1.name += " (EF)";
+					gc1.displayName += " (EF)";
 					gc1.noteworthy = true;
 					isOtherCookieNotable1 = true;
 				}
-				if (wc0.name == "Free Sugar Lump") gc0.name += " (Sugar)";
-				if (wc1.name == "Free Sugar Lump") gc1.name += " (Sugar)";
+				if (wc0.name == "Free Sugar Lump") gc0.displayName += " (Sugar)";
+				if (wc1.name == "Free Sugar Lump") gc1.displayName += " (Sugar)";
 			} else {
 				if (gc0.name == "Building Special") {
-					wc0.name += " (BS)";
+					wc0.displayName += " (BS)";
 					wc0.noteworthy = true;
 					isOtherCookieNotable0 = true;
 				}
 				if (gc1.name == "Building Special") {
-					wc1.name += " (BS)";
+					wc1.displayName += " (BS)";
 					wc1.noteworthy = true;
 					isOtherCookieNotable1 = true;
 				}
-				if (gc0.name == "Free Sugar Lump") wc0.name += " (Sugar)";
-				if (gc1.name == "Free Sugar Lump") wc1.name += " (Sugar)";
+				if (gc0.name == "Free Sugar Lump") wc0.displayName += " (Sugar)";
+				if (gc1.name == "Free Sugar Lump") wc1.displayName += " (Sugar)";
 			}
 
 			// set to object and push to array
