@@ -306,7 +306,7 @@ export const hasCookieEffect = (cookies: FthofResult[], effect: string | string[
 
 /**
  * make a string for tooltip of GFD
- * (e.g. "Lucky / Ruin")
+ * (e.g. "#2: Lucky / Ruin")
  *
  * @param gfdResult result object of GFD
  * @param offset distance of target child spell from base spellsCastTotal
