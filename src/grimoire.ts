@@ -31,13 +31,12 @@ type SpellCastResult = {
 	image: string;
 	tooltip: string | undefined;
 	noteworthy: boolean;  // is this cast results noteworthy FtHoF effect
+	isCombo: boolean;  // is this cast results can be part of a combo
 };
 
 /** result of FtHoF */
 export type FthofResult = SpellCastResult & {
 	name: EffectName;
-
-	isCombo: boolean;
 };
 
 /** result of GFD */
@@ -46,7 +45,6 @@ export type GfdResult = SpellCastResult & {
 
 	hasBs: boolean;
 	hasEf: boolean;
-	isCombo: boolean;
 	canSkip: boolean;
 
 	cookie0?: FthofResult;
@@ -303,7 +301,6 @@ export const castFtHoF = (
 		image: imageUrl,
 		tooltip: description,
 		noteworthy,
-
 		isCombo,
 	};
 	return fthofResult;
@@ -416,10 +413,10 @@ export const castGFD = (
 		image: spellNameToIconUrl[castSpellName],
 		tooltip: undefined,
 		noteworthy: false,
+		isCombo: false,
 
 		hasBs: false,
 		hasEf: false,
-		isCombo: false,
 		canSkip: false,
 	};
 
