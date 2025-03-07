@@ -250,11 +250,7 @@ app.controller("myCtrl", ($rootScope, $scope): void => {
 			if (isCombo) comboIndexes.push(i);
 
 			// determine whether GFD can be skipped
-			const isSkip = (
-				(skipRA && gfd.name == "Resurrect Abomination")
-				|| (skipSE && gfd.name == "Spontaneous Edifice" && gfd.isWin)
-				|| (skipST && gfd.name == "Stretch Time")
-			);
+			const isSkip = gfd.canSkip;
 			if (isSkip) skipIndexes.push(i);
 
 			// determine whether Sugar Lump can be get
