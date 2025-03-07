@@ -297,7 +297,7 @@ export const castFtHoF = (
 		isWin,
 		image: imageUrl,
 		tooltip: description,
-		noteworthy: noteworthy,
+		noteworthy,
 	};
 	return fthofResult;
 };
