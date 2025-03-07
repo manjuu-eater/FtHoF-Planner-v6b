@@ -46,7 +46,7 @@ export type GfdResult = SpellCastResult & {
 
 	hasBs: boolean;
 	hasEf: boolean;
-	canCombo: boolean;
+	isCombo: boolean;
 	canSkip: boolean;
 
 	cookie0?: FthofResult;
@@ -419,7 +419,7 @@ export const castGFD = (
 
 		hasBs: false,
 		hasEf: false,
-		canCombo: false,
+		isCombo: false,
 		canSkip: false,
 	};
 
@@ -450,7 +450,7 @@ export const castGFD = (
 				gfdResult.noteworthy = true;
 			}
 			const isCombo = canCombo(availableCookies.map(fthof => fthof.name));
-			gfdResult.canCombo = isCombo;
+			gfdResult.isCombo = isCombo;
 		} else {
 			const hasEf = hasCookieEffect(availableCookies, "Elder Frenzy");
 			if (hasEf) {
@@ -458,7 +458,7 @@ export const castGFD = (
 				gfdResult.noteworthy = true;
 			}
 			const isCombo = canCombo(availableCookies.map(fthof => fthof.name));
-			gfdResult.canCombo = isCombo;
+			gfdResult.isCombo = isCombo;
 		}
 
 	} else if (castSpellName == "Spontaneous Edifice") {
