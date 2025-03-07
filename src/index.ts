@@ -240,11 +240,11 @@ app.controller("myCtrl", ($rootScope, $scope): void => {
 			const gfd = castGFD(seed, spellsCastTotal, i);
 
 			// cookies that user can cast (reduce cookie1 for single season option)
-			const availableCookies = [gc0, wc0, ...(season == "noswitch" ? [] : [gc1, wc1])];
+			const allGcWcs = [gc0, wc0, ...(season == "noswitch" ? [] : [gc1, wc1])];
 
 			// determine whether current cookies can be part of a combo
 			const canCombo = (
-				availableCookies.some((cookie) => cookie.canCombo)
+				allGcWcs.some((cookie) => cookie.canCombo)
 				|| gfd.canCombo
 			);
 			if (canCombo) comboIndexes.push(i);
@@ -253,7 +253,7 @@ app.controller("myCtrl", ($rootScope, $scope): void => {
 			if (gfd.canSkip) skipIndexes.push(i);
 
 			// determine whether Sugar Lump can be get
-			const canSugar = hasCookieEffect(availableCookies, "Free Sugar Lump");
+			const canSugar = hasCookieEffect(allGcWcs, "Free Sugar Lump");
 			if (canSugar) sugarIndexes.push(i);
 
 			// No Change, One Change cookie to display
