@@ -303,7 +303,7 @@ app.controller("myCtrl", ($rootScope, $scope): void => {
 				cookie1, gc1, wc1, isOtherCookieNotable1,
 
 				gfd,
-				isCombo: canCombo, isSkip, isSugar,
+				canCombo, isSkip, isSugar,
 			};
 			grimoireResults.push(grimoireResult);
 		}

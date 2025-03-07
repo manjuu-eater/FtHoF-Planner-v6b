@@ -135,7 +135,7 @@ export type GrimoireResult = {
 
 
 	/** whether FtHoF / GFD can be part of a combo */
-	isCombo: boolean;
+	canCombo: boolean;
 
 	/** whether GFD can be skipped */
 	isSkip: boolean;
