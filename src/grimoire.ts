@@ -296,7 +296,10 @@ export const castFtHoF = (
  * @param effect effect name or names
  * @returns true if have
  */
-export const hasCookieEffect = (cookies: FthofResult[], effect: string | string[]): boolean => {
+export const hasCookieEffect = (
+	cookies: FthofResult[],
+	effect: EffectName | EffectName[],
+): boolean => {
 	const effectNames = (typeof effect == "string" ? [effect] : effect);
 	for (const cookie of cookies) {
 		for (const effectName of effectNames) {
