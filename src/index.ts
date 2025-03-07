@@ -212,8 +212,8 @@ app.controller("myCtrl", ($rootScope, $scope): void => {
 		// do nothing if seed is empty
 		if (seed === "") return;
 
-		// srart timer
-		console.time("updateCookies");
+		// calculation srart time
+		const startTime = performance.now();
 
 		const comboIndexes: number[] = [];
 		const skipIndexes: number[] = [];
@@ -320,7 +320,6 @@ app.controller("myCtrl", ($rootScope, $scope): void => {
 		console.log("grimoireResults:", grimoireResults);
 		console.log("comboIndexes:", comboIndexes);
 		console.log("skipIndexes:", skipIndexes);
-		console.timeLog("updateCookies");
 
 		// find combos
 		for (let comboLength = minComboLength; comboLength <= maxComboLength; comboLength++) {
@@ -328,7 +327,10 @@ app.controller("myCtrl", ($rootScope, $scope): void => {
 		}
 
 		console.log("Combos:", combos);
-		console.timeEnd("updateCookies");
+
+		// log performance time
+		const ellapsedMilliSec = performance.now() - startTime;
+		console.log("updateCookies calculate time: ", ellapsedMilliSec, "ms");
 
 		// set to $scope
 		$scope.baseBackfireChance  = baseBackfireChance;
