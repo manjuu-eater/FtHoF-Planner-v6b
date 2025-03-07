@@ -25,35 +25,70 @@ import { Settings } from "./settings";
 
 /** result of spell cast */
 type SpellCastResult = {
+	// name of FtHoF effect, GFD spell
 	name: EffectName | SpellName;
+
+	/** name to display */
 	displayName: string;
+
+	/** whether this cast will be success */
 	isWin: boolean;
+
+	/** image URL to display */
 	image: string;
+
+	/** tooltip string to show */
 	tooltip: string | undefined;
-	noteworthy: boolean;  // is this cast results noteworthy FtHoF effect
-	isCombo: boolean;  // is this cast results can be part of a combo
+
+	/** whether this cast results noteworthy FtHoF effect */
+	noteworthy: boolean;
+
+	/** whether this cast results can be part of a combo */
+	isCombo: boolean;
 };
 
 /** result of FtHoF */
 export type FthofResult = SpellCastResult & {
+	/** name of FtHoF effect */
 	name: EffectName;
 };
 
 /** result of GFD */
 export type GfdResult = SpellCastResult & {
+	/** name of GFD spell */
 	name: SpellName;
 
+
+	/** whether this GFD has BS */
 	hasBs: boolean;
+
+	/** whether this GFD has EF */
 	hasEf: boolean;
+
+	/** whether this GFD can be skipped */
 	canSkip: boolean;
 
+
+	/** FtHoF result with No Change */
 	cookie0?: FthofResult;
+
+	/** GC with No Change */
 	gc0?: FthofResult;
+
+	/** WC with No Change */
 	wc0?: FthofResult;
+
+	/** FtHoF result with One Change */
 	cookie1?: FthofResult;
+
+	/** GC with One Change */
 	gc1?: FthofResult;
+
+	/** WC with One Change */
 	wc1?: FthofResult;
 
+
+	/** random number of Spontaneous Edifice */
 	spontaneousEdificeRandomNumber?: number;
 };
 
@@ -63,24 +98,55 @@ export type GfdResult = SpellCastResult & {
  * All values in this set are uniquely derived from seed and total spell cast count.
  */
 export type GrimoireResult = {
+	/** number of list that shown as "#1" */
 	num: number;
+
+	/** first result of Math.random() after seedrandom */
 	firstRandomNum: number;
+
+	/** minimum count of GC/WC on screen that changes GC to WC */
 	wcThreshold: number;
 
+
+	/** whether FtHoF result is success */
 	isFthofWin: boolean;
+
+	/** FtHoF result with No Change */
 	cookie0: FthofResult;
+
+	/** GC with No Change */
 	gc0: FthofResult;
+
+	/** WC with No Change */
 	wc0: FthofResult;
+
+	/** whether hidden GC/WC with No Change has good effect */
 	isOtherCookieNotable0: boolean;
+
+	/** FtHoF result with One Change */
 	cookie1: FthofResult;
+
+	/** GC with One Change */
 	gc1: FthofResult;
+
+	/** WC with One Change */
 	wc1: FthofResult;
+
+	/** whether hidden GC/WC with One Change has good effect */
 	isOtherCookieNotable1: boolean;
 
+
+	/** GFD result */
 	gfd: GfdResult;
 
+
+	/** whether FtHoF / GFD can be part of a combo */
 	isCombo: boolean;
+
+	/** whether GFD can be skipped */
 	isSkip: boolean;
+
+	/** whether Sugar Lump can be get */
 	isSugar: boolean;
 };
 
