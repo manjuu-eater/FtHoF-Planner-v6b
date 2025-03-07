@@ -496,19 +496,17 @@ export const castGFD = (
 		gfdResult.gc1 = gc1;
 		gfdResult.wc1 = wc1;
 
-		// determine child FtHoF result can be a part of combo
+		// determine child FtHoF has good effect
 		const availableCookies = [cookie0, ...(isSingleSeason ? [] : [cookie1])];
-		if (isChildSpellWin) {
-			const hasBs = hasCookieEffect(availableCookies, "Building Special");
-			if (hasBs) gfdResult.noteworthy = true;
-			const isCombo = canCombo(availableCookies.map(fthof => fthof.name));
-			gfdResult.isCombo = isCombo;
-		} else {
-			const hasEf = hasCookieEffect(availableCookies, "Elder Frenzy");
-			if (hasEf) gfdResult.noteworthy = true;
-			const isCombo = canCombo(availableCookies.map(fthof => fthof.name));
-			gfdResult.isCombo = isCombo;
-		}
+		const hasGoodEffect = hasCookieEffect(
+			availableCookies,
+			isChildSpellWin ? "Building Special" : "Elder Frenzy",
+		);
+		if (hasGoodEffect) gfdResult.noteworthy = true;
+
+		// determine child FtHoF result can be a part of combo
+		const isCombo = canCombo(availableCookies.map(fthof => fthof.name));
+		gfdResult.isCombo = isCombo;
 
 	} else if (castSpellName == "Spontaneous Edifice") {
 		// add result of SE
