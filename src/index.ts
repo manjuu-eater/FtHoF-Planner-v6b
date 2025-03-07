@@ -245,8 +245,7 @@ app.controller("myCtrl", ($rootScope, $scope): void => {
 			// determine whether current cookies can be part of a combo
 			const isCombo = (
 				availableCookies.some((cookie) => cookie.isCombo)
-				|| gfd.hasBs
-				|| (includeEF && gfd.hasEf)
+				|| gfd.isCombo
 			);
 			if (isCombo) comboIndexes.push(i);
 
