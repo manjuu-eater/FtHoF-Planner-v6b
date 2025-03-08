@@ -127,14 +127,20 @@
 			<ul ng-if="grimoireResults.length > 0">
 				<li>
 					<b>Sugar Lumps</b>
-					<ul ng-if="sugarIndexes.length == 0">
+					<ul ng-if="sugars.length == 0">
 						<li>No Sugar Lumps is found...</li>
 					</ul>
-					<ul ng-repeat="sugarIndex in sugarIndexes">
+					<ul ng-repeat="sugar in sugars">
 						<li>
 							found at
-							<a href="#{{sugarIndex + 1}}">#{{sugarIndex + 1}}</a>
-							with {{grimoireResults[sugarIndex].wcThreshold}} screen GC
+							<a href="#{{sugar.index + 1}}">#{{sugar.index + 1}}</a>
+							when screen GC/WC
+							<span ng-if="sugar.isGC">&lt;</span>
+							<span ng-if="!sugar.isGC">&gt;=</span>
+							{{grimoireResults[sugar.index].wcThreshold}}
+							<span class="sugar_few_buildings" ng-if="sugar.isFewBuildings">
+								AND BUILDINGS &lt; 10!!
+							</span>
 						</li>
 					</ul>
 				</li>

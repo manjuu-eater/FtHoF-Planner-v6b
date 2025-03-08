@@ -45,6 +45,18 @@ type ComboResult = { idx: number, length: number };
 /** findCombo() results to return */
 type ComboResults = { shortest: ComboResult, first: ComboResult };
 
+/** found Sugar Lump */
+type Sugar = {
+	/** index of Sugar Lump */
+	index: number;
+
+	/** whether GC can cause a Sugar Lump */
+	isGC: boolean;
+
+	/** GC Sugar Lump with buildings < 10 */
+	isFewBuildings: boolean;
+};
+
 
 const app = window.angular.module("myApp", ["ngMaterial"]);
 app.controller("myCtrl", ($rootScope, $scope): void => {
@@ -58,7 +70,7 @@ app.controller("myCtrl", ($rootScope, $scope): void => {
 	$scope.baseBackfireChance = undefined;
 	$scope.backfireChance = undefined;
 	$scope.combos = [];
-	$scope.sugarIndexes = [];
+	$scope.sugars = [];
 	$scope.grimoireResults = [];
 
 	// initialize FtHoF settings
@@ -204,7 +216,7 @@ app.controller("myCtrl", ($rootScope, $scope): void => {
 		const baseBackfireChance = getBaseFailChance();
 		const fthofBackfireChance = getFthofFailChance(baseBackfireChance);
 		const combos: { [key: number]: ComboResults } = {};
-		const sugarIndexes: number[] = [];
+		const sugars: Sugar[] = [];
 
 		// object that contain FtHoF and GFD result, combo / skip indexes, etc.
 		const grimoireResults: GrimoireResult[] = [];
@@ -252,8 +264,31 @@ app.controller("myCtrl", ($rootScope, $scope): void => {
 			// determine whether Sugar Lump can be get
 			const gfdCookies = [gfd.cookie0, gfd.cookie1].filter(e => !!e);
 			const allGcWcGfdCookies = [...allGcWcs, ...gfdCookies];
-			const canSugar = hasCookieEffect(allGcWcGfdCookies, "Free Sugar Lump");
-			if (canSugar) sugarIndexes.push(i);
+			let canSugar = hasCookieEffect(allGcWcGfdCookies, "Free Sugar Lump");
+			if (hasCookieEffect([gc0, gc1], "Free Sugar Lump")) {
+				const sugar: Sugar = {
+					index: i,
+					isGC: true,
+					isFewBuildings: false,
+				};
+				sugars.push(sugar);
+			}
+			if (hasCookieEffect([wc0, wc1], "Free Sugar Lump")) {
+				const sugar: Sugar = {
+					index: i,
+					isGC: false,
+					isFewBuildings: false,
+				};
+				sugars.push(sugar);
+			}
+			if ([gc0, gc1].some(gc => gc.canGcSugarWithFewBuildings)) {
+				const sugar: Sugar = {
+					index: i,
+					isGC: true,
+					isFewBuildings: true,
+				};
+				sugars.push(sugar);
+			}
 
 			// No Change, One Change cookie to display
 			const cookie0 = isFthofWin ? gc0 : wc0;
@@ -325,7 +360,7 @@ app.controller("myCtrl", ($rootScope, $scope): void => {
 		$scope.baseBackfireChance  = baseBackfireChance;
 		$scope.backfireChance      = fthofBackfireChance;
 		$scope.combos              = combos;
-		$scope.sugarIndexes        = sugarIndexes;
+		$scope.sugars              = sugars;
 		$scope.grimoireResults     = grimoireResults;
 	};
 
