@@ -11,7 +11,7 @@ let settings;
 /**
  * update settings data used in grimoire
  *
- * @param $grimoireSettings Settings data used in grimoire
+ * @param grimoireSettings Settings data used in grimoire
  */
 export const updateGrimoreSettings = (grimoireSettings) => {
     settings = grimoireSettings;
@@ -57,6 +57,17 @@ export const getFthofFailChance = (baseFailChance) => {
         + 0.15 * settings.screenCookieCount // (L295 > L46)
     );
     return failChance;
+};
+/**
+ * determine whether effect can be part of a combo
+ *
+ * @param effect effect name or names
+ */
+const canBePartOfCombo = (effect) => {
+    const effectNames = Array.isArray(effect) ? effect : [effect];
+    const can = effectNames.some((effectName) => (effectName == "Building Special"
+        || (settings.includeEF && effectName == "Elder Frenzy")));
+    return can;
 };
 /**
  * get cast result object of FtHoF
@@ -126,6 +137,7 @@ export const castFtHoF = (seed, spellsCastTotal, offset, isOneChange, forceCooki
     let choices = [];
     // choose cookie effect
     let effectName;
+    let canGcSugarWithFewBuildings = false;
     if (isWin) {
         // choices of golden cookie (L52)
         choices.push("Frenzy", "Lucky");
@@ -155,9 +167,9 @@ export const castFtHoF = (seed, spellsCastTotal, offset, isOneChange, forceCooki
                 choicesIf.push("Free Sugar Lump");
             const chosen = chooseWith(choicesIf, random4);
             if (chosen == "Free Sugar Lump") {
-                // only logging for now
                 console.log("Free Sugar Lump with few building!!");
                 console.log("seedrandom: " + (seed + "/" + (spellsCastTotal + offset)));
+                canGcSugarWithFewBuildings = true;
             }
         }
         // There is an additional Math.random() in L62,
@@ -185,13 +197,18 @@ export const castFtHoF = (seed, spellsCastTotal, offset, isOneChange, forceCooki
         noteworthy = true;
     if (effectName == "Elder Frenzy")
         noteworthy = true;
+    // determine whether can be part of combo
+    const canCombo = canBePartOfCombo(effectName);
     // return FtHoF cast result
     const fthofResult = {
         name: effectName,
+        displayName: effectName,
         isWin,
         image: imageUrl,
-        description: description,
-        noteworthy: noteworthy,
+        tooltip: description,
+        noteworthy,
+        canCombo,
+        canGcSugarWithFewBuildings,
     };
     return fthofResult;
 };
@@ -214,7 +231,7 @@ export const hasCookieEffect = (cookies, effect) => {
 };
 /**
  * make a string for tooltip of GFD
- * (e.g. "Lucky / Ruin")
+ * (e.g. "#2: Lucky / Ruin")
  *
  * @param gfdResult result object of GFD
  * @param offset distance of target child spell from base spellsCastTotal
@@ -278,11 +295,11 @@ export const castGFD = (seed, spellsCastTotal, offset) => {
     // return object
     const gfdResult = {
         name: castSpellName,
+        displayName: castSpellName,
         isWin: isChildSpellWin,
         image: spellNameToIconUrl[castSpellName],
         tooltip: undefined,
-        hasBs: false,
-        hasEf: false,
+        noteworthy: false,
         canCombo: false,
         canSkip: false,
     };
@@ -302,22 +319,14 @@ export const castGFD = (seed, spellsCastTotal, offset) => {
         gfdResult.wc0 = wc0;
         gfdResult.gc1 = gc1;
         gfdResult.wc1 = wc1;
-        // determine child FtHoF result can be a part of combo
+        // determine child FtHoF has good effect
         const availableCookies = [cookie0, ...(isSingleSeason ? [] : [cookie1])];
-        if (isChildSpellWin) {
-            const hasBs = hasCookieEffect(availableCookies, "Building Special");
-            if (hasBs) {
-                gfdResult.hasBs = true;
-                gfdResult.canCombo = true;
-            }
-        }
-        else {
-            const hasEf = hasCookieEffect(availableCookies, "Elder Frenzy");
-            if (hasEf) {
-                gfdResult.hasEf = true;
-                gfdResult.canCombo = true;
-            }
-        }
+        const hasGoodEffect = hasCookieEffect(availableCookies, isChildSpellWin ? "Building Special" : "Elder Frenzy");
+        if (hasGoodEffect)
+            gfdResult.noteworthy = true;
+        // determine child FtHoF result can be a part of combo
+        const canCombo = canBePartOfCombo(availableCookies.map(fthof => fthof.name));
+        gfdResult.canCombo = canCombo;
     }
     else if (castSpellName == "Spontaneous Edifice") {
         // add result of SE
@@ -327,9 +336,10 @@ export const castGFD = (seed, spellsCastTotal, offset) => {
         gfdResult.spontaneousEdificeRandomNumber = secondRandomNumber;
     }
     // determine child FtHoF result can be a part of combo
-    if (castSpellName == "Resurrect Abomination"
-        || (castSpellName == "Spontaneous Edifice" && isChildSpellWin)
-        || (castSpellName == "Stretch Time")) {
+    const { skipRA, skipSE, skipST } = settings;
+    if (skipRA && castSpellName == "Resurrect Abomination"
+        || (skipSE && castSpellName == "Spontaneous Edifice" && isChildSpellWin)
+        || (skipST && castSpellName == "Stretch Time")) {
         gfdResult.canSkip = true;
     }
     // make a tooltip string

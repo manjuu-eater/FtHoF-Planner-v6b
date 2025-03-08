@@ -11,7 +11,7 @@ import { loadSaveCodeFromLS, removeSaveCodeFromLS, readSaveDataFromSaveCode, } f
 import { getSaveData, saveSaveData, loadSaveData, initSaveData, } from "./save_data.js";
 import { updateGrimoreSettings, getBaseFailChance, getFthofFailChance, castFtHoF, hasCookieEffect, castGFD, } from "./grimoire.js";
 const app = window.angular.module("myApp", ["ngMaterial"]);
-app.controller("myCtrl", ($scope) => {
+app.controller("myCtrl", ($rootScope, $scope) => {
     var _a;
     // initialize Save Code
     $scope.saveCode = "";
@@ -21,7 +21,7 @@ app.controller("myCtrl", ($scope) => {
     $scope.baseBackfireChance = undefined;
     $scope.backfireChance = undefined;
     $scope.combos = [];
-    $scope.sugarIndexes = [];
+    $scope.sugars = [];
     $scope.grimoireResults = [];
     // initialize FtHoF settings
     initSettings($scope);
@@ -130,14 +130,14 @@ app.controller("myCtrl", ($scope) => {
         const baseBackfireChance = getBaseFailChance();
         const fthofBackfireChance = getFthofFailChance(baseBackfireChance);
         const combos = {};
-        const sugarIndexes = [];
+        const sugars = [];
         // object that contain FtHoF and GFD result, combo / skip indexes, etc.
         const grimoireResults = [];
         // do nothing if seed is empty
         if (seed === "")
             return;
-        // srart timer
-        console.time("updateCookies");
+        // calculation srart time
+        const startTime = performance.now();
         const comboIndexes = [];
         const skipIndexes = [];
         for (let i = 0; i < lookahead; i++) {
@@ -157,24 +157,42 @@ app.controller("myCtrl", ($scope) => {
             const wc1 = castFtHoF(seed, spellsCastTotal, i, true, "WC");
             const gfd = castGFD(seed, spellsCastTotal, i);
             // cookies that user can cast (reduce cookie1 for single season option)
-            const availableCookies = [gc0, wc0, ...(season == "noswitch" ? [] : [gc1, wc1])];
+            const allGcWcs = [gc0, wc0, ...(season == "noswitch" ? [] : [gc1, wc1])];
             // determine whether current cookies can be part of a combo
-            const isCombo = (availableCookies.some((cookie) => (cookie.name == "Building Special"
-                || (includeEF && cookie.name == "Elder Frenzy")))
-                || gfd.hasBs
-                || (includeEF && gfd.hasEf));
-            if (isCombo)
+            const canCombo = ([...allGcWcs, gfd].some(cookie => cookie.canCombo));
+            if (canCombo)
                 comboIndexes.push(i);
-            // determine whether GFD can be skipped
-            const isSkip = ((skipRA && gfd.name == "Resurrect Abomination")
-                || (skipSE && gfd.name == "Spontaneous Edifice" && gfd.isWin)
-                || (skipST && gfd.name == "Stretch Time"));
-            if (isSkip)
+            // count skippable GFD
+            if (gfd.canSkip)
                 skipIndexes.push(i);
             // determine whether Sugar Lump can be get
-            const isSugar = hasCookieEffect(availableCookies, "Free Sugar Lump");
-            if (isSugar)
-                sugarIndexes.push(i);
+            const gfdCookies = [gfd.cookie0, gfd.cookie1].filter(e => !!e);
+            const allGcWcGfdCookies = [...allGcWcs, ...gfdCookies];
+            let canSugar = hasCookieEffect(allGcWcGfdCookies, "Free Sugar Lump");
+            if (hasCookieEffect([gc0, gc1], "Free Sugar Lump")) {
+                const sugar = {
+                    index: i,
+                    isGC: true,
+                    isFewBuildings: false,
+                };
+                sugars.push(sugar);
+            }
+            if (hasCookieEffect([wc0, wc1], "Free Sugar Lump")) {
+                const sugar = {
+                    index: i,
+                    isGC: false,
+                    isFewBuildings: false,
+                };
+                sugars.push(sugar);
+            }
+            if ([gc0, gc1].some(gc => gc.canGcSugarWithFewBuildings)) {
+                const sugar = {
+                    index: i,
+                    isGC: true,
+                    isFewBuildings: true,
+                };
+                sugars.push(sugar);
+            }
             // No Change, One Change cookie to display
             const cookie0 = isFthofWin ? gc0 : wc0;
             const cookie1 = isFthofWin ? gc1 : wc1;
@@ -183,35 +201,35 @@ app.controller("myCtrl", ($scope) => {
             let isOtherCookieNotable1 = false;
             if (isFthofWin) {
                 if (wc0.name == "Elder Frenzy") {
-                    gc0.name += " (EF)";
+                    gc0.displayName += " (EF)";
                     gc0.noteworthy = true;
                     isOtherCookieNotable0 = true;
                 }
                 if (wc1.name == "Elder Frenzy") {
-                    gc1.name += " (EF)";
+                    gc1.displayName += " (EF)";
                     gc1.noteworthy = true;
                     isOtherCookieNotable1 = true;
                 }
                 if (wc0.name == "Free Sugar Lump")
-                    gc0.name += " (Sugar)";
+                    gc0.displayName += " (Sugar)";
                 if (wc1.name == "Free Sugar Lump")
-                    gc1.name += " (Sugar)";
+                    gc1.displayName += " (Sugar)";
             }
             else {
                 if (gc0.name == "Building Special") {
-                    wc0.name += " (BS)";
+                    wc0.displayName += " (BS)";
                     wc0.noteworthy = true;
                     isOtherCookieNotable0 = true;
                 }
                 if (gc1.name == "Building Special") {
-                    wc1.name += " (BS)";
+                    wc1.displayName += " (BS)";
                     wc1.noteworthy = true;
                     isOtherCookieNotable1 = true;
                 }
                 if (gc0.name == "Free Sugar Lump")
-                    wc0.name += " (Sugar)";
+                    wc0.displayName += " (Sugar)";
                 if (gc1.name == "Free Sugar Lump")
-                    wc1.name += " (Sugar)";
+                    wc1.displayName += " (Sugar)";
             }
             // set to object and push to array
             const grimoireResult = {
@@ -222,26 +240,27 @@ app.controller("myCtrl", ($scope) => {
                 cookie0, gc0, wc0, isOtherCookieNotable0,
                 cookie1, gc1, wc1, isOtherCookieNotable1,
                 gfd,
-                isCombo, isSkip, isSugar,
+                canCombo, canSugar,
             };
             grimoireResults.push(grimoireResult);
+        }
+        // find combos
+        for (let comboLength = minComboLength; comboLength <= maxComboLength; comboLength++) {
+            combos[comboLength] = findCombos(comboLength, maxSpread, comboIndexes, skipIndexes);
         }
         // log
         console.log("grimoireResults:", grimoireResults);
         console.log("comboIndexes:", comboIndexes);
         console.log("skipIndexes:", skipIndexes);
-        console.timeLog("updateCookies");
-        // find combos
-        for (let comboLength = minComboLength; comboLength <= maxComboLength; comboLength++) {
-            combos[comboLength] = findCombos(comboLength, maxSpread, comboIndexes, skipIndexes);
-        }
         console.log("Combos:", combos);
-        console.timeEnd("updateCookies");
+        // log performance time
+        const ellapsedMilliSec = performance.now() - startTime;
+        console.log("updateCookies calculate time: ", ellapsedMilliSec, "ms");
         // set to $scope
         $scope.baseBackfireChance = baseBackfireChance;
         $scope.backfireChance = fthofBackfireChance;
         $scope.combos = combos;
-        $scope.sugarIndexes = sugarIndexes;
+        $scope.sugars = sugars;
         $scope.grimoireResults = grimoireResults;
     };
     /**
@@ -355,6 +374,19 @@ app.controller("myCtrl", ($scope) => {
     };
     // start watching events related to UI
     initUIEventListeners();
+    // override $scope.$apply to measure AngularJS rendering time
+    // $scope.$apply: can't measure first write but more accurate
+    // $rootScope.$digest: can measure first write but a little short time
+    (() => {
+        const originalApply = $scope.$apply; // can be $rootScope.$digest
+        $scope.$apply = function () {
+            const start = performance.now();
+            const result = originalApply.apply(this, arguments);
+            const end = performance.now();
+            console.log("AngularJS rendering time: ", end - start, "ms");
+            return result;
+        };
+    })();
     // remove loading text
     $scope.ready = true;
 });

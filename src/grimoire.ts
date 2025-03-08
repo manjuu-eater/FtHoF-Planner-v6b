@@ -23,35 +23,69 @@ import { Settings } from "./settings";
 
 // type definition
 
-/** result of FtHoF */
-export type FthofResult = {
-	name: EffectName;
+/** result of spell cast */
+type SpellCastResult = {
+	// name of FtHoF effect, GFD spell
+	name: EffectName | SpellName;
+
+	/** name to display */
+	displayName: string;
+
+	/** whether this cast will be success */
 	isWin: boolean;
+
+	/** image URL to display */
 	image: string;
 
-	description: string;
+	/** tooltip string to show */
+	tooltip: string | undefined;
+
+	/** whether this cast results noteworthy FtHoF effect */
 	noteworthy: boolean;
+
+	/** whether this cast results can be part of a combo */
+	canCombo: boolean;
+};
+
+/** result of FtHoF */
+export type FthofResult = SpellCastResult & {
+	/** name of FtHoF effect */
+	name: EffectName;
+
+	/** whether there is a chance of GC Sugar with very few buildings */
+	canGcSugarWithFewBuildings: boolean;
 };
 
 /** result of GFD */
-export type GfdResult = {
+export type GfdResult = SpellCastResult & {
+	/** name of GFD spell */
 	name: SpellName;
-	isWin: boolean;
-	image: string;
-	tooltip: string | undefined;
 
-	hasBs: boolean;
-	hasEf: boolean;
-	canCombo: boolean;
+
+	/** whether this GFD can be skipped */
 	canSkip: boolean;
 
+
+	/** FtHoF result with No Change */
 	cookie0?: FthofResult;
+
+	/** GC with No Change */
 	gc0?: FthofResult;
+
+	/** WC with No Change */
 	wc0?: FthofResult;
+
+	/** FtHoF result with One Change */
 	cookie1?: FthofResult;
+
+	/** GC with One Change */
 	gc1?: FthofResult;
+
+	/** WC with One Change */
 	wc1?: FthofResult;
 
+
+	/** random number of Spontaneous Edifice */
 	spontaneousEdificeRandomNumber?: number;
 };
 
@@ -61,25 +95,53 @@ export type GfdResult = {
  * All values in this set are uniquely derived from seed and total spell cast count.
  */
 export type GrimoireResult = {
+	/** number of list that shown as "#1" */
 	num: number;
+
+	/** first result of Math.random() after seedrandom */
 	firstRandomNum: number;
+
+	/** minimum count of GC/WC on screen that changes GC to WC */
 	wcThreshold: number;
 
+
+	/** whether FtHoF result is success */
 	isFthofWin: boolean;
+
+	/** FtHoF result with No Change */
 	cookie0: FthofResult;
+
+	/** GC with No Change */
 	gc0: FthofResult;
+
+	/** WC with No Change */
 	wc0: FthofResult;
+
+	/** whether hidden GC/WC with No Change has good effect */
 	isOtherCookieNotable0: boolean;
+
+	/** FtHoF result with One Change */
 	cookie1: FthofResult;
+
+	/** GC with One Change */
 	gc1: FthofResult;
+
+	/** WC with One Change */
 	wc1: FthofResult;
+
+	/** whether hidden GC/WC with One Change has good effect */
 	isOtherCookieNotable1: boolean;
 
+
+	/** GFD result */
 	gfd: GfdResult;
 
-	isCombo: boolean;
-	isSkip: boolean;
-	isSugar: boolean;
+
+	/** whether FtHoF / GFD can be part of a combo */
+	canCombo: boolean;
+
+	/** whether Sugar Lump can be get */
+	canSugar: boolean;
 };
 
 
@@ -90,7 +152,7 @@ let settings: Settings;
 /**
  * update settings data used in grimoire
  *
- * @param $grimoireSettings Settings data used in grimoire
+ * @param grimoireSettings Settings data used in grimoire
  */
 export const updateGrimoreSettings = (grimoireSettings: Settings) => {
 	settings = grimoireSettings;
@@ -138,6 +200,21 @@ export const getFthofFailChance = (baseFailChance?: number): number => {
 		+ 0.15 * settings.screenCookieCount  // (L295 > L46)
 	);
 	return failChance;
+};
+
+
+/**
+ * determine whether effect can be part of a combo
+ *
+ * @param effect effect name or names
+ */
+const canBePartOfCombo = (effect: EffectName | EffectName[]): boolean => {
+	const effectNames = Array.isArray(effect) ? effect : [effect];
+	const can = effectNames.some((effectName) => (
+		effectName == "Building Special"
+		|| (settings.includeEF && effectName == "Elder Frenzy")
+	));
+	return can;
 };
 
 
@@ -224,6 +301,7 @@ export const castFtHoF = (
 
 	// choose cookie effect
 	let effectName: EffectName;
+	let canGcSugarWithFewBuildings = false;
 	if (isWin) {
 		// choices of golden cookie (L52)
 		choices.push("Frenzy", "Lucky");
@@ -245,9 +323,9 @@ export const castFtHoF = (
 			if (random3 < 0.0001) choicesIf.push("Free Sugar Lump");
 			const chosen = chooseWith(choicesIf, random4);
 			if (chosen == "Free Sugar Lump") {
-				// only logging for now
 				console.log("Free Sugar Lump with few building!!");
 				console.log("seedrandom: " + (seed + "/" + (spellsCastTotal + offset)));
+				canGcSugarWithFewBuildings = true;
 			}
 		}
 
@@ -273,14 +351,20 @@ export const castFtHoF = (
 	if (effectName == "Building Special") noteworthy = true;
 	if (effectName == "Elder Frenzy") noteworthy = true;
 
+	// determine whether can be part of combo
+	const canCombo = canBePartOfCombo(effectName);
+
 	// return FtHoF cast result
 	const fthofResult: FthofResult = {
 		name: effectName,
+		displayName: effectName,
 		isWin,
 		image: imageUrl,
+		tooltip: description,
+		noteworthy,
+		canCombo,
 
-		description: description,
-		noteworthy: noteworthy,
+		canGcSugarWithFewBuildings,
 	};
 	return fthofResult;
 };
@@ -293,7 +377,10 @@ export const castFtHoF = (
  * @param effect effect name or names
  * @returns true if have
  */
-export const hasCookieEffect = (cookies: FthofResult[], effect: string | string[]): boolean => {
+export const hasCookieEffect = (
+	cookies: FthofResult[],
+	effect: EffectName | EffectName[],
+): boolean => {
 	const effectNames = (typeof effect == "string" ? [effect] : effect);
 	for (const cookie of cookies) {
 		for (const effectName of effectNames) {
@@ -306,7 +393,7 @@ export const hasCookieEffect = (cookies: FthofResult[], effect: string | string[
 
 /**
  * make a string for tooltip of GFD
- * (e.g. "Lucky / Ruin")
+ * (e.g. "#2: Lucky / Ruin")
  *
  * @param gfdResult result object of GFD
  * @param offset distance of target child spell from base spellsCastTotal
@@ -384,13 +471,13 @@ export const castGFD = (
 	// return object
 	const gfdResult: GfdResult = {
 		name: castSpellName,
+		displayName: castSpellName,
 		isWin: isChildSpellWin,
 		image: spellNameToIconUrl[castSpellName],
 		tooltip: undefined,
-
-		hasBs: false,
-		hasEf: false,
+		noteworthy: false,
 		canCombo: false,
+
 		canSkip: false,
 	};
 
@@ -412,21 +499,17 @@ export const castGFD = (
 		gfdResult.gc1 = gc1;
 		gfdResult.wc1 = wc1;
 
-		// determine child FtHoF result can be a part of combo
+		// determine child FtHoF has good effect
 		const availableCookies = [cookie0, ...(isSingleSeason ? [] : [cookie1])];
-		if (isChildSpellWin) {
-			const hasBs = hasCookieEffect(availableCookies, "Building Special");
-			if (hasBs) {
-				gfdResult.hasBs = true;
-				gfdResult.canCombo = true;
-			}
-		} else {
-			const hasEf = hasCookieEffect(availableCookies, "Elder Frenzy");
-			if (hasEf) {
-				gfdResult.hasEf = true;
-				gfdResult.canCombo = true;
-			}
-		}
+		const hasGoodEffect = hasCookieEffect(
+			availableCookies,
+			isChildSpellWin ? "Building Special" : "Elder Frenzy",
+		);
+		if (hasGoodEffect) gfdResult.noteworthy = true;
+
+		// determine child FtHoF result can be a part of combo
+		const canCombo = canBePartOfCombo(availableCookies.map(fthof => fthof.name));
+		gfdResult.canCombo = canCombo;
 
 	} else if (castSpellName == "Spontaneous Edifice") {
 		// add result of SE
@@ -439,10 +522,11 @@ export const castGFD = (
 	}
 
 	// determine child FtHoF result can be a part of combo
+	const { skipRA, skipSE, skipST } = settings;
 	if (
-		castSpellName == "Resurrect Abomination"
-		|| (castSpellName == "Spontaneous Edifice" && isChildSpellWin)
-		|| (castSpellName == "Stretch Time")
+		skipRA && castSpellName == "Resurrect Abomination"
+		|| (skipSE && castSpellName == "Spontaneous Edifice" && isChildSpellWin)
+		|| (skipST && castSpellName == "Stretch Time")
 	) {
 		gfdResult.canSkip = true;
 	}

@@ -54,6 +54,13 @@ input#save_code {
 	color: gray;
 }
 
+/* n times cast with manual number */
+.cast_manual {
+	display: inline;
+	margin-left: .5em;
+	vertical-align: middle;
+}
+
 /* loading title */
 .loading {
 	text-align: center;

@@ -14,10 +14,10 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.8/angular-material.min.js"></script>
 
 	<!-- FtHoF Library Files -->
-	<script src="./lib/seedrandom.min.js"></script>
+	<script src="lib/seedrandom.min.js"></script>
 
-	<!-- FtHoF JavaScript File (source file: ./src/index.ts) -->
-	<script type="module" src="./dist/index.js"></script>
+	<!-- FtHoF JavaScript File (source file: src/index.ts) -->
+	<script type="module" src="dist/index.js"></script>
 
 	<!-- icon, styles -->
 	<link rel="shortcut icon" type="image/x-icon" href="img/favicon.ico?">
@@ -65,14 +65,14 @@
 		<p><b>
 			Based on FtHoF planner v1-v5 by RebelKeithy, Skeezy, Eminenti, Mylaaan and Joseph3079.
 			Huge thanks to them for creating such a helpful tool.<br>
-			◆ <a href="./version_history.html">full version history, credits & contacts</a>
+			◆ <a href="version_history.html">full version history, credits & contacts</a>
 		</b></p>
 		<p><b>
 			Compatible Version: Cookie Clicker v2.052
 		</b></p>
 		<p>
 			RebelKeithy, Skeezy, Mylaaan, & Joseph3079 made a guide explaining the options/features we added.<br>
-			<b>◆ <a href="./user_guide.html">User Guide</a></b>
+			<b>◆ <a href="user_guide.html">User Guide</a></b>
 		</p>
 
 		<md-divider></md-divider>
@@ -127,14 +127,20 @@
 			<ul ng-if="grimoireResults.length > 0">
 				<li>
 					<b>Sugar Lumps</b>
-					<ul ng-if="sugarIndexes.length == 0">
+					<ul ng-if="sugars.length == 0">
 						<li>No Sugar Lumps is found...</li>
 					</ul>
-					<ul ng-repeat="sugarIndex in sugarIndexes">
+					<ul ng-repeat="sugar in sugars">
 						<li>
 							found at
-							<a href="#{{sugarIndex + 1}}">#{{sugarIndex + 1}}</a>
-							with {{grimoireResults[sugarIndex].wcThreshold}} screen GC
+							<a href="#{{sugar.index + 1}}">#{{sugar.index + 1}}</a>
+							when screen GC/WC
+							<span ng-if="sugar.isGC">&lt;</span>
+							<span ng-if="!sugar.isGC">&gt;=</span>
+							{{grimoireResults[sugar.index].wcThreshold}}
+							<span class="sugar_few_buildings" ng-if="sugar.isFewBuildings">
+								AND BUILDINGS &lt; 10!!
+							</span>
 						</li>
 					</ul>
 				</li>
@@ -228,9 +234,16 @@
 			<md-button class="md-raised md-primary" ng-click="castSpell()">Cast Spell</md-button>
 			<md-button class="md-raised md-primary" ng-click="castSpell(5)">x5</md-button>
 			<md-button class="md-raised md-primary" ng-click="castSpell(10)">x10</md-button>
+
+			<!-- n times cast with manual number -->
+			<form class="cast_manual" ng-submit="castSpell(castCountNum)">
+				<input type="number" class="w4" ng-model="castCountNum">
+				<md-button class="md-raised md-primary" ng-click="castSpell(castCountNum)">x-n</md-button>
+			</form>
 			<!-- <md-button class="md-raised md-primary" ng-click="printScope()">Print Scope</md-button> -->
 
 			<md-divider></md-divider>
+
 
 			<!-- FtHoF Planner Main Result Area -->
 			<table>
@@ -291,8 +304,8 @@
 							<div ng-class="{
 								'highlight combo': result.cookie0.noteworthy,
 								'highlight notable': result.isOtherCookieNotable0,
-							}">
-								{{result.cookie0.name}}
+							}" ng-attr-title="{{result.cookie0.tooltip}}">
+								{{result.cookie0.displayName}}
 							</div>
 						</div></td>
 
@@ -302,8 +315,8 @@
 							<div ng-class="{
 								'highlight combo': result.cookie1.noteworthy,
 								'highlight notable': result.isOtherCookieNotable1,
-							}">
-								{{result.cookie1.name}}
+							}" ng-attr-title="{{result.cookie1.tooltip}}">
+								{{result.cookie1.displayName}}
 							</div>
 						</div></td>
 
@@ -314,10 +327,10 @@
 								backfire: !result.gfd.isWin,
 							}" class="gfd">
 							<div ng-class="{
-								'highlight combo': result.gfd.canCombo,
+								'highlight combo': result.gfd.noteworthy,
 								'highlight skip':  result.gfd.canSkip,
 							}" ng-attr-title="{{result.gfd.tooltip}}">
-								{{result.gfd.name}}
+								{{result.gfd.displayName}}
 							</div>
 						</div></td>
 					</tr>
