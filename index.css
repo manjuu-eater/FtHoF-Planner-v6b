@@ -54,6 +54,12 @@ input#save_code {
 	color: gray;
 }
 
+/* Sugar with few buildings */
+.sugar_few_buildings {
+	color: crimson;
+	font-weight: bold;
+}
+
 /* n times cast with manual number */
 .cast_manual {
 	display: inline;
