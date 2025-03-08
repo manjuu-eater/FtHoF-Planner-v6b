@@ -228,9 +228,16 @@
 			<md-button class="md-raised md-primary" ng-click="castSpell()">Cast Spell</md-button>
 			<md-button class="md-raised md-primary" ng-click="castSpell(5)">x5</md-button>
 			<md-button class="md-raised md-primary" ng-click="castSpell(10)">x10</md-button>
+
+			<!-- n times cast with manual number -->
+			<form class="cast_manual" ng-submit="castSpell(castCountNum)">
+				<input type="number" class="w4" ng-model="castCountNum">
+				<md-button class="md-raised md-primary" ng-click="castSpell(castCountNum)">x-n</md-button>
+			</form>
 			<!-- <md-button class="md-raised md-primary" ng-click="printScope()">Print Scope</md-button> -->
 
 			<md-divider></md-divider>
+
 
 			<!-- FtHoF Planner Main Result Area -->
 			<table>
