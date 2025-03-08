@@ -323,8 +323,10 @@ export const castFtHoF = (
 			if (random3 < 0.0001) choicesIf.push("Free Sugar Lump");
 			const chosen = chooseWith(choicesIf, random4);
 			if (chosen == "Free Sugar Lump") {
-				console.log("Free Sugar Lump with few building!!");
-				console.log("seedrandom: " + (seed + "/" + (spellsCastTotal + offset)));
+				console.warn("Free Sugar Lump with few building!!");
+				console.warn("seedrandom: " + (seed + "/" + (spellsCastTotal + offset)));
+				console.warn("isOneChange: " + isOneChange);
+				console.warn("forceCookie: " + forceCookie);
 				canGcSugarWithFewBuildings = true;
 			}
 		}
