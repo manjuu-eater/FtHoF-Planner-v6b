@@ -226,11 +226,15 @@
 				<md-radio-button value="easter">Easter</md-radio-button>
 			</md-radio-group>
 
+			<md-checkbox ng-model="hideUseless">
+				Replace Useless Effect to "----"
+			</md-checkbox>
+
 			<md-divider></md-divider>
 
 
 			<!-- Buttons -->
-			<md-button class="md-raised md-primary" ng-click="updateCookies()">Apply Settings</md-button>
+			<!--<md-button class="md-raised md-primary" ng-click="updateCookies()">Apply Settings</md-button>-->
 			<md-button class="md-raised md-primary" ng-click="castSpell()">Cast Spell</md-button>
 			<md-button class="md-raised md-primary" ng-click="castSpell(5)">x5</md-button>
 			<md-button class="md-raised md-primary" ng-click="castSpell(10)">x10</md-button>

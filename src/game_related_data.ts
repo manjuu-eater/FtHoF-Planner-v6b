@@ -1,7 +1,7 @@
 /**
  * FtHoF Planner v6b
  * game_related_data.ts
- * 
+ *
  * objects or functions that related to the Cookie Clicker game JavaScript file
  */
 
@@ -16,6 +16,8 @@
  *   - Dragon Harvest, Dragonflight is omitted
  *   - changed to Title Case
  *   - Cookie Storm Drop is add
+ *
+ * full name list of GC/WC effect is in main.js L5497
  */
 export type EffectName = (
 	| "Frenzy"

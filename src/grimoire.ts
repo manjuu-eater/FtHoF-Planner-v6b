@@ -160,6 +160,55 @@ export const updateGrimoreSettings = (grimoireSettings: Settings) => {
 
 
 /**
+ * replace useless GC/WC effect name to "----"
+ *
+ * @param effectName effect name
+ * @returns effect name replaced by "----"
+ */
+const obscureUselessEffectName = (effectName: EffectName): string => {
+	// do nothing if not active
+	if (!settings.hideUseless) return effectName;
+
+	// effect names without...
+	//   GC: Click Frenzy, Building Special
+	//   WC: Elder Frenzy
+	//   both: Free Sugar Lump
+	const uselessNames = [
+		"Frenzy", "Lucky", "Cookie Storm", "Cookie Storm Drop",
+		"Clot", "Ruin", "Cursed Finger",
+		"Blab",
+	];
+
+	// replace to "----"
+	if (uselessNames.includes(effectName)) return effectName.replace(/[A-Za-z]/g, "-");
+
+	// not useless, so return original
+	return effectName;
+};
+
+
+/**
+ * replace useless GFD spell name to "----"
+ *
+ * @param spellName spell name
+ * @returns effect name replaced by "----"
+ */
+const obscureUselessSpellName = (spellName: SpellName): string => {
+	// do nothing if not active
+	if (!settings.hideUseless) return spellName;
+
+	// spell names without FtHoF, skippable spells, GFD, Diminish Ineptitude
+	const uselessNames = ["Conjure Baked Goods", "Haggler's Charm", "Summon Crafty Pixies"];
+
+	// replace to "----"
+	if (uselessNames.includes(spellName)) return spellName.replace(/[A-Za-z]/g, "-");
+
+	// not useless, so return original
+	return spellName;
+};
+
+
+/**
  * calculate base fail chance of FtHoF
  * (without considering count of GCs on screen)
  *
@@ -359,7 +408,7 @@ export const castFtHoF = (
 	// return FtHoF cast result
 	const fthofResult: FthofResult = {
 		name: effectName,
-		displayName: effectName,
+		displayName: obscureUselessEffectName(effectName),
 		isWin,
 		image: imageUrl,
 		tooltip: description,
@@ -407,7 +456,7 @@ const makeGfdTooltip = (gfdResult: GfdResult, offset: number): string | undefine
 
 		// make tooltip for SE
 		const seTooltip = (
-			"random number for SE is "
+			"random number used to select the target building is "
 			+ gfdResult.spontaneousEdificeRandomNumber?.toFixed(4)
 		);
 		return seTooltip;
@@ -473,7 +522,7 @@ export const castGFD = (
 	// return object
 	const gfdResult: GfdResult = {
 		name: castSpellName,
-		displayName: castSpellName,
+		displayName: obscureUselessSpellName(castSpellName),
 		isWin: isChildSpellWin,
 		image: spellNameToIconUrl[castSpellName],
 		tooltip: undefined,
