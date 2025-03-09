@@ -456,7 +456,7 @@ const makeGfdTooltip = (gfdResult: GfdResult, offset: number): string | undefine
 
 		// make tooltip for SE
 		const seTooltip = (
-			"random number for SE is "
+			"random number used to select the target building is "
 			+ gfdResult.spontaneousEdificeRandomNumber?.toFixed(4)
 		);
 		return seTooltip;
