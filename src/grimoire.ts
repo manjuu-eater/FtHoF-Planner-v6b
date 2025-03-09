@@ -188,6 +188,27 @@ const obscureUselessEffectName = (effectName: EffectName): string => {
 
 
 /**
+ * replace useless GFD spell name to "----"
+ *
+ * @param spellName spell name
+ * @returns effect name replaced by "----"
+ */
+const obscureUselessSpellName = (spellName: SpellName): string => {
+	// do nothing if not active
+	if (!settings.hideUseless) return spellName;
+
+	// spell names without FtHoF, skippable spells, GFD, Diminish Ineptitude
+	const uselessNames = ["Conjure Baked Goods", "Haggler's Charm", "Summon Crafty Pixies"];
+
+	// replace to "----"
+	if (uselessNames.includes(spellName)) return spellName.replace(/[A-Za-z]/g, "-");
+
+	// not useless, so return original
+	return spellName;
+};
+
+
+/**
  * calculate base fail chance of FtHoF
  * (without considering count of GCs on screen)
  *
@@ -501,7 +522,7 @@ export const castGFD = (
 	// return object
 	const gfdResult: GfdResult = {
 		name: castSpellName,
-		displayName: castSpellName,
+		displayName: obscureUselessSpellName(castSpellName),
 		isWin: isChildSpellWin,
 		image: spellNameToIconUrl[castSpellName],
 		tooltip: undefined,
