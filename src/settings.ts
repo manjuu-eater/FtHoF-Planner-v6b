@@ -23,6 +23,7 @@ export type Settings = {
 	buffDI: boolean;
 	debuffDI: boolean;
 	season: string;
+	hideUseless: boolean;
 };
 
 
@@ -35,7 +36,7 @@ export const settingsModelNames: (keyof Settings)[] = [
 	"lookahead", "minComboLength", "maxComboLength", "maxSpread",
 	"includeEF", "skipRA", "skipSE", "skipST",
 	"screenCookieCount", "buffDF", "auraSI", "auraRB", "buffDI", "debuffDI",
-	"season",
+	"season", "hideUseless",
 ];
 
 
@@ -62,6 +63,7 @@ export const getSettings = ($scope: any): Settings => {
 		buffDI:            $scope.buffDI,
 		debuffDI:          $scope.debuffDI,
 		season:            $scope.season,
+		hideUseless:       $scope.hideUseless,
 	};
 	return settings;
 };
@@ -146,4 +148,5 @@ export const initSettings = ($scope: any): void => {
 
 	// Settings: FtHoF Settings
 	$scope.season = "cookie";
+	$scope.hideUseless = false;
 };
