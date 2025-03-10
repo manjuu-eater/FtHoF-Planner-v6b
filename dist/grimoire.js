@@ -59,6 +59,18 @@ const obscureUselessSpellName = (spellName) => {
     // not useless, so return original
     return spellName;
 };
+const makeFthofDisplayName = (effectName) => {
+    // replace useless effect name to "----"
+    let converting = obscureUselessEffectName(effectName);
+    // replace Cookie Storm Drop to "Drop"
+    if (settings.shortenCSDrop && effectName == "Cookie Storm Drop") {
+        converting = "Drop";
+        if (settings.hideUseless)
+            converting = converting.replace(/[A-Za-z]/g, "-");
+    }
+    // return converted name
+    return converting;
+};
 /**
  * calculate base fail chance of FtHoF
  * (without considering count of GCs on screen)
@@ -247,7 +259,7 @@ export const castFtHoF = (seed, spellsCastTotal, offset, isOneChange, forceCooki
     // return FtHoF cast result
     const fthofResult = {
         name: effectName,
-        displayName: obscureUselessEffectName(effectName),
+        displayName: makeFthofDisplayName(effectName),
         isWin,
         image: imageUrl,
         tooltip: description,

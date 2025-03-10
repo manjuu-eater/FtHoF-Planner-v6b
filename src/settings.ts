@@ -9,6 +9,7 @@
 /** FtHoF-Planner settings */
 export type Settings = {
 	lookahead: number;
+
 	minComboLength: number;
 	maxComboLength: number;
 	maxSpread: number;
@@ -16,14 +17,17 @@ export type Settings = {
 	skipRA: boolean;
 	skipSE: boolean;
 	skipST: boolean;
+
 	screenCookieCount: number;
 	buffDF: boolean;
 	auraSI: boolean;
 	auraRB: boolean;
 	buffDI: boolean;
 	debuffDI: boolean;
+
 	season: string;
 	hideUseless: boolean;
+	shortenCSDrop: boolean;
 };
 
 
@@ -36,7 +40,7 @@ export const settingsModelNames: (keyof Settings)[] = [
 	"lookahead", "minComboLength", "maxComboLength", "maxSpread",
 	"includeEF", "skipRA", "skipSE", "skipST",
 	"screenCookieCount", "buffDF", "auraSI", "auraRB", "buffDI", "debuffDI",
-	"season", "hideUseless",
+	"season", "hideUseless", "shortenCSDrop",
 ];
 
 
@@ -64,6 +68,7 @@ export const getSettings = ($scope: any): Settings => {
 		debuffDI:          $scope.debuffDI,
 		season:            $scope.season,
 		hideUseless:       $scope.hideUseless,
+		shortenCSDrop:     $scope.shortenCSDrop,
 	};
 	return settings;
 };
@@ -149,4 +154,5 @@ export const initSettings = ($scope: any): void => {
 	// Settings: FtHoF Settings
 	$scope.season = "cookie";
 	$scope.hideUseless = false;
+	$scope.shortenCSDrop = false;
 };
