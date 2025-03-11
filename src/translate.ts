@@ -36,9 +36,12 @@ type EnToLocalWordDict = {
 	];
 	const translateds = {};
 	for (const lang in Langs) {  // L305
-		LoadLang('loc/'+lang+'.js?v='+Game.version);  // L16915 > L16861 > L16868
-		await new Promise((res) => setTimeout(res, 3000));
-		translateds[lang] = locIds.map(e => loc(e));
+		LoadLang('loc/'+lang+'.js?v='+Game.version, () => {
+			const dict = {};
+			locIds.forEach(locId => dict[locId] = loc(locId));
+			translateds[lang] = dict;
+		});  // L16915 > L16861 > L16868 > L87
+		await new Promise((res) => setTimeout(res, 1000));
 	};
 	console.log(translateds);
 })();*/
