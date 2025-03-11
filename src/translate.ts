@@ -6,8 +6,8 @@
  */
 
 
-/** translate dictionary of EffectName */
-type EffectWords = {
+/** translation dictionary */
+type EnToLocalWordDict = {
 	"Lucky": string;
 	"Ruin": string;
 	"Cookie Chain": string;
@@ -44,7 +44,7 @@ type EffectWords = {
 })();*/
 
 
-export const langDict: { [lang: string]: EffectWords } = {
+export const langDict: { [lang: string]: EnToLocalWordDict } = {
 	"EN": {
 		"Lucky": "Lucky",
 		"Ruin": "Ruin",
