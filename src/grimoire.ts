@@ -208,6 +208,12 @@ const obscureUselessSpellName = (spellName: SpellName): string => {
 };
 
 
+/**
+ * make string for displaying FtHoF effect name
+ *
+ * @param effectName name of FtHoF effect for display
+ * @returns string for display
+ */
 const makeFthofDisplayName = (effectName: EffectName): string => {
 	// replace useless effect name to "----"
 	let converting = obscureUselessEffectName(effectName);
@@ -223,6 +229,12 @@ const makeFthofDisplayName = (effectName: EffectName): string => {
 };
 
 
+/**
+ * make string for displaying GFD spell name
+ *
+ * @param spellName name of GFD spell for display
+ * @returns string for display
+ */
 const makeGfdDisplayName = (spellName: SpellName): string => {
 	// replace useless spell name to "----"
 	let converting = obscureUselessSpellName(spellName);
