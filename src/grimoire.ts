@@ -223,6 +223,15 @@ const makeFthofDisplayName = (effectName: EffectName): string => {
 };
 
 
+const makeGfdDisplayName = (spellName: SpellName): string => {
+	// replace useless spell name to "----"
+	let converting = obscureUselessSpellName(spellName);
+
+	// return converted name
+	return converting;
+};
+
+
 /**
  * calculate base fail chance of FtHoF
  * (without considering count of GCs on screen)
@@ -537,7 +546,7 @@ export const castGFD = (
 	// return object
 	const gfdResult: GfdResult = {
 		name: castSpellName,
-		displayName: obscureUselessSpellName(castSpellName),
+		displayName: makeGfdDisplayName(castSpellName),
 		isWin: isChildSpellWin,
 		image: spellNameToIconUrl[castSpellName],
 		tooltip: undefined,
