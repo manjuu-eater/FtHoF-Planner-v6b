@@ -162,6 +162,22 @@ export const updateGrimoreSettings = (grimoireSettings: Settings) => {
 
 
 /**
+ * replace string to "----"
+ *
+ * @param replaceFrom string to replace with "-"
+ * @returns replaced string
+ */
+const obscureString = (replaceFrom: string): string => {
+	// asian languages have twice width characters
+	const isFullWidthLang = ["JA", "ZH-CN", "KO"].includes(settings.lang);
+	const replaceTo = isFullWidthLang ? "－" : "-";
+
+	// obscure
+	return replaceFrom.replace(/[^ ']/g, replaceTo);
+};
+
+
+/**
  * replace useless GC/WC effect name to "----"
  *
  * @param displayName effect name to display (maybe converted)
@@ -183,7 +199,7 @@ const obscureUselessEffectName = (displayName: string, effectName: EffectName): 
 	];
 
 	// replace to "----"
-	if (uselessNames.includes(effectName)) return displayName.replace(/[^ ']/g, "-");
+	if (uselessNames.includes(effectName)) return obscureString(displayName);
 
 	// not useless, so return original
 	return displayName;
@@ -205,7 +221,7 @@ const obscureUselessSpellName = (displayName: string, spellName: SpellName): str
 	const uselessNames = ["Conjure Baked Goods", "Haggler's Charm", "Summon Crafty Pixies"];
 
 	// replace to "----"
-	if (uselessNames.includes(spellName)) return displayName.replace(/[^ ']/g, "-");
+	if (uselessNames.includes(spellName)) return obscureString(displayName);
 
 	// not useless, so return original
 	return displayName;
@@ -231,7 +247,7 @@ const makeFthofDisplayName = (effectName: EffectName): string => {
 	// replace Cookie Storm Drop to "Drop"
 	if (settings.shortenCSDrop && effectName == "Cookie Storm Drop") {
 		converting = translate("Drop", lang);
-		if (settings.hideUseless) converting = converting.replace(/[^ ']/g, "-");
+		if (settings.hideUseless) converting = obscureString(converting);
 	}
 
 	// return converted name
