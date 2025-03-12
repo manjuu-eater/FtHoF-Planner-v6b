@@ -63,6 +63,7 @@ type EnToLocalWordDict = {
 	"Drop": string;
 	"Building Special": string;
 	"Blab": string;
+	"Free Sugar Lump": string;
 };
 
 
@@ -154,6 +155,7 @@ export const langDict: { [lang in Lang]: EnToLocalWordDict } = {
 		"Drop": "Drop",
 		"Building Special": "Building Special",
 		"Blab": "Blab",
+		"Free Sugar Lump": "Free Sugar Lump",
 	},
 	"FR": {
 		"Lucky": "Quelle chance",
@@ -200,6 +202,7 @@ export const langDict: { [lang in Lang]: EnToLocalWordDict } = {
 		"Drop": "Goutte",
 		"Building Special": "Spécial constructions",
 		"Blab": "Bla",
+		"Free Sugar Lump": "morceau de sucre gratuit",
 	},
 	"DE": {
 		"Lucky": "Glück",
@@ -246,6 +249,7 @@ export const langDict: { [lang in Lang]: EnToLocalWordDict } = {
 		"Drop": "Tropfen",
 		"Building Special": "Gebäude-Spezial",
 		"Blab": "Blabla",
+		"Free Sugar Lump": "Kostenloser Würfelzucker",
 	},
 	"NL": {
 		"Lucky": "Geluk",
@@ -292,6 +296,7 @@ export const langDict: { [lang in Lang]: EnToLocalWordDict } = {
 		"Drop": "Druppel",
 		"Building Special": "Gebouwen-special",
 		"Blab": "Blabla",
+		"Free Sugar Lump": "Gratis suikerklontje",
 	},
 	"CS": {
 		"Lucky": "Šťastlivec",
@@ -338,6 +343,7 @@ export const langDict: { [lang in Lang]: EnToLocalWordDict } = {
 		"Drop": "Kapka",
 		"Building Special": "Speciál budov",
 		"Blab": "Kecy",
+		"Free Sugar Lump": "cukrová hrudka zdarma",
 	},
 	"PL": {
 		"Lucky": "Szczęściarz",
@@ -384,6 +390,7 @@ export const langDict: { [lang in Lang]: EnToLocalWordDict } = {
 		"Drop": "Kropla",
 		"Building Special": "Specjalne budynki",
 		"Blab": "Gadanie",
+		"Free Sugar Lump": "darmowa grudka cukru",
 	},
 	"IT": {
 		"Lucky": "Che fortuna",
@@ -430,6 +437,7 @@ export const langDict: { [lang in Lang]: EnToLocalWordDict } = {
 		"Drop": "Goccia",
 		"Building Special": "Speciale strutture",
 		"Blab": "Chiacchiera",
+		"Free Sugar Lump": "zolletta di zucchero gratis",
 	},
 	"ES": {
 		"Lucky": "Qué suerte",
@@ -476,6 +484,7 @@ export const langDict: { [lang in Lang]: EnToLocalWordDict } = {
 		"Drop": "Gota",
 		"Building Special": "Especial de edificios",
 		"Blab": "Cháchara",
+		"Free Sugar Lump": "terrón de azúcar gratis",
 	},
 	"PT-BR": {
 		"Lucky": "Que sorte",
@@ -522,6 +531,7 @@ export const langDict: { [lang in Lang]: EnToLocalWordDict } = {
 		"Drop": "Gota",
 		"Building Special": "Especial construções",
 		"Blab": "Papo",
+		"Free Sugar Lump": "torrão de açúcar grátis",
 	},
 	"JA": {
 		"Lucky": "ラッキー",
@@ -568,6 +578,7 @@ export const langDict: { [lang in Lang]: EnToLocalWordDict } = {
 		"Drop": "雫",
 		"Building Special": "建物スペシャル",
 		"Blab": "おしゃべり",
+		"Free Sugar Lump": "無料の砂糖玉",
 	},
 	"ZH-CN": {
 		"Lucky": "好运气",
@@ -614,6 +625,7 @@ export const langDict: { [lang in Lang]: EnToLocalWordDict } = {
 		"Drop": "滴",
 		"Building Special": "建筑特辑",
 		"Blab": "唠叨",
+		"Free Sugar Lump": "免费糖块",
 	},
 	"KO": {
 		"Lucky": "행운",
@@ -660,6 +672,7 @@ export const langDict: { [lang in Lang]: EnToLocalWordDict } = {
 		"Drop": "물방울",
 		"Building Special": "건물 스페셜",
 		"Blab": "수다",
+		"Free Sugar Lump": "무료 각설탕",
 	},
 	"RU": {
 		"Lucky": "Повезло",
@@ -706,5 +719,6 @@ export const langDict: { [lang in Lang]: EnToLocalWordDict } = {
 		"Drop": "Капля",
 		"Building Special": "Специальное строение",
 		"Blab": "Болтовня",
+		"Free Sugar Lump": "бесплатный кусочек сахара",
 	},
 };
