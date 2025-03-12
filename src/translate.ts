@@ -703,7 +703,7 @@ export const langDict: { [lang in Lang]: EnToLocalWordDict } = {
 		"Supreme Intellect": "Высший интеллект",
 		"Dragon Guts": "Драконьи потроха",
 		"Cookie Storm Drop": "Капля шторма печенек",
-		"Drop": "Капля"
+		"Drop": "Капля",
 		"Building Special": "Специальное строение",
 		"Blab": "Болтовня",
 	},
