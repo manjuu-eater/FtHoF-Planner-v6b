@@ -58,6 +58,9 @@ type EnToLocalWordDict = {
 	"Dragon Orbs": string;
 	"Supreme Intellect": string;
 	"Dragon Guts": string;
+
+	"Cookie Storm Drop": string;
+	"Drop": string;
 };
 
 
@@ -142,6 +145,8 @@ export const langDict: { [lang in Lang]: EnToLocalWordDict } = {
 		"Dragon Orbs": "Dragon Orbs",
 		"Supreme Intellect": "Supreme Intellect",
 		"Dragon Guts": "Dragon Guts",
+		"Cookie Storm Drop": "Cookie Storm Drop",
+		"Drop": "Drop",
 	},
 	"FR": {
 		"Lucky": "Quelle chance",
@@ -184,6 +189,8 @@ export const langDict: { [lang in Lang]: EnToLocalWordDict } = {
 		"Dragon Orbs": "Orbes de dragon",
 		"Supreme Intellect": "« Intelligence suprême »,",
 		"Dragon Guts": "Tripes de dragon",
+		"Cookie Storm Drop": "Goutte de la tempête de cookies",
+		"Drop": "Goutte",
 	},
 	"DE": {
 		"Lucky": "Glück",
@@ -226,6 +233,8 @@ export const langDict: { [lang in Lang]: EnToLocalWordDict } = {
 		"Dragon Orbs": "Drachenkugeln",
 		"Supreme Intellect": "Höchster Intellekt",
 		"Dragon Guts": "Dracheneingeweide",
+		"Cookie Storm Drop": "Kekssturm-Tropfen",
+		"Drop": "Tropfen",
 	},
 	"NL": {
 		"Lucky": "Geluk",
@@ -268,6 +277,8 @@ export const langDict: { [lang in Lang]: EnToLocalWordDict } = {
 		"Dragon Orbs": "Drakenbollen",
 		"Supreme Intellect": "Superieur Intellect",
 		"Dragon Guts": "Drakendarmen",
+		"Cookie Storm Drop": "Koekjesstormdruppel",
+		"Drop": "Druppel",
 	},
 	"CS": {
 		"Lucky": "Šťastlivec",
@@ -310,6 +321,8 @@ export const langDict: { [lang in Lang]: EnToLocalWordDict } = {
 		"Dragon Orbs": "Dračí koule",
 		"Supreme Intellect": "Nejvyšší intelekt",
 		"Dragon Guts": "Dračí vnitřnosti",
+		"Cookie Storm Drop": "Kapka sušenkové bouře",
+		"Drop": "Kapka",
 	},
 	"PL": {
 		"Lucky": "Szczęściarz",
@@ -352,6 +365,8 @@ export const langDict: { [lang in Lang]: EnToLocalWordDict } = {
 		"Dragon Orbs": "Smocze kule",
 		"Supreme Intellect": "„Wybitny intelekt”,",
 		"Dragon Guts": "Smocze wnętrzności",
+		"Cookie Storm Drop": "Kropla ciastkowej burzy",
+		"Drop": "Kropla",
 	},
 	"IT": {
 		"Lucky": "Che fortuna",
@@ -394,6 +409,8 @@ export const langDict: { [lang in Lang]: EnToLocalWordDict } = {
 		"Dragon Orbs": "Sfere del drago",
 		"Supreme Intellect": "Intelletto supremo",
 		"Dragon Guts": "Viscere di drago",
+		"Cookie Storm Drop": "Goccia della tempesta di biscotti",
+		"Drop": "Goccia",
 	},
 	"ES": {
 		"Lucky": "Qué suerte",
@@ -436,6 +453,8 @@ export const langDict: { [lang in Lang]: EnToLocalWordDict } = {
 		"Dragon Orbs": "Orbes de dragón",
 		"Supreme Intellect": "Intelecto supremo",
 		"Dragon Guts": "Tripas de dragón",
+		"Cookie Storm Drop": "Gota de la tormenta de galletas",
+		"Drop": "Gota",
 	},
 	"PT-BR": {
 		"Lucky": "Que sorte",
@@ -478,6 +497,8 @@ export const langDict: { [lang in Lang]: EnToLocalWordDict } = {
 		"Dragon Orbs": "Orbes de Dragão",
 		"Supreme Intellect": "Intelecto Supremo",
 		"Dragon Guts": "Intestino de dragão",
+		"Cookie Storm Drop": "Gota da tempestade de cookies",
+		"Drop": "Gota",
 	},
 	"JA": {
 		"Lucky": "ラッキー",
@@ -520,6 +541,8 @@ export const langDict: { [lang in Lang]: EnToLocalWordDict } = {
 		"Dragon Orbs": "ドラゴンオーブ",
 		"Supreme Intellect": "最高峰の知性、",
 		"Dragon Guts": "ドラゴンのはらわた",
+		"Cookie Storm Drop": "クッキー乱舞の雫",
+		"Drop": "雫",
 	},
 	"ZH-CN": {
 		"Lucky": "好运气",
@@ -562,6 +585,8 @@ export const langDict: { [lang in Lang]: EnToLocalWordDict } = {
 		"Dragon Orbs": "龙之宝珠",
 		"Supreme Intellect": "“最高智慧”，",
 		"Dragon Guts": "龙胆",
+		"Cookie Storm Drop": "饼干风暴之滴",
+		"Drop": "滴",
 	},
 	"KO": {
 		"Lucky": "행운",
@@ -604,6 +629,8 @@ export const langDict: { [lang in Lang]: EnToLocalWordDict } = {
 		"Dragon Orbs": "드래곤 오브",
 		"Supreme Intellect": "최고의 지성",
 		"Dragon Guts": "드래곤 똥배",
+		"Cookie Storm Drop": "쿠키 폭풍의 물방울",
+		"Drop": "물방울",
 	},
 	"RU": {
 		"Lucky": "Повезло",
@@ -646,5 +673,7 @@ export const langDict: { [lang in Lang]: EnToLocalWordDict } = {
 		"Dragon Orbs": "Сферы дракона",
 		"Supreme Intellect": "Высший интеллект",
 		"Dragon Guts": "Драконьи потроха",
+		"Cookie Storm Drop": "Капля шторма печенек",
+		"Drop": "Капля"
 	},
 };
