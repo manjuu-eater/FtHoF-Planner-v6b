@@ -61,6 +61,7 @@ type EnToLocalWordDict = {
 
 	"Cookie Storm Drop": string;
 	"Drop": string;
+	"Building Special": string;
 };
 
 
@@ -89,6 +90,9 @@ type EnToLocalWordDict = {
 		"Dragonflight", "Ancestral Metamorphosis", "Unholy Dominion", "Epoch Manipulator",
 		"Mind Over Matter", "Radiant Appetite", "Dragon's Fortune", "Dragon's Curve",
 		"Reality Bending", "Dragon Orbs", "Supreme Intellect", "Dragon Guts",
+
+		// others
+		"Buildings",
 	];
 	const translateds = {};
 	for (const lang in Langs) {  // L305
@@ -147,6 +151,7 @@ export const langDict: { [lang in Lang]: EnToLocalWordDict } = {
 		"Dragon Guts": "Dragon Guts",
 		"Cookie Storm Drop": "Cookie Storm Drop",
 		"Drop": "Drop",
+		"Building Special": "Building Special",
 	},
 	"FR": {
 		"Lucky": "Quelle chance",
@@ -191,6 +196,7 @@ export const langDict: { [lang in Lang]: EnToLocalWordDict } = {
 		"Dragon Guts": "Tripes de dragon",
 		"Cookie Storm Drop": "Goutte de la tempête de cookies",
 		"Drop": "Goutte",
+		"Building Special": "Spécial constructions",
 	},
 	"DE": {
 		"Lucky": "Glück",
@@ -235,6 +241,7 @@ export const langDict: { [lang in Lang]: EnToLocalWordDict } = {
 		"Dragon Guts": "Dracheneingeweide",
 		"Cookie Storm Drop": "Kekssturm-Tropfen",
 		"Drop": "Tropfen",
+		"Building Special": "Gebäude-Spezial",
 	},
 	"NL": {
 		"Lucky": "Geluk",
@@ -279,6 +286,7 @@ export const langDict: { [lang in Lang]: EnToLocalWordDict } = {
 		"Dragon Guts": "Drakendarmen",
 		"Cookie Storm Drop": "Koekjesstormdruppel",
 		"Drop": "Druppel",
+		"Building Special": "Gebouwen-special",
 	},
 	"CS": {
 		"Lucky": "Šťastlivec",
@@ -323,6 +331,7 @@ export const langDict: { [lang in Lang]: EnToLocalWordDict } = {
 		"Dragon Guts": "Dračí vnitřnosti",
 		"Cookie Storm Drop": "Kapka sušenkové bouře",
 		"Drop": "Kapka",
+		"Building Special": "Speciál budov",
 	},
 	"PL": {
 		"Lucky": "Szczęściarz",
@@ -367,6 +376,7 @@ export const langDict: { [lang in Lang]: EnToLocalWordDict } = {
 		"Dragon Guts": "Smocze wnętrzności",
 		"Cookie Storm Drop": "Kropla ciastkowej burzy",
 		"Drop": "Kropla",
+		"Building Special": "Specjalne budynki",
 	},
 	"IT": {
 		"Lucky": "Che fortuna",
@@ -411,6 +421,7 @@ export const langDict: { [lang in Lang]: EnToLocalWordDict } = {
 		"Dragon Guts": "Viscere di drago",
 		"Cookie Storm Drop": "Goccia della tempesta di biscotti",
 		"Drop": "Goccia",
+		"Building Special": "Speciale strutture",
 	},
 	"ES": {
 		"Lucky": "Qué suerte",
@@ -455,6 +466,7 @@ export const langDict: { [lang in Lang]: EnToLocalWordDict } = {
 		"Dragon Guts": "Tripas de dragón",
 		"Cookie Storm Drop": "Gota de la tormenta de galletas",
 		"Drop": "Gota",
+		"Building Special": "Especial de edificios",
 	},
 	"PT-BR": {
 		"Lucky": "Que sorte",
@@ -499,6 +511,7 @@ export const langDict: { [lang in Lang]: EnToLocalWordDict } = {
 		"Dragon Guts": "Intestino de dragão",
 		"Cookie Storm Drop": "Gota da tempestade de cookies",
 		"Drop": "Gota",
+		"Building Special": "Especial construções",
 	},
 	"JA": {
 		"Lucky": "ラッキー",
@@ -543,6 +556,7 @@ export const langDict: { [lang in Lang]: EnToLocalWordDict } = {
 		"Dragon Guts": "ドラゴンのはらわた",
 		"Cookie Storm Drop": "クッキー乱舞の雫",
 		"Drop": "雫",
+		"Building Special": "建物スペシャル",
 	},
 	"ZH-CN": {
 		"Lucky": "好运气",
@@ -587,6 +601,7 @@ export const langDict: { [lang in Lang]: EnToLocalWordDict } = {
 		"Dragon Guts": "龙胆",
 		"Cookie Storm Drop": "饼干风暴之滴",
 		"Drop": "滴",
+		"Building Special": "建筑特辑",
 	},
 	"KO": {
 		"Lucky": "행운",
@@ -631,6 +646,7 @@ export const langDict: { [lang in Lang]: EnToLocalWordDict } = {
 		"Dragon Guts": "드래곤 똥배",
 		"Cookie Storm Drop": "쿠키 폭풍의 물방울",
 		"Drop": "물방울",
+		"Building Special": "건물 스페셜",
 	},
 	"RU": {
 		"Lucky": "Повезло",
@@ -675,5 +691,6 @@ export const langDict: { [lang in Lang]: EnToLocalWordDict } = {
 		"Dragon Guts": "Драконьи потроха",
 		"Cookie Storm Drop": "Капля шторма печенек",
 		"Drop": "Капля"
+		"Building Special": "Специальное строение",
 	},
 };
