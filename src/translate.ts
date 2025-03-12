@@ -62,6 +62,7 @@ type EnToLocalWordDict = {
 	"Cookie Storm Drop": string;
 	"Drop": string;
 	"Building Special": string;
+	"Blab": string;
 };
 
 
@@ -152,6 +153,7 @@ export const langDict: { [lang in Lang]: EnToLocalWordDict } = {
 		"Cookie Storm Drop": "Cookie Storm Drop",
 		"Drop": "Drop",
 		"Building Special": "Building Special",
+		"Blab": "Blab",
 	},
 	"FR": {
 		"Lucky": "Quelle chance",
@@ -197,6 +199,7 @@ export const langDict: { [lang in Lang]: EnToLocalWordDict } = {
 		"Cookie Storm Drop": "Goutte de la tempête de cookies",
 		"Drop": "Goutte",
 		"Building Special": "Spécial constructions",
+		"Blab": "Bla",
 	},
 	"DE": {
 		"Lucky": "Glück",
@@ -242,6 +245,7 @@ export const langDict: { [lang in Lang]: EnToLocalWordDict } = {
 		"Cookie Storm Drop": "Kekssturm-Tropfen",
 		"Drop": "Tropfen",
 		"Building Special": "Gebäude-Spezial",
+		"Blab": "Blabla",
 	},
 	"NL": {
 		"Lucky": "Geluk",
@@ -287,6 +291,7 @@ export const langDict: { [lang in Lang]: EnToLocalWordDict } = {
 		"Cookie Storm Drop": "Koekjesstormdruppel",
 		"Drop": "Druppel",
 		"Building Special": "Gebouwen-special",
+		"Blab": "Blabla",
 	},
 	"CS": {
 		"Lucky": "Šťastlivec",
@@ -332,6 +337,7 @@ export const langDict: { [lang in Lang]: EnToLocalWordDict } = {
 		"Cookie Storm Drop": "Kapka sušenkové bouře",
 		"Drop": "Kapka",
 		"Building Special": "Speciál budov",
+		"Blab": "Kecy",
 	},
 	"PL": {
 		"Lucky": "Szczęściarz",
@@ -377,6 +383,7 @@ export const langDict: { [lang in Lang]: EnToLocalWordDict } = {
 		"Cookie Storm Drop": "Kropla ciastkowej burzy",
 		"Drop": "Kropla",
 		"Building Special": "Specjalne budynki",
+		"Blab": "Gadanie",
 	},
 	"IT": {
 		"Lucky": "Che fortuna",
@@ -422,6 +429,7 @@ export const langDict: { [lang in Lang]: EnToLocalWordDict } = {
 		"Cookie Storm Drop": "Goccia della tempesta di biscotti",
 		"Drop": "Goccia",
 		"Building Special": "Speciale strutture",
+		"Blab": "Chiacchiera",
 	},
 	"ES": {
 		"Lucky": "Qué suerte",
@@ -467,6 +475,7 @@ export const langDict: { [lang in Lang]: EnToLocalWordDict } = {
 		"Cookie Storm Drop": "Gota de la tormenta de galletas",
 		"Drop": "Gota",
 		"Building Special": "Especial de edificios",
+		"Blab": "Cháchara",
 	},
 	"PT-BR": {
 		"Lucky": "Que sorte",
@@ -512,6 +521,7 @@ export const langDict: { [lang in Lang]: EnToLocalWordDict } = {
 		"Cookie Storm Drop": "Gota da tempestade de cookies",
 		"Drop": "Gota",
 		"Building Special": "Especial construções",
+		"Blab": "Papo",
 	},
 	"JA": {
 		"Lucky": "ラッキー",
@@ -557,6 +567,7 @@ export const langDict: { [lang in Lang]: EnToLocalWordDict } = {
 		"Cookie Storm Drop": "クッキー乱舞の雫",
 		"Drop": "雫",
 		"Building Special": "建物スペシャル",
+		"Blab": "おしゃべり",
 	},
 	"ZH-CN": {
 		"Lucky": "好运气",
@@ -602,6 +613,7 @@ export const langDict: { [lang in Lang]: EnToLocalWordDict } = {
 		"Cookie Storm Drop": "饼干风暴之滴",
 		"Drop": "滴",
 		"Building Special": "建筑特辑",
+		"Blab": "唠叨",
 	},
 	"KO": {
 		"Lucky": "행운",
@@ -647,6 +659,7 @@ export const langDict: { [lang in Lang]: EnToLocalWordDict } = {
 		"Cookie Storm Drop": "쿠키 폭풍의 물방울",
 		"Drop": "물방울",
 		"Building Special": "건물 스페셜",
+		"Blab": "수다",
 	},
 	"RU": {
 		"Lucky": "Повезло",
@@ -692,5 +705,6 @@ export const langDict: { [lang in Lang]: EnToLocalWordDict } = {
 		"Cookie Storm Drop": "Капля шторма печенек",
 		"Drop": "Капля"
 		"Building Special": "Специальное строение",
+		"Blab": "Болтовня",
 	},
 };
