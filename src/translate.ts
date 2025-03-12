@@ -7,7 +7,7 @@
 
 
 /** language list */
-type Lang = (
+export type Lang = (
 	| "EN"
 	| "FR" | "DE" | "NL" | "CS" | "PL" | "IT" | "ES" | "PT-BR"
 	| "JA" | "ZH-CN" | "KO"
