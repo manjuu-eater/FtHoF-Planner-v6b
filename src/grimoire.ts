@@ -181,7 +181,7 @@ const obscureUselessEffectName = (displayName: string, effectName: EffectName): 
 	];
 
 	// replace to "----"
-	if (uselessNames.includes(effectName)) return displayName.replace(/[A-Za-z]/g, "-");
+	if (uselessNames.includes(effectName)) return displayName.replace(/[^ ']/g, "-");
 
 	// not useless, so return original
 	return displayName;
@@ -203,7 +203,7 @@ const obscureUselessSpellName = (displayName: string, spellName: SpellName): str
 	const uselessNames = ["Conjure Baked Goods", "Haggler's Charm", "Summon Crafty Pixies"];
 
 	// replace to "----"
-	if (uselessNames.includes(spellName)) return displayName.replace(/[A-Za-z]/g, "-");
+	if (uselessNames.includes(spellName)) return displayName.replace(/[^ ']/g, "-");
 
 	// not useless, so return original
 	return displayName;
@@ -223,7 +223,7 @@ const makeFthofDisplayName = (effectName: EffectName): string => {
 	// replace Cookie Storm Drop to "Drop"
 	if (settings.shortenCSDrop && effectName == "Cookie Storm Drop") {
 		converting = "Drop";
-		if (settings.hideUseless) converting = converting.replace(/[A-Za-z]/g, "-");
+		if (settings.hideUseless) converting = converting.replace(/[^ ']/g, "-");
 	}
 
 	// return converted name
