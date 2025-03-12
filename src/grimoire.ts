@@ -162,12 +162,13 @@ export const updateGrimoreSettings = (grimoireSettings: Settings) => {
 /**
  * replace useless GC/WC effect name to "----"
  *
- * @param effectName effect name
+ * @param displayName effect name to display (maybe converted)
+ * @param effectName effect name (not converted, EN effect name)
  * @returns effect name replaced by "----"
  */
-const obscureUselessEffectName = (effectName: EffectName): string => {
+const obscureUselessEffectName = (displayName: string, effectName: EffectName): string => {
 	// do nothing if not active
-	if (!settings.hideUseless) return effectName;
+	if (!settings.hideUseless) return displayName;
 
 	// effect names without...
 	//   GC: Click Frenzy, Building Special
@@ -180,31 +181,32 @@ const obscureUselessEffectName = (effectName: EffectName): string => {
 	];
 
 	// replace to "----"
-	if (uselessNames.includes(effectName)) return effectName.replace(/[A-Za-z]/g, "-");
+	if (uselessNames.includes(effectName)) return displayName.replace(/[A-Za-z]/g, "-");
 
 	// not useless, so return original
-	return effectName;
+	return displayName;
 };
 
 
 /**
  * replace useless GFD spell name to "----"
  *
- * @param spellName spell name
+ * @param displayName spell name to display (maybe converted)
+ * @param spellName spell name (not converted, EN effect name)
  * @returns effect name replaced by "----"
  */
-const obscureUselessSpellName = (spellName: SpellName): string => {
+const obscureUselessSpellName = (displayName: string, spellName: SpellName): string => {
 	// do nothing if not active
-	if (!settings.hideUseless) return spellName;
+	if (!settings.hideUseless) return displayName;
 
 	// spell names without FtHoF, skippable spells, GFD, Diminish Ineptitude
 	const uselessNames = ["Conjure Baked Goods", "Haggler's Charm", "Summon Crafty Pixies"];
 
 	// replace to "----"
-	if (uselessNames.includes(spellName)) return spellName.replace(/[A-Za-z]/g, "-");
+	if (uselessNames.includes(spellName)) return displayName.replace(/[A-Za-z]/g, "-");
 
 	// not useless, so return original
-	return spellName;
+	return displayName;
 };
 
 
@@ -216,7 +218,7 @@ const obscureUselessSpellName = (spellName: SpellName): string => {
  */
 const makeFthofDisplayName = (effectName: EffectName): string => {
 	// replace useless effect name to "----"
-	let converting = obscureUselessEffectName(effectName);
+	let converting = obscureUselessEffectName(effectName, effectName);
 
 	// replace Cookie Storm Drop to "Drop"
 	if (settings.shortenCSDrop && effectName == "Cookie Storm Drop") {
@@ -237,7 +239,7 @@ const makeFthofDisplayName = (effectName: EffectName): string => {
  */
 const makeGfdDisplayName = (spellName: SpellName): string => {
 	// replace useless spell name to "----"
-	let converting = obscureUselessSpellName(spellName);
+	let converting = obscureUselessSpellName(spellName, spellName);
 
 	// return converted name
 	return converting;
