@@ -6,6 +6,14 @@
  */
 
 
+/** language list */
+type Lang = (
+	| "EN"
+	| "FR" | "DE" | "NL" | "CS" | "PL" | "IT" | "ES" | "PT-BR"
+	| "JA" | "ZH-CN" | "KO"
+	| "RU"
+);
+
 /** translation dictionary */
 type EnToLocalWordDict = {
 	"Lucky": string;
@@ -92,7 +100,7 @@ type EnToLocalWordDict = {
 })();*/
 
 
-export const langDict: { [lang: string]: EnToLocalWordDict } = {
+export const langDict: { [lang in Lang]: EnToLocalWordDict } = {
 	"EN": {
 		"Lucky": "Lucky",
 		"Ruin": "Ruin",
