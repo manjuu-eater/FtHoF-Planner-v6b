@@ -234,11 +234,13 @@
 				Replace "Cookie Storm Drop" to "Drop"
 			</md-checkbox>
 
-			<md-radio-group ng-model="lang" layout="row">
+			<div style="margin-bottom: 16px;">
 				Effect / Spell Language:&nbsp;
-				<md-radio-button value="EN">English</md-radio-button>
-				<md-radio-button value="JA">日本語</md-radio-button>
-			</md-radio-group>
+				<md-select style="display: inline-block; margin: 0;" ng-model="lang">
+					<md-option value="EN">English</md-option>
+					<md-option value="JA">日本語</md-option>
+				</md-select>
+			</div>
 
 			<md-divider></md-divider>
 
