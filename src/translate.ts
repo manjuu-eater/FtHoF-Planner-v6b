@@ -259,7 +259,7 @@ export const langDict: { [lang in Lang]: EnToLocalWordDict } = {
 		"Drop": "Tropfen",
 		"Building Special": "Gebäude-Spezial",
 		"Blab": "Blabla",
-		"Free Sugar Lump": "Kostenloser Würfelzucker",
+		"Free Sugar Lump": "Gratis-Würfelzucker",
 	},
 	"NL": {
 		"Lucky": "Geluk",
@@ -353,7 +353,7 @@ export const langDict: { [lang in Lang]: EnToLocalWordDict } = {
 		"Drop": "Kapka",
 		"Building Special": "Speciál budov",
 		"Blab": "Kecy",
-		"Free Sugar Lump": "cukrová hrudka zdarma",
+		"Free Sugar Lump": "volná cukrová hrudka",
 	},
 	"PL": {
 		"Lucky": "Szczęściarz",
