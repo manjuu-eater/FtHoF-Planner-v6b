@@ -11,7 +11,7 @@ export const settingsModelNames = [
     "lookahead", "minComboLength", "maxComboLength", "maxSpread",
     "includeEF", "skipRA", "skipSE", "skipST",
     "screenCookieCount", "buffDF", "auraSI", "auraRB", "buffDI", "debuffDI",
-    "season", "hideUseless", "shortenCSDrop",
+    "season", "hideUseless", "shortenCSDrop", "lang",
 ];
 /**
  * get all FtHoF settings from $scope
@@ -38,6 +38,7 @@ export const getSettings = ($scope) => {
         season: $scope.season,
         hideUseless: $scope.hideUseless,
         shortenCSDrop: $scope.shortenCSDrop,
+        lang: $scope.lang,
     };
     return settings;
 };
@@ -115,5 +116,6 @@ export const initSettings = ($scope) => {
     $scope.season = "cookie";
     $scope.hideUseless = false;
     $scope.shortenCSDrop = false;
+    $scope.lang = "EN";
 };
 //# sourceMappingURL=settings.js.map

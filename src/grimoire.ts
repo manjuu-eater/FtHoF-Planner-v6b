@@ -20,6 +20,8 @@ import {
 
 import { Settings } from "./settings";
 
+import { translate } from "./translate.js";
+
 
 // type definition
 
@@ -160,14 +162,31 @@ export const updateGrimoreSettings = (grimoireSettings: Settings) => {
 
 
 /**
+ * replace string to "----"
+ *
+ * @param replaceFrom string to replace with "-"
+ * @returns replaced string
+ */
+const obscureString = (replaceFrom: string): string => {
+	// asian languages have twice width characters
+	const isFullWidthLang = ["JA", "ZH-CN", "KO"].includes(settings.lang);
+	const replaceTo = isFullWidthLang ? "－" : "-";
+
+	// obscure
+	return replaceFrom.replace(/[^ ']/g, replaceTo);
+};
+
+
+/**
  * replace useless GC/WC effect name to "----"
  *
- * @param effectName effect name
+ * @param displayName effect name to display (maybe converted)
+ * @param effectName effect name (not converted, EN effect name)
  * @returns effect name replaced by "----"
  */
-const obscureUselessEffectName = (effectName: EffectName): string => {
+const obscureUselessEffectName = (displayName: string, effectName: EffectName): string => {
 	// do nothing if not active
-	if (!settings.hideUseless) return effectName;
+	if (!settings.hideUseless) return displayName;
 
 	// effect names without...
 	//   GC: Click Frenzy, Building Special
@@ -180,43 +199,77 @@ const obscureUselessEffectName = (effectName: EffectName): string => {
 	];
 
 	// replace to "----"
-	if (uselessNames.includes(effectName)) return effectName.replace(/[A-Za-z]/g, "-");
+	if (uselessNames.includes(effectName)) return obscureString(displayName);
 
 	// not useless, so return original
-	return effectName;
+	return displayName;
 };
 
 
 /**
  * replace useless GFD spell name to "----"
  *
- * @param spellName spell name
+ * @param displayName spell name to display (maybe converted)
+ * @param spellName spell name (not converted, EN effect name)
  * @returns effect name replaced by "----"
  */
-const obscureUselessSpellName = (spellName: SpellName): string => {
+const obscureUselessSpellName = (displayName: string, spellName: SpellName): string => {
 	// do nothing if not active
-	if (!settings.hideUseless) return spellName;
+	if (!settings.hideUseless) return displayName;
 
 	// spell names without FtHoF, skippable spells, GFD, Diminish Ineptitude
 	const uselessNames = ["Conjure Baked Goods", "Haggler's Charm", "Summon Crafty Pixies"];
 
 	// replace to "----"
-	if (uselessNames.includes(spellName)) return spellName.replace(/[A-Za-z]/g, "-");
+	if (uselessNames.includes(spellName)) return obscureString(displayName);
 
 	// not useless, so return original
-	return spellName;
+	return displayName;
 };
 
 
+/**
+ * make string for displaying FtHoF effect name
+ *
+ * @param effectName name of FtHoF effect for display
+ * @returns string for display
+ */
 const makeFthofDisplayName = (effectName: EffectName): string => {
+	let converting: string;
+
+	// translate if result display language is not EN
+	const lang = settings.lang;
+	converting = translate(effectName, lang);
+
 	// replace useless effect name to "----"
-	let converting = obscureUselessEffectName(effectName);
+	converting = obscureUselessEffectName(converting, effectName);
 
 	// replace Cookie Storm Drop to "Drop"
 	if (settings.shortenCSDrop && effectName == "Cookie Storm Drop") {
-		converting = "Drop";
-		if (settings.hideUseless) converting = converting.replace(/[A-Za-z]/g, "-");
+		converting = translate("Drop", lang);
+		if (settings.hideUseless) converting = obscureString(converting);
 	}
+
+	// return converted name
+	return converting;
+};
+
+
+/**
+ * make string for displaying GFD spell name
+ *
+ * @param spellName name of GFD spell for display
+ * @returns string for display
+ */
+const makeGfdDisplayName = (spellName: SpellName): string => {
+	let converting: string;
+
+	// translate if result display language is not EN
+	const lang = settings.lang;
+	converting = translate(spellName, lang);
+
+	// replace useless spell name to "----"
+	converting = obscureUselessSpellName(converting, spellName);
 
 	// return converted name
 	return converting;
@@ -537,7 +590,7 @@ export const castGFD = (
 	// return object
 	const gfdResult: GfdResult = {
 		name: castSpellName,
-		displayName: obscureUselessSpellName(castSpellName),
+		displayName: makeGfdDisplayName(castSpellName),
 		isWin: isChildSpellWin,
 		image: spellNameToIconUrl[castSpellName],
 		tooltip: undefined,

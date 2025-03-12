@@ -5,6 +5,8 @@
  * types, functions of FtHoF settings
  */
 
+import { Lang } from "./translate";
+
 
 /** FtHoF-Planner settings */
 export type Settings = {
@@ -28,6 +30,7 @@ export type Settings = {
 	season: string;
 	hideUseless: boolean;
 	shortenCSDrop: boolean;
+	lang: Lang;
 };
 
 
@@ -40,7 +43,7 @@ export const settingsModelNames: (keyof Settings)[] = [
 	"lookahead", "minComboLength", "maxComboLength", "maxSpread",
 	"includeEF", "skipRA", "skipSE", "skipST",
 	"screenCookieCount", "buffDF", "auraSI", "auraRB", "buffDI", "debuffDI",
-	"season", "hideUseless", "shortenCSDrop",
+	"season", "hideUseless", "shortenCSDrop", "lang",
 ];
 
 
@@ -69,6 +72,7 @@ export const getSettings = ($scope: any): Settings => {
 		season:            $scope.season,
 		hideUseless:       $scope.hideUseless,
 		shortenCSDrop:     $scope.shortenCSDrop,
+		lang:              $scope.lang,
 	};
 	return settings;
 };
@@ -155,4 +159,5 @@ export const initSettings = ($scope: any): void => {
 	$scope.season = "cookie";
 	$scope.hideUseless = false;
 	$scope.shortenCSDrop = false;
+	$scope.lang = "EN";
 };
