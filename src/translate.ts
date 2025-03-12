@@ -6,6 +6,16 @@
  */
 
 
+export const translate = (name: keyof EnToLocalWordDict, lang: Lang): string => {
+	// do nothing if English
+	if (lang == "EN") return name;
+
+	// translate
+	const translated = langDict[lang][name];
+	return translated;
+};
+
+
 /** language list */
 export type Lang = (
 	| "EN"

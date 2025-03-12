@@ -20,6 +20,8 @@ import {
 
 import { Settings } from "./settings";
 
+import { translate } from "./translate.js";
+
 
 // type definition
 
@@ -217,12 +219,18 @@ const obscureUselessSpellName = (displayName: string, spellName: SpellName): str
  * @returns string for display
  */
 const makeFthofDisplayName = (effectName: EffectName): string => {
+	let converting: string;
+
+	// translate if result display language is not EN
+	const lang = settings.lang;
+	converting = translate(effectName, lang);
+
 	// replace useless effect name to "----"
-	let converting = obscureUselessEffectName(effectName, effectName);
+	converting = obscureUselessEffectName(converting, effectName);
 
 	// replace Cookie Storm Drop to "Drop"
 	if (settings.shortenCSDrop && effectName == "Cookie Storm Drop") {
-		converting = "Drop";
+		converting = translate("Drop", lang);
 		if (settings.hideUseless) converting = converting.replace(/[^ ']/g, "-");
 	}
 
@@ -238,8 +246,14 @@ const makeFthofDisplayName = (effectName: EffectName): string => {
  * @returns string for display
  */
 const makeGfdDisplayName = (spellName: SpellName): string => {
+	let converting: string;
+
+	// translate if result display language is not EN
+	const lang = settings.lang;
+	converting = translate(spellName, lang);
+
 	// replace useless spell name to "----"
-	let converting = obscureUselessSpellName(spellName, spellName);
+	converting = obscureUselessSpellName(converting, spellName);
 
 	// return converted name
 	return converting;
