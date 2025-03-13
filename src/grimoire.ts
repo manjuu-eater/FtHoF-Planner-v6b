@@ -8,11 +8,11 @@
 import {
 	EffectName, SpellName,
 	choose, chooseWith, M_spells,
-	cookieEffectNameToDescription,
 	Math_seedrandom,
 } from "./game_related_data.js";
 
 import {
+	cookieEffectNameToDescription,
 	makeFthofDisplayName,
 	makeGfdDisplayName,
 } from "./grimoire_texts.js";
