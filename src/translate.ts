@@ -18,6 +18,20 @@ export const translate = (name: keyof EnToLocalWordDict, lang: Lang): string => 
 };
 
 
+/**
+ * get translated FtHoF effect description
+ *
+ * @param effectName effect name of FtHoF
+ * @param lang language to translate
+ * @returns translated string
+ */
+export const getTranslatedEffectDescription = (effectName: EffectName, lang: Lang): string => {
+	// return translated description
+	const translated = effectDescriptionDict[lang][effectName];
+	return translated;
+};
+
+
 /** language list */
 export type Lang = (
 	| "EN"
