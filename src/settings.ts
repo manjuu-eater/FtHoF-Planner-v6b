@@ -47,6 +47,10 @@ export const settingsModelNames: (keyof Settings)[] = [
 ];
 
 
+/** current settings object */
+export let settings: Settings;
+
+
 /**
  * get all FtHoF settings from $scope
  *
@@ -128,6 +132,16 @@ export const loadSettings = ($scope: any): void => {
 
 
 /**
+ * update variable "settings"
+ *
+ * @param $scope AngularJS $scope
+ */
+export const updateSettings = ($scope: any): void => {
+	settings = getSettings($scope);
+};
+
+
+/**
  * initialize $scope value about FtHoF settings
  *
  * @param $scope AngularJS $scope
@@ -160,4 +174,7 @@ export const initSettings = ($scope: any): void => {
 	$scope.hideUseless = false;
 	$scope.shortenCSDrop = false;
 	$scope.lang = "EN";
+
+	// set settings to module variable
+	updateSettings($scope);
 };
