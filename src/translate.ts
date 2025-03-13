@@ -8,6 +8,13 @@
 import { EffectName } from "./game_related_data";
 
 
+/**
+ * translate given word
+ *
+ * @param name word to translate
+ * @param lang language to translate
+ * @returns translated string
+ */
 export const translate = (name: keyof EnToLocalWordDict, lang: Lang): string => {
 	// do nothing if English
 	if (lang == "EN") return name;
@@ -42,6 +49,7 @@ export type Lang = (
 
 /** translation dictionary */
 type EnToLocalWordDict = {
+	// effects of FtHoF written in official language file
 	"Lucky": string;
 	"Ruin": string;
 	"Cookie Chain": string;
@@ -53,6 +61,7 @@ type EnToLocalWordDict = {
 	"Cookie Storm": string;
 	"Sugar Lump": string;
 
+	// GFD spell names
 	"Conjure Baked Goods": string;
 	"Force the Hand of Fate": string;
 	"Stretch Time": string;
@@ -63,6 +72,7 @@ type EnToLocalWordDict = {
 	"Resurrect Abomination": string;
 	"Diminish Ineptitude": string;
 
+	// aura names
 	"Breath of Milk": string;
 	"Dragon Cursor": string;
 	"Elder Battalion": string;
@@ -85,6 +95,7 @@ type EnToLocalWordDict = {
 	"Supreme Intellect": string;
 	"Dragon Guts": string;
 
+	// effects of FtHoF NOT written in official language file
 	"Cookie Storm Drop": string;
 	"Drop": string;
 	"Building Special": string;
@@ -135,6 +146,9 @@ type EnToLocalWordDict = {
 })();*/
 
 
+/**
+ * translation dictionary of common words
+ */
 const langDict: { [lang in Lang]: EnToLocalWordDict } = {
 	"EN": {
 		"Lucky": "Lucky",
@@ -750,6 +764,9 @@ const langDict: { [lang in Lang]: EnToLocalWordDict } = {
 };
 
 
+/**
+ * translation dictionary of effect description
+ */
 const effectDescriptionDict: { [lang in Lang]: { [key in EffectName]: string } } = {
 	"EN": {
 		"Frenzy": "Gives x7 cookie production for 77 seconds. (max: 175sec)",
