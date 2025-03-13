@@ -13,6 +13,8 @@ export const settingsModelNames = [
     "screenCookieCount", "buffDF", "auraSI", "auraRB", "buffDI", "debuffDI",
     "season", "hideUseless", "shortenCSDrop", "lang",
 ];
+/** current settings object */
+export let settings;
 /**
  * get all FtHoF settings from $scope
  *
@@ -89,6 +91,14 @@ export const loadSettings = ($scope) => {
     }
 };
 /**
+ * update variable "settings"
+ *
+ * @param $scope AngularJS $scope
+ */
+export const updateSettings = ($scope) => {
+    settings = getSettings($scope);
+};
+/**
  * initialize $scope value about FtHoF settings
  *
  * @param $scope AngularJS $scope
@@ -117,5 +127,7 @@ export const initSettings = ($scope) => {
     $scope.hideUseless = false;
     $scope.shortenCSDrop = false;
     $scope.lang = "EN";
+    // set settings to module variable
+    updateSettings($scope);
 };
 //# sourceMappingURL=settings.js.map

@@ -102,6 +102,7 @@ export const parseSaveCode = (saveCode: string): SaveData => {
 
 /**
  * read save data from save code
+ * save valid save data too
  *
  * @param $scope AngularJS $scope
  * @param saveCode save code

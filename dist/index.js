@@ -6,10 +6,10 @@
  */
 // import game related objects and functions
 import { Math_seedrandom, } from "./game_related_data.js";
-import { settingsModelNames, getSettings, saveSettings, loadSettings, initSettings, } from "./settings.js";
-import { loadSaveCodeFromLS, removeSaveCodeFromLS, readSaveDataFromSaveCode, } from "./save_code.js";
-import { getSaveData, saveSaveData, loadSaveData, initSaveData, } from "./save_data.js";
-import { updateGrimoreSettings, getBaseFailChance, getFthofFailChance, castFtHoF, hasCookieEffect, castGFD, } from "./grimoire.js";
+import { settingsModelNames, getSettings, saveSettings, loadSettings, updateSettings, initSettings, } from "./settings.js";
+import { saveSaveCodeToLS, loadSaveCodeFromLS, removeSaveCodeFromLS, readSaveDataFromSaveCode, } from "./save_code.js";
+import { getSaveData, saveSaveData, loadSaveData, removeSaveData, initSaveData, } from "./save_data.js";
+import { getBaseFailChance, getFthofFailChance, castFtHoF, hasCookieEffect, castGFD, } from "./grimoire.js";
 const app = window.angular.module("myApp", ["ngMaterial"]);
 app.controller("myCtrl", ($rootScope, $scope) => {
     var _a;
@@ -67,9 +67,10 @@ app.controller("myCtrl", ($rootScope, $scope) => {
         // if save code is blank, reset LocalStorage and quit
         if ($scope.saveCode === "") {
             removeSaveCodeFromLS();
+            removeSaveData();
             return;
         }
-        // import save data, update list
+        // import save data (and save valid save data), update list
         const isLoaded = readSaveDataFromSaveCode($scope, $scope.saveCode);
         if (isLoaded) {
             saveSaveData($scope); // save imported save data
@@ -125,7 +126,7 @@ app.controller("myCtrl", ($rootScope, $scope) => {
         const settings = getSettings($scope);
         const { lookahead, minComboLength, maxComboLength, maxSpread, includeEF, skipRA, skipSE, skipST, season, } = settings;
         // update Settings data
-        updateGrimoreSettings(settings);
+        updateSettings(settings);
         // variables to set $scope.*
         const baseBackfireChance = getBaseFailChance();
         const fthofBackfireChance = getFthofFailChance(baseBackfireChance);
@@ -343,6 +344,8 @@ app.controller("myCtrl", ($rootScope, $scope) => {
         // if valid, set save code to Save Code input area, and update list
         if (isLoadSuccess) {
             $scope.saveCode = droppedText;
+            saveSaveCodeToLS(droppedText);
+            saveSaveData($scope);
             updateCookies();
         }
         // manually trigger AngularJS digest cycle because this event is not tracked by AngularJS

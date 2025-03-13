@@ -14,22 +14,23 @@ import {
 import {
 	settingsModelNames,
 	getSettings,
-	saveSettings, loadSettings, initSettings,
+	saveSettings, loadSettings, updateSettings,
+	initSettings,
 } from "./settings.js";
 
 import {
-	loadSaveCodeFromLS, removeSaveCodeFromLS,
+	saveSaveCodeToLS, loadSaveCodeFromLS, removeSaveCodeFromLS,
 	readSaveDataFromSaveCode,
 } from "./save_code.js";
 
 import {
 	getSaveData,
-	saveSaveData, loadSaveData, initSaveData,
+	saveSaveData, loadSaveData, removeSaveData,
+	initSaveData,
 } from "./save_data.js";
 
 import {
 	GrimoireResult,
-	updateGrimoreSettings,
 	getBaseFailChance, getFthofFailChance,
 	castFtHoF,
 	hasCookieEffect,
@@ -124,10 +125,11 @@ app.controller("myCtrl", ($rootScope, $scope): void => {
 		// if save code is blank, reset LocalStorage and quit
 		if ($scope.saveCode === "") {
 			removeSaveCodeFromLS();
+			removeSaveData();
 			return;
 		}
 
-		// import save data, update list
+		// import save data (and save valid save data), update list
 		const isLoaded = readSaveDataFromSaveCode($scope, $scope.saveCode);
 		if (isLoaded) {
 			saveSaveData($scope);  // save imported save data
@@ -210,7 +212,7 @@ app.controller("myCtrl", ($rootScope, $scope): void => {
 		} = settings;
 
 		// update Settings data
-		updateGrimoreSettings(settings);
+		updateSettings(settings);
 
 		// variables to set $scope.*
 		const baseBackfireChance = getBaseFailChance();
@@ -455,6 +457,8 @@ app.controller("myCtrl", ($rootScope, $scope): void => {
 		// if valid, set save code to Save Code input area, and update list
 		if (isLoadSuccess) {
 			$scope.saveCode = droppedText;
+			saveSaveCodeToLS(droppedText);
+			saveSaveData($scope);
 			updateCookies();
 		}
 

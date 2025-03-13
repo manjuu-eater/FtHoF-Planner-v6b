@@ -68,6 +68,12 @@ export const loadSaveData = ($scope) => {
     }
 };
 /**
+ * remove FtHoF Planner save data from LocalStorage
+ */
+export const removeSaveData = () => {
+    window.localStorage.removeItem(localStorageKey);
+};
+/**
  * initialize $scope value about FtHoF Planner save data
  *
  * @param $scope AngularJS $scope
