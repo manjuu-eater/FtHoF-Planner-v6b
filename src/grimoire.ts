@@ -25,6 +25,8 @@ import {
 
 import { settings } from "./settings.js";
 
+import { getTranslatedEffectDescription } from "./translate.js";
+
 
 // type definition
 
@@ -335,10 +337,6 @@ export const castFtHoF = (
 		effectName = chooseWith(choices, random4);
 	}
 
-	// set description
-	const description = cookieEffectNameToDescription[effectName];
-	if (!description) console.error("No description in dictionary: " + effectName);
-
 	// add noteworthy info
 	let noteworthy = false;
 	if (effectName == "Building Special") noteworthy = true;
@@ -353,7 +351,7 @@ export const castFtHoF = (
 		displayName: makeFthofDisplayName(effectName),
 		isWin,
 		image: imageUrl,
-		tooltip: description,
+		tooltip: getTranslatedEffectDescription(effectName, settings.lang),
 		noteworthy,
 		canCombo,
 
