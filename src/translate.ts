@@ -135,7 +135,7 @@ type EnToLocalWordDict = {
 })();*/
 
 
-export const langDict: { [lang in Lang]: EnToLocalWordDict } = {
+const langDict: { [lang in Lang]: EnToLocalWordDict } = {
 	"EN": {
 		"Lucky": "Lucky",
 		"Ruin": "Ruin",
@@ -750,7 +750,7 @@ export const langDict: { [lang in Lang]: EnToLocalWordDict } = {
 };
 
 
-export const effectDescriptionDict: { [lang in Lang]: { [key in EffectName]: string } } = {
+const effectDescriptionDict: { [lang in Lang]: { [key in EffectName]: string } } = {
 	"EN": {
 		"Frenzy": "Gives x7 cookie production for 77 seconds. (max: 175sec)",
 		"Lucky": "Gain 13 cookies plus the lesser of 15% of hand or 15 minutes of production.",
