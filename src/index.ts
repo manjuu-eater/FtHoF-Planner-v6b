@@ -18,7 +18,7 @@ import {
 } from "./settings.js";
 
 import {
-	loadSaveCodeFromLS, removeSaveCodeFromLS,
+	saveSaveCodeToLS, loadSaveCodeFromLS, removeSaveCodeFromLS,
 	readSaveDataFromSaveCode,
 } from "./save_code.js";
 
@@ -454,6 +454,8 @@ app.controller("myCtrl", ($rootScope, $scope): void => {
 		// if valid, set save code to Save Code input area, and update list
 		if (isLoadSuccess) {
 			$scope.saveCode = droppedText;
+			saveSaveCodeToLS(droppedText);
+			saveSaveData($scope);
 			updateCookies();
 		}
 
