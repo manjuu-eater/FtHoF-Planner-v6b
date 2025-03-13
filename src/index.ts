@@ -14,7 +14,8 @@ import {
 import {
 	settingsModelNames,
 	getSettings,
-	saveSettings, loadSettings, updateSettings, initSettings,
+	saveSettings, loadSettings, updateSettings,
+	initSettings,
 } from "./settings.js";
 
 import {
@@ -24,7 +25,8 @@ import {
 
 import {
 	getSaveData,
-	saveSaveData, loadSaveData, removeSaveData, initSaveData,
+	saveSaveData, loadSaveData, removeSaveData,
+	initSaveData,
 } from "./save_data.js";
 
 import {
