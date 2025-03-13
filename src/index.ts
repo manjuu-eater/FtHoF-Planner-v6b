@@ -24,7 +24,7 @@ import {
 
 import {
 	getSaveData,
-	saveSaveData, loadSaveData, initSaveData,
+	saveSaveData, loadSaveData, removeSaveData, initSaveData,
 } from "./save_data.js";
 
 import {
@@ -123,6 +123,7 @@ app.controller("myCtrl", ($rootScope, $scope): void => {
 		// if save code is blank, reset LocalStorage and quit
 		if ($scope.saveCode === "") {
 			removeSaveCodeFromLS();
+			removeSaveData();
 			return;
 		}
 
