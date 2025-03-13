@@ -41,9 +41,9 @@ export const cookieEffectNameToDescription: { [key in EffectName]: string } = {
 		"Gives x666 cookie production for 6 seconds. (max: 14sec)",
 
 	"Blab":
-		"Does nothing but has a funny message.",
+		"Display a funny message.",
 	"Free Sugar Lump":
-		"Add a free sugar lump to the pool.",
+		"Gain a free sugar lump.",
 };
 
 
