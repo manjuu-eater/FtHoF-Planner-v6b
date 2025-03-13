@@ -126,7 +126,7 @@ app.controller("myCtrl", ($rootScope, $scope): void => {
 			return;
 		}
 
-		// import save data, update list
+		// import save data (and save valid save data), update list
 		const isLoaded = readSaveDataFromSaveCode($scope, $scope.saveCode);
 		if (isLoaded) {
 			saveSaveData($scope);  // save imported save data
