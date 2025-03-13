@@ -276,29 +276,29 @@ export const gfdSpellNames = spellNames.filter(name => name != "Gambler's Fever 
  */
 export const cookieEffectNameToDescription: { [key in EffectName]: string } = {
 	"Frenzy":
-		"Gives x7 cookie production for 77 seconds.",
+		"Gives x7 cookie production for 77 seconds. (max: 175sec)",
 	"Lucky":
 		"Gain 13 cookies plus the lesser of 15% of bank or 15 minutes of production.",
 	"Click Frenzy":
-		"Gives x777 cookies per click for 13 seconds.",
+		"Gives x777 cookies per click for 13 seconds. (max: 30sec)",
 	"Cookie Storm":
-		"A massive amount of Golden Cookies appears for 7 seconds, each granting you 1–7 minutes worth of cookies.",
+		"A massive amount of Golden Cookies appears for 7 seconds (max: 15sec), each granting you 1–7 minutes worth of cookies.",
 	"Cookie Storm Drop":
-		"Gain cookies equal to 1-7 minutes production",
+		"Gain cookies equal to 1-7 minutes production.",
 	"Building Special":
-		"Get a variable bonus to cookie production for 30 seconds.",
+		"Get a variable bonus to cookie production for 30 seconds. (max: 68sec)",
 
 	"Clot":
-		"Reduce production by 50% for 66 seconds.",
+		"Reduce production by 50% for 66 seconds. (max: 146sec)",
 	"Ruin":
-		"Lose 13 cookies plus the lesser of 5% of bank or 15 minutes of production",
+		"Lose 13 cookies plus the lesser of 5% of bank or 15 minutes of production.",
 	"Cursed Finger":
-		"Cookie production halted for 10 seconds, but each click is worth 10 seconds of production.",
+		"Cookie production halted for 10 seconds (max: 22sec), but each click is worth 10 seconds (max: 22sec) of production.",
 	"Elder Frenzy":
-		"Gives x666 cookie production for 6 seconds",
+		"Gives x666 cookie production for 6 seconds. (max: 14sec)",
 
 	"Blab":
 		"Does nothing but has a funny message.",
 	"Free Sugar Lump":
-		"Add a free sugar lump to the pool",
+		"Add a free sugar lump to the pool.",
 };
