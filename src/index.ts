@@ -14,7 +14,7 @@ import {
 import {
 	settingsModelNames,
 	getSettings,
-	saveSettings, loadSettings, initSettings,
+	saveSettings, loadSettings, updateSettings, initSettings,
 } from "./settings.js";
 
 import {
@@ -29,7 +29,6 @@ import {
 
 import {
 	GrimoireResult,
-	updateGrimoreSettings,
 	getBaseFailChance, getFthofFailChance,
 	castFtHoF,
 	hasCookieEffect,
@@ -210,7 +209,7 @@ app.controller("myCtrl", ($rootScope, $scope): void => {
 		} = settings;
 
 		// update Settings data
-		updateGrimoreSettings(settings);
+		updateSettings(settings);
 
 		// variables to set $scope.*
 		const baseBackfireChance = getBaseFailChance();

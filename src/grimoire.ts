@@ -18,7 +18,7 @@ import {
 	spellNameToIconUrl,
 } from "./image_file_paths.js";
 
-import { Settings } from "./settings";
+import { settings } from "./settings.js";
 
 import { translate } from "./translate.js";
 
@@ -144,20 +144,6 @@ export type GrimoireResult = {
 
 	/** whether Sugar Lump can be get */
 	canSugar: boolean;
-};
-
-
-/** Settings used in FtHoF, GFD */
-let settings: Settings;
-
-
-/**
- * update settings data used in grimoire
- *
- * @param grimoireSettings Settings data used in grimoire
- */
-export const updateGrimoreSettings = (grimoireSettings: Settings) => {
-	settings = grimoireSettings;
 };
 
 
