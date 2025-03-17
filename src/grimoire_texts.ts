@@ -166,7 +166,7 @@ export const makeGfdDisplayName = (spellName: SpellName): string => {
 
 /**
  * make a string for tooltip of GFD
- * (e.g. "#2: Lucky / Ruin")
+ * (e.g. "#2: Lucky / Frenzy")
  *
  * @param gfdResult result object of GFD
  * @param offset distance of target child spell from base spellsCastTotal
