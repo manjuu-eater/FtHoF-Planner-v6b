@@ -13,7 +13,10 @@ import { GfdResult } from "./grimoire.js";
 
 import { settings } from "./settings.js";
 
-import { langDict } from "./translate.js";
+import {
+	langDict,
+	gfdSeTooltipDict,
+} from "./translate.js";
 
 
 /**
@@ -177,7 +180,7 @@ export const makeGfdTooltip = (gfdResult: GfdResult, offset: number): string | u
 		if (gfdResult.name != "Spontaneous Edifice") return undefined;
 
 		// make tooltip for SE
-		const seTooltipTemplate = "random number used to select the target building: %s";
+		const seTooltipTemplate = gfdSeTooltipDict[settings.lang];
 		const seRandomNumberStr = gfdResult.spontaneousEdificeRandomNumber?.toFixed(4);
 		const seTooltip = seTooltipTemplate.replace("%s", String(seRandomNumberStr));
 		return seTooltip;

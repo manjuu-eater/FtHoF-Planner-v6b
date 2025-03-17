@@ -920,3 +920,23 @@ export const effectDescriptionDict: { [lang in Lang]: { [key in EffectName]: str
 		"Free Sugar Lump": "Получите бесплатный сахарный комок.",
 	},
 };
+
+
+/**
+ * translation dictionary of GF Spontaneous Edifice tooltip
+ */
+export const gfdSeTooltipDict: { [lang in Lang]: string } = {
+	"EN": "random number to select target building: %s",
+	"FR": "nombre aléatoire pour sélectionner le bâtiment : %s",
+	"DE": "zufallszahl zur Auswahl des Gebäudes: %s",
+	"NL": "willekeurig getal om gebouw te kiezen: %s",
+	"CS": "náhodné číslo k výběru budovy: %s",
+	"PL": "losowa liczba do wyboru budynku: %s",
+	"IT": "numero casuale per selezionare l'edificio: %s",
+	"ES": "número aleatorio para elegir edificio: %s",
+	"PT-BR": "número aleatório para escolher o edifício: %s",
+	"JA": "ターゲットの建物を選ぶ乱数: %s",
+	"ZH-CN": "用于选择目标建筑的随机数: %s",
+	"KO": "대상 건물 선택을 위한 난수: %s",
+	"RU": "случайное число для выбора здания: %s",
+};
