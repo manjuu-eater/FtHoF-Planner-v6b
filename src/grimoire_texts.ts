@@ -177,10 +177,9 @@ export const makeGfdTooltip = (gfdResult: GfdResult, offset: number): string | u
 		if (gfdResult.name != "Spontaneous Edifice") return undefined;
 
 		// make tooltip for SE
-		const seTooltip = (
-			"random number used to select the target building is "
-			+ gfdResult.spontaneousEdificeRandomNumber?.toFixed(4)
-		);
+		const seTooltipTemplate = "random number used to select the target building: %s";
+		const seRandomNumberStr = gfdResult.spontaneousEdificeRandomNumber?.toFixed(4);
+		const seTooltip = seTooltipTemplate.replace("%s", String(seRandomNumberStr));
 		return seTooltip;
 	}
 
