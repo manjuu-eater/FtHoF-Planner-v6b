@@ -75,11 +75,11 @@ const obscureUselessEffectName = (displayName: string, effectName: EffectName): 
 	if (!settings.hideUseless) return displayName;
 
 	// effect names without...
-	//   GC: Click Frenzy, Building Special
+	//   GC: Frenzy, Click Frenzy, Building Special
 	//   WC: Elder Frenzy
 	//   both: Free Sugar Lump
 	const uselessNames = [
-		"Frenzy", "Lucky", "Cookie Storm", "Cookie Storm Drop",
+		"Lucky", "Cookie Storm", "Cookie Storm Drop",
 		"Clot", "Ruin", "Cursed Finger",
 		"Blab",
 	];
