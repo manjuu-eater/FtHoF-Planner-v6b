@@ -185,11 +185,13 @@ export const makeGfdTooltip = (gfdResult: GfdResult, offset: number): string | u
 	}
 
 	const numStr = "#" + (offset + 1);  // convert to natural number
-	const cookie0Str = gfdResult.cookie0?.name || "";
-	const cookie1Str = gfdResult.cookie1?.name || "";
-	const halfTitle = numStr + ": " + cookie0Str;
+	const cookie0Name = gfdResult.cookie0?.name || "";
+	const cookie1Name = gfdResult.cookie1?.name || "";
+	const cookie0LoaclName = cookie0Name ? translate(cookie0Name, settings.lang) : "";
+	const cookie1LoaclName = cookie1Name ? translate(cookie1Name, settings.lang) : "";
+	const halfTitle = numStr + ": " + cookie0LoaclName;
 	if (settings.season == "noswitch") return halfTitle;
 
-	const fullTitle = halfTitle + " / " + cookie1Str;
+	const fullTitle = halfTitle + " / " + cookie1LoaclName;
 	return fullTitle;
 };
