@@ -184,11 +184,24 @@ export const makeGfdTooltip = (gfdResult: GfdResult, offset: number): string | u
 		return seTooltip;
 	}
 
+	/**
+	 * make translated effect name
+	 *
+	 * @param effectName effect name of FtHoF
+	 * @returns translated effect name
+	 */
+	const makeLocalEffectName = (effectName: EffectName | ""): string => {
+		if (!effectName) return effectName;
+		const shortenCSDrop = (effectName == "Cookie Storm Drop" && settings.shortenCSDrop);
+		const name = shortenCSDrop ? "Drop" : effectName;
+		return translate(name, settings.lang);
+	};
+
 	const numStr = "#" + (offset + 1);  // convert to natural number
 	const cookie0Name = gfdResult.cookie0?.name || "";
 	const cookie1Name = gfdResult.cookie1?.name || "";
-	const cookie0LoaclName = cookie0Name ? translate(cookie0Name, settings.lang) : "";
-	const cookie1LoaclName = cookie1Name ? translate(cookie1Name, settings.lang) : "";
+	const cookie0LoaclName = makeLocalEffectName(cookie0Name);
+	const cookie1LoaclName = makeLocalEffectName(cookie1Name);
 	const halfTitle = numStr + ": " + cookie0LoaclName;
 	if (settings.season == "noswitch") return halfTitle;
 
