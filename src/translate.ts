@@ -8,37 +8,6 @@
 import { EffectName } from "./game_related_data";
 
 
-/**
- * translate given word
- *
- * @param name word to translate
- * @param lang language to translate
- * @returns translated string
- */
-export const translate = (name: keyof EnToLocalWordDict, lang: Lang): string => {
-	// do nothing if English
-	if (lang == "EN") return name;
-
-	// translate
-	const translated = langDict[lang][name];
-	return translated;
-};
-
-
-/**
- * get translated FtHoF effect description
- *
- * @param effectName effect name of FtHoF
- * @param lang language to translate
- * @returns translated string
- */
-export const getTranslatedEffectDescription = (effectName: EffectName, lang: Lang): string => {
-	// return translated description
-	const translated = effectDescriptionDict[lang][effectName];
-	return translated;
-};
-
-
 /** language list */
 export type Lang = (
 	| "EN"
@@ -149,7 +118,7 @@ type EnToLocalWordDict = {
 /**
  * translation dictionary of common words
  */
-const langDict: { [lang in Lang]: EnToLocalWordDict } = {
+export const langDict: { [lang in Lang]: EnToLocalWordDict } = {
 	"EN": {
 		"Lucky": "Lucky",
 		"Ruin": "Ruin",
@@ -767,7 +736,7 @@ const langDict: { [lang in Lang]: EnToLocalWordDict } = {
 /**
  * translation dictionary of effect description
  */
-const effectDescriptionDict: { [lang in Lang]: { [key in EffectName]: string } } = {
+export const effectDescriptionDict: { [lang in Lang]: { [key in EffectName]: string } } = {
 	"EN": {
 		"Frenzy": "Gives x7 cookie production for 77 seconds. (max: 175sec)",
 		"Lucky": "Gain 13 cookies plus the lesser of 15% of hand or 15 minutes of production.",

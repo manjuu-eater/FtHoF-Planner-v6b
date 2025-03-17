@@ -13,7 +13,7 @@ import { GfdResult } from "./grimoire.js";
 
 import { settings } from "./settings.js";
 
-import { translate } from "./translate.js";
+import { langDict } from "./translate.js";
 
 
 /**
@@ -125,16 +125,16 @@ const obscureUselessSpellName = (displayName: string, spellName: SpellName): str
 export const makeFthofDisplayName = (effectName: EffectName): string => {
 	let converting: string;
 
-	// translate if result display language is not EN
+	// translate to local language
 	const lang = settings.lang;
-	converting = translate(effectName, lang);
+	converting = langDict[lang][effectName];
 
 	// replace useless effect name to "----"
 	converting = obscureUselessEffectName(converting, effectName);
 
 	// replace Cookie Storm Drop to "Drop"
 	if (settings.shortenCSDrop && effectName == "Cookie Storm Drop") {
-		converting = translate("Drop", lang);
+		converting = langDict[lang]["Drop"];
 		if (settings.hideUseless) converting = obscureString(converting);
 	}
 
@@ -152,9 +152,9 @@ export const makeFthofDisplayName = (effectName: EffectName): string => {
 export const makeGfdDisplayName = (spellName: SpellName): string => {
 	let converting: string;
 
-	// translate if result display language is not EN
+	// translate to local language
 	const lang = settings.lang;
-	converting = translate(spellName, lang);
+	converting = langDict[lang][spellName];
 
 	// replace useless spell name to "----"
 	converting = obscureUselessSpellName(converting, spellName);
@@ -194,7 +194,7 @@ export const makeGfdTooltip = (gfdResult: GfdResult, offset: number): string | u
 		if (!effectName) return effectName;
 		const shortenCSDrop = (effectName == "Cookie Storm Drop" && settings.shortenCSDrop);
 		const name = shortenCSDrop ? "Drop" : effectName;
-		return translate(name, settings.lang);
+		return langDict[settings.lang][name];
 	};
 
 	const numStr = "#" + (offset + 1);  // convert to natural number

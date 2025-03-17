@@ -24,7 +24,7 @@ import {
 
 import { settings } from "./settings.js";
 
-import { getTranslatedEffectDescription } from "./translate.js";
+import { effectDescriptionDict } from "./translate.js";
 
 
 // type definition
@@ -350,7 +350,7 @@ export const castFtHoF = (
 		displayName: makeFthofDisplayName(effectName),
 		isWin,
 		image: imageUrl,
-		tooltip: getTranslatedEffectDescription(effectName, settings.lang),
+		tooltip: effectDescriptionDict[settings.lang][effectName],
 		noteworthy,
 		canCombo,
 
