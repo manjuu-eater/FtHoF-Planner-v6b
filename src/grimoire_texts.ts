@@ -9,6 +9,8 @@ import {
 	EffectName, SpellName,
 } from "./game_related_data.js";
 
+import { GfdResult } from "./grimoire.js";
+
 import { settings } from "./settings.js";
 
 import { translate } from "./translate.js";
@@ -159,4 +161,35 @@ export const makeGfdDisplayName = (spellName: SpellName): string => {
 
 	// return converted name
 	return converting;
+};
+
+
+/**
+ * make a string for tooltip of GFD
+ * (e.g. "#2: Lucky / Ruin")
+ *
+ * @param gfdResult result object of GFD
+ * @param offset distance of target child spell from base spellsCastTotal
+ */
+export const makeGfdTooltip = (gfdResult: GfdResult, offset: number): string | undefined => {
+	// return undefined for AngularJS to show nothing
+	if (gfdResult.name != "Force the Hand of Fate") {
+		if (gfdResult.name != "Spontaneous Edifice") return undefined;
+
+		// make tooltip for SE
+		const seTooltip = (
+			"random number used to select the target building is "
+			+ gfdResult.spontaneousEdificeRandomNumber?.toFixed(4)
+		);
+		return seTooltip;
+	}
+
+	const numStr = "#" + (offset + 1);  // convert to natural number
+	const cookie0Str = gfdResult.cookie0?.name || "";
+	const cookie1Str = gfdResult.cookie1?.name || "";
+	const halfTitle = numStr + ": " + cookie0Str;
+	if (settings.season == "noswitch") return halfTitle;
+
+	const fullTitle = halfTitle + " / " + cookie1Str;
+	return fullTitle;
 };
