@@ -9,9 +9,14 @@ import {
 	EffectName, SpellName,
 } from "./game_related_data.js";
 
+import { GfdResult } from "./grimoire.js";
+
 import { settings } from "./settings.js";
 
-import { translate } from "./translate.js";
+import {
+	langDict,
+	gfdSeTooltipDict,
+} from "./translate.js";
 
 
 /**
@@ -75,11 +80,11 @@ const obscureUselessEffectName = (displayName: string, effectName: EffectName): 
 	if (!settings.hideUseless) return displayName;
 
 	// effect names without...
-	//   GC: Click Frenzy, Building Special
+	//   GC: Frenzy, Click Frenzy, Building Special
 	//   WC: Elder Frenzy
 	//   both: Free Sugar Lump
 	const uselessNames = [
-		"Frenzy", "Lucky", "Cookie Storm", "Cookie Storm Drop",
+		"Lucky", "Cookie Storm", "Cookie Storm Drop",
 		"Clot", "Ruin", "Cursed Finger",
 		"Blab",
 	];
@@ -123,16 +128,16 @@ const obscureUselessSpellName = (displayName: string, spellName: SpellName): str
 export const makeFthofDisplayName = (effectName: EffectName): string => {
 	let converting: string;
 
-	// translate if result display language is not EN
+	// translate to local language
 	const lang = settings.lang;
-	converting = translate(effectName, lang);
+	converting = langDict[lang][effectName];
 
 	// replace useless effect name to "----"
 	converting = obscureUselessEffectName(converting, effectName);
 
 	// replace Cookie Storm Drop to "Drop"
 	if (settings.shortenCSDrop && effectName == "Cookie Storm Drop") {
-		converting = translate("Drop", lang);
+		converting = langDict[lang]["Drop"];
 		if (settings.hideUseless) converting = obscureString(converting);
 	}
 
@@ -150,13 +155,58 @@ export const makeFthofDisplayName = (effectName: EffectName): string => {
 export const makeGfdDisplayName = (spellName: SpellName): string => {
 	let converting: string;
 
-	// translate if result display language is not EN
+	// translate to local language
 	const lang = settings.lang;
-	converting = translate(spellName, lang);
+	converting = langDict[lang][spellName];
 
 	// replace useless spell name to "----"
 	converting = obscureUselessSpellName(converting, spellName);
 
 	// return converted name
 	return converting;
+};
+
+
+/**
+ * make a string for tooltip of GFD
+ * (e.g. "#2: Lucky / Frenzy")
+ *
+ * @param gfdResult result object of GFD
+ * @param offset distance of target child spell from base spellsCastTotal
+ */
+export const makeGfdTooltip = (gfdResult: GfdResult, offset: number): string | undefined => {
+	// return undefined for AngularJS to show nothing
+	if (gfdResult.name != "Force the Hand of Fate") {
+		if (gfdResult.name != "Spontaneous Edifice") return undefined;
+
+		// make tooltip for SE
+		const seTooltipTemplate = gfdSeTooltipDict[settings.lang];
+		const seRandomNumberStr = gfdResult.spontaneousEdificeRandomNumber?.toFixed(4);
+		const seTooltip = seTooltipTemplate.replace("%s", String(seRandomNumberStr));
+		return seTooltip;
+	}
+
+	/**
+	 * make translated effect name
+	 *
+	 * @param effectName effect name of FtHoF
+	 * @returns translated effect name
+	 */
+	const makeLocalEffectName = (effectName: EffectName | ""): string => {
+		if (!effectName) return effectName;
+		const shortenCSDrop = (effectName == "Cookie Storm Drop" && settings.shortenCSDrop);
+		const name = shortenCSDrop ? "Drop" : effectName;
+		return langDict[settings.lang][name];
+	};
+
+	const numStr = "#" + (offset + 1);  // convert to natural number
+	const cookie0Name = gfdResult.cookie0?.name || "";
+	const cookie1Name = gfdResult.cookie1?.name || "";
+	const cookie0LoaclName = makeLocalEffectName(cookie0Name);
+	const cookie1LoaclName = makeLocalEffectName(cookie1Name);
+	const halfTitle = numStr + ": " + cookie0LoaclName;
+	if (settings.season == "noswitch") return halfTitle;
+
+	const fullTitle = halfTitle + " / " + cookie1LoaclName;
+	return fullTitle;
 };

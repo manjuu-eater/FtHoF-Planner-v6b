@@ -5,7 +5,7 @@
  * functions about FtHoF Planner result texts
  */
 import { settings } from "./settings.js";
-import { translate } from "./translate.js";
+import { langDict, gfdSeTooltipDict, } from "./translate.js";
 /**
  * cookie effect description dictionary
  */
@@ -48,11 +48,11 @@ const obscureUselessEffectName = (displayName, effectName) => {
     if (!settings.hideUseless)
         return displayName;
     // effect names without...
-    //   GC: Click Frenzy, Building Special
+    //   GC: Frenzy, Click Frenzy, Building Special
     //   WC: Elder Frenzy
     //   both: Free Sugar Lump
     const uselessNames = [
-        "Frenzy", "Lucky", "Cookie Storm", "Cookie Storm Drop",
+        "Lucky", "Cookie Storm", "Cookie Storm Drop",
         "Clot", "Ruin", "Cursed Finger",
         "Blab",
     ];
@@ -89,14 +89,14 @@ const obscureUselessSpellName = (displayName, spellName) => {
  */
 export const makeFthofDisplayName = (effectName) => {
     let converting;
-    // translate if result display language is not EN
+    // translate to local language
     const lang = settings.lang;
-    converting = translate(effectName, lang);
+    converting = langDict[lang][effectName];
     // replace useless effect name to "----"
     converting = obscureUselessEffectName(converting, effectName);
     // replace Cookie Storm Drop to "Drop"
     if (settings.shortenCSDrop && effectName == "Cookie Storm Drop") {
-        converting = translate("Drop", lang);
+        converting = langDict[lang]["Drop"];
         if (settings.hideUseless)
             converting = obscureString(converting);
     }
@@ -111,12 +111,55 @@ export const makeFthofDisplayName = (effectName) => {
  */
 export const makeGfdDisplayName = (spellName) => {
     let converting;
-    // translate if result display language is not EN
+    // translate to local language
     const lang = settings.lang;
-    converting = translate(spellName, lang);
+    converting = langDict[lang][spellName];
     // replace useless spell name to "----"
     converting = obscureUselessSpellName(converting, spellName);
     // return converted name
     return converting;
+};
+/**
+ * make a string for tooltip of GFD
+ * (e.g. "#2: Lucky / Frenzy")
+ *
+ * @param gfdResult result object of GFD
+ * @param offset distance of target child spell from base spellsCastTotal
+ */
+export const makeGfdTooltip = (gfdResult, offset) => {
+    var _a, _b, _c;
+    // return undefined for AngularJS to show nothing
+    if (gfdResult.name != "Force the Hand of Fate") {
+        if (gfdResult.name != "Spontaneous Edifice")
+            return undefined;
+        // make tooltip for SE
+        const seTooltipTemplate = gfdSeTooltipDict[settings.lang];
+        const seRandomNumberStr = (_a = gfdResult.spontaneousEdificeRandomNumber) === null || _a === void 0 ? void 0 : _a.toFixed(4);
+        const seTooltip = seTooltipTemplate.replace("%s", String(seRandomNumberStr));
+        return seTooltip;
+    }
+    /**
+     * make translated effect name
+     *
+     * @param effectName effect name of FtHoF
+     * @returns translated effect name
+     */
+    const makeLocalEffectName = (effectName) => {
+        if (!effectName)
+            return effectName;
+        const shortenCSDrop = (effectName == "Cookie Storm Drop" && settings.shortenCSDrop);
+        const name = shortenCSDrop ? "Drop" : effectName;
+        return langDict[settings.lang][name];
+    };
+    const numStr = "#" + (offset + 1); // convert to natural number
+    const cookie0Name = ((_b = gfdResult.cookie0) === null || _b === void 0 ? void 0 : _b.name) || "";
+    const cookie1Name = ((_c = gfdResult.cookie1) === null || _c === void 0 ? void 0 : _c.name) || "";
+    const cookie0LoaclName = makeLocalEffectName(cookie0Name);
+    const cookie1LoaclName = makeLocalEffectName(cookie1Name);
+    const halfTitle = numStr + ": " + cookie0LoaclName;
+    if (settings.season == "noswitch")
+        return halfTitle;
+    const fullTitle = halfTitle + " / " + cookie1LoaclName;
+    return fullTitle;
 };
 //# sourceMappingURL=grimoire_texts.js.map

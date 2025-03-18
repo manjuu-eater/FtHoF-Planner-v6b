@@ -4,33 +4,6 @@
  *
  * translation definition
  */
-/**
- * translate given word
- *
- * @param name word to translate
- * @param lang language to translate
- * @returns translated string
- */
-export const translate = (name, lang) => {
-    // do nothing if English
-    if (lang == "EN")
-        return name;
-    // translate
-    const translated = langDict[lang][name];
-    return translated;
-};
-/**
- * get translated FtHoF effect description
- *
- * @param effectName effect name of FtHoF
- * @param lang language to translate
- * @returns translated string
- */
-export const getTranslatedEffectDescription = (effectName, lang) => {
-    // return translated description
-    const translated = effectDescriptionDict[lang][effectName];
-    return translated;
-};
 // code for getting translated words in each languages
 /*(async () => {
     // base loc() id to get translated words
@@ -74,7 +47,7 @@ export const getTranslatedEffectDescription = (effectName, lang) => {
 /**
  * translation dictionary of common words
  */
-const langDict = {
+export const langDict = {
     "EN": {
         "Lucky": "Lucky",
         "Ruin": "Ruin",
@@ -690,7 +663,7 @@ const langDict = {
 /**
  * translation dictionary of effect description
  */
-const effectDescriptionDict = {
+export const effectDescriptionDict = {
     "EN": {
         "Frenzy": "Gives x7 cookie production for 77 seconds. (max: 175sec)",
         "Lucky": "Gain 13 cookies plus the lesser of 15% of hand or 15 minutes of production.",
@@ -873,5 +846,23 @@ const effectDescriptionDict = {
         "Blab": "Отобразить забавное сообщение.",
         "Free Sugar Lump": "Получите бесплатный сахарный комок.",
     },
+};
+/**
+ * translation dictionary of GF Spontaneous Edifice tooltip
+ */
+export const gfdSeTooltipDict = {
+    "EN": "random number to select target building: %s",
+    "FR": "nombre aléatoire pour sélectionner le bâtiment : %s",
+    "DE": "zufallszahl zur Auswahl des Gebäudes: %s",
+    "NL": "willekeurig getal om gebouw te kiezen: %s",
+    "CS": "náhodné číslo k výběru budovy: %s",
+    "PL": "losowa liczba do wyboru budynku: %s",
+    "IT": "numero casuale per selezionare l'edificio: %s",
+    "ES": "número aleatorio para elegir edificio: %s",
+    "PT-BR": "número aleatório para escolher o edifício: %s",
+    "JA": "ターゲットの建物を選ぶ乱数: %s",
+    "ZH-CN": "用于选择目标建筑的随机数: %s",
+    "KO": "대상 건물 선택을 위한 난수: %s",
+    "RU": "случайное число для выбора здания: %s",
 };
 //# sourceMappingURL=translate.js.map

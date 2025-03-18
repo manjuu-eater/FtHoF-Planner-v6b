@@ -1,18 +1,18 @@
 /**
  * FtHoF Planner v6b
  * image_file_paths.ts
- * 
+ *
  * image file paths
  */
 
-import { SpellName } from "./game_related_data";
+import { SpellName } from "game_related_data";
 
 
 /** image url of GC */
-export const gcImageUrl = "./img/goldCookie.png";
+export const gcImageUrl = "img/goldCookie.png";
 
 /** image url of GC */
-export const wcImageUrl = "./img/wrathCookie.png";
+export const wcImageUrl = "img/wrathCookie.png";
 
 
 /**
@@ -22,7 +22,7 @@ export const wcImageUrl = "./img/wrathCookie.png";
  * @returns image url
  */
 export const heartImageUrl = (index: number): string => {
-	return `./img/hearts/${index}.png`;
+	return `img/hearts/${index}.png`;
 };
 
 
@@ -35,7 +35,7 @@ export const heartImageUrl = (index: number): string => {
  */
 export const bunnyImageUrl = (isWrath: boolean, index: number): string => {
 	const isWrathNum = isWrath ? "1" : "0";
-	return `./img/bunnies/${isWrathNum}${index}.png`;
+	return `img/bunnies/${isWrathNum}${index}.png`;
 };
 
 
@@ -43,13 +43,13 @@ export const bunnyImageUrl = (isWrath: boolean, index: number): string => {
  * dictionary of spell icon image file url
  */
 export const spellNameToIconUrl: { [key in SpellName]: string } = {
-	"Conjure Baked Goods":    "./img/spells/0.png",
-	"Force the Hand of Fate": "./img/spells/1.png",
-	"Stretch Time":           "./img/spells/2.png",
-	"Spontaneous Edifice":    "./img/spells/3.png",
-	"Haggler's Charm":        "./img/spells/4.png",
-	"Summon Crafty Pixies":   "./img/spells/5.png",
-	"Gambler's Fever Dream":  "./img/spells/6.png",
-	"Resurrect Abomination":  "./img/spells/7.png",
-	"Diminish Ineptitude":    "./img/spells/8.png",
+	"Conjure Baked Goods":    "img/spells/0.png",
+	"Force the Hand of Fate": "img/spells/1.png",
+	"Stretch Time":           "img/spells/2.png",
+	"Spontaneous Edifice":    "img/spells/3.png",
+	"Haggler's Charm":        "img/spells/4.png",
+	"Summon Crafty Pixies":   "img/spells/5.png",
+	"Gambler's Fever Dream":  "img/spells/6.png",
+	"Resurrect Abomination":  "img/spells/7.png",
+	"Diminish Ineptitude":    "img/spells/8.png",
 };

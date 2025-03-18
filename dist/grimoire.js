@@ -5,10 +5,10 @@
  * types, functions about simulating FtHoF, GFD
  */
 import { choose, chooseWith, M_spells, Math_seedrandom, } from "./game_related_data.js";
-import { makeFthofDisplayName, makeGfdDisplayName, } from "./grimoire_texts.js";
+import { makeFthofDisplayName, makeGfdDisplayName, makeGfdTooltip, } from "./grimoire_texts.js";
 import { gcImageUrl, wcImageUrl, heartImageUrl, bunnyImageUrl, spellNameToIconUrl, } from "./image_file_paths.js";
 import { settings } from "./settings.js";
-import { getTranslatedEffectDescription } from "./translate.js";
+import { effectDescriptionDict } from "./translate.js";
 /**
  * calculate base fail chance of FtHoF
  * (without considering count of GCs on screen)
@@ -196,7 +196,7 @@ export const castFtHoF = (seed, spellsCastTotal, offset, isOneChange, forceCooki
         displayName: makeFthofDisplayName(effectName),
         isWin,
         image: imageUrl,
-        tooltip: getTranslatedEffectDescription(effectName, settings.lang),
+        tooltip: effectDescriptionDict[settings.lang][effectName],
         noteworthy,
         canCombo,
         canGcSugarWithFewBuildings,
@@ -219,33 +219,6 @@ export const hasCookieEffect = (cookies, effect) => {
         }
     }
     return false;
-};
-/**
- * make a string for tooltip of GFD
- * (e.g. "#2: Lucky / Ruin")
- *
- * @param gfdResult result object of GFD
- * @param offset distance of target child spell from base spellsCastTotal
- */
-const makeGfdTooltip = (gfdResult, offset) => {
-    var _a, _b, _c;
-    // return undefined for AngularJS to show nothing
-    if (gfdResult.name != "Force the Hand of Fate") {
-        if (gfdResult.name != "Spontaneous Edifice")
-            return undefined;
-        // make tooltip for SE
-        const seTooltip = ("random number used to select the target building is "
-            + ((_a = gfdResult.spontaneousEdificeRandomNumber) === null || _a === void 0 ? void 0 : _a.toFixed(4)));
-        return seTooltip;
-    }
-    const numStr = "#" + (offset + 1); // convert to natural number
-    const cookie0Str = ((_b = gfdResult.cookie0) === null || _b === void 0 ? void 0 : _b.name) || "";
-    const cookie1Str = ((_c = gfdResult.cookie1) === null || _c === void 0 ? void 0 : _c.name) || "";
-    const halfTitle = numStr + ": " + cookie0Str;
-    if (settings.season == "noswitch")
-        return halfTitle;
-    const fullTitle = halfTitle + " / " + cookie1Str;
-    return fullTitle;
 };
 /**
  * get cast result object of Gambler's Fever Dream
