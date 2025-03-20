@@ -149,6 +149,9 @@ export const updateSettings = ($scope: any): void => {
  * @param $scope AngularJS $scope
  */
 export const initSettings = ($scope: any): void => {
+	/** HTML lang attribute value (with upper case) */
+	const lang = document.documentElement.lang.toUpperCase();
+
 	// Settings: Lookahead Length
 	$scope.lookahead = 200;
 
@@ -175,8 +178,8 @@ export const initSettings = ($scope: any): void => {
 	$scope.season = "cookie";
 	$scope.hideUseless = false;
 	$scope.shortenCSDrop = false;
-	$scope.effectLang = "EN";
-	$scope.spellLang  = "EN";
+	$scope.effectLang = lang;
+	$scope.spellLang = lang;
 
 	// set settings to module variable
 	updateSettings($scope);
