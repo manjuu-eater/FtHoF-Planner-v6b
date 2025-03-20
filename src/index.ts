@@ -37,6 +37,8 @@ import {
 	castGFD,
 } from "./grimoire.js";
 
+import { langDict } from "./translate.js";
+
 
 // type definition
 
@@ -64,17 +66,18 @@ app.controller("myCtrl", ($rootScope, $scope): void => {
 	// initialize Save Code
 	$scope.saveCode = "";
 
-	// initialize FtHoF save data
+	// initialize FtHoF Planner save data
 	initSaveData($scope);
 
-	// initialize FtHoF Scope Variables
+	// initialize FtHoF Planner Scope Variables
 	$scope.baseBackfireChance = undefined;
 	$scope.backfireChance = undefined;
 	$scope.combos = [];
 	$scope.sugars = [];
 	$scope.grimoireResults = [];
+	$scope.langDict = langDict;
 
-	// initialize FtHoF settings
+	// initialize FtHoF Planner settings
 	initSettings($scope);
 
 

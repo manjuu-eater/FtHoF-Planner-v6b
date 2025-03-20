@@ -27,12 +27,12 @@ export const cookieEffectNameToDescription = {
  * replace string to "----"
  *
  * @param replaceFrom string to replace with "-"
+ * @param isFullWidth replace to "－" (for asian full width character languages)
  * @returns replaced string
  */
-const obscureString = (replaceFrom) => {
+const obscureString = (replaceFrom, isFullWidth) => {
     // asian languages have twice width characters
-    const isFullWidthLang = ["JA", "ZH-CN", "KO"].includes(settings.lang);
-    const replaceTo = isFullWidthLang ? "－" : "-";
+    const replaceTo = isFullWidth ? "－" : "-";
     // obscure
     return replaceFrom.replace(/[^ ']/g, replaceTo);
 };
@@ -57,8 +57,9 @@ const obscureUselessEffectName = (displayName, effectName) => {
         "Blab",
     ];
     // replace to "----"
+    const isFullWidthLang = ["JA", "ZH-CN", "KO"].includes(settings.effectLang);
     if (uselessNames.includes(effectName))
-        return obscureString(displayName);
+        return obscureString(displayName, isFullWidthLang);
     // not useless, so return original
     return displayName;
 };
@@ -76,8 +77,9 @@ const obscureUselessSpellName = (displayName, spellName) => {
     // spell names without FtHoF, skippable spells, GFD, Diminish Ineptitude
     const uselessNames = ["Conjure Baked Goods", "Haggler's Charm", "Summon Crafty Pixies"];
     // replace to "----"
+    const isFullWidthLang = ["JA", "ZH-CN", "KO"].includes(settings.spellLang);
     if (uselessNames.includes(spellName))
-        return obscureString(displayName);
+        return obscureString(displayName, isFullWidthLang);
     // not useless, so return original
     return displayName;
 };
@@ -90,15 +92,16 @@ const obscureUselessSpellName = (displayName, spellName) => {
 export const makeFthofDisplayName = (effectName) => {
     let converting;
     // translate to local language
-    const lang = settings.lang;
+    const lang = settings.effectLang;
     converting = langDict[lang][effectName];
     // replace useless effect name to "----"
     converting = obscureUselessEffectName(converting, effectName);
     // replace Cookie Storm Drop to "Drop"
     if (settings.shortenCSDrop && effectName == "Cookie Storm Drop") {
         converting = langDict[lang]["Drop"];
+        const isFullWidthLang = ["JA", "ZH-CN", "KO"].includes(settings.effectLang);
         if (settings.hideUseless)
-            converting = obscureString(converting);
+            converting = obscureString(converting, isFullWidthLang);
     }
     // return converted name
     return converting;
@@ -112,7 +115,7 @@ export const makeFthofDisplayName = (effectName) => {
 export const makeGfdDisplayName = (spellName) => {
     let converting;
     // translate to local language
-    const lang = settings.lang;
+    const lang = settings.spellLang;
     converting = langDict[lang][spellName];
     // replace useless spell name to "----"
     converting = obscureUselessSpellName(converting, spellName);
@@ -133,7 +136,7 @@ export const makeGfdTooltip = (gfdResult, offset) => {
         if (gfdResult.name != "Spontaneous Edifice")
             return undefined;
         // make tooltip for SE
-        const seTooltipTemplate = gfdSeTooltipDict[settings.lang];
+        const seTooltipTemplate = gfdSeTooltipDict[settings.spellLang];
         const seRandomNumberStr = (_a = gfdResult.spontaneousEdificeRandomNumber) === null || _a === void 0 ? void 0 : _a.toFixed(4);
         const seTooltip = seTooltipTemplate.replace("%s", String(seRandomNumberStr));
         return seTooltip;
@@ -149,7 +152,7 @@ export const makeGfdTooltip = (gfdResult, offset) => {
             return effectName;
         const shortenCSDrop = (effectName == "Cookie Storm Drop" && settings.shortenCSDrop);
         const name = shortenCSDrop ? "Drop" : effectName;
-        return langDict[settings.lang][name];
+        return langDict[settings.effectLang][name];
     };
     const numStr = "#" + (offset + 1); // convert to natural number
     const cookie0Name = ((_b = gfdResult.cookie0) === null || _b === void 0 ? void 0 : _b.name) || "";

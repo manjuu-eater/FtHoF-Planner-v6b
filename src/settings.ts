@@ -30,7 +30,8 @@ export type Settings = {
 	season: string;
 	hideUseless: boolean;
 	shortenCSDrop: boolean;
-	lang: Lang;
+	effectLang: Lang;
+	spellLang: Lang;
 };
 
 
@@ -43,7 +44,7 @@ export const settingsModelNames: (keyof Settings)[] = [
 	"lookahead", "minComboLength", "maxComboLength", "maxSpread",
 	"includeEF", "skipRA", "skipSE", "skipST",
 	"screenCookieCount", "buffDF", "auraSI", "auraRB", "buffDI", "debuffDI",
-	"season", "hideUseless", "shortenCSDrop", "lang",
+	"season", "hideUseless", "shortenCSDrop", "effectLang", "spellLang",
 ];
 
 
@@ -76,7 +77,8 @@ export const getSettings = ($scope: any): Settings => {
 		season:            $scope.season,
 		hideUseless:       $scope.hideUseless,
 		shortenCSDrop:     $scope.shortenCSDrop,
-		lang:              $scope.lang,
+		effectLang:        $scope.effectLang,
+		spellLang:         $scope.spellLang,
 	};
 	return settings;
 };
@@ -147,6 +149,9 @@ export const updateSettings = ($scope: any): void => {
  * @param $scope AngularJS $scope
  */
 export const initSettings = ($scope: any): void => {
+	/** HTML lang attribute value (with upper case) */
+	const lang = document.documentElement.lang.toUpperCase();
+
 	// Settings: Lookahead Length
 	$scope.lookahead = 200;
 
@@ -173,7 +178,8 @@ export const initSettings = ($scope: any): void => {
 	$scope.season = "cookie";
 	$scope.hideUseless = false;
 	$scope.shortenCSDrop = false;
-	$scope.lang = "EN";
+	$scope.effectLang = lang;
+	$scope.spellLang = lang;
 
 	// set settings to module variable
 	updateSettings($scope);

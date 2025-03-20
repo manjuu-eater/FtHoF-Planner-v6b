@@ -10,20 +10,22 @@ import { settingsModelNames, getSettings, saveSettings, loadSettings, updateSett
 import { saveSaveCodeToLS, loadSaveCodeFromLS, removeSaveCodeFromLS, readSaveDataFromSaveCode, } from "./save_code.js";
 import { getSaveData, saveSaveData, loadSaveData, removeSaveData, initSaveData, } from "./save_data.js";
 import { getBaseFailChance, getFthofFailChance, castFtHoF, hasCookieEffect, castGFD, } from "./grimoire.js";
+import { langDict } from "./translate.js";
 const app = window.angular.module("myApp", ["ngMaterial"]);
 app.controller("myCtrl", ($rootScope, $scope) => {
     var _a;
     // initialize Save Code
     $scope.saveCode = "";
-    // initialize FtHoF save data
+    // initialize FtHoF Planner save data
     initSaveData($scope);
-    // initialize FtHoF Scope Variables
+    // initialize FtHoF Planner Scope Variables
     $scope.baseBackfireChance = undefined;
     $scope.backfireChance = undefined;
     $scope.combos = [];
     $scope.sugars = [];
     $scope.grimoireResults = [];
-    // initialize FtHoF settings
+    $scope.langDict = langDict;
+    // initialize FtHoF Planner settings
     initSettings($scope);
     // ready state flag
     $scope.ready = false;

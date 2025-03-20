@@ -11,7 +11,7 @@ export const settingsModelNames = [
     "lookahead", "minComboLength", "maxComboLength", "maxSpread",
     "includeEF", "skipRA", "skipSE", "skipST",
     "screenCookieCount", "buffDF", "auraSI", "auraRB", "buffDI", "debuffDI",
-    "season", "hideUseless", "shortenCSDrop", "lang",
+    "season", "hideUseless", "shortenCSDrop", "effectLang", "spellLang",
 ];
 /** current settings object */
 export let settings;
@@ -40,7 +40,8 @@ export const getSettings = ($scope) => {
         season: $scope.season,
         hideUseless: $scope.hideUseless,
         shortenCSDrop: $scope.shortenCSDrop,
-        lang: $scope.lang,
+        effectLang: $scope.effectLang,
+        spellLang: $scope.spellLang,
     };
     return settings;
 };
@@ -104,6 +105,8 @@ export const updateSettings = ($scope) => {
  * @param $scope AngularJS $scope
  */
 export const initSettings = ($scope) => {
+    /** HTML lang attribute value (with upper case) */
+    const lang = document.documentElement.lang.toUpperCase();
     // Settings: Lookahead Length
     $scope.lookahead = 200;
     // Settings: Combos
@@ -126,7 +129,8 @@ export const initSettings = ($scope) => {
     $scope.season = "cookie";
     $scope.hideUseless = false;
     $scope.shortenCSDrop = false;
-    $scope.lang = "EN";
+    $scope.effectLang = lang;
+    $scope.spellLang = lang;
     // set settings to module variable
     updateSettings($scope);
 };

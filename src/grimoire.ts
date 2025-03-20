@@ -350,7 +350,7 @@ export const castFtHoF = (
 		displayName: makeFthofDisplayName(effectName),
 		isWin,
 		image: imageUrl,
-		tooltip: effectDescriptionDict[settings.lang][effectName],
+		tooltip: effectDescriptionDict[settings.spellLang][effectName],
 		noteworthy,
 		canCombo,
 

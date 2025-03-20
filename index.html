@@ -175,10 +175,18 @@
 			<br>
 
 			<!-- Settings: Include EF or Skip Some GFD -->
-			<md-checkbox ng-model="includeEF">Include Elder Frenzies</md-checkbox>
-			<md-checkbox ng-model="skipRA">Skip Abominations</md-checkbox>
-			<md-checkbox ng-model="skipSE">Skip Spontaneous Edifices</md-checkbox>
-			<md-checkbox ng-model="skipST">Skip Stretch Time</md-checkbox>
+			<md-checkbox ng-model="includeEF">
+				Include "{{langDict[effectLang]["Elder Frenzy"]}}"
+			</md-checkbox>
+			<md-checkbox ng-model="skipRA">
+				Skip "{{langDict[spellLang]["Resurrect Abomination"]}}"
+			</md-checkbox>
+			<md-checkbox ng-model="skipSE">
+				Skip "{{langDict[spellLang]["Spontaneous Edifice"]}}"
+			</md-checkbox>
+			<md-checkbox ng-model="skipST">
+				Skip "{{langDict[spellLang]["Stretch Time"]}}"
+			</md-checkbox>
 			<md-divider></md-divider>
 
 
@@ -192,24 +200,24 @@
 			<br>
 
 			<md-checkbox ng-model="buffDF">
-				Dragonflight Buff Active
+				Buff "{{langDict[spellLang]["Dragonflight"]}}"
 			</md-checkbox>
 
 			<md-checkbox ng-model="auraSI">
-				Supreme Intellect Aura Active
+				Aura "{{langDict[spellLang]["Supreme Intellect"]}}"
 			</md-checkbox>
 
 			<md-checkbox ng-model="auraRB">
-				Reality Bending Aura Active
+				Aura "{{langDict[spellLang]["Reality Bending"]}}"
 			</md-checkbox>
 			<br>
 
 			<md-checkbox ng-model="buffDI">
-				Diminish Ineptitude Buff Active
+				Buff "{{langDict[spellLang]["Diminish Ineptitude"]}}"
 			</md-checkbox>
 
 			<md-checkbox ng-model="debuffDI">
-				Diminish Ineptitude Debuff Active
+				Debuff "{{langDict[spellLang]["Diminish Ineptitude"]}}"
 			</md-checkbox>
 
 			<md-divider></md-divider>
@@ -229,12 +237,31 @@
 			</md-checkbox>
 
 			<md-checkbox ng-model="shortenCSDrop">
-				Replace "Cookie Storm Drop" to "Drop"
+				Replace "{{langDict[effectLang]["Cookie Storm Drop"]}}"
+				to "{{langDict[effectLang]["Drop"]}}"
 			</md-checkbox>
 
-			<div style="margin-bottom: 16px;">
-				Effect / Spell Language:&nbsp;
-				<md-select style="display: inline-block; margin: 0;" ng-model="lang">
+			<div class="select_container">
+				Language>
+				Effect:
+				<md-select ng-model="effectLang">
+					<md-option value="EN">English</md-option>
+					<md-option value="FR">Français</md-option>
+					<md-option value="DE">Deutsch</md-option>
+					<md-option value="NL">Nederlands</md-option>
+					<md-option value="CS">Čeština</md-option>
+					<md-option value="PL">Polski</md-option>
+					<md-option value="IT">Italiano</md-option>
+					<md-option value="ES">Español</md-option>
+					<md-option value="PT-BR">Português</md-option>
+					<md-option value="JA">日本語</md-option>
+					<md-option value="ZH-CN">中文</md-option>
+					<md-option value="KO">한글</md-option>
+					<md-option value="RU">Русский</md-option>
+				</md-select>
+
+				Spell / Aura:
+				<md-select ng-model="spellLang">
 					<md-option value="EN">English</md-option>
 					<md-option value="FR">Français</md-option>
 					<md-option value="DE">Deutsch</md-option>

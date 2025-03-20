@@ -196,7 +196,7 @@ export const castFtHoF = (seed, spellsCastTotal, offset, isOneChange, forceCooki
         displayName: makeFthofDisplayName(effectName),
         isWin,
         image: imageUrl,
-        tooltip: effectDescriptionDict[settings.lang][effectName],
+        tooltip: effectDescriptionDict[settings.spellLang][effectName],
         noteworthy,
         canCombo,
         canGcSugarWithFewBuildings,

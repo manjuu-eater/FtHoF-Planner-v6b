@@ -32,9 +32,7 @@
 <!-- header title -->
 <md-toolbar>
 	<div class="md-toolbar-tools">
-		<h1>
-			<span>Cookie Clicker FtHoF Planner v6b</span>
-		</h1>
+		<h1>Cookie Clicker FtHoF Planner v6b</h1>
 	</div>
 </md-toolbar>
 
@@ -65,7 +63,7 @@
 		<p style="font-size: small;">
 			ひそかに作っていた FtHoF Planner v6b を日本語化したものです。自分の感覚で使いやすくなるようにゴリゴリと好き勝手に改造しています。<br>
 			※ 注意：日本語化はあまり手をかけていません。機械翻訳であからさまに変だったとこを適当に手直ししただけです<br>
-			⇒ 英語がわかる方は <a href="/">英語版</a> もどうぞ！（こっちの方が更新が早いです）
+			⇒ 英語がわかる方は <a href="/">英語版</a> もどうぞ！（こっちの方が更新が早いです）<br>
 			※ まだ作成中です。最終的に別のサイトで公開するつもりなので、リンク等はしないでください<br>
 			<br>
 			主なアピールポイント：砂糖の情報を追加（転生リセマラで砂糖が集められる）、オートセーブ化、セーブコードのドロップでの自動読込、設定いろいろ追加、One Change（良い名前が思いつかない）に画像追加、ギャンブラーに画像追加<br>
@@ -108,23 +106,23 @@
 					<b>{{comboLength}}x コンボ</b>
 					<ul ng-if="combo.shortest.idx == -1">
 						<li>なし</li>
-						<li class="hidden"></li><!-- スペーサー -->
+						<li class="hidden"></li><!-- spacer -->
 					</ul>
 					<ul ng-if="combo.shortest.idx != -1">
 						<li ng-if="combo.first.idx != -1">
 							<a href="#{{combo.first.idx + 1}}">最初:</a>
 							長さ {{combo.first.length}}、<!--
-							-->通過 {{combo.first.length - comboLength}}、<!--
+							-->パス {{combo.first.length - comboLength}}、<!--
 							-->開始位置
 							<a href="#{{combo.first.idx + 1}}">#{{combo.first.idx + 1}}</a>
 						</li>
 						<li ng-if="combo.first.idx == -1">
-							通過 &lt;= {{maxSpread}} のこの長さのコンボはありません
+							パス &lt;= {{maxSpread}} のこの長さのコンボはありません
 						</li>
 						<li>
 							<a href="#{{combo.shortest.idx + 1}}">最短:</a>
 							長さ {{combo.shortest.length}}、<!--
-							-->通過 {{combo.shortest.length - comboLength}}、<!--
+							-->パス {{combo.shortest.length - comboLength}}、<!--
 							-->開始位置
 							<a href="#{{combo.shortest.idx + 1}}">#{{combo.shortest.idx + 1}}</a>
 						</li>
@@ -179,17 +177,25 @@
 			</label>
 
 			<label>
-				最大通過
+				最大パス（繋ぎ）
 				<input type="number" class="w3" min="0" max="99" ng-model="maxSpread">
 			</label>
 
 			<br>
 
 			<!-- Settings: Include EF or Skip Some GFD -->
-			<md-checkbox ng-model="includeEF">エルダーフィーバーを含む</md-checkbox>
-			<md-checkbox ng-model="skipRA">忌まわしき復活をスキップ</md-checkbox>
-			<md-checkbox ng-model="skipSE">自然発生の殿堂をスキップ</md-checkbox>
-			<md-checkbox ng-model="skipST">ストレッチの時間をスキップ</md-checkbox>
+			<md-checkbox ng-model="includeEF">
+				"{{langDict[effectLang]["Elder Frenzy"]}}"を含む
+			</md-checkbox>
+			<md-checkbox ng-model="skipRA">
+				"{{langDict[spellLang]["Resurrect Abomination"]}}"をスキップ
+			</md-checkbox>
+			<md-checkbox ng-model="skipSE">
+				"{{langDict[spellLang]["Spontaneous Edifice"]}}"をスキップ
+			</md-checkbox>
+			<md-checkbox ng-model="skipST">
+				"{{langDict[spellLang]["Stretch Time"]}}"をスキップ
+			</md-checkbox>
 			<md-divider></md-divider>
 
 
@@ -203,24 +209,24 @@
 			<br>
 
 			<md-checkbox ng-model="buffDF">
-				ドラゴンフライトのバフが有効
+				バフ "{{langDict[spellLang]["Dragonflight"]}}"
 			</md-checkbox>
 
 			<md-checkbox ng-model="auraSI">
-				最高峰の知性のオーラが有効
+				オーラ "{{langDict[spellLang]["Supreme Intellect"]}}"
 			</md-checkbox>
 
 			<md-checkbox ng-model="auraRB">
-				現実の歪曲のオーラが有効
+				オーラ "{{langDict[spellLang]["Reality Bending"]}}"
 			</md-checkbox>
 			<br>
 
 			<md-checkbox ng-model="buffDI">
-				愚劣の減少のバフが有効
+				バフ "{{langDict[spellLang]["Diminish Ineptitude"]}}"
 			</md-checkbox>
 
 			<md-checkbox ng-model="debuffDI">
-				愚劣の減少のデバフが有効
+				デバフ "{{langDict[spellLang]["Diminish Ineptitude"]}}"
 			</md-checkbox>
 
 			<md-divider></md-divider>
@@ -236,16 +242,35 @@
 			</md-radio-group>
 
 			<md-checkbox ng-model="hideUseless">
-				ザコい効果を「----」に置き換える
+				ザコい効果を "----" に置き換える
 			</md-checkbox>
 
 			<md-checkbox ng-model="shortenCSDrop">
-				「クッキー乱舞の雫」を「雫」に置き換える
+				"{{langDict[effectLang]["Cookie Storm Drop"]}}" を
+				"{{langDict[effectLang]["Drop"]}}" に置き換える
 			</md-checkbox>
 
-			<div style="margin-bottom: 16px;">
-				効果 / 呪文の言語:&nbsp;
-				<md-select style="display: inline-block; margin: 0;" ng-model="lang">
+			<div class="select_container">
+				言語>
+				効果:
+				<md-select ng-model="effectLang">
+					<md-option value="EN">English</md-option>
+					<md-option value="FR">Français</md-option>
+					<md-option value="DE">Deutsch</md-option>
+					<md-option value="NL">Nederlands</md-option>
+					<md-option value="CS">Čeština</md-option>
+					<md-option value="PL">Polski</md-option>
+					<md-option value="IT">Italiano</md-option>
+					<md-option value="ES">Español</md-option>
+					<md-option value="PT-BR">Português</md-option>
+					<md-option value="JA">日本語</md-option>
+					<md-option value="ZH-CN">中文</md-option>
+					<md-option value="KO">한글</md-option>
+					<md-option value="RU">Русский</md-option>
+				</md-select>
+
+				呪文 / オーラ:
+				<md-select ng-model="spellLang">
 					<md-option value="EN">English</md-option>
 					<md-option value="FR">Français</md-option>
 					<md-option value="DE">Deutsch</md-option>
