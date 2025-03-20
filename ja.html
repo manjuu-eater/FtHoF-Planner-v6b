@@ -114,17 +114,17 @@
 						<li ng-if="combo.first.idx != -1">
 							<a href="#{{combo.first.idx + 1}}">最初:</a>
 							長さ {{combo.first.length}}、<!--
-							-->通過 {{combo.first.length - comboLength}}、<!--
+							-->パス {{combo.first.length - comboLength}}、<!--
 							-->開始位置
 							<a href="#{{combo.first.idx + 1}}">#{{combo.first.idx + 1}}</a>
 						</li>
 						<li ng-if="combo.first.idx == -1">
-							通過 &lt;= {{maxSpread}} のこの長さのコンボはありません
+							パス &lt;= {{maxSpread}} のこの長さのコンボはありません
 						</li>
 						<li>
 							<a href="#{{combo.shortest.idx + 1}}">最短:</a>
 							長さ {{combo.shortest.length}}、<!--
-							-->通過 {{combo.shortest.length - comboLength}}、<!--
+							-->パス {{combo.shortest.length - comboLength}}、<!--
 							-->開始位置
 							<a href="#{{combo.shortest.idx + 1}}">#{{combo.shortest.idx + 1}}</a>
 						</li>
@@ -179,7 +179,7 @@
 			</label>
 
 			<label>
-				最大通過
+				最大パス（繋ぎ）
 				<input type="number" class="w3" min="0" max="99" ng-model="maxSpread">
 			</label>
 
