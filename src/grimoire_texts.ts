@@ -56,12 +56,12 @@ export const cookieEffectNameToDescription: { [key in EffectName]: string } = {
  * replace string to "----"
  *
  * @param replaceFrom string to replace with "-"
+ * @param isFullWidth replace to "－" (for asian full width character languages)
  * @returns replaced string
  */
-const obscureString = (replaceFrom: string): string => {
+const obscureString = (replaceFrom: string, isFullWidth: boolean): string => {
 	// asian languages have twice width characters
-	const isFullWidthLang = ["JA", "ZH-CN", "KO"].includes(settings.lang);
-	const replaceTo = isFullWidthLang ? "－" : "-";
+	const replaceTo = isFullWidth ? "－" : "-";
 
 	// obscure
 	return replaceFrom.replace(/[^ ']/g, replaceTo);
@@ -90,7 +90,8 @@ const obscureUselessEffectName = (displayName: string, effectName: EffectName): 
 	];
 
 	// replace to "----"
-	if (uselessNames.includes(effectName)) return obscureString(displayName);
+	const isFullWidthLang = ["JA", "ZH-CN", "KO"].includes(settings.lang);
+	if (uselessNames.includes(effectName)) return obscureString(displayName, isFullWidthLang);
 
 	// not useless, so return original
 	return displayName;
@@ -112,7 +113,8 @@ const obscureUselessSpellName = (displayName: string, spellName: SpellName): str
 	const uselessNames = ["Conjure Baked Goods", "Haggler's Charm", "Summon Crafty Pixies"];
 
 	// replace to "----"
-	if (uselessNames.includes(spellName)) return obscureString(displayName);
+	const isFullWidthLang = ["JA", "ZH-CN", "KO"].includes(settings.lang);
+	if (uselessNames.includes(spellName)) return obscureString(displayName, isFullWidthLang);
 
 	// not useless, so return original
 	return displayName;
@@ -138,7 +140,8 @@ export const makeFthofDisplayName = (effectName: EffectName): string => {
 	// replace Cookie Storm Drop to "Drop"
 	if (settings.shortenCSDrop && effectName == "Cookie Storm Drop") {
 		converting = langDict[lang]["Drop"];
-		if (settings.hideUseless) converting = obscureString(converting);
+		const isFullWidthLang = ["JA", "ZH-CN", "KO"].includes(settings.lang);
+		if (settings.hideUseless) converting = obscureString(converting, isFullWidthLang);
 	}
 
 	// return converted name
