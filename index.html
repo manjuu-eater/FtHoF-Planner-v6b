@@ -233,8 +233,26 @@
 			</md-checkbox>
 
 			<div class="select_container">
-				Effect / Spell Language:&nbsp;
-				<md-select ng-model="lang">
+				Language>
+				Effect:
+				<md-select ng-model="effectLang">
+					<md-option value="EN">English</md-option>
+					<md-option value="FR">Français</md-option>
+					<md-option value="DE">Deutsch</md-option>
+					<md-option value="NL">Nederlands</md-option>
+					<md-option value="CS">Čeština</md-option>
+					<md-option value="PL">Polski</md-option>
+					<md-option value="IT">Italiano</md-option>
+					<md-option value="ES">Español</md-option>
+					<md-option value="PT-BR">Português</md-option>
+					<md-option value="JA">日本語</md-option>
+					<md-option value="ZH-CN">中文</md-option>
+					<md-option value="KO">한글</md-option>
+					<md-option value="RU">Русский</md-option>
+				</md-select>
+
+				Spell:
+				<md-select ng-model="spellLang">
 					<md-option value="EN">English</md-option>
 					<md-option value="FR">Français</md-option>
 					<md-option value="DE">Deutsch</md-option>

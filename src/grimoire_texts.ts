@@ -90,7 +90,7 @@ const obscureUselessEffectName = (displayName: string, effectName: EffectName): 
 	];
 
 	// replace to "----"
-	const isFullWidthLang = ["JA", "ZH-CN", "KO"].includes(settings.lang);
+	const isFullWidthLang = ["JA", "ZH-CN", "KO"].includes(settings.effectLang);
 	if (uselessNames.includes(effectName)) return obscureString(displayName, isFullWidthLang);
 
 	// not useless, so return original
@@ -113,7 +113,7 @@ const obscureUselessSpellName = (displayName: string, spellName: SpellName): str
 	const uselessNames = ["Conjure Baked Goods", "Haggler's Charm", "Summon Crafty Pixies"];
 
 	// replace to "----"
-	const isFullWidthLang = ["JA", "ZH-CN", "KO"].includes(settings.lang);
+	const isFullWidthLang = ["JA", "ZH-CN", "KO"].includes(settings.spellLang);
 	if (uselessNames.includes(spellName)) return obscureString(displayName, isFullWidthLang);
 
 	// not useless, so return original
@@ -131,7 +131,7 @@ export const makeFthofDisplayName = (effectName: EffectName): string => {
 	let converting: string;
 
 	// translate to local language
-	const lang = settings.lang;
+	const lang = settings.effectLang;
 	converting = langDict[lang][effectName];
 
 	// replace useless effect name to "----"
@@ -140,7 +140,7 @@ export const makeFthofDisplayName = (effectName: EffectName): string => {
 	// replace Cookie Storm Drop to "Drop"
 	if (settings.shortenCSDrop && effectName == "Cookie Storm Drop") {
 		converting = langDict[lang]["Drop"];
-		const isFullWidthLang = ["JA", "ZH-CN", "KO"].includes(settings.lang);
+		const isFullWidthLang = ["JA", "ZH-CN", "KO"].includes(settings.effectLang);
 		if (settings.hideUseless) converting = obscureString(converting, isFullWidthLang);
 	}
 
@@ -159,7 +159,7 @@ export const makeGfdDisplayName = (spellName: SpellName): string => {
 	let converting: string;
 
 	// translate to local language
-	const lang = settings.lang;
+	const lang = settings.spellLang;
 	converting = langDict[lang][spellName];
 
 	// replace useless spell name to "----"
@@ -183,7 +183,7 @@ export const makeGfdTooltip = (gfdResult: GfdResult, offset: number): string | u
 		if (gfdResult.name != "Spontaneous Edifice") return undefined;
 
 		// make tooltip for SE
-		const seTooltipTemplate = gfdSeTooltipDict[settings.lang];
+		const seTooltipTemplate = gfdSeTooltipDict[settings.spellLang];
 		const seRandomNumberStr = gfdResult.spontaneousEdificeRandomNumber?.toFixed(4);
 		const seTooltip = seTooltipTemplate.replace("%s", String(seRandomNumberStr));
 		return seTooltip;
@@ -199,7 +199,7 @@ export const makeGfdTooltip = (gfdResult: GfdResult, offset: number): string | u
 		if (!effectName) return effectName;
 		const shortenCSDrop = (effectName == "Cookie Storm Drop" && settings.shortenCSDrop);
 		const name = shortenCSDrop ? "Drop" : effectName;
-		return langDict[settings.lang][name];
+		return langDict[settings.effectLang][name];
 	};
 
 	const numStr = "#" + (offset + 1);  // convert to natural number
