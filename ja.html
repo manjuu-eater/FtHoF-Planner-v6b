@@ -184,10 +184,18 @@
 			<br>
 
 			<!-- Settings: Include EF or Skip Some GFD -->
-			<md-checkbox ng-model="includeEF">エルダーフィーバーを含む</md-checkbox>
-			<md-checkbox ng-model="skipRA">忌まわしき復活をスキップ</md-checkbox>
-			<md-checkbox ng-model="skipSE">自然発生の殿堂をスキップ</md-checkbox>
-			<md-checkbox ng-model="skipST">ストレッチの時間をスキップ</md-checkbox>
+			<md-checkbox ng-model="includeEF">
+				{{langDict[effectLang]["Elder Frenzy"]}}を含む
+			</md-checkbox>
+			<md-checkbox ng-model="skipRA">
+				{{langDict[spellLang]["Resurrect Abomination"]}}をスキップ
+			</md-checkbox>
+			<md-checkbox ng-model="skipSE">
+				{{langDict[spellLang]["Spontaneous Edifice"]}}をスキップ
+			</md-checkbox>
+			<md-checkbox ng-model="skipST">
+				{{langDict[spellLang]["Stretch Time"]}}をスキップ
+			</md-checkbox>
 			<md-divider></md-divider>
 
 
@@ -201,24 +209,24 @@
 			<br>
 
 			<md-checkbox ng-model="buffDF">
-				ドラゴンフライトのバフ
+				{{langDict[spellLang]["Dragonflight"]}}のバフ
 			</md-checkbox>
 
 			<md-checkbox ng-model="auraSI">
-				最高峰の知性のオーラ
+				{{langDict[spellLang]["Supreme Intellect"]}}のオーラ
 			</md-checkbox>
 
 			<md-checkbox ng-model="auraRB">
-				現実の歪曲のオーラ
+				{{langDict[spellLang]["Reality Bending"]}}のオーラ
 			</md-checkbox>
 			<br>
 
 			<md-checkbox ng-model="buffDI">
-				愚劣の減少のバフ
+				{{langDict[spellLang]["Diminish Ineptitude"]}}のバフ
 			</md-checkbox>
 
 			<md-checkbox ng-model="debuffDI">
-				愚劣の減少のデバフ
+				{{langDict[spellLang]["Diminish Ineptitude"]}}のデバフ
 			</md-checkbox>
 
 			<md-divider></md-divider>
