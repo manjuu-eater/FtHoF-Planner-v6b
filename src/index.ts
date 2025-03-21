@@ -136,7 +136,7 @@ app.controller("myCtrl", ($rootScope, $scope): void => {
 		const isLoaded = readSaveDataFromSaveCode($scope, $scope.saveCode);
 		if (isLoaded) {
 			saveSaveData($scope);  // save imported save data
-			updateCookies();
+			updateGrimoireResults();
 		}
 	};
 
@@ -200,7 +200,7 @@ app.controller("myCtrl", ($rootScope, $scope): void => {
 	/**
 	 * calculate future FtHoF que and display result
 	 */
-	const updateCookies = (): void => {
+	const updateGrimoireResults = (): void => {
 		// read $scope variables
 		const {
 			seed, spellsCastTotal,
@@ -359,7 +359,7 @@ app.controller("myCtrl", ($rootScope, $scope): void => {
 
 		// log performance time
 		const ellapsedMilliSec = performance.now() - startTime;
-		console.log("updateCookies calculate time: ", ellapsedMilliSec, "ms");
+		console.log("updateGrimoireResults() calculate time: ", ellapsedMilliSec, "ms");
 
 		// set to $scope
 		$scope.baseBackfireChance  = baseBackfireChance;
@@ -379,7 +379,7 @@ app.controller("myCtrl", ($rootScope, $scope): void => {
 		const callCount = count;
 		$scope.spellsCast += callCount;
 		$scope.spellsCastTotal += callCount;
-		updateCookies();
+		updateGrimoireResults();
 
 		// save $scope.spellsCast, $scope.spellsCastTotal
 		saveSaveData($scope);
@@ -393,17 +393,17 @@ app.controller("myCtrl", ($rootScope, $scope): void => {
 	 */
 	const loadMore = (count = 50): void => {
 		$scope.lookahead += count;
-		updateCookies();
+		updateGrimoireResults();
 	};
 
 
 	// set functions to $scope that called from index.html
-	$scope.selectInput   = selectInput;
-	$scope.printScope    = printScope;
-	$scope.importSave    = importSave;
-	$scope.updateCookies = updateCookies;
-	$scope.castSpell     = castSpell;
-	$scope.loadMore      = loadMore;
+	$scope.selectInput           = selectInput;
+	$scope.printScope            = printScope;
+	$scope.importSave            = importSave;
+	$scope.updateGrimoireResults = updateGrimoireResults;
+	$scope.castSpell             = castSpell;
+	$scope.loadMore              = loadMore;
 
 
 	// fill the save code input if previous save code exists in LocalStorage
@@ -417,8 +417,8 @@ app.controller("myCtrl", ($rootScope, $scope): void => {
 	loadSaveData($scope);
 	loadSettings($scope);
 
-	// call $scope.updateCookies() for first time
-	if ($scope.saveCode && !$scope.grimoireResults?.length) updateCookies();
+	// call $scope.updateGrimoireResults() for first time
+	if ($scope.saveCode && !$scope.grimoireResults?.length) updateGrimoireResults();
 
 
 	/**
@@ -462,7 +462,7 @@ app.controller("myCtrl", ($rootScope, $scope): void => {
 			$scope.saveCode = droppedText;
 			saveSaveCodeToLS(droppedText);
 			saveSaveData($scope);
-			updateCookies();
+			updateGrimoireResults();
 		}
 
 		// manually trigger AngularJS digest cycle because this event is not tracked by AngularJS
@@ -480,8 +480,8 @@ app.controller("myCtrl", ($rootScope, $scope): void => {
 		// do nothing if no change
 		if (after === before) return;
 
-		// call updateCookies()
-		updateCookies();
+		// call updateGrimoireResults()
+		updateGrimoireResults();
 
 		// save settings to LocalStorage
 		saveSettings($scope);
