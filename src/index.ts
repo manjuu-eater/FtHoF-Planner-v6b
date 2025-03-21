@@ -298,6 +298,10 @@ app.controller("myCtrl", ($rootScope, $scope): void => {
 			const cookie0 = isFthofWin ? gc0 : wc0;
 			const cookie1 = isFthofWin ? gc1 : wc1;
 
+			// hidden, not choosed cookies
+			const hiddenCookie0 = isFthofWin ? wc0 : gc0;
+			const hiddenCookie1 = isFthofWin ? wc1 : gc1;
+
 			// add good effect information about hidden GC/WC
 			let isOtherCookieNotable0 = false;
 			let isOtherCookieNotable1 = false;
@@ -336,8 +340,8 @@ app.controller("myCtrl", ($rootScope, $scope): void => {
 				wcThreshold,
 
 				isFthofWin,
-				cookie0, gc0, wc0, isOtherCookieNotable0,
-				cookie1, gc1, wc1, isOtherCookieNotable1,
+				cookie0, hiddenCookie0, gc0, wc0, isOtherCookieNotable0,
+				cookie1, hiddenCookie1, gc1, wc1, isOtherCookieNotable1,
 
 				gfd,
 				canCombo, canSugar,

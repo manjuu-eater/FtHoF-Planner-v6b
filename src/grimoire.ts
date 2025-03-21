@@ -117,6 +117,9 @@ export type GrimoireResult = {
 	/** FtHoF result with No Change */
 	cookie0: FthofResult;
 
+	/** hidden, not choosed FtHoF result with No Change */
+	hiddenCookie0: FthofResult;
+
 	/** GC with No Change */
 	gc0: FthofResult;
 
@@ -128,6 +131,9 @@ export type GrimoireResult = {
 
 	/** FtHoF result with One Change */
 	cookie1: FthofResult;
+
+	/** hidden, not choosed FtHoF result with One Change */
+	hiddenCookie1: FthofResult;
 
 	/** GC with One Change */
 	gc1: FthofResult;
