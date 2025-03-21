@@ -471,11 +471,11 @@ app.controller("myCtrl", ($rootScope, $scope): void => {
 		// do nothing if no change
 		if (after === before) return;
 
-		// call updateGrimoireResults()
-		updateGrimoireResults();
-
 		// save settings to LocalStorage
 		saveSettings($scope);
+
+		// call updateGrimoireResults()
+		updateGrimoireResults();
 	};
 
 
