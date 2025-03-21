@@ -312,30 +312,30 @@
 				</colgroup>
 				<thead>
 					<tr>
-						<th>Spell #</th>
-						<th>Random <br>Number</th>
-						<th>No Change</th>
-						<th ng-if="season != 'noswitch'">One Change</th>
-						<th>Gambler's Dream</th>
+						<th class="spell">Spell #</th>
+						<th class="random">Random <br>Number</th>
+						<th class="fthof">No Change</th>
+						<th class="fthof" ng-if="season != 'noswitch'">One Change</th>
+						<th class="gfd">Gambler's Dream</th>
 					</tr>
 					<tr>
-						<td>
+						<td class="spell">
 							Cast count: #from now<br>
 							(In this ascension | Total)
 						</td>
-						<td>
+						<td class="random">
 							Used to determine<br>
 							backfire and GFD spell.
 						</td>
-						<td>
+						<td class="fthof">
 							Season is <b>NOT</b><br>
 							Valentines or Easter.
 						</td>
-						<td ng-if="season != 'noswitch'">
+						<td class="fthof" ng-if="season != 'noswitch'">
 							Season is<br>
 							Valentines or Easter.
 						</td>
-						<td>
+						<td class="gfd">
 							Result of<br>
 							Gambler's Fever Dream.
 						</td>
@@ -344,18 +344,18 @@
 				<tbody>
 					<tr ng-repeat="result in grimoireResults" id="{{result.num}}">
 						<!-- Spell # -->
-						<td><div>
+						<td class="spell"><div>
 							#{{result.num}}
 							({{spellsCast + result.num}} | {{spellsCastTotal + result.num}})
 						</div></td>
 
 						<!-- Random Number -->
-						<td><div>
+						<td class="random"><div>
 							{{result.firstRandomNum.toFixed(4)}} ({{result.wcThreshold}} GC)
 						</div></td>
 
 						<!-- No Change -->
-						<td>
+						<td class="fthof">
 							<div>
 								<img ng-src="{{result.cookie0.image}}">
 								<div ng-class="{
@@ -376,7 +376,7 @@
 						</td>
 
 						<!-- One Change -->
-						<td ng-if="season != 'noswitch'">
+						<td class="fthof" ng-if="season != 'noswitch'">
 							<div>
 								<img ng-src="{{result.cookie1.image}}">
 								<div ng-class="{
@@ -397,7 +397,7 @@
 						</td>
 
 						<!-- Gambler's Dream -->
-						<td><div>
+						<td class="gfd"><div>
 							<img ng-src="{{result.gfd.image}}" ng-class="{
 								success: result.gfd.isWin,
 								backfire: !result.gfd.isWin,
