@@ -57,12 +57,6 @@ app.controller("myCtrl", ($rootScope, $scope) => {
         eTarget.select();
     };
     /**
-     * log $scope (debug function)
-     */
-    const printScope = () => {
-        console.log($scope);
-    };
-    /**
      * import save data from save code and update Grimoire result list
      */
     const importSave = () => {
@@ -76,8 +70,22 @@ app.controller("myCtrl", ($rootScope, $scope) => {
         const isLoaded = readSaveDataFromSaveCode($scope, $scope.saveCode);
         if (isLoaded) {
             saveSaveData($scope); // save imported save data
-            updateCookies();
+            updateGrimoireResults();
         }
+    };
+    /**
+     * apply settings and update FtHoF Planner main output
+     * (not used)
+     */
+    const applySettings = () => {
+        updateSettings($scope);
+        updateGrimoireResults();
+    };
+    /**
+     * log $scope (debug function)
+     */
+    const printScope = () => {
+        console.log($scope);
     };
     /**
      * find comboes from indexes
@@ -122,13 +130,11 @@ app.controller("myCtrl", ($rootScope, $scope) => {
     /**
      * calculate future FtHoF que and display result
      */
-    const updateCookies = () => {
+    const updateGrimoireResults = () => {
         // read $scope variables
         const { seed, spellsCastTotal, } = getSaveData($scope);
         const settings = getSettings($scope);
-        const { lookahead, minComboLength, maxComboLength, maxSpread, includeEF, skipRA, skipSE, skipST, season, } = settings;
-        // update Settings data
-        updateSettings(settings);
+        const { lookahead, minComboLength, maxComboLength, maxSpread, season, } = settings;
         // variables to set $scope.*
         const baseBackfireChance = getBaseFailChance();
         const fthofBackfireChance = getFthofFailChance(baseBackfireChance);
@@ -199,49 +205,23 @@ app.controller("myCtrl", ($rootScope, $scope) => {
             // No Change, One Change cookie to display
             const cookie0 = isFthofWin ? gc0 : wc0;
             const cookie1 = isFthofWin ? gc1 : wc1;
+            // hidden, not choosed cookies
+            const hiddenCookie0 = isFthofWin ? wc0 : gc0;
+            const hiddenCookie1 = isFthofWin ? wc1 : gc1;
             // add good effect information about hidden GC/WC
-            let isOtherCookieNotable0 = false;
-            let isOtherCookieNotable1 = false;
-            if (isFthofWin) {
-                if (wc0.name == "Elder Frenzy") {
-                    gc0.displayName += " (EF)";
-                    gc0.noteworthy = true;
-                    isOtherCookieNotable0 = true;
-                }
-                if (wc1.name == "Elder Frenzy") {
-                    gc1.displayName += " (EF)";
-                    gc1.noteworthy = true;
-                    isOtherCookieNotable1 = true;
-                }
-                if (wc0.name == "Free Sugar Lump")
-                    gc0.displayName += " (Sugar)";
-                if (wc1.name == "Free Sugar Lump")
-                    gc1.displayName += " (Sugar)";
-            }
-            else {
-                if (gc0.name == "Building Special") {
-                    wc0.displayName += " (BS)";
-                    wc0.noteworthy = true;
-                    isOtherCookieNotable0 = true;
-                }
-                if (gc1.name == "Building Special") {
-                    wc1.displayName += " (BS)";
-                    wc1.noteworthy = true;
-                    isOtherCookieNotable1 = true;
-                }
-                if (gc0.name == "Free Sugar Lump")
-                    wc0.displayName += " (Sugar)";
-                if (gc1.name == "Free Sugar Lump")
-                    wc1.displayName += " (Sugar)";
-            }
+            const notableEffects = (isFthofWin
+                ? ["Elder Frenzy", "Free Sugar Lump"]
+                : ["Building Special", "Free Sugar Lump"]);
+            const isHiddenCookieNotable0 = hasCookieEffect([hiddenCookie0], notableEffects);
+            const isHiddenCookieNotable1 = hasCookieEffect([hiddenCookie1], notableEffects);
             // set to object and push to array
             const grimoireResult = {
                 num: i + 1,
                 firstRandomNum: randomNumber,
                 wcThreshold,
                 isFthofWin,
-                cookie0, gc0, wc0, isOtherCookieNotable0,
-                cookie1, gc1, wc1, isOtherCookieNotable1,
+                cookie0, hiddenCookie0, gc0, wc0, isHiddenCookieNotable0,
+                cookie1, hiddenCookie1, gc1, wc1, isHiddenCookieNotable1,
                 gfd,
                 canCombo, canSugar,
             };
@@ -258,7 +238,7 @@ app.controller("myCtrl", ($rootScope, $scope) => {
         console.log("Combos:", combos);
         // log performance time
         const ellapsedMilliSec = performance.now() - startTime;
-        console.log("updateCookies calculate time: ", ellapsedMilliSec, "ms");
+        console.log("updateGrimoireResults() calculate time: ", ellapsedMilliSec, "ms");
         // set to $scope
         $scope.baseBackfireChance = baseBackfireChance;
         $scope.backfireChance = fthofBackfireChance;
@@ -275,7 +255,7 @@ app.controller("myCtrl", ($rootScope, $scope) => {
         const callCount = count;
         $scope.spellsCast += callCount;
         $scope.spellsCastTotal += callCount;
-        updateCookies();
+        updateGrimoireResults();
         // save $scope.spellsCast, $scope.spellsCastTotal
         saveSaveData($scope);
     };
@@ -286,14 +266,14 @@ app.controller("myCtrl", ($rootScope, $scope) => {
      */
     const loadMore = (count = 50) => {
         $scope.lookahead += count;
-        updateCookies();
+        updateGrimoireResults();
     };
     // set functions to $scope that called from index.html
     $scope.selectInput = selectInput;
-    $scope.printScope = printScope;
     $scope.importSave = importSave;
-    $scope.updateCookies = updateCookies;
+    $scope.applySettings = applySettings;
     $scope.castSpell = castSpell;
+    $scope.printScope = printScope;
     $scope.loadMore = loadMore;
     // fill the save code input if previous save code exists in LocalStorage
     const previousSaveCode = loadSaveCodeFromLS();
@@ -304,9 +284,9 @@ app.controller("myCtrl", ($rootScope, $scope) => {
     // load previous state if saved in LocalStorage
     loadSaveData($scope);
     loadSettings($scope);
-    // call $scope.updateCookies() for first time
+    // call $scope.updateGrimoireResults() for first time
     if ($scope.saveCode && !((_a = $scope.grimoireResults) === null || _a === void 0 ? void 0 : _a.length))
-        updateCookies();
+        updateGrimoireResults();
     /**
      * function that is called when something is dropped to window
 
@@ -348,7 +328,7 @@ app.controller("myCtrl", ($rootScope, $scope) => {
             $scope.saveCode = droppedText;
             saveSaveCodeToLS(droppedText);
             saveSaveData($scope);
-            updateCookies();
+            updateGrimoireResults();
         }
         // manually trigger AngularJS digest cycle because this event is not tracked by AngularJS
         $scope.$apply();
@@ -363,10 +343,10 @@ app.controller("myCtrl", ($rootScope, $scope) => {
         // do nothing if no change
         if (after === before)
             return;
-        // call updateCookies()
-        updateCookies();
         // save settings to LocalStorage
         saveSettings($scope);
+        // call updateGrimoireResults()
+        updateGrimoireResults();
     };
     /**
      * start watching events related to FtHoF Planner UI

@@ -59,7 +59,7 @@ export let settings: Settings;
  * @returns current settings
  */
 export const getSettings = ($scope: any): Settings => {
-	const settings = {
+	const latestSettings = {
 		lookahead:         $scope.lookahead,
 		minComboLength:    $scope.minComboLength,
 		maxComboLength:    $scope.maxComboLength,
@@ -80,7 +80,12 @@ export const getSettings = ($scope: any): Settings => {
 		effectLang:        $scope.effectLang,
 		spellLang:         $scope.spellLang,
 	};
-	return settings;
+
+	// update module variable "settings" with latest $scope data
+	settings = latestSettings;
+
+	// return latest settings
+	return latestSettings;
 };
 
 
@@ -97,6 +102,9 @@ export const setSettings = ($scope: any, settings: Settings) => {
 			$scope[key] = settings[key];
 		}
 	});
+
+	// update module variable "settings" with written settings
+	settings = getSettings($scope);
 };
 
 

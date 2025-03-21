@@ -22,7 +22,7 @@ export let settings;
  * @returns current settings
  */
 export const getSettings = ($scope) => {
-    const settings = {
+    const latestSettings = {
         lookahead: $scope.lookahead,
         minComboLength: $scope.minComboLength,
         maxComboLength: $scope.maxComboLength,
@@ -43,7 +43,10 @@ export const getSettings = ($scope) => {
         effectLang: $scope.effectLang,
         spellLang: $scope.spellLang,
     };
-    return settings;
+    // update module variable "settings" with latest $scope data
+    settings = latestSettings;
+    // return latest settings
+    return latestSettings;
 };
 /**
  * set all FtHoF settings to $scope
@@ -58,6 +61,8 @@ export const setSettings = ($scope, settings) => {
             $scope[key] = settings[key];
         }
     });
+    // update module variable "settings" with written settings
+    settings = getSettings($scope);
 };
 /**
  * save FtHoF settings to LocalStorage

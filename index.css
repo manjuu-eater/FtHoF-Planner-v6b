@@ -33,7 +33,7 @@ md-input-container .md-errors-spacer {
 div.select_container {
 	margin-bottom: 16px;
 }
-md-select:not(_) {
+md-select:not(_) {  /* increase specificity */
 	display: inline-block;
 	margin: 0;
 }
@@ -96,6 +96,14 @@ div.highlight {
 	/* border-radius: 3px; */
 }
 
+/* hidden cookie */
+.hidden_cookie img {
+	opacity: .5;
+}
+.hidden_cookie .highlight.combo {
+	background-color: #ffff80;
+}
+
 /* GFD image */
 img.gfd {
 	border: solid 1px transparent;
@@ -135,6 +143,7 @@ col.spell {
 }
 col.random {
 	width: 9em;
+	font-size: small;
 }
 
 thead th {
@@ -153,6 +162,10 @@ thead td {
 	line-height: 1.2em;
 }
 
+thead th.random {
+	font-size: medium;
+}
+
 tbody tr {
 	height: 2em;
 }
@@ -163,6 +176,10 @@ tbody td > div {
 	display: flex;
 	align-items: center;
 	gap: .5em;
+}
+
+tbody td.random {
+	font-size: small;
 }
 
 tbody td img {
