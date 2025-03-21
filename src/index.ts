@@ -389,12 +389,12 @@ app.controller("myCtrl", ($rootScope, $scope): void => {
 
 
 	// set functions to $scope that called from index.html
-	$scope.selectInput           = selectInput;
-	$scope.importSave            = importSave;
-	$scope.updateGrimoireResults = updateGrimoireResults;
-	$scope.castSpell             = castSpell;
-	$scope.printScope            = printScope;
-	$scope.loadMore              = loadMore;
+	$scope.selectInput   = selectInput;
+	$scope.importSave    = importSave;
+	$scope.applySettings = applySettings;
+	$scope.castSpell     = castSpell;
+	$scope.printScope    = printScope;
+	$scope.loadMore      = loadMore;
 
 
 	// fill the save code input if previous save code exists in LocalStorage
