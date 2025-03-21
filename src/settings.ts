@@ -97,6 +97,9 @@ export const setSettings = ($scope: any, settings: Settings) => {
 			$scope[key] = settings[key];
 		}
 	});
+
+	// update module variable "settings" with written settings
+	settings = getSettings($scope);
 };
 
 
