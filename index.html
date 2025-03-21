@@ -356,9 +356,17 @@
 								<img ng-src="{{result.cookie0.image}}">
 								<div ng-class="{
 									'highlight combo': result.cookie0.noteworthy,
-									'highlight notable': result.isOtherCookieNotable0,
 								}" ng-attr-title="{{result.cookie0.tooltip}}">
 									{{result.cookie0.displayName}}
+								</div>
+							</div>
+							<div ng-if="result.isOtherCookieNotable0">
+								<img ng-src="{{result.hiddenCookie0.image}}" style="opacity: .5;">
+								<div ng-class="{
+									'highlight combo': result.hiddenCookie0.noteworthy,
+									'highlight notable': result.isOtherCookieNotable0,
+								}" ng-attr-title="{{result.hiddenCookie0.tooltip}}">
+									{{result.hiddenCookie0.displayName}}
 								</div>
 							</div>
 						</td>
@@ -369,9 +377,17 @@
 								<img ng-src="{{result.cookie1.image}}">
 								<div ng-class="{
 									'highlight combo': result.cookie1.noteworthy,
-									'highlight notable': result.isOtherCookieNotable1,
 								}" ng-attr-title="{{result.cookie1.tooltip}}">
 									{{result.cookie1.displayName}}
+								</div>
+							</div>
+							<div ng-if="result.isOtherCookieNotable1">
+								<img ng-src="{{result.hiddenCookie1.image}}" style="opacity: .5;">
+								<div ng-class="{
+									'highlight combo': result.hiddenCookie1.noteworthy,
+									'highlight notable': result.isOtherCookieNotable1,
+								}" ng-attr-title="{{result.hiddenCookie1.tooltip}}">
+									{{result.hiddenCookie1.displayName}}
 								</div>
 							</div>
 						</td>
