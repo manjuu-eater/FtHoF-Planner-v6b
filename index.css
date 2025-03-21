@@ -96,6 +96,14 @@ div.highlight {
 	/* border-radius: 3px; */
 }
 
+/* hidden cookie */
+.hidden_cookie img {
+	opacity: .5;
+}
+.hidden_cookie .highlight.combo {
+	background-color: #ffff80;
+}
+
 /* GFD image */
 img.gfd {
 	border: solid 1px transparent;
