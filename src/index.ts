@@ -210,7 +210,6 @@ app.controller("myCtrl", ($rootScope, $scope): void => {
 		const {
 			lookahead,
 			minComboLength, maxComboLength, maxSpread,
-			includeEF, skipRA, skipSE, skipST,
 			season,
 		} = settings;
 
