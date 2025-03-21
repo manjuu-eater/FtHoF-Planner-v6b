@@ -306,29 +306,13 @@ app.controller("myCtrl", ($rootScope, $scope): void => {
 			let isOtherCookieNotable0 = false;
 			let isOtherCookieNotable1 = false;
 			if (isFthofWin) {
-				if (wc0.name == "Elder Frenzy") {
-					gc0.displayName += " (EF)";
-					gc0.noteworthy = true;
-					isOtherCookieNotable0 = true;
-				}
-				if (wc1.name == "Elder Frenzy") {
-					gc1.displayName += " (EF)";
-					gc1.noteworthy = true;
-					isOtherCookieNotable1 = true;
-				}
+				if (wc0.name == "Elder Frenzy") isOtherCookieNotable0 = true;
+				if (wc1.name == "Elder Frenzy") isOtherCookieNotable1 = true;
 				if (wc0.name == "Free Sugar Lump") gc0.displayName += " (Sugar)";
 				if (wc1.name == "Free Sugar Lump") gc1.displayName += " (Sugar)";
 			} else {
-				if (gc0.name == "Building Special") {
-					wc0.displayName += " (BS)";
-					wc0.noteworthy = true;
-					isOtherCookieNotable0 = true;
-				}
-				if (gc1.name == "Building Special") {
-					wc1.displayName += " (BS)";
-					wc1.noteworthy = true;
-					isOtherCookieNotable1 = true;
-				}
+				if (gc0.name == "Building Special") isOtherCookieNotable0 = true;
+				if (gc1.name == "Building Special") isOtherCookieNotable1 = true;
 				if (gc0.name == "Free Sugar Lump") wc0.displayName += " (Sugar)";
 				if (gc1.name == "Free Sugar Lump") wc1.displayName += " (Sugar)";
 			}
