@@ -135,6 +135,15 @@ app.controller("myCtrl", ($rootScope, $scope): void => {
 
 
 	/**
+	 * apply settings and update FtHoF Planner main output
+	 * (not used)
+	 */
+	const applySettings = (): void => {
+		updateGrimoireResults();
+	};
+
+
+	/**
 	 * log $scope (debug function)
 	 */
 	const printScope = (): void => {
