@@ -115,14 +115,6 @@ app.controller("myCtrl", ($rootScope, $scope): void => {
 
 
 	/**
-	 * log $scope (debug function)
-	 */
-	const printScope = (): void => {
-		console.log($scope);
-	};
-
-
-	/**
 	 * import save data from save code and update Grimoire result list
 	 */
 	const importSave = (): void => {
@@ -139,6 +131,14 @@ app.controller("myCtrl", ($rootScope, $scope): void => {
 			saveSaveData($scope);  // save imported save data
 			updateGrimoireResults();
 		}
+	};
+
+
+	/**
+	 * log $scope (debug function)
+	 */
+	const printScope = (): void => {
+		console.log($scope);
 	};
 
 
@@ -381,10 +381,10 @@ app.controller("myCtrl", ($rootScope, $scope): void => {
 
 	// set functions to $scope that called from index.html
 	$scope.selectInput           = selectInput;
-	$scope.printScope            = printScope;
 	$scope.importSave            = importSave;
 	$scope.updateGrimoireResults = updateGrimoireResults;
 	$scope.castSpell             = castSpell;
+	$scope.printScope            = printScope;
 	$scope.loadMore              = loadMore;
 
 
