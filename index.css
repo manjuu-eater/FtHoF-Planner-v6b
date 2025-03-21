@@ -33,7 +33,7 @@ md-input-container .md-errors-spacer {
 div.select_container {
 	margin-bottom: 16px;
 }
-md-select:not(_) {
+md-select:not(_) {  /* increase specificity */
 	display: inline-block;
 	margin: 0;
 }
