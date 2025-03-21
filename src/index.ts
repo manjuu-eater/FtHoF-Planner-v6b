@@ -139,6 +139,7 @@ app.controller("myCtrl", ($rootScope, $scope): void => {
 	 * (not used)
 	 */
 	const applySettings = (): void => {
+		updateSettings($scope);
 		updateGrimoireResults();
 	};
 
@@ -222,9 +223,6 @@ app.controller("myCtrl", ($rootScope, $scope): void => {
 			minComboLength, maxComboLength, maxSpread,
 			season,
 		} = settings;
-
-		// update Settings data
-		updateSettings($scope);
 
 		// variables to set $scope.*
 		const baseBackfireChance = getBaseFailChance();
