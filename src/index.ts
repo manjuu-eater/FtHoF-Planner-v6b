@@ -31,7 +31,7 @@ import {
 } from "./save_data.js";
 
 import {
-	GrimoireResult,
+	FthofResult, GfdResult,
 	getBaseFailChance, getFthofFailChance,
 	castFtHoF,
 	hasCookieEffect,
@@ -59,6 +59,67 @@ type Sugar = {
 
 	/** GC Sugar Lump with buildings < 10 */
 	isFewBuildings: boolean;
+};
+
+/**
+ * set of grimoire spell cast result
+ *
+ * All values in this set are uniquely derived from seed and total spell cast count.
+ */
+export type GrimoireResult = {
+	/** number of list that shown as "#1" */
+	num: number;
+
+	/** first result of Math.random() after seedrandom */
+	firstRandomNum: number;
+
+	/** minimum count of GC/WC on screen that changes GC to WC */
+	wcThreshold: number;
+
+
+	/** whether FtHoF result is success */
+	isFthofWin: boolean;
+
+	/** FtHoF result with No Change */
+	cookie0: FthofResult;
+
+	/** hidden, not choosed FtHoF result with No Change */
+	hiddenCookie0: FthofResult;
+
+	/** GC with No Change */
+	gc0: FthofResult;
+
+	/** WC with No Change */
+	wc0: FthofResult;
+
+	/** whether hidden GC/WC with No Change has good effect */
+	isHiddenCookieNotable0: boolean;
+
+	/** FtHoF result with One Change */
+	cookie1: FthofResult;
+
+	/** hidden, not choosed FtHoF result with One Change */
+	hiddenCookie1: FthofResult;
+
+	/** GC with One Change */
+	gc1: FthofResult;
+
+	/** WC with One Change */
+	wc1: FthofResult;
+
+	/** whether hidden GC/WC with One Change has good effect */
+	isHiddenCookieNotable1: boolean;
+
+
+	/** GFD result */
+	gfd: GfdResult;
+
+
+	/** whether FtHoF / GFD can be part of a combo */
+	canCombo: boolean;
+
+	/** whether Sugar Lump can be get */
+	canSugar: boolean;
 };
 
 
