@@ -224,7 +224,7 @@ app.controller("myCtrl", ($rootScope, $scope): void => {
 		} = settings;
 
 		// update Settings data
-		updateSettings(settings);
+		updateSettings($scope);
 
 		// variables to set $scope.*
 		const baseBackfireChance = getBaseFailChance();
