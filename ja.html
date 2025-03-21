@@ -365,11 +365,11 @@
 									{{result.cookie0.displayName}}
 								</div>
 							</div>
-							<div ng-if="result.isOtherCookieNotable0">
+							<div ng-if="result.isHiddenCookieNotable0">
 								<img ng-src="{{result.hiddenCookie0.image}}" style="opacity: .5;">
 								<div ng-class="{
 									'highlight combo': result.hiddenCookie0.noteworthy,
-									'highlight notable': result.isOtherCookieNotable0,
+									'highlight notable': result.isHiddenCookieNotable0,
 								}" ng-attr-title="{{result.hiddenCookie0.tooltip}}">
 									{{result.hiddenCookie0.displayName}}
 								</div>
@@ -386,11 +386,11 @@
 									{{result.cookie1.displayName}}
 								</div>
 							</div>
-							<div ng-if="result.isOtherCookieNotable1">
+							<div ng-if="result.isHiddenCookieNotable1">
 								<img ng-src="{{result.hiddenCookie1.image}}" style="opacity: .5;">
 								<div ng-class="{
 									'highlight combo': result.hiddenCookie1.noteworthy,
-									'highlight notable': result.isOtherCookieNotable1,
+									'highlight notable': result.isHiddenCookieNotable1,
 								}" ng-attr-title="{{result.hiddenCookie1.tooltip}}">
 									{{result.hiddenCookie1.displayName}}
 								</div>

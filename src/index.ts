@@ -309,8 +309,8 @@ app.controller("myCtrl", ($rootScope, $scope): void => {
 				? ["Elder Frenzy", "Free Sugar Lump"]
 				: ["Building Special", "Free Sugar Lump"]
 			);
-			const isOtherCookieNotable0 = hasCookieEffect([hiddenCookie0], notableEffects);
-			const isOtherCookieNotable1 = hasCookieEffect([hiddenCookie1], notableEffects);
+			const isHiddenCookieNotable0 = hasCookieEffect([hiddenCookie0], notableEffects);
+			const isHiddenCookieNotable1 = hasCookieEffect([hiddenCookie1], notableEffects);
 
 			// set to object and push to array
 			const grimoireResult: GrimoireResult = {
@@ -319,8 +319,8 @@ app.controller("myCtrl", ($rootScope, $scope): void => {
 				wcThreshold,
 
 				isFthofWin,
-				cookie0, hiddenCookie0, gc0, wc0, isOtherCookieNotable0,
-				cookie1, hiddenCookie1, gc1, wc1, isOtherCookieNotable1,
+				cookie0, hiddenCookie0, gc0, wc0, isHiddenCookieNotable0,
+				cookie1, hiddenCookie1, gc1, wc1, isHiddenCookieNotable1,
 
 				gfd,
 				canCombo, canSugar,

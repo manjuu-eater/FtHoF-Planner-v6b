@@ -127,7 +127,7 @@ export type GrimoireResult = {
 	wc0: FthofResult;
 
 	/** whether hidden GC/WC with No Change has good effect */
-	isOtherCookieNotable0: boolean;
+	isHiddenCookieNotable0: boolean;
 
 	/** FtHoF result with One Change */
 	cookie1: FthofResult;
@@ -142,7 +142,7 @@ export type GrimoireResult = {
 	wc1: FthofResult;
 
 	/** whether hidden GC/WC with One Change has good effect */
-	isOtherCookieNotable1: boolean;
+	isHiddenCookieNotable1: boolean;
 
 
 	/** GFD result */
