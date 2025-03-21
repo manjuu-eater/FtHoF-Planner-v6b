@@ -8,6 +8,7 @@
 
 // import game related objects and functions
 import {
+	EffectName,
 	Math_seedrandom,
 } from "./game_related_data.js";
 
@@ -303,19 +304,13 @@ app.controller("myCtrl", ($rootScope, $scope): void => {
 			const hiddenCookie1 = isFthofWin ? wc1 : gc1;
 
 			// add good effect information about hidden GC/WC
-			let isOtherCookieNotable0 = false;
-			let isOtherCookieNotable1 = false;
-			if (isFthofWin) {
-				if (wc0.name == "Elder Frenzy") isOtherCookieNotable0 = true;
-				if (wc1.name == "Elder Frenzy") isOtherCookieNotable1 = true;
-				if (wc0.name == "Free Sugar Lump") isOtherCookieNotable0 = true;
-				if (wc1.name == "Free Sugar Lump") isOtherCookieNotable1 = true;
-			} else {
-				if (gc0.name == "Building Special") isOtherCookieNotable0 = true;
-				if (gc1.name == "Building Special") isOtherCookieNotable1 = true;
-				if (gc0.name == "Free Sugar Lump") isOtherCookieNotable0 = true;
-				if (gc1.name == "Free Sugar Lump") isOtherCookieNotable1 = true;
-			}
+			const notableEffects: EffectName[] = (
+				isFthofWin
+				? ["Elder Frenzy", "Free Sugar Lump"]
+				: ["Building Special", "Free Sugar Lump"]
+			);
+			const isOtherCookieNotable0 = hasCookieEffect([hiddenCookie0], notableEffects);
+			const isOtherCookieNotable1 = hasCookieEffect([hiddenCookie1], notableEffects);
 
 			// set to object and push to array
 			const grimoireResult: GrimoireResult = {
