@@ -378,6 +378,16 @@
 									{{result.hiddenCookie0.displayName}}
 								</div>
 							</div>
+							<div class="few_buildings_sugar" ng-if="result.canGcSugarWithFewBuildings0">
+								<img ng-src="{{result.gc0.image}}">
+								<div
+									class="highlight rare_sugar"
+									title="建物の合計が10未満のとき、無料の砂糖玉を獲得する。（※ ギャンブラー経由が必須）"
+								>
+									<div class="condition">建物 ＜ 10 のときのみ</div>
+									Free Sugar Lump
+								</div>
+							</div>
 						</td>
 
 						<!-- One Change -->
@@ -397,6 +407,16 @@
 									'highlight notable': result.isHiddenCookieNotable1,
 								}" ng-attr-title="{{result.hiddenCookie1.tooltip}}">
 									{{result.hiddenCookie1.displayName}}
+								</div>
+							</div>
+							<div class="few_buildings_sugar" ng-if="result.canGcSugarWithFewBuildings1">
+								<img ng-src="{{result.gc1.image}}">
+								<div
+									class="highlight rare_sugar"
+									title="建物の合計が10未満のとき、無料の砂糖玉を獲得する。（※ ギャンブラー経由が必須）"
+								>
+									<div class="condition">建物 ＜ 10 のときのみ</div>
+									Free Sugar Lump
 								</div>
 							</div>
 						</td>

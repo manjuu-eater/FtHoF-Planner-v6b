@@ -95,6 +95,10 @@ div.highlight {
 	border: dashed 3px orange;
 	/* border-radius: 3px; */
 }
+.highlight.rare_sugar {
+	border: dotted 3px red;
+	/* border-radius: 3px; */
+}
 
 /* hidden cookie */
 .hidden_cookie img {
@@ -102,6 +106,12 @@ div.highlight {
 }
 .hidden_cookie .highlight.combo {
 	background-color: #ffff80;
+}
+
+/* few buildings Sugar */
+.few_buildings_sugar .condition {
+	font-size: small;
+	color: gray;
 }
 
 /* GFD image */
