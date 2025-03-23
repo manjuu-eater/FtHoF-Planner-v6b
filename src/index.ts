@@ -95,6 +95,9 @@ export type GrimoireResult = {
 	/** whether hidden GC/WC with No Change has good effect */
 	isHiddenCookieNotable0: boolean;
 
+	/** whether there is a chance of GC Sugar with very few buildings */
+	canGcSugarWithFewBuildings0: boolean;
+
 	/** FtHoF result with One Change */
 	cookie1: FthofResult;
 
@@ -109,6 +112,9 @@ export type GrimoireResult = {
 
 	/** whether hidden GC/WC with One Change has good effect */
 	isHiddenCookieNotable1: boolean;
+
+	/** whether there is a chance of GC Sugar with very few buildings */
+	canGcSugarWithFewBuildings1: boolean;
 
 
 	/** GFD result */
@@ -362,6 +368,8 @@ app.controller("myCtrl", ($rootScope, $scope): void => {
 				};
 				sugars.push(sugar);
 			}
+			const canGcSugarWithFewBuildings0 = gc0.canGcSugarWithFewBuildings;
+			const canGcSugarWithFewBuildings1 = gc1.canGcSugarWithFewBuildings;
 
 			// No Change, One Change cookie to display
 			const cookie0 = isFthofWin ? gc0 : wc0;
@@ -387,8 +395,8 @@ app.controller("myCtrl", ($rootScope, $scope): void => {
 				wcThreshold,
 
 				isFthofWin,
-				cookie0, hiddenCookie0, gc0, wc0, isHiddenCookieNotable0,
-				cookie1, hiddenCookie1, gc1, wc1, isHiddenCookieNotable1,
+				cookie0, hiddenCookie0, gc0, wc0, isHiddenCookieNotable0, canGcSugarWithFewBuildings0,
+				cookie1, hiddenCookie1, gc1, wc1, isHiddenCookieNotable1, canGcSugarWithFewBuildings1,
 
 				gfd,
 				canCombo, canSugar,

@@ -202,6 +202,8 @@ app.controller("myCtrl", ($rootScope, $scope) => {
                 };
                 sugars.push(sugar);
             }
+            const canGcSugarWithFewBuildings0 = gc0.canGcSugarWithFewBuildings;
+            const canGcSugarWithFewBuildings1 = gc1.canGcSugarWithFewBuildings;
             // No Change, One Change cookie to display
             const cookie0 = isFthofWin ? gc0 : wc0;
             const cookie1 = isFthofWin ? gc1 : wc1;
@@ -220,8 +222,8 @@ app.controller("myCtrl", ($rootScope, $scope) => {
                 firstRandomNum: randomNumber,
                 wcThreshold,
                 isFthofWin,
-                cookie0, hiddenCookie0, gc0, wc0, isHiddenCookieNotable0,
-                cookie1, hiddenCookie1, gc1, wc1, isHiddenCookieNotable1,
+                cookie0, hiddenCookie0, gc0, wc0, isHiddenCookieNotable0, canGcSugarWithFewBuildings0,
+                cookie1, hiddenCookie1, gc1, wc1, isHiddenCookieNotable1, canGcSugarWithFewBuildings1,
                 gfd,
                 canCombo, canSugar,
             };

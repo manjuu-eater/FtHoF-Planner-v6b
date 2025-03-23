@@ -333,16 +333,16 @@
 							(この転生 | 合計)
 						</td>
 						<td class="random">
-							逆効果とギャンブラーの呪文を決定するために使用。
+							逆効果とギャンブラーの呪文の決定に使われる。
 						</td>
 						<td class="fthof">
-							シーズンが <b>バレンタイン</b> / <b>イースター</b> では<b>ない</b>。
+							シーズンが バレンタイン / イースター <b>ではない</b>。
 						</td>
 						<td class="fthof" ng-if="season != 'noswitch'">
-							シーズンが <b>バレンタイン</b> / <b>イースター</b>。
+							シーズンが バレンタイン / イースター。
 						</td>
 						<td class="gfd">
-							ギャンブラーの熱の夢の結果。
+							ギャンブラーの熱の夢 の結果。
 						</td>
 					</tr>
 				</thead>
@@ -378,6 +378,16 @@
 									{{result.hiddenCookie0.displayName}}
 								</div>
 							</div>
+							<div class="few_buildings_sugar" ng-if="result.canGcSugarWithFewBuildings0">
+								<img ng-src="{{result.gc0.image}}">
+								<div
+									class="highlight rare_sugar"
+									title="建物の合計が10未満のとき、無料の砂糖玉を獲得する。（※ ギャンブラー経由が必須）"
+								>
+									<div class="condition">建物 ＜ 10 のときのみ</div>
+									Free Sugar Lump
+								</div>
+							</div>
 						</td>
 
 						<!-- One Change -->
@@ -397,6 +407,16 @@
 									'highlight notable': result.isHiddenCookieNotable1,
 								}" ng-attr-title="{{result.hiddenCookie1.tooltip}}">
 									{{result.hiddenCookie1.displayName}}
+								</div>
+							</div>
+							<div class="few_buildings_sugar" ng-if="result.canGcSugarWithFewBuildings1">
+								<img ng-src="{{result.gc1.image}}">
+								<div
+									class="highlight rare_sugar"
+									title="建物の合計が10未満のとき、無料の砂糖玉を獲得する。（※ ギャンブラー経由が必須）"
+								>
+									<div class="condition">建物 ＜ 10 のときのみ</div>
+									Free Sugar Lump
 								</div>
 							</div>
 						</td>

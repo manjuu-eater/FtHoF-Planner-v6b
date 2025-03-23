@@ -321,7 +321,7 @@
 					<tr>
 						<td class="spell">
 							Cast count: #from now<br>
-							(In this ascension | Total)
+							(In this run | Total)
 						</td>
 						<td class="random">
 							Used to determine<br>
@@ -373,6 +373,16 @@
 									{{result.hiddenCookie0.displayName}}
 								</div>
 							</div>
+							<div class="few_buildings_sugar" ng-if="result.canGcSugarWithFewBuildings0">
+								<img ng-src="{{result.gc0.image}}">
+								<div
+									class="highlight rare_sugar"
+									title="Gain a free sugar lump with very few buildings, but only through GFD."
+								>
+									<div class="condition">when buildings &lt; 10</div>
+									Free Sugar Lump
+								</div>
+							</div>
 						</td>
 
 						<!-- One Change -->
@@ -392,6 +402,16 @@
 									'highlight notable': result.isHiddenCookieNotable1,
 								}" ng-attr-title="{{result.hiddenCookie1.tooltip}}">
 									{{result.hiddenCookie1.displayName}}
+								</div>
+							</div>
+							<div class="few_buildings_sugar" ng-if="result.canGcSugarWithFewBuildings1">
+								<img ng-src="{{result.gc1.image}}">
+								<div
+									class="highlight rare_sugar"
+									title="Gain a free sugar lump with very few buildings, but only through GFD."
+								>
+									<div class="condition">when buildings &lt; 10</div>
+									Free Sugar Lump
 								</div>
 							</div>
 						</td>
