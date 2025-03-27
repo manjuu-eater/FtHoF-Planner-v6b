@@ -200,15 +200,15 @@
 			<br>
 
 			<md-checkbox ng-model="buffDF">
-				Buff "{{langDict[spellLang]["Dragonflight"]}}"
+				Buff "{{langDict[auraLang]["Dragonflight"]}}"
 			</md-checkbox>
 
 			<md-checkbox ng-model="auraSI">
-				Aura "{{langDict[spellLang]["Supreme Intellect"]}}"
+				Aura "{{langDict[auraLang]["Supreme Intellect"]}}"
 			</md-checkbox>
 
 			<md-checkbox ng-model="auraRB">
-				Aura "{{langDict[spellLang]["Reality Bending"]}}"
+				Aura "{{langDict[auraLang]["Reality Bending"]}}"
 			</md-checkbox>
 			<br>
 
@@ -263,8 +263,27 @@
 				</label>
 
 				<label>
-					Spell / Aura:
-					<md-select ng-model="spellLang" aria-label="Spell / Aura">
+					Spell:
+					<md-select ng-model="spellLang" aria-label="Spell">
+						<md-option value="EN">English</md-option>
+						<md-option value="FR">Français</md-option>
+						<md-option value="DE">Deutsch</md-option>
+						<md-option value="NL">Nederlands</md-option>
+						<md-option value="CS">Čeština</md-option>
+						<md-option value="PL">Polski</md-option>
+						<md-option value="IT">Italiano</md-option>
+						<md-option value="ES">Español</md-option>
+						<md-option value="PT-BR">Português</md-option>
+						<md-option value="JA">日本語</md-option>
+						<md-option value="ZH-CN">中文</md-option>
+						<md-option value="KO">한글</md-option>
+						<md-option value="RU">Русский</md-option>
+					</md-select>
+				</label>
+
+				<label>
+					Aura:
+					<md-select ng-model="auraLang" aria-label="Aura">
 						<md-option value="EN">English</md-option>
 						<md-option value="FR">Français</md-option>
 						<md-option value="DE">Deutsch</md-option>

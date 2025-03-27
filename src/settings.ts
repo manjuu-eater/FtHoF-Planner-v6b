@@ -32,6 +32,7 @@ export type Settings = {
 	shortenCSDrop: boolean;
 	effectLang: Lang;
 	spellLang: Lang;
+	auraLang: Lang;
 };
 
 
@@ -44,7 +45,8 @@ export const settingsModelNames: (keyof Settings)[] = [
 	"lookahead", "minComboLength", "maxComboLength", "maxSpread",
 	"includeEF", "skipRA", "skipSE", "skipST",
 	"screenCookieCount", "buffDF", "auraSI", "auraRB", "buffDI", "debuffDI",
-	"season", "hideUseless", "shortenCSDrop", "effectLang", "spellLang",
+	"season", "hideUseless", "shortenCSDrop",
+	"effectLang", "spellLang", "auraLang",
 ];
 
 
@@ -79,6 +81,7 @@ export const getSettings = ($scope: any): Settings => {
 		shortenCSDrop:     $scope.shortenCSDrop,
 		effectLang:        $scope.effectLang,
 		spellLang:         $scope.spellLang,
+		auraLang:          $scope.auraLang,
 	};
 
 	// update module variable "settings" with latest $scope data
@@ -188,6 +191,7 @@ export const initSettings = ($scope: any): void => {
 	$scope.shortenCSDrop = false;
 	$scope.effectLang = lang;
 	$scope.spellLang = lang;
+	$scope.auraLang = lang;
 
 	// set settings to module variable
 	updateSettings($scope);
