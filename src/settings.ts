@@ -2,7 +2,7 @@
  * FtHoF Planner v6b
  * settings.ts
  *
- * types, functions of FtHoF settings
+ * types, functions of FtHoF Planner settings
  */
 
 import { Lang } from "./translate";
@@ -55,7 +55,7 @@ export let settings: Settings;
 
 
 /**
- * get all FtHoF settings from $scope
+ * get all FtHoF Planner settings from $scope
  *
  * @param $scope AngularJS $scope
  * @returns current settings
@@ -93,7 +93,7 @@ export const getSettings = ($scope: any): Settings => {
 
 
 /**
- * set all FtHoF settings to $scope
+ * set all FtHoF Planner settings to $scope
  *
  * @param $scope AngularJS $scope
  * @param settings settings to set
@@ -112,7 +112,7 @@ export const setSettings = ($scope: any, settings: Settings) => {
 
 
 /**
- * save FtHoF settings to LocalStorage
+ * save FtHoF Planner settings to LocalStorage
  *
  * @param $scope AngularJS $scope
  */
@@ -128,7 +128,7 @@ export const saveSettings = ($scope: any): void => {
 
 
 /**
- * load FtHoF settings from LocalStorage
+ * load FtHoF Planner settings from LocalStorage
  *
  * @param $scope AngularJS $scope
  */
@@ -155,7 +155,7 @@ export const updateSettings = ($scope: any): void => {
 
 
 /**
- * initialize $scope value about FtHoF settings
+ * initialize $scope value about FtHoF Planner settings
  *
  * @param $scope AngularJS $scope
  */
@@ -185,7 +185,7 @@ export const initSettings = ($scope: any): void => {
 	$scope.buffDI = false;
 	$scope.debuffDI = false;
 
-	// Settings: FtHoF Settings
+	// Settings: FtHoF Planner Settings
 	$scope.season = "cookie";
 	$scope.hideUseless = false;
 	$scope.shortenCSDrop = false;
