@@ -67,8 +67,17 @@ img.mini {
 
 
 /* save code */
+.save_code_form {
+	display: flex;
+	align-items: center;
+}
+.save_code_form label {
+	/*white-space: nowrap;*/
+	margin-right: 8px;
+}
 input#save_code {
 	color: gray;
+	flex: 1;  /* use all of usable blank space */
 }
 
 /* Sugar with few buildings */
