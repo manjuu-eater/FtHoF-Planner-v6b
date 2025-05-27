@@ -137,7 +137,7 @@ app.controller("myCtrl", ($rootScope, $scope): void => {
 	// initialize FtHoF Planner save data
 	initSaveData($scope);
 
-	// initialize FtHoF Planner Scope Variables
+	// initialize FtHoF Planner scope variables
 	$scope.baseBackfireChance = undefined;
 	$scope.backfireChance = undefined;
 	$scope.combos = [];
