@@ -75,7 +75,7 @@ img.mini {
 	/*white-space: nowrap;*/
 	margin-right: 8px;
 }
-input#save_code {
+.save_code_form input#save_code {
 	color: gray;
 	flex: 1;  /* use all of usable blank space */
 }
