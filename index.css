@@ -7,6 +7,9 @@ input {
 	border-radius: 4px;
 	padding: 4px 8px;
 }
+input[type=number] {
+	text-align: right;
+}
 input, md-radio-group {
 	margin: 8px 0;
 }
