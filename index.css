@@ -100,11 +100,11 @@ div.highlight {
 	background-color: lightblue;
 }
 .highlight.notable {
-	border: dashed 3px orange;
+	border: 3px dashed orange;
 	/* border-radius: 3px; */
 }
 .highlight.rare_sugar {
-	border: dotted 3px red;
+	border: 3px dotted red;
 	/* border-radius: 3px; */
 }
 
@@ -124,7 +124,7 @@ div.highlight {
 
 /* GFD image */
 img.gfd {
-	border: solid 1px transparent;
+	border: 1px solid transparent;
 	border-radius: 4px;
 	padding: 4px;
 }
@@ -144,7 +144,7 @@ table {
 	border-collapse: collapse;
 	max-width: 100%;
 	width: 100%;
-	border: solid 1px lightgray;
+	border: 1px solid lightgray;
 }
 
 th {
