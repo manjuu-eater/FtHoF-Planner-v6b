@@ -54,6 +54,13 @@
 			</md-button>
 		</form>
 
+		<!-- Seed -->
+		<label>
+			Seed
+			<input class="seed" size="5" disabled ng-model="seed">
+		</label>
+		<md-button class="md-raised md-primary" ng-click="">edit (WIP)</md-button>
+
 
 		<!-- Description of FtHoF Planner -->
 		<p><b>
@@ -299,6 +306,18 @@
 
 			<md-divider></md-divider>
 
+
+			<!-- spellsCast, spellsCastTotal -->
+			<label>
+				Spells cast:
+				<input type="number" class="w4" ng-model="spellsCast">
+			</label>
+			<label>
+				(total:
+				<input type="number" class="w5" ng-model="spellsCastTotal"><!--
+				-->)
+			</label>
+			<br>
 
 			<!-- Buttons -->
 			<!--<md-button class="md-raised md-primary" ng-click="applySettings()">Apply Settings</md-button>-->

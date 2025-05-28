@@ -25,6 +25,9 @@ input.w4 {
 input.w5 {
 	width: 5em;
 }
+input:disabled {
+	background-color: lightgray;
+}
 
 .content {
 	max-width: 1440px;
@@ -78,6 +81,11 @@ img.mini {
 .save_code_form input#save_code {
 	color: gray;
 	flex: 1;  /* use all of usable blank space */
+}
+
+/* seed */
+.seed {
+	text-align: center;
 }
 
 /* Sugar with few buildings */
