@@ -244,11 +244,11 @@ body.fthof_planner {
 	from { transform: rotate(0deg); }
 	to { transform: rotate(360deg); }
 }
-.fthof_planner .inner {
+.fthof_planner .loading .inner {
 	display: inline-block;
 	animation: spin 2s linear infinite;
 	animation-delay: .5s;
 }
-.fthof_planner .inner.reverse {
+.fthof_planner .loading .inner.reverse {
 	animation-direction: reverse;
 }
