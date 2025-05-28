@@ -1,33 +1,33 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="fthof_planner">
 <head>
 	<meta charset="UTF-8">
 
 	<!-- AngularJS Libraries -->
 	<!-- (Angular Material requires these files) -->
-	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
-	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-animate.min.js"></script>
-	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-aria.min.js"></script>
-	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-messages.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-animate.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-aria.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-messages.min.js"></script>
 
 	<!-- Angular Material Library -->
 	<script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.8/angular-material.min.js"></script>
 
-	<!-- FtHoF Library Files -->
+	<!-- FtHoF Planner Library Files -->
 	<script src="lib/seedrandom.min.js"></script>
 
-	<!-- FtHoF JavaScript File (source file: src/index.ts) -->
+	<!-- FtHoF Planner JavaScript File (source file: src/index.ts) -->
 	<script type="module" src="dist/index.js"></script>
 
 	<!-- icon, styles -->
-	<link rel="shortcut icon" type="image/x-icon" href="img/favicon.ico?">
+	<link rel="icon" type="image/png" href="img/wizardtower/02.png">
 	<link rel="stylesheet" type="text/css" href="index.css">
 	<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.8/angular-material.min.css">
 
 	<!-- page tilte -->
 	<title>FtHoF Planner v6b</title>
 </head>
-<body>
+<body class="fthof_planner">
 
 <!-- header title -->
 <md-toolbar>
@@ -40,23 +40,33 @@
 <div ng-app="myApp" ng-controller="myCtrl">
 	<div class="content">
 		<!-- Save Code -->
-		<form ng-submit="importSave()">
-			<div layout="row">
-				<md-input-container flex>
-					<label>Save Code</label>
-					<input
-						id="save_code"
-						ng-model="saveCode"
-						ng-click="selectInput($event)"
-						ng-mousedown="selectInput($event)"
-						ng-mouseup="selectInput($event)"
-					>
-				</md-input-container>
-				<md-button type="submit" class="md-raised md-primary">
-					Import
-				</md-button>
-			</div>
+		<form class="save_code_form" ng-submit="importSave()">
+			<label for="save_code">Save Code</label>
+			<input
+				id="save_code"
+				ng-model="saveCode"
+				ng-click="selectInput($event)"
+				ng-mousedown="selectInput($event)"
+				ng-mouseup="selectInput($event)"
+			>
+			<md-button type="submit" class="md-raised md-primary">
+				Import
+			</md-button>
 		</form>
+
+		<!-- Seed -->
+		<label>
+			Seed
+			<input
+				class="seed"
+				size="5"
+				ng-model="seed"
+				ng-change="applySettings()"
+				ng-blur="disableSeedEdit()"
+				ng-readonly="isSeedReadonly"
+			>
+		</label>
+		<md-button class="md-raised md-primary" ng-click="enableSeedEdit()">edit</md-button>
 
 
 		<!-- Description of FtHoF Planner -->
@@ -200,15 +210,15 @@
 			<br>
 
 			<md-checkbox ng-model="buffDF">
-				Buff "{{langDict[spellLang]["Dragonflight"]}}"
+				Buff "{{langDict[auraLang]["Dragonflight"]}}"
 			</md-checkbox>
 
 			<md-checkbox ng-model="auraSI">
-				Aura "{{langDict[spellLang]["Supreme Intellect"]}}"
+				Aura "{{langDict[auraLang]["Supreme Intellect"]}}"
 			</md-checkbox>
 
 			<md-checkbox ng-model="auraRB">
-				Aura "{{langDict[spellLang]["Reality Bending"]}}"
+				Aura "{{langDict[auraLang]["Reality Bending"]}}"
 			</md-checkbox>
 			<br>
 
@@ -223,7 +233,7 @@
 			<md-divider></md-divider>
 
 
-			<!-- Settings: FtHoF Settings -->
+			<!-- Settings: FtHoF Planner Settings -->
 			<md-radio-group ng-model="season" layout="row">
 				"One Change" Season:&nbsp;
 				<md-radio-button value="noswitch">No Use</md-radio-button>
@@ -263,8 +273,27 @@
 				</label>
 
 				<label>
-					Spell / Aura:
-					<md-select ng-model="spellLang" aria-label="Spell / Aura">
+					Spell:
+					<md-select ng-model="spellLang" aria-label="Spell">
+						<md-option value="EN">English</md-option>
+						<md-option value="FR">Français</md-option>
+						<md-option value="DE">Deutsch</md-option>
+						<md-option value="NL">Nederlands</md-option>
+						<md-option value="CS">Čeština</md-option>
+						<md-option value="PL">Polski</md-option>
+						<md-option value="IT">Italiano</md-option>
+						<md-option value="ES">Español</md-option>
+						<md-option value="PT-BR">Português</md-option>
+						<md-option value="JA">日本語</md-option>
+						<md-option value="ZH-CN">中文</md-option>
+						<md-option value="KO">한글</md-option>
+						<md-option value="RU">Русский</md-option>
+					</md-select>
+				</label>
+
+				<label>
+					Aura:
+					<md-select ng-model="auraLang" aria-label="Aura">
 						<md-option value="EN">English</md-option>
 						<md-option value="FR">Français</md-option>
 						<md-option value="DE">Deutsch</md-option>
@@ -285,6 +314,27 @@
 			<md-divider></md-divider>
 
 
+			<!-- spellsCast, spellsCastTotal -->
+			<label>
+				Spells cast:
+				<input
+					type="number"
+					class="w4"
+					ng-model="spellsCast"
+					ng-change="applySettings()"
+				>
+			</label>
+			<label>
+				(total:
+				<input
+					type="number"
+					class="w5"
+					ng-model="spellsCastTotal"
+					ng-change="applySettings()"
+				>)
+			</label>
+			<br>
+
 			<!-- Buttons -->
 			<!--<md-button class="md-raised md-primary" ng-click="applySettings()">Apply Settings</md-button>-->
 			<md-button class="md-raised md-primary" ng-click="castSpell()">Cast Spell</md-button>
@@ -293,8 +343,8 @@
 
 			<!-- n times cast with manual number -->
 			<form class="cast_manual" ng-submit="castSpell(castCountNum)">
-				<input type="number" class="w4" ng-model="castCountNum">
-				<md-button class="md-raised md-primary" ng-click="castSpell(castCountNum)">x-n</md-button>
+				<input type="number" class="w4" placeholder="n" ng-model="castCountNum">
+				<md-button class="md-raised md-primary" ng-click="castSpell(castCountNum)">x n</md-button>
 			</form>
 			<!-- <md-button class="md-raised md-primary" ng-click="printScope()">Print Scope</md-button> -->
 

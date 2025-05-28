@@ -16,9 +16,10 @@ app.controller("myCtrl", ($rootScope, $scope) => {
     var _a;
     // initialize Save Code
     $scope.saveCode = "";
+    $scope.isSeedReadonly = true;
     // initialize FtHoF Planner save data
     initSaveData($scope);
-    // initialize FtHoF Planner Scope Variables
+    // initialize FtHoF Planner scope variables
     $scope.baseBackfireChance = undefined;
     $scope.backfireChance = undefined;
     $scope.combos = [];
@@ -72,6 +73,18 @@ app.controller("myCtrl", ($rootScope, $scope) => {
             saveSaveData($scope); // save imported save data
             updateGrimoireResults();
         }
+    };
+    /**
+     * enable editing seed input
+     */
+    const enableSeedEdit = () => {
+        $scope.isSeedReadonly = false;
+    };
+    /**
+     * disable editing seed input
+     */
+    const disableSeedEdit = () => {
+        $scope.isSeedReadonly = true;
     };
     /**
      * apply settings and update FtHoF Planner main output
@@ -273,6 +286,8 @@ app.controller("myCtrl", ($rootScope, $scope) => {
     // set functions to $scope that called from index.html
     $scope.selectInput = selectInput;
     $scope.importSave = importSave;
+    $scope.enableSeedEdit = enableSeedEdit;
+    $scope.disableSeedEdit = disableSeedEdit;
     $scope.applySettings = applySettings;
     $scope.castSpell = castSpell;
     $scope.printScope = printScope;

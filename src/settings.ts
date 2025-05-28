@@ -2,7 +2,7 @@
  * FtHoF Planner v6b
  * settings.ts
  *
- * types, functions of FtHoF settings
+ * types, functions of FtHoF Planner settings
  */
 
 import { Lang } from "./translate";
@@ -32,6 +32,7 @@ export type Settings = {
 	shortenCSDrop: boolean;
 	effectLang: Lang;
 	spellLang: Lang;
+	auraLang: Lang;
 };
 
 
@@ -44,7 +45,8 @@ export const settingsModelNames: (keyof Settings)[] = [
 	"lookahead", "minComboLength", "maxComboLength", "maxSpread",
 	"includeEF", "skipRA", "skipSE", "skipST",
 	"screenCookieCount", "buffDF", "auraSI", "auraRB", "buffDI", "debuffDI",
-	"season", "hideUseless", "shortenCSDrop", "effectLang", "spellLang",
+	"season", "hideUseless", "shortenCSDrop",
+	"effectLang", "spellLang", "auraLang",
 ];
 
 
@@ -53,7 +55,7 @@ export let settings: Settings;
 
 
 /**
- * get all FtHoF settings from $scope
+ * get all FtHoF Planner settings from $scope
  *
  * @param $scope AngularJS $scope
  * @returns current settings
@@ -79,6 +81,7 @@ export const getSettings = ($scope: any): Settings => {
 		shortenCSDrop:     $scope.shortenCSDrop,
 		effectLang:        $scope.effectLang,
 		spellLang:         $scope.spellLang,
+		auraLang:          $scope.auraLang,
 	};
 
 	// update module variable "settings" with latest $scope data
@@ -90,7 +93,7 @@ export const getSettings = ($scope: any): Settings => {
 
 
 /**
- * set all FtHoF settings to $scope
+ * set all FtHoF Planner settings to $scope
  *
  * @param $scope AngularJS $scope
  * @param settings settings to set
@@ -109,7 +112,7 @@ export const setSettings = ($scope: any, settings: Settings) => {
 
 
 /**
- * save FtHoF settings to LocalStorage
+ * save FtHoF Planner settings to LocalStorage
  *
  * @param $scope AngularJS $scope
  */
@@ -125,7 +128,7 @@ export const saveSettings = ($scope: any): void => {
 
 
 /**
- * load FtHoF settings from LocalStorage
+ * load FtHoF Planner settings from LocalStorage
  *
  * @param $scope AngularJS $scope
  */
@@ -152,7 +155,7 @@ export const updateSettings = ($scope: any): void => {
 
 
 /**
- * initialize $scope value about FtHoF settings
+ * initialize $scope value about FtHoF Planner settings
  *
  * @param $scope AngularJS $scope
  */
@@ -182,12 +185,13 @@ export const initSettings = ($scope: any): void => {
 	$scope.buffDI = false;
 	$scope.debuffDI = false;
 
-	// Settings: FtHoF Settings
+	// Settings: FtHoF Planner Settings
 	$scope.season = "cookie";
 	$scope.hideUseless = false;
 	$scope.shortenCSDrop = false;
 	$scope.effectLang = lang;
 	$scope.spellLang = lang;
+	$scope.auraLang = lang;
 
 	// set settings to module variable
 	updateSettings($scope);

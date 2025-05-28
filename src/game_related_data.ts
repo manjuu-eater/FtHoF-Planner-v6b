@@ -78,7 +78,7 @@ type M_Spell = {
 export const Math_seedrandom = (seed: string): string => {
 	// @ts-expect-error  ts(2339)
 	return Math.seedrandom(seed);
-}
+};
 
 
 /**
@@ -120,7 +120,7 @@ export const b64_to_utf8 = (str: string): string => {
 	}).join(''));}
 	catch(err)
 	{return '';}
-}
+};
 
 
 /**

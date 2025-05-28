@@ -1,33 +1,33 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="ja" class="fthof_planner">
 <head>
 	<meta charset="UTF-8">
 
 	<!-- AngularJS Libraries -->
 	<!-- (Angular Material requires these files) -->
-	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
-	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-animate.min.js"></script>
-	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-aria.min.js"></script>
-	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-messages.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-animate.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-aria.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-messages.min.js"></script>
 
 	<!-- Angular Material Library -->
 	<script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.8/angular-material.min.js"></script>
 
-	<!-- FtHoF Library Files -->
+	<!-- FtHoF Planner Library Files -->
 	<script src="lib/seedrandom.min.js"></script>
 
-	<!-- FtHoF JavaScript File (source file: src/index.ts) -->
+	<!-- FtHoF Planner JavaScript File (source file: src/index.ts) -->
 	<script type="module" src="dist/index.js"></script>
 
 	<!-- icon, styles -->
-	<link rel="shortcut icon" type="image/x-icon" href="img/favicon.ico?">
+	<link rel="icon" type="image/png" href="img/wizardtower/02.png">
 	<link rel="stylesheet" type="text/css" href="index.css">
 	<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.8/angular-material.min.css">
 
 	<!-- page tilte -->
 	<title>FtHoF Planner v6b</title>
 </head>
-<body>
+<body class="fthof_planner">
 
 <!-- header title -->
 <md-toolbar>
@@ -40,26 +40,36 @@
 <div ng-app="myApp" ng-controller="myCtrl">
 	<div class="content">
 		<!-- Save Code -->
-		<form ng-submit="importSave()">
-			<div layout="row">
-				<md-input-container flex>
-					<label>セーブコード</label>
-					<input
-						id="save_code"
-						ng-model="saveCode"
-						ng-click="selectInput($event)"
-						ng-mousedown="selectInput($event)"
-						ng-mouseup="selectInput($event)"
-					>
-				</md-input-container>
-				<md-button type="submit" class="md-raised md-primary">
-					読込
-				</md-button>
-			</div>
+		<form class="save_code_form" ng-submit="importSave()">
+			<label for="save_code">セーブコード</label>
+			<input
+				id="save_code"
+				ng-model="saveCode"
+				ng-click="selectInput($event)"
+				ng-mousedown="selectInput($event)"
+				ng-mouseup="selectInput($event)"
+			>
+			<md-button type="submit" class="md-raised md-primary">
+				読込
+			</md-button>
 		</form>
 
+		<!-- Seed -->
+		<label>
+			シード
+			<input
+				class="seed"
+				size="5"
+				ng-model="seed"
+				ng-change="applySettings()"
+				ng-blur="disableSeedEdit()"
+				ng-readonly="isSeedReadonly"
+			>
+		</label>
+		<md-button class="md-raised md-primary" ng-click="enableSeedEdit()">編集</md-button>
 
-		<!-- Description of FtHoF -->
+
+		<!-- Description of FtHoF Planner -->
 		<p style="font-size: small;">
 			ひそかに作っていた FtHoF Planner v6b を日本語化したものです。自分の感覚で使いやすくなるようにゴリゴリと好き勝手に改造しています。<br>
 			※ 注意：日本語化はあまり手をかけていません。機械翻訳であからさまに変だったとこを適当に手直ししただけです<br>
@@ -93,7 +103,7 @@
 				<span class="inner reverse">🍪</span>
 			</h2>
 			<div class="description">
-				（このテキストが画面に残っている場合、処理に問題がある可能性があります...）
+				（このテキストが画面に残っている場合、処理に問題がある可能性があります…）
 			</div>
 		</div>
 
@@ -209,15 +219,15 @@
 			<br>
 
 			<md-checkbox ng-model="buffDF">
-				バフ "{{langDict[spellLang]["Dragonflight"]}}"
+				バフ "{{langDict[auraLang]["Dragonflight"]}}"
 			</md-checkbox>
 
 			<md-checkbox ng-model="auraSI">
-				オーラ "{{langDict[spellLang]["Supreme Intellect"]}}"
+				オーラ "{{langDict[auraLang]["Supreme Intellect"]}}"
 			</md-checkbox>
 
 			<md-checkbox ng-model="auraRB">
-				オーラ "{{langDict[spellLang]["Reality Bending"]}}"
+				オーラ "{{langDict[auraLang]["Reality Bending"]}}"
 			</md-checkbox>
 			<br>
 
@@ -232,7 +242,7 @@
 			<md-divider></md-divider>
 
 
-			<!-- Settings: FtHoF Settings -->
+			<!-- Settings: FtHoF Planner Settings -->
 			<md-radio-group ng-model="season" layout="row">
 				"One Change" シーズン:&nbsp;
 				<md-radio-button value="noswitch">使用しない</md-radio-button>
@@ -272,8 +282,27 @@
 				</label>
 
 				<label>
-					呪文 / オーラ:
-					<md-select ng-model="spellLang" aria-label="呪文 / オーラ">
+					呪文:
+					<md-select ng-model="spellLang" aria-label="呪文">
+						<md-option value="EN">English</md-option>
+						<md-option value="FR">Français</md-option>
+						<md-option value="DE">Deutsch</md-option>
+						<md-option value="NL">Nederlands</md-option>
+						<md-option value="CS">Čeština</md-option>
+						<md-option value="PL">Polski</md-option>
+						<md-option value="IT">Italiano</md-option>
+						<md-option value="ES">Español</md-option>
+						<md-option value="PT-BR">Português</md-option>
+						<md-option value="JA">日本語</md-option>
+						<md-option value="ZH-CN">中文</md-option>
+						<md-option value="KO">한글</md-option>
+						<md-option value="RU">Русский</md-option>
+					</md-select>
+				</label>
+
+				<label>
+					オーラ:
+					<md-select ng-model="auraLang" aria-label="オーラ">
 						<md-option value="EN">English</md-option>
 						<md-option value="FR">Français</md-option>
 						<md-option value="DE">Deutsch</md-option>
@@ -294,6 +323,27 @@
 			<md-divider></md-divider>
 
 
+			<!-- spellsCast, spellsCastTotal -->
+			<label>
+				かけた呪文：
+				<input
+					type="number"
+					class="w4"
+					ng-model="spellsCast"
+					ng-change="applySettings()"
+				>
+			</label>
+			<label>
+				（合計：
+				<input
+					type="number"
+					class="w5"
+					ng-model="spellsCastTotal"
+					ng-change="applySettings()"
+				>）
+			</label>
+			<br>
+
 			<!-- Buttons -->
 			<!--<md-button class="md-raised md-primary" ng-click="updateGrimoireResults()">設定を適用</md-button>-->
 			<md-button class="md-raised md-primary" ng-click="castSpell()">呪文を発動</md-button>
@@ -302,8 +352,8 @@
 
 			<!-- n times cast with manual number -->
 			<form class="cast_manual" ng-submit="castSpell(castCountNum)">
-				<input type="number" class="w4" ng-model="castCountNum">
-				<md-button class="md-raised md-primary" ng-click="castSpell(castCountNum)">x-n</md-button>
+				<input type="number" class="w4" placeholder="n" ng-model="castCountNum">
+				<md-button class="md-raised md-primary" ng-click="castSpell(castCountNum)">x n</md-button>
 			</form>
 			<!-- <md-button class="md-raised md-primary" ng-click="printScope()">スコープを表示</md-button> -->
 
@@ -369,8 +419,8 @@
 									{{result.cookie0.displayName}}
 								</div>
 							</div>
-							<div ng-if="result.isHiddenCookieNotable0">
-								<img ng-src="{{result.hiddenCookie0.image}}" style="opacity: .5;">
+							<div class="hidden_cookie" ng-if="result.isHiddenCookieNotable0">
+								<img ng-src="{{result.hiddenCookie0.image}}">
 								<div ng-class="{
 									'highlight combo': result.hiddenCookie0.noteworthy,
 									'highlight notable': result.isHiddenCookieNotable0,
@@ -400,8 +450,8 @@
 									{{result.cookie1.displayName}}
 								</div>
 							</div>
-							<div ng-if="result.isHiddenCookieNotable1">
-								<img ng-src="{{result.hiddenCookie1.image}}" style="opacity: .5;">
+							<div class="hidden_cookie" ng-if="result.isHiddenCookieNotable1">
+								<img ng-src="{{result.hiddenCookie1.image}}">
 								<div ng-class="{
 									'highlight combo': result.hiddenCookie1.noteworthy,
 									'highlight notable': result.isHiddenCookieNotable1,
