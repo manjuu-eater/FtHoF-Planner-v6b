@@ -25,7 +25,7 @@ input.w4 {
 input.w5 {
 	width: 5em;
 }
-input:disabled {
+input:disabled, input:read-only {
 	background-color: lightgray;
 }
 
