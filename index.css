@@ -46,6 +46,11 @@ body.fthof_planner {
 	margin: 0;
 }
 
+/* md-button */
+.fthof_planner .md-button {
+	text-transform: none;
+}
+
 /* link */
 .fthof_planner a {
 	cursor: pointer;
