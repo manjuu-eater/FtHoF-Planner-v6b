@@ -133,6 +133,7 @@ const app = window.angular.module("myApp", ["ngMaterial"]);
 app.controller("myCtrl", ($rootScope, $scope): void => {
 	// initialize Save Code
 	$scope.saveCode = "";
+	$scope.isSeedReadonly = true;
 
 	// initialize FtHoF Planner save data
 	initSaveData($scope);
@@ -198,6 +199,21 @@ app.controller("myCtrl", ($rootScope, $scope): void => {
 			saveSaveData($scope);  // save imported save data
 			updateGrimoireResults();
 		}
+	};
+
+
+	/**
+	 * enable editing seed input
+	 */
+	const enableSeedEdit = (): void => {
+		$scope.isSeedReadonly = false;
+	};
+
+	/**
+	 * disable editing seed input
+	 */
+	const disableSeedEdit = (): void => {
+		$scope.isSeedReadonly = true;
 	};
 
 
@@ -456,12 +472,14 @@ app.controller("myCtrl", ($rootScope, $scope): void => {
 
 
 	// set functions to $scope that called from index.html
-	$scope.selectInput   = selectInput;
-	$scope.importSave    = importSave;
-	$scope.applySettings = applySettings;
-	$scope.castSpell     = castSpell;
-	$scope.printScope    = printScope;
-	$scope.loadMore      = loadMore;
+	$scope.selectInput     = selectInput;
+	$scope.importSave      = importSave;
+	$scope.enableSeedEdit  = enableSeedEdit;
+	$scope.disableSeedEdit = disableSeedEdit;
+	$scope.applySettings   = applySettings;
+	$scope.castSpell       = castSpell;
+	$scope.printScope      = printScope;
+	$scope.loadMore        = loadMore;
 
 
 	// fill the save code input if previous save code exists in LocalStorage
