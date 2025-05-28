@@ -37,11 +37,6 @@ body.fthof_planner {
 }
 
 
-/* error line below md-input */
-.fthof_planner md-input-container .md-errors-spacer {
-	min-height: 0px !important;
-}
-
 /* md-select */
 .fthof_planner div.select_container {
 	margin-bottom: 16px;
