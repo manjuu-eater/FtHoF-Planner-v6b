@@ -3,161 +3,163 @@ body.fthof_planner {
 	background-color: white;
 }
 
-input {
+.fthof_planner input {
 	border: 1px solid gray;
 	border-radius: 4px;
 	padding: 4px 8px;
 }
-input[type=number] {
+.fthof_planner input[type=number] {
 	text-align: right;
 }
-input, md-radio-group {
+.fthof_planner input, md-radio-group {
 	margin: 8px 0;
 }
-input.w2 {
+.fthof_planner input.w2 {
 	width: 2em;
 }
-input.w3 {
+.fthof_planner input.w3 {
 	width: 3em;
 }
-input.w4 {
+.fthof_planner input.w4 {
 	width: 4em;
 }
-input.w5 {
+.fthof_planner input.w5 {
 	width: 5em;
 }
-input:disabled, input:read-only {
+.fthof_planner input:disabled,
+.fthof_planner input:read-only {
 	background-color: lightgray;
 }
 
-.content {
+.fthof_planner .content {
 	max-width: 1440px;
 	margin: auto;
 }
 
 
 /* error line below md-input */
-md-input-container .md-errors-spacer {
+.fthof_planner md-input-container .md-errors-spacer {
 	min-height: 0px !important;
 }
 
 /* md-select */
-div.select_container {
+.fthof_planner div.select_container {
 	margin-bottom: 16px;
 }
-md-select:not(_) {  /* increase specificity */
+.fthof_planner md-select:not(_) {  /* increase specificity */
 	display: inline-block;
 	margin: 0;
 }
 
 /* link */
-a {
+.fthof_planner a {
 	cursor: pointer;
 	color: blue;
 }
-a:hover, a.hover {
+.fthof_planner a:hover,
+.fthof_planner a.hover {
 	text-decoration: underline;
 }
 
 /* inline image */
-img.mini {
+.fthof_planner img.mini {
 	height: .9em;
 }
 
 /* hide elements without collapsing */
-.hidden {
+.fthof_planner .hidden {
 	visibility: hidden;
 }
 
 
 /* save code */
-.save_code_form {
+.fthof_planner .save_code_form {
 	display: flex;
 	align-items: center;
 }
-.save_code_form label {
+.fthof_planner .save_code_form label {
 	/*white-space: nowrap;*/
 	margin-right: 8px;
 }
-.save_code_form input#save_code {
+.fthof_planner .save_code_form input#save_code {
 	color: gray;
 	flex: 1;  /* use all of usable blank space */
 }
 
 /* seed */
-.seed {
+.fthof_planner .seed {
 	text-align: center;
 }
 
 /* Sugar with few buildings */
-.sugar_few_buildings {
+.fthof_planner .sugar_few_buildings {
 	color: crimson;
 	font-weight: bold;
 }
 
 /* n times cast with manual number */
-.cast_manual {
+.fthof_planner .cast_manual {
 	display: inline;
 	margin-left: .5em;
 	vertical-align: middle;
 }
 
 /* loading title */
-.loading {
+.fthof_planner .loading {
 	text-align: center;
 }
 
 /* highlighting noteworty or skippable cookie */
-div.highlight {
+.fthof_planner div.highlight {
 	width: 100%;
 }
-.highlight.combo {
+.fthof_planner .highlight.combo {
 	background-color: yellow;
 }
-.highlight.skip {
+.fthof_planner .highlight.skip {
 	background-color: lightblue;
 }
-.highlight.notable {
+.fthof_planner .highlight.notable {
 	border: 3px dashed orange;
 	/* border-radius: 3px; */
 }
-.highlight.rare_sugar {
+.fthof_planner .highlight.rare_sugar {
 	border: 3px dotted red;
 	/* border-radius: 3px; */
 }
 
 /* hidden cookie */
-.hidden_cookie img {
+.fthof_planner .hidden_cookie img {
 	opacity: .5;
 }
-.hidden_cookie .highlight.combo {
+.fthof_planner .hidden_cookie .highlight.combo {
 	background-color: #ffff80;
 }
 
 /* few buildings Sugar */
-.few_buildings_sugar .condition {
+.fthof_planner .few_buildings_sugar .condition {
 	font-size: small;
 	color: gray;
 }
 
 /* GFD image */
-img.gfd {
+.fthof_planner img.gfd {
 	border: 1px solid transparent;
 	border-radius: 4px;
 	padding: 4px;
 }
-img.gfd.success {
+.fthof_planner img.gfd.success {
 	border-color: gold;
 	background-color: khaki;
 }
-img.gfd.backfire {
+.fthof_planner img.gfd.backfire {
 	border-color: chocolate;
 	background-color: orangered;
 }
 
 
 /* CSS to make <table> look like the Angular Material theme */
-table {
+.fthof_planner table {
 	table-layout: fixed;
 	border-collapse: collapse;
 	max-width: 100%;
@@ -165,30 +167,30 @@ table {
 	border: 1px solid lightgray;
 }
 
-th {
+.fthof_planner th {
 	height: 3em;
 }
-th, td {
+.fthof_planner th, td {
 	padding: .3em .5em;
 	border-style: none solid;
 	border-width: 1px;
 	border-color: lightgray;
 }
-col.spell {
+.fthof_planner col.spell {
 	width: 10em;
 }
-col.random {
+.fthof_planner col.random {
 	width: 9em;
 	font-size: small;
 }
 
-thead th {
+.fthof_planner thead th {
 	background-color: rgb(140, 158, 255);
 	color: rgba(0, 0, 0, 0.87);
 	font-size: 20px;
 	font-weight: 500;
 }
-thead td {
+.fthof_planner thead td {
 	background-color: rgb(250, 250, 250);
 	color: rgba(0, 0, 0, 0.54);
 
@@ -198,27 +200,27 @@ thead td {
 	line-height: 1.2em;
 }
 
-thead th.random {
+.fthof_planner thead th.random {
 	font-size: medium;
 }
 
-tbody tr {
+.fthof_planner tbody tr {
 	height: 2em;
 }
-tbody tr:nth-of-type(odd) {
+.fthof_planner tbody tr:nth-of-type(odd) {
 	background-color: lavender;
 }
-tbody td > div {
+.fthof_planner tbody td > div {
 	display: flex;
 	align-items: center;
 	gap: .5em;
 }
 
-tbody td.random {
+.fthof_planner tbody td.random {
 	font-size: small;
 }
 
-tbody td img {
+.fthof_planner tbody td img {
 	width: 2em;
 	height: 2em;
 }
@@ -229,11 +231,11 @@ tbody td img {
 	from { opacity: 0; }
 	to { opacity: 1; }
 }
-.loading {
+.fthof_planner .loading {
 	opacity: 0;
 	animation: fadeIn 3s ease-in-out 1s forwards;
 }
-.loading .description {
+.fthof_planner .loading .description {
 	opacity: 0;
 	animation: fadeIn 3s ease-in-out 3s forwards;
 }
@@ -242,11 +244,11 @@ tbody td img {
 	from { transform: rotate(0deg); }
 	to { transform: rotate(360deg); }
 }
-.inner {
+.fthof_planner .inner {
 	display: inline-block;
 	animation: spin 2s linear infinite;
 	animation-delay: .5s;
 }
-.inner.reverse {
+.fthof_planner .inner.reverse {
 	animation-direction: reverse;
 }
