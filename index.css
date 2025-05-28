@@ -205,6 +205,9 @@ body.fthof_planner {
 .fthof_planner tbody tr:nth-of-type(odd) {
 	background-color: lavender;
 }
+.fthof_planner tbody tr:nth-of-type(even) {
+	background-color: white;
+}
 .fthof_planner tbody td > div {
 	display: flex;
 	align-items: center;
