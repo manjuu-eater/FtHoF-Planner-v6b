@@ -234,7 +234,7 @@
 
 			<!-- Settings: FtHoF Planner Settings -->
 			<md-radio-group ng-model="season" layout="row">
-				"One Change" Season:&nbsp;
+				Season 2:&nbsp;
 				<md-radio-button value="noswitch">No Use</md-radio-button>
 				<md-radio-button value="cookie">GC/WC</md-radio-button>
 				<md-radio-button value="valentines">Valentine's day</md-radio-button>
@@ -364,8 +364,8 @@
 					<tr>
 						<th class="spell">Spell #</th>
 						<th class="random">Random <br>Number</th>
-						<th class="fthof">No Change</th>
-						<th class="fthof" ng-if="season != 'noswitch'">One Change</th>
+						<th class="fthof">Season 1</th>
+						<th class="fthof" ng-if="season != 'noswitch'">Season 2</th>
 						<th class="gfd">Gambler's Dream</th>
 					</tr>
 					<tr>
@@ -404,7 +404,7 @@
 							{{result.firstRandomNum.toFixed(4)}} ({{result.wcThreshold}} GC)
 						</div></td>
 
-						<!-- No Change -->
+						<!-- Season 1 -->
 						<td class="fthof">
 							<div>
 								<img ng-src="/{{result.cookie0.image}}">
@@ -435,7 +435,7 @@
 							</div>
 						</td>
 
-						<!-- One Change -->
+						<!-- Season 2 -->
 						<td class="fthof" ng-if="season != 'noswitch'">
 							<div>
 								<img ng-src="/{{result.cookie1.image}}">

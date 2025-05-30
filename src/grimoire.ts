@@ -72,22 +72,22 @@ export type GfdResult = SpellCastResult & {
 	canSkip: boolean;
 
 
-	/** FtHoF result with No Change */
+	/** FtHoF result with Season 1 (No Change) */
 	cookie0?: FthofResult;
 
-	/** GC with No Change */
+	/** GC with Season 1 (No Change) */
 	gc0?: FthofResult;
 
-	/** WC with No Change */
+	/** WC with Season 1 (No Change) */
 	wc0?: FthofResult;
 
-	/** FtHoF result with One Change */
+	/** FtHoF result with Season 2 (One Change) */
 	cookie1?: FthofResult;
 
-	/** GC with One Change */
+	/** GC with Season 2 (One Change) */
 	gc1?: FthofResult;
 
-	/** WC with One Change */
+	/** WC with Season 2 (One Change) */
 	wc1?: FthofResult;
 
 
@@ -165,7 +165,7 @@ const canBePartOfCombo = (effect: EffectName | EffectName[]): boolean => {
  * @param seed five-letter string like "abcde" used as a seed in game
  * @param spellsCastTotal total spell cast count before this cast
  * @param offset additional spell count from base spellsCastTotal
- * @param isOneChange true if one change
+ * @param isSeason2 true if Season 2 (One Change)
  * @param forceCookie "GC": force GC, "WC": force WC, default: roll with Math.random()
  * @returns FtHoF cast result
  */
@@ -173,7 +173,7 @@ export const castFtHoF = (
 	seed: string,
 	spellsCastTotal: number,
 	offset: number,
-	isOneChange: boolean,
+	isSeason2: boolean,
 	forceCookie?: "GC" | "WC",
 ): FthofResult => {
 	// set seed (L312)
@@ -207,7 +207,7 @@ export const castFtHoF = (
 	// determine cookie image (L5329)
 	// if season is valentines or easter, Math.random() is called (main.js L5343, main.js L5353)
 	let imageUrl = isWin ? gcImageUrl : wcImageUrl;
-	if (isOneChange) {
+	if (isSeason2) {
 		const random = Math.random();
 
 		// determine cookie image
@@ -262,7 +262,7 @@ export const castFtHoF = (
 			if (chosen == "Free Sugar Lump") {
 				console.warn("Free Sugar Lump with few building!!");
 				console.warn("seedrandom: " + (seed + "/" + (spellsCastTotal + offset)));
-				console.warn("isOneChange: " + isOneChange);
+				console.warn("isSeason2: " + isSeason2);
 				console.warn("forceCookie: " + forceCookie);
 				canGcSugarWithFewBuildings = true;
 			}
