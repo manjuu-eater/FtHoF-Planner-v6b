@@ -186,7 +186,7 @@ export const initSettings = ($scope: any): void => {
 	$scope.debuffDI = false;
 
 	// Settings: FtHoF Planner Settings
-	$scope.season = "cookie";
+	$scope.season = "easter";
 	$scope.hideUseless = false;
 	$scope.shortenCSDrop = false;
 	$scope.effectLang = lang;

@@ -19,6 +19,14 @@ export type SaveData = {
 const localStorageKey = "fthof_save_data";
 
 
+/** names of ng-model */
+export const saveDataModelNames: (keyof SaveData)[] = [
+	"seed",
+	"ascensionMode",
+	"spellsCast", "spellsCastTotal",
+];
+
+
 /**
  * get all FtHoF Planner save data from $scope
  *

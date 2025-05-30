@@ -133,7 +133,7 @@ export const initSettings = ($scope) => {
     $scope.buffDI = false;
     $scope.debuffDI = false;
     // Settings: FtHoF Planner Settings
-    $scope.season = "cookie";
+    $scope.season = "easter";
     $scope.hideUseless = false;
     $scope.shortenCSDrop = false;
     $scope.effectLang = lang;

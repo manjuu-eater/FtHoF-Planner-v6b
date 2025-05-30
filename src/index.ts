@@ -25,6 +25,7 @@ import {
 } from "./save_code.js";
 
 import {
+	saveDataModelNames,
 	getSaveData,
 	saveSaveData, loadSaveData, removeSaveData,
 	initSaveData,
@@ -80,37 +81,37 @@ export type GrimoireResult = {
 	/** whether FtHoF result is success */
 	isFthofWin: boolean;
 
-	/** FtHoF result with No Change */
+	/** FtHoF result with Season 1 (No Change) */
 	cookie0: FthofResult;
 
-	/** hidden, not choosed FtHoF result with No Change */
+	/** hidden, not choosed FtHoF result with Season 1 (No Change) */
 	hiddenCookie0: FthofResult;
 
-	/** GC with No Change */
+	/** GC with Season 1 (No Change) */
 	gc0: FthofResult;
 
-	/** WC with No Change */
+	/** WC with Season 1 (No Change) */
 	wc0: FthofResult;
 
-	/** whether hidden GC/WC with No Change has good effect */
+	/** whether hidden GC/WC with Season 1 (No Change) has good effect */
 	isHiddenCookieNotable0: boolean;
 
 	/** whether there is a chance of GC Sugar with very few buildings */
 	canGcSugarWithFewBuildings0: boolean;
 
-	/** FtHoF result with One Change */
+	/** FtHoF result with Season 2 (One Change) */
 	cookie1: FthofResult;
 
-	/** hidden, not choosed FtHoF result with One Change */
+	/** hidden, not choosed FtHoF result with Season 2 (One Change) */
 	hiddenCookie1: FthofResult;
 
-	/** GC with One Change */
+	/** GC with Season 2 (One Change) */
 	gc1: FthofResult;
 
-	/** WC with One Change */
+	/** WC with Season 2 (One Change) */
 	wc1: FthofResult;
 
-	/** whether hidden GC/WC with One Change has good effect */
+	/** whether hidden GC/WC with Season 2 (One Change) has good effect */
 	isHiddenCookieNotable1: boolean;
 
 	/** whether there is a chance of GC Sugar with very few buildings */
@@ -387,7 +388,7 @@ app.controller("myCtrl", ($rootScope, $scope): void => {
 			const canGcSugarWithFewBuildings0 = gc0.canGcSugarWithFewBuildings;
 			const canGcSugarWithFewBuildings1 = gc1.canGcSugarWithFewBuildings;
 
-			// No Change, One Change cookie to display
+			// Season 1, 2 (No Change, One Change) cookie to display
 			const cookie0 = isFthofWin ? gc0 : wc0;
 			const cookie1 = isFthofWin ? gc1 : wc1;
 
@@ -548,6 +549,26 @@ app.controller("myCtrl", ($rootScope, $scope): void => {
 
 	/**
 	 * function that is called when specified $scope value changes
+	 * related to save data
+	 *
+	 * @param after value after change
+	 * @param before value before change
+	 */
+	const onSaveDataChanged = <T>(after: T, before: T): void => {
+		// do nothing if no change
+		if (after === before) return;
+
+		// save settings to LocalStorage
+		saveSaveData($scope);
+
+		// call updateGrimoireResults()
+		updateGrimoireResults();
+	};
+
+
+	/**
+	 * function that is called when specified $scope value changes
+	 * related to settings
 	 *
 	 * @param after value after change
 	 * @param before value before change
@@ -572,6 +593,7 @@ app.controller("myCtrl", ($rootScope, $scope): void => {
 		document.addEventListener("drop", onItemDropped);
 
 		// start monitoring $scope changes
+		saveDataModelNames.forEach(modelName => $scope.$watch(modelName, onSaveDataChanged));
 		settingsModelNames.forEach(modelName => $scope.$watch(modelName, onSettingsChanged));
 	};
 

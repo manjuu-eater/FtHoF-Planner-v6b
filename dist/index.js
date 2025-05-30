@@ -8,7 +8,7 @@
 import { Math_seedrandom, } from "./game_related_data.js";
 import { settingsModelNames, getSettings, saveSettings, loadSettings, updateSettings, initSettings, } from "./settings.js";
 import { saveSaveCodeToLS, loadSaveCodeFromLS, removeSaveCodeFromLS, readSaveDataFromSaveCode, } from "./save_code.js";
-import { getSaveData, saveSaveData, loadSaveData, removeSaveData, initSaveData, } from "./save_data.js";
+import { saveDataModelNames, getSaveData, saveSaveData, loadSaveData, removeSaveData, initSaveData, } from "./save_data.js";
 import { getBaseFailChance, getFthofFailChance, castFtHoF, hasCookieEffect, castGFD, } from "./grimoire.js";
 import { langDict } from "./translate.js";
 const app = window.angular.module("myApp", ["ngMaterial"]);
@@ -217,7 +217,7 @@ app.controller("myCtrl", ($rootScope, $scope) => {
             }
             const canGcSugarWithFewBuildings0 = gc0.canGcSugarWithFewBuildings;
             const canGcSugarWithFewBuildings1 = gc1.canGcSugarWithFewBuildings;
-            // No Change, One Change cookie to display
+            // Season 1, 2 (No Change, One Change) cookie to display
             const cookie0 = isFthofWin ? gc0 : wc0;
             const cookie1 = isFthofWin ? gc1 : wc1;
             // hidden, not choosed cookies
@@ -352,6 +352,23 @@ app.controller("myCtrl", ($rootScope, $scope) => {
     };
     /**
      * function that is called when specified $scope value changes
+     * related to save data
+     *
+     * @param after value after change
+     * @param before value before change
+     */
+    const onSaveDataChanged = (after, before) => {
+        // do nothing if no change
+        if (after === before)
+            return;
+        // save settings to LocalStorage
+        saveSaveData($scope);
+        // call updateGrimoireResults()
+        updateGrimoireResults();
+    };
+    /**
+     * function that is called when specified $scope value changes
+     * related to settings
      *
      * @param after value after change
      * @param before value before change
@@ -372,6 +389,7 @@ app.controller("myCtrl", ($rootScope, $scope) => {
         // support drag & drop save code input
         document.addEventListener("drop", onItemDropped);
         // start monitoring $scope changes
+        saveDataModelNames.forEach(modelName => $scope.$watch(modelName, onSaveDataChanged));
         settingsModelNames.forEach(modelName => $scope.$watch(modelName, onSettingsChanged));
     };
     // start watching events related to UI

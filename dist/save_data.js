@@ -6,6 +6,12 @@
  */
 /** LocalStorage key for saving FtHoF Planner save data */
 const localStorageKey = "fthof_save_data";
+/** names of ng-model */
+export const saveDataModelNames = [
+    "seed",
+    "ascensionMode",
+    "spellsCast", "spellsCastTotal",
+];
 /**
  * get all FtHoF Planner save data from $scope
  *

@@ -14,14 +14,14 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.8/angular-material.min.js"></script>
 
 	<!-- FtHoF Planner Library Files -->
-	<script src="lib/seedrandom.min.js"></script>
+	<script src="/lib/seedrandom.min.js"></script>
 
 	<!-- FtHoF Planner JavaScript File (source file: src/index.ts) -->
-	<script type="module" src="dist/index.js"></script>
+	<script type="module" src="/dist/index.js"></script>
 
 	<!-- icon, styles -->
-	<link rel="icon" type="image/png" href="img/wizardtower/02.png">
-	<link rel="stylesheet" type="text/css" href="index.css">
+	<link rel="icon" type="image/png" href="/img/wizardtower/02.png">
+	<link rel="stylesheet" type="text/css" href="/index.css">
 	<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.8/angular-material.min.css">
 
 	<!-- page tilte -->
@@ -44,6 +44,7 @@
 			<label for="save_code">Save Code</label>
 			<input
 				id="save_code"
+				placeholder="paste or drop"
 				ng-model="saveCode"
 				ng-click="selectInput($event)"
 				ng-mousedown="selectInput($event)"
@@ -58,10 +59,8 @@
 		<label>
 			Seed
 			<input
-				class="seed"
-				size="5"
+				class="seed w5"
 				ng-model="seed"
-				ng-change="applySettings()"
 				ng-blur="disableSeedEdit()"
 				ng-readonly="isSeedReadonly"
 			>
@@ -73,14 +72,14 @@
 		<p><b>
 			FtHoF Planner v6b is based on v1-v5 by RebelKeithy, Skeezy, Eminenti, Mylaaan and Joseph3079.
 			Huge thanks to them for creating such a helpful tool.<br>
-			◆ <a href="version_history.html">full version history, credits & contacts</a>
+			◆ <a href="/version_history.html">full version history, credits & contacts</a>
 		</b></p>
 		<p><b>
 			Compatible Version: Cookie Clicker v2.052
 		</b></p>
 		<p>
 			RebelKeithy, Skeezy, Mylaaan, & Joseph3079 made a guide explaining the options/features we added.<br>
-			<b>◆ <a href="user_guide.html">User Guide</a></b>
+			<b>◆ <a href="/user_guide.html">User Guide</a></b>
 		</p>
 
 		<md-divider></md-divider>
@@ -202,8 +201,8 @@
 
 			<!-- Settings: Buffs / Debuffs that affect fail chance -->
 			<label>
-				Cookies<img src="img/goldCookie.png" class="mini"><!--
-				--><img src="img/wrathCookie.png" class="mini"> on screen
+				Cookies<img src="/img/goldCookie.png" class="mini"><!--
+				--><img src="/img/wrathCookie.png" class="mini"> on screen
 				<input type="number" class="w3" min="0" max="10" ng-model="screenCookieCount">
 			</label>
 
@@ -235,7 +234,7 @@
 
 			<!-- Settings: FtHoF Planner Settings -->
 			<md-radio-group ng-model="season" layout="row">
-				"One Change" Season:&nbsp;
+				Season 2:&nbsp;
 				<md-radio-button value="noswitch">No Use</md-radio-button>
 				<md-radio-button value="cookie">GC/WC</md-radio-button>
 				<md-radio-button value="valentines">Valentine's day</md-radio-button>
@@ -315,13 +314,13 @@
 
 
 			<!-- spellsCast, spellsCastTotal -->
+			[#0]
 			<label>
 				Spells cast:
 				<input
 					type="number"
 					class="w4"
 					ng-model="spellsCast"
-					ng-change="applySettings()"
 				>
 			</label>
 			<label>
@@ -330,7 +329,6 @@
 					type="number"
 					class="w5"
 					ng-model="spellsCastTotal"
-					ng-change="applySettings()"
 				>)
 			</label>
 			<br>
@@ -364,8 +362,8 @@
 					<tr>
 						<th class="spell">Spell #</th>
 						<th class="random">Random <br>Number</th>
-						<th class="fthof">No Change</th>
-						<th class="fthof" ng-if="season != 'noswitch'">One Change</th>
+						<th class="fthof">Season 1</th>
+						<th class="fthof" ng-if="season != 'noswitch'">Season 2</th>
 						<th class="gfd">Gambler's Dream</th>
 					</tr>
 					<tr>
@@ -404,10 +402,10 @@
 							{{result.firstRandomNum.toFixed(4)}} ({{result.wcThreshold}} GC)
 						</div></td>
 
-						<!-- No Change -->
+						<!-- Season 1 -->
 						<td class="fthof">
 							<div>
-								<img ng-src="{{result.cookie0.image}}">
+								<img ng-src="/{{result.cookie0.image}}">
 								<div ng-class="{
 									'highlight combo': result.cookie0.noteworthy,
 								}" ng-attr-title="{{result.cookie0.tooltip}}">
@@ -415,7 +413,7 @@
 								</div>
 							</div>
 							<div class="hidden_cookie" ng-if="result.isHiddenCookieNotable0">
-								<img ng-src="{{result.hiddenCookie0.image}}">
+								<img ng-src="/{{result.hiddenCookie0.image}}">
 								<div ng-class="{
 									'highlight combo': result.hiddenCookie0.noteworthy,
 									'highlight notable': result.isHiddenCookieNotable0,
@@ -424,7 +422,7 @@
 								</div>
 							</div>
 							<div class="few_buildings_sugar" ng-if="result.canGcSugarWithFewBuildings0">
-								<img ng-src="{{result.gc0.image}}">
+								<img ng-src="/{{result.gc0.image}}">
 								<div
 									class="highlight rare_sugar"
 									title="Gain a free sugar lump with very few buildings, but only through GFD."
@@ -435,10 +433,10 @@
 							</div>
 						</td>
 
-						<!-- One Change -->
+						<!-- Season 2 -->
 						<td class="fthof" ng-if="season != 'noswitch'">
 							<div>
-								<img ng-src="{{result.cookie1.image}}">
+								<img ng-src="/{{result.cookie1.image}}">
 								<div ng-class="{
 									'highlight combo': result.cookie1.noteworthy,
 								}" ng-attr-title="{{result.cookie1.tooltip}}">
@@ -446,7 +444,7 @@
 								</div>
 							</div>
 							<div class="hidden_cookie" ng-if="result.isHiddenCookieNotable1">
-								<img ng-src="{{result.hiddenCookie1.image}}">
+								<img ng-src="/{{result.hiddenCookie1.image}}">
 								<div ng-class="{
 									'highlight combo': result.hiddenCookie1.noteworthy,
 									'highlight notable': result.isHiddenCookieNotable1,
@@ -455,7 +453,7 @@
 								</div>
 							</div>
 							<div class="few_buildings_sugar" ng-if="result.canGcSugarWithFewBuildings1">
-								<img ng-src="{{result.gc1.image}}">
+								<img ng-src="/{{result.gc1.image}}">
 								<div
 									class="highlight rare_sugar"
 									title="Gain a free sugar lump with very few buildings, but only through GFD."
@@ -468,7 +466,7 @@
 
 						<!-- Gambler's Dream -->
 						<td class="gfd"><div>
-							<img ng-src="{{result.gfd.image}}" ng-class="{
+							<img ng-src="/{{result.gfd.image}}" ng-class="{
 								success: result.gfd.isWin,
 								backfire: !result.gfd.isWin,
 							}" class="gfd">
