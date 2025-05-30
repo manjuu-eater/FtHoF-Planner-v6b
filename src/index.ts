@@ -25,6 +25,7 @@ import {
 } from "./save_code.js";
 
 import {
+	saveDataModelNames,
 	getSaveData,
 	saveSaveData, loadSaveData, removeSaveData,
 	initSaveData,
@@ -548,6 +549,26 @@ app.controller("myCtrl", ($rootScope, $scope): void => {
 
 	/**
 	 * function that is called when specified $scope value changes
+	 * related to save data
+	 *
+	 * @param after value after change
+	 * @param before value before change
+	 */
+	const onSaveDataChanged = <T>(after: T, before: T): void => {
+		// do nothing if no change
+		if (after === before) return;
+
+		// save settings to LocalStorage
+		saveSaveData($scope);
+
+		// call updateGrimoireResults()
+		updateGrimoireResults();
+	};
+
+
+	/**
+	 * function that is called when specified $scope value changes
+	 * related to settings
 	 *
 	 * @param after value after change
 	 * @param before value before change
@@ -572,6 +593,7 @@ app.controller("myCtrl", ($rootScope, $scope): void => {
 		document.addEventListener("drop", onItemDropped);
 
 		// start monitoring $scope changes
+		saveDataModelNames.forEach(modelName => $scope.$watch(modelName, onSaveDataChanged));
 		settingsModelNames.forEach(modelName => $scope.$watch(modelName, onSettingsChanged));
 	};
 
