@@ -181,8 +181,8 @@ body.fthof_planner {
 	width: 10em;
 }
 .fthof_planner col.random {
-	width: 9em;
-	font-size: small;
+	width: 8em;
+	font-size: smaller;
 }
 
 .fthof_planner thead th {
@@ -221,7 +221,7 @@ body.fthof_planner {
 }
 
 .fthof_planner tbody td.random {
-	font-size: small;
+	font-size: smaller;
 }
 
 .fthof_planner tbody td img {
