@@ -84,6 +84,7 @@ body.fthof_planner {
 .fthof_planner .save_code_form input#save_code {
 	color: gray;
 	flex: 1;  /* use all of usable blank space */
+	min-width: 0;  /* without this, input will expand and push button out */
 }
 
 /* seed */
