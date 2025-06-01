@@ -301,8 +301,10 @@ app.controller("myCtrl", ($rootScope, $scope) => {
     // load previous state if saved in LocalStorage
     loadSaveData($scope);
     loadSettings($scope);
-    // call $scope.updateGrimoireResults() for first time
-    if ($scope.saveCode && !((_a = $scope.grimoireResults) === null || _a === void 0 ? void 0 : _a.length))
+    // call $scope.updateGrimoireResults() for first page load
+    const isLoadable = $scope.saveCode || $scope.seed;
+    const isResultEmpty = !((_a = $scope.grimoireResults) === null || _a === void 0 ? void 0 : _a.length);
+    if (isLoadable && isResultEmpty)
         updateGrimoireResults();
     /**
      * function that is called when something is dropped to window

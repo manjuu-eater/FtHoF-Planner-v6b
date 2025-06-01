@@ -494,8 +494,10 @@ app.controller("myCtrl", ($rootScope, $scope): void => {
 	loadSaveData($scope);
 	loadSettings($scope);
 
-	// call $scope.updateGrimoireResults() for first time
-	if ($scope.saveCode && !$scope.grimoireResults?.length) updateGrimoireResults();
+	// call $scope.updateGrimoireResults() for first page load
+	const isLoadable = $scope.saveCode || $scope.seed;
+	const isResultEmpty = !$scope.grimoireResults?.length;
+	if (isLoadable && isResultEmpty) updateGrimoireResults();
 
 
 	/**
