@@ -14,14 +14,14 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.8/angular-material.min.js"></script>
 
 	<!-- FtHoF Planner Library Files -->
-	<script src="/lib/seedrandom.min.js"></script>
+	<script src="./lib/seedrandom.min.js"></script>
 
 	<!-- FtHoF Planner JavaScript File (source file: src/index.ts) -->
-	<script type="module" src="/dist/index.js"></script>
+	<script type="module" src="./dist/index.js"></script>
 
 	<!-- icon, styles -->
-	<link rel="icon" type="image/png" href="/img/wizardtower/02.png">
-	<link rel="stylesheet" type="text/css" href="/index.css">
+	<link rel="icon" type="image/png" href="./img/wizardtower/02.png">
+	<link rel="stylesheet" type="text/css" href="./index.css">
 	<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.8/angular-material.min.css">
 
 	<!-- page tilte -->
@@ -72,19 +72,19 @@
 		<p style="font-size: small;">
 			ひそかに作っていた FtHoF Planner v6b を日本語化したものです。自分の感覚で使いやすくなるようにゴリゴリと好き勝手に改造しています。<br>
 			※ 注意：日本語化はあまり手をかけていません。機械翻訳であからさまに変だったとこを適当に手直ししただけです<br>
-			⇒ 英語がわかる方は <a href="/">英語版</a> もどうぞ！（こっちの方が更新が早いです）<br>
+			⇒ 英語がわかる方は <a href="./">英語版</a> もどうぞ！（こっちの方が更新が早いです）<br>
 		</p>
 		<p><b>
 			FtHoF Planner v6b は、RebelKeithy, Skeezy, Eminenti, Mylaaan, Joseph3079 による v1-v5 を基にしています。
 			この便利なツールを作成してくれた皆さんに心から感謝します。<br>
-			◆ <a href="/version_history.html">完全なバージョン履歴、クレジット & 連絡先（未翻訳）</a>
+			◆ <a href="./version_history.html">完全なバージョン履歴、クレジット & 連絡先（未翻訳）</a>
 		</b></p>
 		<p><b>
 			対応バージョン: Cookie Clicker v2.052
 		</b></p>
 		<p>
 			RebelKeithy, Skeezy, Mylaaan, Joseph3079 が追加したオプションや機能のガイドを作成しました。<br>
-			<b>◆ <a href="/user_guide.html">ユーザーガイド（未翻訳）</a></b>
+			<b>◆ <a href="./user_guide.html">ユーザーガイド（未翻訳）</a></b>
 		</p>
 
 		<md-divider></md-divider>
@@ -206,8 +206,8 @@
 
 			<!-- Settings: Buffs / Debuffs that affect fail chance -->
 			<label>
-				クッキー<img src="/img/goldCookie.png" class="mini"><!--
-				--><img src="/img/wrathCookie.png" class="mini"> が画面にある数
+				クッキー<img src="./img/goldCookie.png" class="mini"><!--
+				--><img src="./img/wrathCookie.png" class="mini"> が画面にある数
 				<input type="number" class="w3" min="0" max="10" ng-model="screenCookieCount">
 			</label>
 
@@ -339,7 +339,7 @@
 			<br>
 
 			<!-- Buttons -->
-			<!--<md-button class="md-raised md-primary" ng-click="updateGrimoireResults()">設定を適用</md-button>-->
+			<!--<md-button class="md-raised md-primary" ng-click="applySettings()">設定を適用</md-button>-->
 			<md-button class="md-raised md-primary" ng-click="castSpell()">呪文を発動</md-button>
 			<md-button class="md-raised md-primary" ng-click="castSpell(5)">x5</md-button>
 			<md-button class="md-raised md-primary" ng-click="castSpell(10)">x10</md-button>
@@ -406,7 +406,7 @@
 						<!-- Season 1 -->
 						<td class="fthof">
 							<div>
-								<img ng-src="/{{result.cookie0.image}}">
+								<img ng-src="./{{result.cookie0.image}}">
 								<div ng-class="{
 									'highlight combo': result.cookie0.noteworthy,
 								}" ng-attr-title="{{result.cookie0.tooltip}}">
@@ -414,7 +414,7 @@
 								</div>
 							</div>
 							<div class="hidden_cookie" ng-if="result.isHiddenCookieNotable0">
-								<img ng-src="/{{result.hiddenCookie0.image}}">
+								<img ng-src="./{{result.hiddenCookie0.image}}">
 								<div ng-class="{
 									'highlight combo': result.hiddenCookie0.noteworthy,
 									'highlight notable': result.isHiddenCookieNotable0,
@@ -423,7 +423,7 @@
 								</div>
 							</div>
 							<div class="few_buildings_sugar" ng-if="result.canGcSugarWithFewBuildings0">
-								<img ng-src="/{{result.gc0.image}}">
+								<img ng-src="./{{result.gc0.image}}">
 								<div
 									class="highlight rare_sugar"
 									title="建物の合計が10未満のとき、無料の砂糖玉を獲得する。（※ ギャンブラー経由が必須）"
@@ -437,7 +437,7 @@
 						<!-- Season 2 -->
 						<td class="fthof" ng-if="season != 'noswitch'">
 							<div>
-								<img ng-src="/{{result.cookie1.image}}">
+								<img ng-src="./{{result.cookie1.image}}">
 								<div ng-class="{
 									'highlight combo': result.cookie1.noteworthy,
 								}" ng-attr-title="{{result.cookie1.tooltip}}">
@@ -445,7 +445,7 @@
 								</div>
 							</div>
 							<div class="hidden_cookie" ng-if="result.isHiddenCookieNotable1">
-								<img ng-src="/{{result.hiddenCookie1.image}}">
+								<img ng-src="./{{result.hiddenCookie1.image}}">
 								<div ng-class="{
 									'highlight combo': result.hiddenCookie1.noteworthy,
 									'highlight notable': result.isHiddenCookieNotable1,
@@ -454,7 +454,7 @@
 								</div>
 							</div>
 							<div class="few_buildings_sugar" ng-if="result.canGcSugarWithFewBuildings1">
-								<img ng-src="/{{result.gc1.image}}">
+								<img ng-src="./{{result.gc1.image}}">
 								<div
 									class="highlight rare_sugar"
 									title="建物の合計が10未満のとき、無料の砂糖玉を獲得する。（※ ギャンブラー経由が必須）"
@@ -467,7 +467,7 @@
 
 						<!-- Gambler's Dream -->
 						<td class="gfd"><div>
-							<img ng-src="/{{result.gfd.image}}" ng-class="{
+							<img ng-src="./{{result.gfd.image}}" ng-class="{
 								success: result.gfd.isWin,
 								backfire: !result.gfd.isWin,
 							}" class="gfd">
