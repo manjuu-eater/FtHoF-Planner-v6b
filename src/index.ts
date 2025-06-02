@@ -219,6 +219,19 @@ app.controller("myCtrl", ($rootScope, $scope): void => {
 
 
 	/**
+	 * function that is called when save data is changed
+	 * save save data, update grimoire results
+	 */
+	const onSaveDataChange = (): void => {
+		// save save data to LocalStorage
+		saveSaveData($scope);
+
+		// call updateGrimoireResults()
+		updateGrimoireResults();
+	};
+
+
+	/**
 	 * apply settings and update FtHoF Planner main output
 	 * (not used)
 	 */
@@ -477,6 +490,7 @@ app.controller("myCtrl", ($rootScope, $scope): void => {
 	$scope.importSave      = importSave;
 	$scope.enableSeedEdit  = enableSeedEdit;
 	$scope.disableSeedEdit = disableSeedEdit;
+	$scope.onSaveDataChange = onSaveDataChange;
 	$scope.applySettings   = applySettings;
 	$scope.castSpell       = castSpell;
 	$scope.printScope      = printScope;
@@ -551,25 +565,6 @@ app.controller("myCtrl", ($rootScope, $scope): void => {
 
 	/**
 	 * function that is called when specified $scope value changes
-	 * related to save data
-	 *
-	 * @param after value after change
-	 * @param before value before change
-	 */
-	const onSaveDataChanged = <T>(after: T, before: T): void => {
-		// do nothing if no change
-		if (after === before) return;
-
-		// save settings to LocalStorage
-		saveSaveData($scope);
-
-		// call updateGrimoireResults()
-		updateGrimoireResults();
-	};
-
-
-	/**
-	 * function that is called when specified $scope value changes
 	 * related to settings
 	 *
 	 * @param after value after change
@@ -595,7 +590,6 @@ app.controller("myCtrl", ($rootScope, $scope): void => {
 		document.addEventListener("drop", onItemDropped);
 
 		// start monitoring $scope changes
-		saveDataModelNames.forEach(modelName => $scope.$watch(modelName, onSaveDataChanged));
 		settingsModelNames.forEach(modelName => $scope.$watch(modelName, onSettingsChanged));
 	};
 

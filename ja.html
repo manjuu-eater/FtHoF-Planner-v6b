@@ -61,6 +61,8 @@
 			<input
 				class="seed w5"
 				ng-model="seed"
+				ng-model-options="{ updateOn: 'blur' }"
+				ng-change="onSaveDataChange()"
 				ng-blur="disableSeedEdit()"
 				ng-readonly="isSeedReadonly"
 			>
@@ -326,6 +328,7 @@
 					type="number"
 					class="w4"
 					ng-model="spellsCast"
+					ng-change="onSaveDataChange()"
 				>
 			</label>
 			<label>
@@ -334,6 +337,7 @@
 					type="number"
 					class="w5"
 					ng-model="spellsCastTotal"
+					ng-change="onSaveDataChange()"
 				>）
 			</label>
 			<br>
