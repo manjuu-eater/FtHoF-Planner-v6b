@@ -159,6 +159,37 @@ body.fthof_planner {
 }
 
 
+/* styles to make <button> elements look like Angular Material <md-button> */
+button.md_like {
+	min-width: 6em;
+
+	background-color: #3f51b5;  /* Material Indigo 500 */
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+
+	margin: 6px 8px;
+	border: none;
+	border-radius: 6px;
+	padding: 0.6em 1.2em;
+
+	color: white;
+	font-size: 14px;
+	font-weight: 500;
+
+	cursor: pointer;
+	transition: background-color 0.2s ease-in-out, box-shadow 0.2s;
+}
+
+button.md_like:hover {
+	background-color: #303f9f;  /* Indigo 700 */
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.25);
+}
+
+button.md_like:focus {
+	outline: none;
+	box-shadow: 0 0 0 3px rgba(63, 81, 181, 0.3);
+}
+
+
 /* CSS to make <table> look like the Angular Material theme */
 .fthof_planner table {
 	table-layout: fixed;

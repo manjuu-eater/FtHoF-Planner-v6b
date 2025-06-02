@@ -8,7 +8,7 @@
 import { Math_seedrandom, } from "./game_related_data.js";
 import { settingsModelNames, getSettings, saveSettings, loadSettings, updateSettings, initSettings, } from "./settings.js";
 import { saveSaveCodeToLS, loadSaveCodeFromLS, removeSaveCodeFromLS, readSaveDataFromSaveCode, } from "./save_code.js";
-import { saveDataModelNames, getSaveData, saveSaveData, loadSaveData, removeSaveData, initSaveData, } from "./save_data.js";
+import { getSaveData, saveSaveData, loadSaveData, removeSaveData, initSaveData, } from "./save_data.js";
 import { getBaseFailChance, getFthofFailChance, castFtHoF, hasCookieEffect, castGFD, } from "./grimoire.js";
 import { langDict } from "./translate.js";
 const app = window.angular.module("myApp", ["ngMaterial"]);
@@ -87,18 +87,14 @@ app.controller("myCtrl", ($rootScope, $scope) => {
         $scope.isSeedReadonly = true;
     };
     /**
-     * apply settings and update FtHoF Planner main output
-     * (not used)
+     * function that is called when save data is changed
+     * save save data, update grimoire results
      */
-    const applySettings = () => {
-        updateSettings($scope);
+    const onSaveDataChange = () => {
+        // save save data to LocalStorage
+        saveSaveData($scope);
+        // call updateGrimoireResults()
         updateGrimoireResults();
-    };
-    /**
-     * log $scope (debug function)
-     */
-    const printScope = () => {
-        console.log($scope);
     };
     /**
      * find comboes from indexes
@@ -262,6 +258,14 @@ app.controller("myCtrl", ($rootScope, $scope) => {
         $scope.grimoireResults = grimoireResults;
     };
     /**
+     * apply settings and update FtHoF Planner main output
+     * (not used)
+     */
+    const applySettings = () => {
+        updateSettings($scope);
+        updateGrimoireResults();
+    };
+    /**
      * pop and push items to FtHoF list
      *
      * @param count cast count (default: 1)
@@ -273,6 +277,12 @@ app.controller("myCtrl", ($rootScope, $scope) => {
         updateGrimoireResults();
         // save $scope.spellsCast, $scope.spellsCastTotal
         saveSaveData($scope);
+    };
+    /**
+     * log $scope (debug function)
+     */
+    const printScope = () => {
+        console.log($scope);
     };
     /**
      * push more items to FtHoF list
@@ -288,6 +298,7 @@ app.controller("myCtrl", ($rootScope, $scope) => {
     $scope.importSave = importSave;
     $scope.enableSeedEdit = enableSeedEdit;
     $scope.disableSeedEdit = disableSeedEdit;
+    $scope.onSaveDataChange = onSaveDataChange;
     $scope.applySettings = applySettings;
     $scope.castSpell = castSpell;
     $scope.printScope = printScope;
@@ -354,22 +365,6 @@ app.controller("myCtrl", ($rootScope, $scope) => {
     };
     /**
      * function that is called when specified $scope value changes
-     * related to save data
-     *
-     * @param after value after change
-     * @param before value before change
-     */
-    const onSaveDataChanged = (after, before) => {
-        // do nothing if no change
-        if (after === before)
-            return;
-        // save settings to LocalStorage
-        saveSaveData($scope);
-        // call updateGrimoireResults()
-        updateGrimoireResults();
-    };
-    /**
-     * function that is called when specified $scope value changes
      * related to settings
      *
      * @param after value after change
@@ -391,7 +386,6 @@ app.controller("myCtrl", ($rootScope, $scope) => {
         // support drag & drop save code input
         document.addEventListener("drop", onItemDropped);
         // start monitoring $scope changes
-        saveDataModelNames.forEach(modelName => $scope.$watch(modelName, onSaveDataChanged));
         settingsModelNames.forEach(modelName => $scope.$watch(modelName, onSettingsChanged));
     };
     // start watching events related to UI
