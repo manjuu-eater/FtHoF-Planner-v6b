@@ -232,24 +232,6 @@ app.controller("myCtrl", ($rootScope, $scope): void => {
 
 
 	/**
-	 * apply settings and update FtHoF Planner main output
-	 * (not used)
-	 */
-	const applySettings = (): void => {
-		updateSettings($scope);
-		updateGrimoireResults();
-	};
-
-
-	/**
-	 * log $scope (debug function)
-	 */
-	const printScope = (): void => {
-		console.log($scope);
-	};
-
-
-	/**
 	 * find comboes from indexes
 	 *
 	 * @param comboLength target length of combo
@@ -459,6 +441,16 @@ app.controller("myCtrl", ($rootScope, $scope): void => {
 
 
 	/**
+	 * apply settings and update FtHoF Planner main output
+	 * (not used)
+	 */
+	const applySettings = (): void => {
+		updateSettings($scope);
+		updateGrimoireResults();
+	};
+
+
+	/**
 	 * pop and push items to FtHoF list
 	 *
 	 * @param count cast count (default: 1)
@@ -471,6 +463,14 @@ app.controller("myCtrl", ($rootScope, $scope): void => {
 
 		// save $scope.spellsCast, $scope.spellsCastTotal
 		saveSaveData($scope);
+	};
+
+
+	/**
+	 * log $scope (debug function)
+	 */
+	const printScope = (): void => {
+		console.log($scope);
 	};
 
 
