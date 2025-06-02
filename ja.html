@@ -50,9 +50,7 @@
 				ng-mousedown="selectInput($event)"
 				ng-mouseup="selectInput($event)"
 			>
-			<md-button type="submit" class="md-raised md-primary">
-				読込
-			</md-button>
+			<button type="submit" class="md_like">読込</button>
 		</form>
 
 		<!-- Seed -->
@@ -67,7 +65,7 @@
 				ng-readonly="isSeedReadonly"
 			>
 		</label>
-		<md-button class="md-raised md-primary" ng-click="enableSeedEdit()">編集</md-button>
+		<button class="md_like" ng-click="enableSeedEdit()">編集</button>
 
 
 		<!-- Description of FtHoF Planner -->
@@ -343,17 +341,17 @@
 			<br>
 
 			<!-- Buttons -->
-			<!--<md-button class="md-raised md-primary" ng-click="applySettings()">設定を適用</md-button>-->
-			<md-button class="md-raised md-primary" ng-click="castSpell()">呪文を発動</md-button>
-			<md-button class="md-raised md-primary" ng-click="castSpell(5)">x5</md-button>
-			<md-button class="md-raised md-primary" ng-click="castSpell(10)">x10</md-button>
+			<!--<button class="md_like" ng-click="applySettings()">設定を適用</button>-->
+			<button class="md_like" ng-click="castSpell()">呪文を発動</button>
+			<button class="md_like" ng-click="castSpell(5)">x5</button>
+			<button class="md_like" ng-click="castSpell(10)">x10</button>
 
 			<!-- n times cast with manual number -->
 			<form class="cast_manual" ng-submit="castSpell(castCountNum)">
 				<input type="number" class="w4" placeholder="n" ng-model="castCountNum">
-				<md-button class="md-raised md-primary" ng-click="castSpell(castCountNum)">x n</md-button>
+				<button class="md_like" ng-click="castSpell(castCountNum)">x n</button>
 			</form>
-			<!-- <md-button class="md-raised md-primary" ng-click="printScope()">スコープを表示</md-button> -->
+			<!-- <button class="md_like" ng-click="printScope()">スコープを表示</button> -->
 
 			<md-divider></md-divider>
 
@@ -487,7 +485,7 @@
 			</table>
 
 			<!-- Load More Button -->
-			<md-button class="md-raised md-primary" ng-click="loadMore()">さらに読み込む</md-button>
+			<button class="md_like" ng-click="loadMore()">さらに読み込む</button>
 		</div>
 	</div>
 </div>
