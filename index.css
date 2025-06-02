@@ -190,7 +190,7 @@ body.fthof_planner {
 }
 
 
-/* CSS to make <table> look like the Angular Material theme */
+/* styles to make <table> elements look like Angular Material theme */
 .fthof_planner table {
 	table-layout: fixed;
 	border-collapse: collapse;
