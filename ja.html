@@ -189,18 +189,22 @@
 			<br>
 
 			<!-- Settings: Include EF or Skip Some GFD -->
-			<md-checkbox ng-model="includeEF">
+			<label class="md_checkbox_like">
+				<input type="checkbox" class="md_like" ng-model="includeEF">
 				"{{langDict[effectLang]["Elder Frenzy"]}}"を含む
-			</md-checkbox>
-			<md-checkbox ng-model="skipRA">
+			</label>
+			<label class="md_checkbox_like">
+				<input type="checkbox" class="md_like" ng-model="skipRA">
 				"{{langDict[spellLang]["Resurrect Abomination"]}}"をスキップ
-			</md-checkbox>
-			<md-checkbox ng-model="skipSE">
+			</label>
+			<label class="md_checkbox_like">
+				<input type="checkbox" class="md_like" ng-model="skipSE">
 				"{{langDict[spellLang]["Spontaneous Edifice"]}}"をスキップ
-			</md-checkbox>
-			<md-checkbox ng-model="skipST">
+			</label>
+			<label class="md_checkbox_like">
+				<input type="checkbox" class="md_like" ng-model="skipST">
 				"{{langDict[spellLang]["Stretch Time"]}}"をスキップ
-			</md-checkbox>
+			</label>
 			<hr class="md_like">
 
 
@@ -213,26 +217,31 @@
 
 			<br>
 
-			<md-checkbox ng-model="buffDF">
+			<label class="md_checkbox_like">
+				<input type="checkbox" class="md_like" ng-model="buffDF">
 				バフ "{{langDict[auraLang]["Dragonflight"]}}"
-			</md-checkbox>
+			</label>
 
-			<md-checkbox ng-model="auraSI">
+			<label class="md_checkbox_like">
+				<input type="checkbox" class="md_like" ng-model="auraSI">
 				オーラ "{{langDict[auraLang]["Supreme Intellect"]}}"
-			</md-checkbox>
+			</label>
 
-			<md-checkbox ng-model="auraRB">
+			<label class="md_checkbox_like">
+				<input type="checkbox" class="md_like" ng-model="auraRB">
 				オーラ "{{langDict[auraLang]["Reality Bending"]}}"
-			</md-checkbox>
+			</label>
 			<br>
 
-			<md-checkbox ng-model="buffDI">
+			<label class="md_checkbox_like">
+				<input type="checkbox" class="md_like" ng-model="buffDI">
 				バフ "{{langDict[spellLang]["Diminish Ineptitude"]}}"
-			</md-checkbox>
+			</label>
 
-			<md-checkbox ng-model="debuffDI">
+			<label class="md_checkbox_like">
+				<input type="checkbox" class="md_like" ng-model="debuffDI">
 				デバフ "{{langDict[spellLang]["Diminish Ineptitude"]}}"
-			</md-checkbox>
+			</label>
 
 			<hr class="md_like">
 
@@ -246,14 +255,16 @@
 				<md-radio-button value="easter">イースター</md-radio-button>
 			</md-radio-group>
 
-			<md-checkbox ng-model="hideUseless">
+			<label class="md_checkbox_like">
+				<input type="checkbox" class="md_like" ng-model="hideUseless">
 				ザコい効果を "----" に置き換える
-			</md-checkbox>
+			</label>
 
-			<md-checkbox ng-model="shortenCSDrop">
+			<label class="md_checkbox_like">
+				<input type="checkbox" class="md_like" ng-model="shortenCSDrop">
 				"{{langDict[effectLang]["Cookie Storm Drop"]}}" を
 				"{{langDict[effectLang]["Drop"]}}" に置き換える
-			</md-checkbox>
+			</label>
 
 			<div class="select_container">
 				言語>

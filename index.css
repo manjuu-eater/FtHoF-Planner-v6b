@@ -190,6 +190,26 @@ body.fthof_planner {
 }
 
 
+/* styles to make <label><input type="checkbox"> elements look like Angular Material <md-checkbox> */
+.fthof_planner label.md_checkbox_like {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+
+	margin-left: 0;
+	margin-right: 1em;
+	margin-bottom: 1em;
+
+	cursor: pointer;
+	user-select: none;
+}
+
+.fthof_planner input[type="checkbox"].md_like {
+	width: 1.2em;
+	height: 1.2em;
+}
+
+
 /* styles to make <hr> elements look like Angular Material <md-divider> */
 .fthof_planner hr.md_like {
 	margin: 0;
