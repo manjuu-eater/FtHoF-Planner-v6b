@@ -190,6 +190,14 @@ body.fthof_planner {
 }
 
 
+/* styles to make <hr> elements look like Angular Material <md-divider> */
+.fthof_planner hr.md_like {
+	margin: 0;
+	border: none;
+	border-top: 1px solid rgba(0, 0, 0, 0.12);  /* color of md-divider */
+}
+
+
 /* styles to make <table> elements look like Angular Material theme */
 .fthof_planner table {
 	table-layout: fixed;
