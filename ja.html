@@ -247,13 +247,25 @@
 
 
 			<!-- Settings: FtHoF Planner Settings -->
-			<md-radio-group ng-model="season" layout="row">
-				シーズン２:&nbsp;
-				<md-radio-button value="noswitch">非表示</md-radio-button>
-				<md-radio-button value="cookie">GC/WC</md-radio-button>
-				<md-radio-button value="valentines">バレンタインデー</md-radio-button>
-				<md-radio-button value="easter">イースター</md-radio-button>
-			</md-radio-group>
+			<fieldset>
+				<span class="fieldset_legend">シーズン２:</span>
+				<label class="md_radio_like">
+					<input type="radio" name="season" ng-model="season" value="noswitch">
+					非表示
+				</label>
+				<label class="md_radio_like">
+					<input type="radio" name="season" ng-model="season" value="cookie">
+					GC/WC
+				</label>
+				<label class="md_radio_like">
+					<input type="radio" name="season" ng-model="season" value="valentines">
+					バレンタインデー
+				</label>
+				<label class="md_radio_like">
+					<input type="radio" name="season" ng-model="season" value="easter">
+					イースター
+				</label>
+			</fieldset>
 
 			<label class="md_checkbox_like">
 				<input type="checkbox" class="md_like" ng-model="hideUseless">

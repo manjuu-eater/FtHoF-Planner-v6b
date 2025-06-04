@@ -231,6 +231,44 @@ body.fthof_planner {
 }
 
 
+/* styles to make <input type="radio"> etc. elements look like Angular Material <md-radio-button> */
+.fthof_planner fieldset {
+	display: flex;
+	align-items: center;
+	gap: 1em;
+
+	margin: 8px 0;
+	border: none;
+	padding: 0;
+
+}
+
+.fthof_planner fieldset>.fieldset_legend {
+	margin-right: -.5em;
+}
+
+.fthof_planner label.md_radio_like {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+
+	cursor: pointer;
+}
+
+.fthof_planner input[type="radio"] {
+	width: 1.4em;
+	height: 1.4em;
+
+	margin: 0;
+	transition: border-color 0.2s ease;
+}
+
+.fthof_planner input[type="radio"]:focus-visible {
+	outline: none;
+	box-shadow: 0 0 0 2px rgba(63, 81, 181, 0.3);
+}
+
+
 /* styles to make <hr> elements look like Angular Material <md-divider> */
 .fthof_planner hr.md_like {
 	margin: 0;
