@@ -11,7 +11,9 @@ body.fthof_planner {
 .fthof_planner input[type=number] {
 	text-align: right;
 }
-.fthof_planner input, md-radio-group {
+.fthof_planner input[type=text],
+.fthof_planner input[type=number],
+.fthof_planner md-radio-group {
 	margin: 8px 0;
 }
 .fthof_planner input.w2 {
@@ -234,6 +236,8 @@ body.fthof_planner {
 .fthof_planner input[type="checkbox"].md_like {
 	width: 1.2em;
 	height: 1.2em;
+
+	margin: 0;
 }
 
 
