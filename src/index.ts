@@ -130,7 +130,7 @@ export type GrimoireResult = {
 };
 
 
-const app = window.angular.module("myApp", ["ngMaterial"]);
+const app = window.angular.module("myApp", []);
 app.controller("myCtrl", ($rootScope, $scope): void => {
 	// initialize Save Code
 	$scope.saveCode = "";
