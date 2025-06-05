@@ -4,14 +4,7 @@
 	<meta charset="UTF-8">
 
 	<!-- AngularJS Libraries -->
-	<!-- (Angular Material requires these files) -->
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
-	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-animate.min.js"></script>
-	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-aria.min.js"></script>
-	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-messages.min.js"></script>
-
-	<!-- Angular Material Library -->
-	<script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.8/angular-material.min.js"></script>
 
 	<!-- FtHoF Planner Library Files -->
 	<script src="./lib/seedrandom.min.js"></script>
@@ -29,12 +22,10 @@
 </head>
 <body class="fthof_planner">
 
-<!-- header title -->
-<md-toolbar>
-	<div class="md-toolbar-tools">
-		<h1>Cookie Clicker FtHoF Planner v6b</h1>
-	</div>
-</md-toolbar>
+<!-- Header Title -->
+<header class="md_toolbar_like">
+	<h1>Cookie Clicker FtHoF Planner v6b</h1>
+</header>
 
 <!-- AngularJS Main View -->
 <div ng-app="myApp" ng-controller="myCtrl">
@@ -82,7 +73,7 @@
 			<b>◆ <a href="./user_guide.html">User Guide</a></b>
 		</p>
 
-		<md-divider></md-divider>
+		<hr class="md_like">
 
 
 		<!-- Loading Text -->
@@ -153,7 +144,7 @@
 				</li>
 			</ul>
 
-			<md-divider></md-divider>
+			<hr class="md_like">
 
 
 			<!-- Settings: Lookahead Length -->
@@ -162,7 +153,7 @@
 				<input type="number" class="w4" min="10" max="1000" step="10" ng-model="lookahead">
 			</label>
 
-			<md-divider></md-divider>
+			<hr class="md_like">
 
 
 			<!-- Settings: Combos -->
@@ -184,19 +175,23 @@
 			<br>
 
 			<!-- Settings: Include EF or Skip Some GFD -->
-			<md-checkbox ng-model="includeEF">
+			<label class="md_checkbox_like">
+				<input type="checkbox" class="md_like" ng-model="includeEF">
 				Include "{{langDict[effectLang]["Elder Frenzy"]}}"
-			</md-checkbox>
-			<md-checkbox ng-model="skipRA">
+			</label>
+			<label class="md_checkbox_like">
+				<input type="checkbox" class="md_like" ng-model="skipRA">
 				Skip "{{langDict[spellLang]["Resurrect Abomination"]}}"
-			</md-checkbox>
-			<md-checkbox ng-model="skipSE">
+			</label>
+			<label class="md_checkbox_like">
+				<input type="checkbox" class="md_like" ng-model="skipSE">
 				Skip "{{langDict[spellLang]["Spontaneous Edifice"]}}"
-			</md-checkbox>
-			<md-checkbox ng-model="skipST">
+			</label>
+			<label class="md_checkbox_like">
+				<input type="checkbox" class="md_like" ng-model="skipST">
 				Skip "{{langDict[spellLang]["Stretch Time"]}}"
-			</md-checkbox>
-			<md-divider></md-divider>
+			</label>
+			<hr class="md_like">
 
 
 			<!-- Settings: Buffs / Debuffs that affect fail chance -->
@@ -208,109 +203,128 @@
 
 			<br>
 
-			<md-checkbox ng-model="buffDF">
+			<label class="md_checkbox_like">
+				<input type="checkbox" class="md_like" ng-model="buffDF">
 				Buff "{{langDict[auraLang]["Dragonflight"]}}"
-			</md-checkbox>
+			</label>
 
-			<md-checkbox ng-model="auraSI">
+			<label class="md_checkbox_like">
+				<input type="checkbox" class="md_like" ng-model="auraSI">
 				Aura "{{langDict[auraLang]["Supreme Intellect"]}}"
-			</md-checkbox>
+			</label>
 
-			<md-checkbox ng-model="auraRB">
+			<label class="md_checkbox_like">
+				<input type="checkbox" class="md_like" ng-model="auraRB">
 				Aura "{{langDict[auraLang]["Reality Bending"]}}"
-			</md-checkbox>
+			</label>
 			<br>
 
-			<md-checkbox ng-model="buffDI">
+			<label class="md_checkbox_like">
+				<input type="checkbox" class="md_like" ng-model="buffDI">
 				Buff "{{langDict[spellLang]["Diminish Ineptitude"]}}"
-			</md-checkbox>
+			</label>
 
-			<md-checkbox ng-model="debuffDI">
+			<label class="md_checkbox_like">
+				<input type="checkbox" class="md_like" ng-model="debuffDI">
 				Debuff "{{langDict[spellLang]["Diminish Ineptitude"]}}"
-			</md-checkbox>
+			</label>
 
-			<md-divider></md-divider>
+			<hr class="md_like">
 
 
 			<!-- Settings: FtHoF Planner Settings -->
-			<md-radio-group ng-model="season" layout="row">
-				Season 2:&nbsp;
-				<md-radio-button value="noswitch">No Use</md-radio-button>
-				<md-radio-button value="cookie">GC/WC</md-radio-button>
-				<md-radio-button value="valentines">Valentine's day</md-radio-button>
-				<md-radio-button value="easter">Easter</md-radio-button>
-			</md-radio-group>
+			<fieldset>
+				<span class="fieldset_legend">Season 2:</span>
+				<label class="md_radio_like">
+					<input type="radio" name="season" ng-model="season" value="noswitch">
+					No Use
+				</label>
+				<label class="md_radio_like">
+					<input type="radio" name="season" ng-model="season" value="cookie">
+					GC/WC
+				</label>
+				<label class="md_radio_like">
+					<input type="radio" name="season" ng-model="season" value="valentines">
+					Valentine's day
+				</label>
+				<label class="md_radio_like">
+					<input type="radio" name="season" ng-model="season" value="easter">
+					Easter
+				</label>
+			</fieldset>
 
-			<md-checkbox ng-model="hideUseless">
+			<label class="md_checkbox_like">
+				<input type="checkbox" class="md_like" ng-model="hideUseless">
 				Replace Useless Effect to "----"
-			</md-checkbox>
+			</label>
 
-			<md-checkbox ng-model="shortenCSDrop">
+			<label class="md_checkbox_like">
+				<input type="checkbox" class="md_like" ng-model="shortenCSDrop">
 				Replace "{{langDict[effectLang]["Cookie Storm Drop"]}}"
 				to "{{langDict[effectLang]["Drop"]}}"
-			</md-checkbox>
+			</label>
 
 			<div class="select_container">
 				Language>
 				<label>
 					Effect:
-					<md-select ng-model="effectLang" aria-label="Effect">
-						<md-option value="EN">English</md-option>
-						<md-option value="FR">Français</md-option>
-						<md-option value="DE">Deutsch</md-option>
-						<md-option value="NL">Nederlands</md-option>
-						<md-option value="CS">Čeština</md-option>
-						<md-option value="PL">Polski</md-option>
-						<md-option value="IT">Italiano</md-option>
-						<md-option value="ES">Español</md-option>
-						<md-option value="PT-BR">Português</md-option>
-						<md-option value="JA">日本語</md-option>
-						<md-option value="ZH-CN">中文</md-option>
-						<md-option value="KO">한글</md-option>
-						<md-option value="RU">Русский</md-option>
-					</md-select>
+					<select class="md_like" ng-model="effectLang" aria-label="Effect">
+						<option value="EN">English</option>
+						<option value="FR">Français</option>
+						<option value="DE">Deutsch</option>
+						<option value="NL">Nederlands</option>
+						<option value="CS">Čeština</option>
+						<option value="PL">Polski</option>
+						<option value="IT">Italiano</option>
+						<option value="ES">Español</option>
+						<option value="PT-BR">Português</option>
+						<option value="JA">日本語</option>
+						<option value="ZH-CN">中文</option>
+						<option value="KO">한글</option>
+						<option value="RU">Русский</option>
+					</select>
 				</label>
 
 				<label>
 					Spell:
-					<md-select ng-model="spellLang" aria-label="Spell">
-						<md-option value="EN">English</md-option>
-						<md-option value="FR">Français</md-option>
-						<md-option value="DE">Deutsch</md-option>
-						<md-option value="NL">Nederlands</md-option>
-						<md-option value="CS">Čeština</md-option>
-						<md-option value="PL">Polski</md-option>
-						<md-option value="IT">Italiano</md-option>
-						<md-option value="ES">Español</md-option>
-						<md-option value="PT-BR">Português</md-option>
-						<md-option value="JA">日本語</md-option>
-						<md-option value="ZH-CN">中文</md-option>
-						<md-option value="KO">한글</md-option>
-						<md-option value="RU">Русский</md-option>
-					</md-select>
+					<select class="md_like" ng-model="spellLang" aria-label="Spell">
+						<option value="EN">English</option>
+						<option value="FR">Français</option>
+						<option value="DE">Deutsch</option>
+						<option value="NL">Nederlands</option>
+						<option value="CS">Čeština</option>
+						<option value="PL">Polski</option>
+						<option value="IT">Italiano</option>
+						<option value="ES">Español</option>
+						<option value="PT-BR">Português</option>
+						<option value="JA">日本語</option>
+						<option value="ZH-CN">中文</option>
+						<option value="KO">한글</option>
+						<option value="RU">Русский</option>
+					</select>
 				</label>
 
 				<label>
 					Aura:
-					<md-select ng-model="auraLang" aria-label="Aura">
-						<md-option value="EN">English</md-option>
-						<md-option value="FR">Français</md-option>
-						<md-option value="DE">Deutsch</md-option>
-						<md-option value="NL">Nederlands</md-option>
-						<md-option value="CS">Čeština</md-option>
-						<md-option value="PL">Polski</md-option>
-						<md-option value="IT">Italiano</md-option>
-						<md-option value="ES">Español</md-option>
-						<md-option value="PT-BR">Português</md-option>
-						<md-option value="JA">日本語</md-option>
-						<md-option value="ZH-CN">中文</md-option>
-						<md-option value="KO">한글</md-option>
-						<md-option value="RU">Русский</md-option>
-					</md-select>
+					<select class="md_like" ng-model="auraLang" aria-label="Aura">
+						<option value="EN">English</option>
+						<option value="FR">Français</option>
+						<option value="DE">Deutsch</option>
+						<option value="NL">Nederlands</option>
+						<option value="CS">Čeština</option>
+						<option value="PL">Polski</option>
+						<option value="IT">Italiano</option>
+						<option value="ES">Español</option>
+						<option value="PT-BR">Português</option>
+						<option value="JA">日本語</option>
+						<option value="ZH-CN">中文</option>
+						<option value="KO">한글</option>
+						<option value="RU">Русский</option>
+					</select>
 				</label>
 			</div>
 
-			<md-divider></md-divider>
+			<hr class="md_like">
 
 
 			<!-- spellsCast, spellsCastTotal -->
@@ -348,7 +362,7 @@
 			</form>
 			<!-- <button class="md_like" ng-click="printScope()">Print Scope</button> -->
 
-			<md-divider></md-divider>
+			<hr class="md_like">
 
 
 			<!-- FtHoF Planner Main Result Area -->

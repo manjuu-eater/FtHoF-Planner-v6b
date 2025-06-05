@@ -11,7 +11,7 @@ import { saveSaveCodeToLS, loadSaveCodeFromLS, removeSaveCodeFromLS, readSaveDat
 import { getSaveData, saveSaveData, loadSaveData, removeSaveData, initSaveData, } from "./save_data.js";
 import { getBaseFailChance, getFthofFailChance, castFtHoF, hasCookieEffect, castGFD, } from "./grimoire.js";
 import { langDict } from "./translate.js";
-const app = window.angular.module("myApp", ["ngMaterial"]);
+const app = window.angular.module("myApp", []);
 app.controller("myCtrl", ($rootScope, $scope) => {
     var _a;
     // initialize Save Code
