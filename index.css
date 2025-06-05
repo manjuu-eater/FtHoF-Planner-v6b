@@ -8,9 +8,6 @@ body.fthof_planner {
 	border-radius: 4px;
 	padding: 4px 8px;
 }
-.fthof_planner input[type=number] {
-	text-align: right;
-}
 .fthof_planner input[type=text],
 .fthof_planner input[type=number],
 .fthof_planner md-radio-group {
@@ -329,7 +326,7 @@ body.fthof_planner {
 	width: 10em;
 }
 .fthof_planner col.random {
-	width: 8em;
+	width: 9em;
 	font-size: smaller;
 }
 
