@@ -99,7 +99,7 @@ body.fthof_planner {
 
 /* n times cast with manual number */
 .fthof_planner .cast_manual {
-	display: inline;
+	display: inline-block;
 	margin-left: .5em;
 	vertical-align: middle;
 }
